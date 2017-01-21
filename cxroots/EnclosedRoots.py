@@ -6,7 +6,7 @@ import warnings
 
 from cxroots.Contours import Circle, Rectangle
 
-def enclosed_roots_arg(C, f, reqEqualZeros=3):
+def count_enclosed_roots_arg(C, f, reqEqualZeros=3):
 	r"""
 	Note: this fuction is not currently used by the module but is kept for experimentation.
 
@@ -100,7 +100,7 @@ def enclosed_roots_arg(C, f, reqEqualZeros=3):
 
 	return numberOfZeros
 
-def enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
+def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
