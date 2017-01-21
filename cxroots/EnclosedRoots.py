@@ -4,7 +4,7 @@ from numpy import inf, pi
 import scipy.integrate
 import warnings
 
-from cxroots.Contours import Circle, Rectangle
+from .Contours import Circle, Rectangle
 
 def count_enclosed_roots_arg(C, f, reqEqualZeros=3):
 	r"""
