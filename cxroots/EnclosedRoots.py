@@ -5,25 +5,75 @@ import scipy.integrate
 
 from cxroots.Contours import Circle, Rectangle
 
-def enclosed_roots(C, f, df=None, integerTol=0.1, nofPrimeMethod='taylor'):
+def enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
+	r"""
+	For a function of one complex variable, f(z), which is analytic in and within the contour C,
+	return the number of zeros (counting multiplicities) within the contour calculated, using 
+	Cauchy's argument principle, as
+	
+	.. math::
+
+		\frac{1}{2i\pi} \oint_C \frac{f'(z)}{f(z)} dz.
+
+	If df(z), the derivative of f(z), is provided then the above integral is computed directly.
+	Otherwise the derivative is approximated using a Taylor expansion about the central point
+	within the contour C.  The Taylor coefficients are calculated in such a way as to reuse
+	the function evaluations of f(z) on the contour C, as in method C of [DSZ].
+
+	The number of points on each segment of the contour C at which f(z) and df(z) are sampled 
+	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration 
+	the above integral is calculated using `SciPy's implementation of the Romberg method <https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html>`_.
+	The routine exits if the difference between sucessive iterations is < integerTol/2.
+
+	The number of roots is then the closest integer to the final value of the integral
+	and the result is only accepted if the final value of the integral is within integerTol
+	of the closest integer.  If this is not the case then a RuntimeError is raised.
+	
+	Parameters
+	----------
+	C : Contour
+		The enclosed_roots function returns the number of roots of f(z) within C
+	f : function
+		Function of a single variable f(x)
+	df : function, optional
+		Function of a single variable, df(x), providing the derivative of the function f(x) 
+		at the point x.
+	integerTol : float, optional
+		How close the result of the Romberg integration has to be to an integer for it to be
+		accepted (only used if df is given).  The absolute tolerance of the Romberg integration
+		will be integerTol/2.
+	taylorOrder : int, optional
+		The number of terms for the Taylor expansion approximating df, provided df is not 
+		already given by user.
+
+	Returns
+	-------
+	int
+		The number of zeros of f (including multiplicities) which lie within the contour
+	
+	References
+	----------
+	[DSZ] "Locating all the Zeros of an Analytic Function in one Complex Variable" 
+		M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
+	"""
+
 	N = 1
 	fVal  = [None]*len(C.segments)
 	dfVal = [None]*len(C.segments)
-	I = integerTol*1e6j # just to make sure the while loop is run at least once
+	I = []
 
-	nofPrime = False
+	approx_df = False
 	if df is None:
-		nofPrime = True
+		approx_df = True
 
-	oldI = 0
-	while abs(oldI - I) > integerTol/2.:
-		oldI = I
+	# XXX: define err as the difference between sucessive iterations of the Romberg
+	# 	   method for the same number of points?
+	while len(I) < 2 or abs(I[-2] - I[-1]) > integerTol/2.:
 		N = 2*N
-
 		t = np.linspace(0,1,N+1)
 		dt = t[1]-t[0]
 
-		# store function evaluations
+		# store new function evaluations
 		for i, segment in enumerate(C.segments):
 			z = segment(t)
 			if fVal[i] is None:
@@ -34,26 +84,21 @@ def enclosed_roots(C, f, df=None, integerTol=0.1, nofPrimeMethod='taylor'):
 				newfVal[1::2] = f(z[1::2])
 				fVal[i] = newfVal
 
-		if nofPrime:
-			if nofPrimeMethod == 'taylor':
-				# use available function evaluations to approximate df
-				z0 = C.centerPoint
+		if approx_df:
+			# use available function evaluations to approximate df
+			z0 = C.centerPoint
+			a = []
+			for s in range(taylorOrder):
+				a_s = 0
+				for i, segment in enumerate(C.segments):
+					integrand = fVal[i]/(segment(t)-z0)**(s+1)*segment.dzdt(t)
+					
+					# romberg integration on a set of sample points
+					a_s += scipy.integrate.romb(integrand, dx=dt)/(2j*pi)
+				a.append(a_s)
 
-				M = 20 # number of terms in the Taylor expansion for df
+			df = lambda z: sum([j*a[j]*(z-z0)**(j-1) for j in range(taylorOrder)])
 
-				a = []
-				for s in range(M):
-					a_s = 0
-					for i, segment in enumerate(C.segments):
-						integrand = fVal[i]/(segment(t)-z0)**(s+1)*segment.dzdt(t)
-						
-						# romberg integration on a set of sample points
-						a_s += scipy.integrate.romb(integrand, dx=dt)/(2j*pi)
-					a.append(a_s)
-
-				df = lambda z: sum(j*a[j]*(z-z0)**(j-1) for j in range(M))
-
-		# store derivative evaluations.
 		for i, segment in enumerate(C.segments):
 			z = segment(t)
 			if dfVal[i] is None:
@@ -64,10 +109,12 @@ def enclosed_roots(C, f, df=None, integerTol=0.1, nofPrimeMethod='taylor'):
 				newdfVal[1::2] = df(z[1::2])
 				dfVal[i] = newdfVal
 
-		I = sum(scipy.integrate.romb(dfVal[i]/fVal[i]*segment.dzdt(t), dx=dt) for i, segment in enumerate(C.segments))/(2j*pi)
+		segment_integrand = [dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
+		segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
+		I.append(sum(segment_integral))
 
-	numberOfZeros = int(round(I.real))
-	if numberOfZeros < 0 or abs(I.real - numberOfZeros) > integerTol or abs(I.imag) > integerTol:
+	numberOfZeros = int(round(I[-1].real))
+	if numberOfZeros < 0 or abs(I[-1].real - numberOfZeros) > integerTol or abs(I[-1].imag) > integerTol:
 		raise RuntimeError('The integral %s is not sufficiently close to a positive integer'%integral)
 
 	return numberOfZeros
