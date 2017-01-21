@@ -66,7 +66,7 @@ class ComplexPath(object):
 		self.plot(*args, **kwargs)
 		plt.show()
 
-	def integrate(self, f, tol=1e-8, rombergDivMax=10):
+	def integrate(self, f, tol=1e-8, rombergDivMax=10, show=False):
 		"""
 		Integrate the function f along the path using SciPy's Romberg
 		algorithm.  The value of the integral is cached and will be
@@ -100,7 +100,7 @@ class ComplexPath(object):
 			with warnings.catch_warnings():
 				warnings.simplefilter("ignore")
 				integrand = lambda t: f(self(t))*self.dzdt(t)
-				integral = scipy.integrate.romberg(integrand,0,1,tol=tol,divmax=rombergDivMax)
+				integral = scipy.integrate.romberg(integrand,0,1,tol=tol,divmax=rombergDivMax,show=show)
 
 			if np.isnan(integral):
 				raise RuntimeError('The integral along the segment %s is NaN.\
@@ -189,11 +189,11 @@ class Contour(object):
 		self.plot(*args, **kwargs)
 		plt.show()
 
-	def integrate(self, f, tol=1e-8, rombergDivMax=10):
+	def integrate(self, f, tol=1e-8, rombergDivMax=10, show=False):
 		""" Integrate around the contour, same arguments the integrate method for ComplexPath
 		but the tolerance passed to each segment will be tol/len(self.segments) """
 		segmentTol = tol/len(self.segments)
-		return sum([segment.integrate(f, segmentTol, rombergDivMax) for segment in self.segments])
+		return sum([segment.integrate(f, segmentTol, rombergDivMax, show) for segment in self.segments])
 
 	def enclosed_zeros(self, f, df=None, integerTol=0.1, rombergDivMax=10, reqEqualZeros=3):
 		r"""
