@@ -38,7 +38,7 @@ def count_enclosed_roots_arg(C, f, reqEqualZeros=3):
 	Returns
 	-------
 	int
-		The number of zeros of f (including multiplicities) which lie within the contour
+		The number of zeros of f (counting multiplicities) which lie within the contour
 	
 	References
 	----------
@@ -144,7 +144,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
 	Returns
 	-------
 	int
-		The number of zeros of f (including multiplicities) which lie within the contour
+		The number of zeros of f (counting multiplicities) which lie within the contour
 	
 	References
 	----------
