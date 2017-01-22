@@ -112,7 +112,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 	If df(z), the derivative of f(z), is provided then the above integral is computed directly.
 	Otherwise the derivative is approximated using a Taylor expansion about the central point
 	within the contour C.  The Taylor coefficients are calculated in such a way as to reuse
-	the function evaluations of f(z) on the contour C, as in method C of [DSZ].
+	the function evaluations of f(z) on the contour C, as in method C of [DL].
 
 	The number of points on each segment of the contour C at which f(z) and df(z) are sampled 
 	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration 
@@ -126,7 +126,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 	If the contour is too close to a root then the integral will take a very long time to
 	converge and it is generally more efficient to instead choose a different contour.
 	For this reason the integration will be abandoned and a RuntimError raised if at any 
-	point abs(df(z)/f(z)) > integrandUpperBound since, according to [DSZ], the value of 
+	point abs(df(z)/f(z)) > integrandUpperBound since, according to [DL], the value of 
 	abs(df(z)/f(z)) is of the order of 1/(distance to nearest root).  If df is being 
 	approximated then the routine will wait for the maximum value of abs(df(z)/f(z)) on
 	the contour to settle down a little before considering if the routine should exit,
@@ -164,8 +164,8 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 	
 	References
 	----------
-	[DSZ] "Locating all the Zeros of an Analytic Function in one Complex Variable" 
-		M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
+	[DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
+		L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
 	"""
 	N = 1
 	fVal  = [None]*len(C.segments)
