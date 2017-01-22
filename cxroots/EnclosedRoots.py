@@ -4,8 +4,6 @@ from numpy import inf, pi
 import scipy.integrate
 import warnings
 
-from .Contours import Circle, Rectangle
-
 def count_enclosed_roots_arg(C, f, reqEqualZeros=3):
 	r"""
 	Note: this fuction is not currently used by the module but is kept for experimentation.
@@ -100,7 +98,8 @@ def count_enclosed_roots_arg(C, f, reqEqualZeros=3):
 
 	return numberOfZeros
 
-def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
+
+def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4, taylorOrder=20):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -118,12 +117,21 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
 	The number of points on each segment of the contour C at which f(z) and df(z) are sampled 
 	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration 
 	the above integral is calculated using `SciPy's implementation of the Romberg method <https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html>`_.
-	The routine exits if the difference between sucessive iterations is < integerTol/2.
+	The routine exits if the difference between sucessive iterations is < integerTol.
 
 	The number of roots is then the closest integer to the final value of the integral
 	and the result is only accepted if the final value of the integral is within integerTol
-	of the closest integer.  If this is not the case then a RuntimeError is raised.
+	of the closest integer.
 	
+	If the contour is too close to a root then the integral will take a very long time to
+	converge and it is generally more efficient to instead choose a different contour.
+	For this reason the integration will be abandoned and a RuntimError raised if at any 
+	point abs(df(z)/f(z)) > integrandUpperBound since, according to [DSZ], the value of 
+	abs(df(z)/f(z)) is of the order of 1/(distance to nearest root).  If df is being 
+	approximated then the routine will wait for the maximum value of abs(df(z)/f(z)) on
+	the contour to settle down a little before considering if the routine should exit,
+	since an inaccurate df(z) can cause abs(df(z)/f(z)) to be erroneously large.
+
 	Parameters
 	----------
 	C : Contour
@@ -134,9 +142,17 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
 		Function of a single variable, df(x), providing the derivative of the function f(x) 
 		at the point x.
 	integerTol : float, optional
-		How close the result of the Romberg integration has to be to an integer for it to be
-		accepted (only used if df is given).  The absolute tolerance of the Romberg integration
-		will be integerTol/2.
+		The evaluation of the Cauchy integral will be accepted if the difference between sucessive
+		iterations is < integerTol and the value of the integral is within integerTol of the 
+		closest integer.  Since the Cauchy integral must be an integer it is only necessary to
+		distinguish which integer the inegral is convering towards.  For this
+		reason the integerTol can be set fairly large.
+	integrandUpperBound : float, optional
+		The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this 
+		value then a RuntimeError is raised.  If integrandUpperBound is too large then 
+		integrals may take a very long time to converge and it is generally be more 
+		efficient to allow the rootfinding procedure to instead choose another contour 
+		then spend time evaluting the integral along a contour very close to a root.
 	taylorOrder : int, optional
 		The number of terms for the Taylor expansion approximating df, provided df is not 
 		already given by user.
@@ -151,11 +167,11 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
 	[DSZ] "Locating all the Zeros of an Analytic Function in one Complex Variable" 
 		M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
 	"""
-
 	N = 1
 	fVal  = [None]*len(C.segments)
 	dfVal = [None]*len(C.segments)
 	I = []
+	integrandMax = []
 
 	approx_df = False
 	if df is None:
@@ -163,7 +179,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
 
 	# XXX: define err as the difference between sucessive iterations of the Romberg
 	# 	   method for the same number of points?
-	while len(I) < 2 or abs(I[-2] - I[-1]) > integerTol/2.:
+	while len(I) < 2 or abs(I[-2] - I[-1]) > integerTol or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol or int(round(I[-1].real)) < 0:
 		N = 2*N
 		t = np.linspace(0,1,N+1)
 		dt = t[1]-t[0]
@@ -204,28 +220,30 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
 				newdfVal[1::2] = df(z[1::2])
 				dfVal[i] = newdfVal
 
-		segment_integrand = [dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
-		segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
-		I.append(sum(segment_integral))
+		with warnings.catch_warnings():
+			warnings.simplefilter("ignore")
+
+			# discard the integraion if it is too close to the contour
+			if not approx_df:
+				# if no approximation to df is being made then immediately exit if the 
+				# integrand is too large
+				if np.any(np.abs(np.array(dfVal)/np.array(fVal)) > integrandUpperBound):
+					raise RuntimeError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
+			else:
+				# if df is being approximated then the integrand might be artifically
+				# large so wait until the maximum value has settled a little
+				integrandMax.append(np.max(np.abs(np.array(dfVal)/np.array(fVal))))
+				if len(integrandMax) > 1 and abs(integrandMax[-2] - integrandMax[-1]) < 0.1*integrandUpperBound:
+					if np.any(np.abs(np.array(dfVal)/np.array(fVal)) > integrandUpperBound):
+						raise RuntimeError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
+
+			segment_integrand = [dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
+			segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
+			I.append(sum(segment_integral))
+
+			if np.isnan(I[-1]):
+				raise RuntimeError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
+
 
 	numberOfZeros = int(round(I[-1].real))
-	if numberOfZeros < 0 or abs(I[-1].real - numberOfZeros) > integerTol or abs(I[-1].imag) > integerTol:
-		raise RuntimeError('The integral %s is not sufficiently close to a positive integer'%integral)
-
 	return numberOfZeros
-
-
-if __name__ == '__main__':
-	from numpy import sin, cos
-	f  = lambda z: z**10 - 2*z**5 + sin(z)*cos(z/2)
-	df = lambda z: 10*(z**9 - z**4) + cos(z)*cos(z/2) - 0.5*sin(z)*sin(z/2)
-
-	rect = Rectangle([-1.5,1.5],[-2,2])
-	circle = Circle(0,2)
-
-	# print(rect.enclosed_zeros(f, df))
-	# print(rect.enclosed_zeros(f))
-	# print(circle.enclosed_zeros(f))
-
-	# print(enclosed_roots(rect, f, df))
-	print(enclosed_roots(rect, f))
