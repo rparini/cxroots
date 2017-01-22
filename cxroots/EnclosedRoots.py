@@ -196,7 +196,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, taylorOrder=20):
 
 		for i, segment in enumerate(C.segments):
 			z = segment(t)
-			if dfVal[i] is None:
+			if dfVal[i] is None or approx_df:
 				dfVal[i] = df(z)
 			else:
 				newdfVal = np.zeros_like(t, dtype=np.complex128)
