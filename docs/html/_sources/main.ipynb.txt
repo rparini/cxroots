@@ -6,41 +6,29 @@
    "source": [
     "# Rootfinding\n",
     "\n",
-    "The current implementation for finding the roots of a given function $f(z)$ within a [given initial contour](contour.ipynb#Contours) $C_0$ is primarily based on [1] and is briefly described as follows.\n",
-    "First define a set of contours $\\mathcal{C}$ which initially contains only the original contour $C_0$ and [compute the number of zeros](contour.ipynb#Computing-roots-within-a-contour), $N_0$, within this initial contour.  Then perform the following steps:\n",
+    "The current implementation for finding the roots of a given function $f(z)$ within a [given initial contour](contour.ipynb#Contours) $C_0$ is primarily based on [1].\n",
+    "First define a set of contours $\\mathcal{C}$ which initially contains only the original contour $C_0$ and compute the number of zeros, $N_0$, within this initial contour.  Then perform the following steps:\n",
     "\n",
-    "1. Choose a contour, $C$, to remove from $\\mathcal{C}$ and [compute the number of zeros](contour.ipynb#Computing-roots-within-a-contour), $N$, within it.  This step relies on Cauchy's argument principle,\n",
+    "1. Choose a contour, $C$, to remove from $\\mathcal{C}$ and [compute the number of zeros](countroots.ipynb), $N$, within it.  This step relies on Cauchy's argument principle,\n",
     "\n",
     "   \\begin{equation} \n",
     "   N = \\frac{1}{2\\pi i} \\oint_C \\frac{f'(z)}{f(z)}.\n",
     "   \\end{equation}\n",
     "\n",
-    "   If $f(z)$ and $f'(z)$ are provided by the user then the integral is directly computed using [SciPy's Romberg](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html) implementation. If only $f(z)$ is given then $N$ is calculated using the difference in the argument of $f(z)$ as it is numerically continued around the contour $C$ [2,4].\n",
+    "   The integral is directly computed numerically using Romberg integration implemented in  [SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html).  If only $f(z)$ is provided by the user then $f'(z)$ is approximated with a Taylor expansion [2].\n",
     "\n",
     "2. If...\n",
     "  * $N=0$ then discard the contour.\n",
     "  * $N>1$ then subdivide the contour further and add the new, smaller, contours to $\\mathcal{C}$.\n",
-    "  * $N=1$ then attempt to find the root via an interative method with the initial guess for the root being a random point within the contour.  This is repeated a user specified number of times (20 by default) at which point if the root has not been found then the box is subdivided again.  The iterative method used is Newton-Raphson if $f'(z)$ is given and the Secant method if otherwise.\n",
+    "  * $N=1$ then attempt to find the root via an interative method with the initial guess for the root being a random point within the contour.  This is repeated a number of times (20 by default) at which point if the root has not been found then the box is subdivided again.  The iterative method used is Newton-Raphson if $f'(z)$ is given and the Secant method if otherwise.\n",
     "        \n",
-    "3. If the number of known roots is equal to $N_0$ then return the list of roots to the user.  Otherwise, return to step 1.\n",
-    "\n",
-    "#### References\n",
-    "\n",
-    "[1] M. Dellnitz, O. Schütze and Q. Zheng \"Locating all the Zeros of an Analytic Function in one Complex Variable\", 2002, J. Compu. and App. Math., Vol. 138, Issue. 2, pp. 325-333\n",
-    "\n",
-    "[2] L. M. Delves and J. N. Lyness \"A Numerical Method for Locating the Zeros of an Analytic Function\", 1967, Mathematics of Computation, Vol. 21, No. 100, pp. 543-560\n",
-    "\n",
-    "[3] P. Kravanja and M. Van Barel \"Derivative-free algorithm for computing zeros of analytic functions\", 1999, Computing, Vol. 63, pp.69-91\n",
-    "\n",
-    "[4] F. D. Gakhov \"Boundary value problems\", section 12 (2014), Elsevier."
+    "3. If the number of known roots is equal to $N_0$ then return the list of roots to the user.  Otherwise, return to step 1."
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Use\n",
-    "\n",
     "From a user perspective the first step is to define an [initial contour](contour.ipynb#Contours) in the complex plane which can be a \n",
     "\n",
     "   * [Circle](contour.ipynb#Circle)\n",
@@ -48,9 +36,20 @@
     "   * [Rectangle](contour.ipynb#Rectangle)\n",
     "   * [Rectangle in polar coordinates](contour.ipynb#Rectangle-in-polar-coordinates)\n",
     "\n",
-    "This contour, together with a function $f(z)$ (and ideally it's derivative $f'(z)$) can then be passed to the ['findRoots'](#findRoots) function.\n",
+    "This contour, together with a function $f(z)$ (and ideally it's derivative $f'(z)$), can then be passed to the ['findRoots'](#findRoots) function.\n",
     "The list of roots can also be directly plotted with the ['showRoots'](#showRoots) function.\n",
     "The rootfinding process can be demonstrated with ['demo_findRoots'](#demo_findRoots)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### References\n",
+    "\n",
+    "[1] M. Dellnitz, O. Schütze and Q. Zheng, \"Locating all the Zeros of an Analytic Function in one Complex Variable\" J. Compu. and App. Math. (2002) Vol. 138, Issue 2\n",
+    "\n",
+    "[2] L.M. Delves and J.N. Lyness, \"A Numerical Method for Locating the Zeros of an Analytic function\" Mathematics of Computation (1967) Vol.21, Issue 100"
    ]
   },
   {

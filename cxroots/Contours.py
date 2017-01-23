@@ -16,7 +16,7 @@ import scipy.integrate
 from scipy import pi, exp, sin, log
 import scipy
 
-from .EnclosedRoots import count_enclosed_roots
+from .CountRoots import count_enclosed_roots
 
 class ComplexPath(object):
 	""" A base class for paths in the complex plane """
