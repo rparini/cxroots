@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Rootfinding &#8212; cxroots 0.0.1 documentation</title>
+    <title>Rootfinding &#8212; cxroots 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.1',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -49,7 +49,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to cxroots’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -58,9 +58,6 @@
   <ul>
 <li><a class="reference internal" href="#">Rootfinding</a><ul>
 <li><a class="reference internal" href="#References">References</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Use">Use</a><ul>
 <li><a class="reference internal" href="#findRoots">findRoots</a></li>
 <li><a class="reference internal" href="#showRoots">showRoots</a></li>
 <li><a class="reference internal" href="#demo_findRoots">demo_findRoots</a></li>
@@ -260,27 +257,23 @@ div.nboutput div.output_area.stderr {
 <h1>Rootfinding<a class="headerlink" href="#Rootfinding" title="Permalink to this headline">¶</a></h1>
 <p>The current implementation for finding the roots of a given function
 <span class="math">\(f(z)\)</span> within a <a class="reference internal" href="contour.html#Contours"><span class="std std-ref">given initial contour</span></a>
-<span class="math">\(C_0\)</span> is primarily based on [1] and is briefly described as
-follows. First define a set of contours <span class="math">\(\mathcal{C}\)</span> which
-initially contains only the original contour <span class="math">\(C_0\)</span> and <a class="reference internal" href="contour.html#Computing-roots-within-a-contour"><span class="std std-ref">compute
-the number of zeros</span></a>,
-<span class="math">\(N_0\)</span>, within this initial contour. Then perform the following
-steps:</p>
+<span class="math">\(C_0\)</span> is primarily based on [1]. First define a set of contours
+<span class="math">\(\mathcal{C}\)</span> which initially contains only the original contour
+<span class="math">\(C_0\)</span> and compute the number of zeros, <span class="math">\(N_0\)</span>, within this
+initial contour. Then perform the following steps:</p>
 <ol class="arabic simple">
 <li>Choose a contour, <span class="math">\(C\)</span>, to remove from <span class="math">\(\mathcal{C}\)</span> and
-<a class="reference internal" href="contour.html#Computing-roots-within-a-contour"><span class="std std-ref">compute the number of
-zeros</span></a>, <span class="math">\(N\)</span>,
-within it. This step relies on Cauchy&#8217;s argument principle,</li>
+<a class="reference internal" href="countroots.html"><span class="doc">compute the number of zeros</span></a>, <span class="math">\(N\)</span>, within
+it. This step relies on Cauchy&#8217;s argument principle,</li>
 </ol>
 <div class="math">
 \begin{equation}
    N = \frac{1}{2\pi i} \oint_C \frac{f'(z)}{f(z)}.
-   \end{equation}</div><p>If <span class="math">\(f(z)\)</span> and <span class="math">\(f'(z)\)</span> are provided by the user then the
-integral is directly computed using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html">SciPy&#8217;s
-Romberg</a>
-implementation. If only <span class="math">\(f(z)\)</span> is given then <span class="math">\(N\)</span> is
-calculated using the difference in the argument of <span class="math">\(f(z)\)</span> as it is
-numerically continued around the contour <span class="math">\(C\)</span> [2,4].</p>
+   \end{equation}</div><p>The integral is directly computed numerically using Romberg integration
+implemented in
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html">SciPy</a>.
+If only <span class="math">\(f(z)\)</span> is provided by the user then <span class="math">\(f'(z)\)</span> is
+approximated with a Taylor expansion [2].</p>
 <ol class="arabic simple" start="2">
 <li>If...</li>
 </ol>
@@ -290,31 +283,15 @@ numerically continued around the contour <span class="math">\(C\)</span> [2,4].<
 smaller, contours to <span class="math">\(\mathcal{C}\)</span>.</li>
 <li><span class="math">\(N=1\)</span> then attempt to find the root via an interative method
 with the initial guess for the root being a random point within the
-contour. This is repeated a user specified number of times (20 by
-default) at which point if the root has not been found then the box
-is subdivided again. The iterative method used is Newton-Raphson if
-<span class="math">\(f'(z)\)</span> is given and the Secant method if otherwise.</li>
+contour. This is repeated a number of times (20 by default) at which
+point if the root has not been found then the box is subdivided
+again. The iterative method used is Newton-Raphson if <span class="math">\(f'(z)\)</span>
+is given and the Secant method if otherwise.</li>
 </ul>
 <ol class="arabic simple" start="3">
 <li>If the number of known roots is equal to <span class="math">\(N_0\)</span> then return the
 list of roots to the user. Otherwise, return to step 1.</li>
 </ol>
-<div class="section" id="References">
-<h2>References<a class="headerlink" href="#References" title="Permalink to this headline">¶</a></h2>
-<p>[1] M. Dellnitz, O. Schütze and Q. Zheng &#8220;Locating all the Zeros of an
-Analytic Function in one Complex Variable&#8221;, 2002, J. Compu. and App.
-Math., Vol. 138, Issue. 2, pp. 325-333</p>
-<p>[2] L. M. Delves and J. N. Lyness &#8220;A Numerical Method for Locating the
-Zeros of an Analytic Function&#8221;, 1967, Mathematics of Computation, Vol.
-21, No. 100, pp. 543-560</p>
-<p>[3] P. Kravanja and M. Van Barel &#8220;Derivative-free algorithm for
-computing zeros of analytic functions&#8221;, 1999, Computing, Vol. 63,
-pp.69-91</p>
-<p>[4] F. D. Gakhov &#8220;Boundary value problems&#8221;, section 12 (2014), Elsevier.</p>
-</div>
-</div>
-<div class="section" id="Use">
-<h1>Use<a class="headerlink" href="#Use" title="Permalink to this headline">¶</a></h1>
 <p>From a user perspective the first step is to define an <a class="reference internal" href="contour.html#Contours"><span class="std std-ref">initial
 contour</span></a> in the complex plane which can be a</p>
 <ul class="simple">
@@ -325,11 +302,20 @@ contour</span></a> in the complex plane which can be a</p>
 coordinates</span></a></li>
 </ul>
 <p>This contour, together with a function <span class="math">\(f(z)\)</span> (and ideally it&#8217;s
-derivative <span class="math">\(f'(z)\)</span>) can then be passed to the
+derivative <span class="math">\(f'(z)\)</span>), can then be passed to the
 <a class="reference external" href="#findRoots">&#8216;findRoots&#8217;</a> function. The list of roots can also be
 directly plotted with the <a class="reference external" href="#showRoots">&#8216;showRoots&#8217;</a> function. The
 rootfinding process can be demonstrated with
 <a class="reference external" href="#demo_findRoots">&#8216;demo_findRoots&#8217;</a>.</p>
+<div class="section" id="References">
+<h2>References<a class="headerlink" href="#References" title="Permalink to this headline">¶</a></h2>
+<p>[1] M. Dellnitz, O. Schütze and Q. Zheng, &#8220;Locating all the Zeros of an
+Analytic Function in one Complex Variable&#8221; J. Compu. and App. Math.
+(2002) Vol. 138, Issue 2</p>
+<p>[2] L.M. Delves and J.N. Lyness, &#8220;A Numerical Method for Locating the
+Zeros of an Analytic function&#8221; Mathematics of Computation (1967) Vol.21,
+Issue 100</p>
+</div>
 <div class="section" id="findRoots">
 <h2>findRoots<a class="headerlink" href="#findRoots" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -391,7 +377,7 @@ Shares key word arguments with <a class="reference internal" href="#cxroots.Root
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/main_7_0.png" src="_images/main_7_0.png" />
+<img alt="_images/main_8_0.png" src="_images/main_8_0.png" />
 </div>
 </div>
 </div>
@@ -500,7 +486,7 @@ non-negative.  Default is 3.</li>
         <li class="right" >
           <a href="index.html" title="Welcome to cxroots’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

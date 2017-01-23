@@ -9,6 +9,7 @@ Welcome to cxroots's documentation!
 .. toctree::
    main.ipynb
    contour.ipynb
+   countroots.ipynb
 
 Indices and tables
 ==================

@@ -8,16 +8,15 @@ import itertools
 from collections import deque
 import logging
 
-from .Contours import NonIntegerError
 from .IterativeMethods import iterateToRoot
 
-def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, func, dfunc, integerTol, rombergDivMax, reqEqualZeros):
+def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, func, dfunc, integerTol, integrandUpperBound, taylorOrder):
 	for subBoxes in boxToSubdivide.subdivisions():
 		try:
-			numberOfEnclosedZeros = [box.enclosed_zeros(func,dfunc,integerTol,rombergDivMax,reqEqualZeros) for box in np.array(subBoxes)]
+			numberOfEnclosedZeros = [box.count_enclosed_roots(func, dfunc, integerTol, integrandUpperBound, taylorOrder) for box in np.array(subBoxes)]
 			if boxToSubdivide_numberOfEnclosedZeros == sum(numberOfEnclosedZeros):
 				break
-		except (NonIntegerError, RuntimeError):
+		except RuntimeError:
 			# If the number of zeros within either of the new contours is not an integer then it is
 			# likely that the introduced line which subdivides 'boxToSubdivide' lies on a zero.
 			# To avoid this we will try to place the subdividing line at a different point along 
@@ -28,8 +27,8 @@ def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, fu
 		# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
 		raise RuntimeError("""Unable to subdivide box:
 			\t%s
-			If f and df have been given then try increasing rombergDivMax and decreasing the integerTol. 
-			If only f has been provided then try increasing the reqEqualZeros.""" % boxToSubdivide)
+			Consider increasing the integrandUpperBound.  If only f has been provided then consider
+			try the taylorOrder.""" % boxToSubdivide)
 
 	boxDeque.extend([(box, numberOfEnclosedZeros[i]) for i, box in enumerate(subBoxes) if numberOfEnclosedZeros[i] != 0])
 		
@@ -50,7 +49,7 @@ def addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTo
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-10, iterativeTries=20,
-	integerTol=0.1, rombergDivMax=10, reqEqualZeros=3):
+	integerTol=0.2, integrandUpperBound=1e4, taylorOrder=20):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.
@@ -100,17 +99,21 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		should be used to find the root within a contour containing a single
 		root before the contour is subdivided again.
 	integerTol : float, optional
-		How close the result of the Romberg integration has to be to an 
-		integer for it to be accepted (only used if df is given).  The 
-		absolute tolerance of the Romberg integration will be integerTol/2.
-	rombergDivMax : int, optional
-		The maximum order of extrapolation of the Romberg integration routine 
-		(only used if df is given)
-	reqEqualZeros : int, optional
-		If the Cauchy integral is computed by continuing the argument around the 
-		contour (ie. if df is None) then the routine requires that the last 
-		reqEqualZeros evaluations of the number of enclosed zeros are equal and 
-		non-negative.  Default is 3.
+		The numerical evaluation of the Cauchy integral will return a result
+		if the result of the last two iterations differ by less than integerTol
+		and the result of the last iteration is within integerTol of an integer.
+		Since the Cauchy integral must be an integer it is only necessary to
+		distinguish which integer the inegral is convering towards.  For this
+		reason the integerTol can be set fairly large.
+	integrandUpperBound : float, optional
+		The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this 
+		value then a RuntimeError is raised.  If integrandUpperBound is too large then 
+		integrals may take a very long time to converge and it is generally be more 
+		efficient to allow the rootfinding procedure to instead choose another contour 
+		then spend time evaluting the integral along a contour very close to a root.
+	taylorOrder : int, optional
+		The number of terms for the Taylor expansion approximating df, provided df is not 
+		already given by user.
 
 	Yields
 	------
@@ -122,11 +125,12 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		Remaining number of roots to be found within the contour
 	"""
 	try:
-		totNumberOfRoots = originalContour.enclosed_zeros(f,df,integerTol,rombergDivMax,reqEqualZeros)
-	except (NonIntegerError, RuntimeError):
-		raise RuntimeError("""Integration along the intial contour failed.  There is likely a root on or close to the initial contour
-			If f and df have been given then try decreasing the integerTol or increasing rombergDivMax. 
-			If only f has been provided then try increasing the reqEqualZeros.""")
+		totNumberOfRoots = originalContour.count_enclosed_roots(f,df,integerTol,integrandUpperBound,taylorOrder)
+	except RuntimeError:
+		raise RuntimeError("""
+			Integration along the intial contour has failed.  There is likely a root on or close to the initial contour
+			Try either changing the intial contour, if possible, or increasing the integrandUpperBound to allow for 
+			a longer integration time.""")
 
 	loggedIterativeWarning = False
 	roots = []
@@ -147,7 +151,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 		if numberOfEnclosedRoots > 1:
 			# subdivide box further
-			subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol,rombergDivMax, reqEqualZeros)
+			subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, integrandUpperBound, taylorOrder)
 
 		elif numberOfEnclosedRoots == 1:
 			# try to find the root in the box
@@ -176,7 +180,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 				else:
 					# subdivide box again if we failed to find the root and the box is still too big
-					subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, rombergDivMax, reqEqualZeros)
+					subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, integrandUpperBound, taylorOrder)
 
 		yield tuple(roots), tuple(boxes), totNumberOfRoots - len(roots)
 
@@ -254,7 +258,7 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, return
 
 	plt.show()
 
-def showRoots(originalContour, f, df, **kwargs):
+def showRoots(originalContour, f, df=None, **kwargs):
 	"""
 	Plots all roots of a given function f within a given originalContour.  
 	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`.
