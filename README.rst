@@ -37,19 +37,9 @@ The implementation is primarily based on [1] where the number of roots
 within a contour, :math:`N`, is calculated by numerical integration of
 the Cauchy integral,
 
-.. raw:: html
-
-   <p align="middle">
-
-|image0|
-
-.. raw:: html
-
-   </p>
-
-.. |image0| image:: https://latex.codecogs.com/svg.latex?N=\frac%7B1%7D%7B2i\pi%7D\oint_C\frac%7Bf'%28z%29%7D%7Bf%28z%29%7Ddz.
-
-
+<p align="center">
+<img src="https://latex.codecogs.com/svg.latex?N=\frac{1}{2i\pi}\oint_C\frac{f'(z)}{f(z)}dz."/>
+</p>
 
 The original contour is subdivided until each sub-contour only contains
 a single root and then the Newton-Raphson method is repeatedly used with
