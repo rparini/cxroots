@@ -45,7 +45,9 @@ the Cauchy integral,
    \end{equation}
 
 .. image:: README_files/integral.png
-   :height: 100 px
+   :height: 172 px
+   :width: 580 px
+   :scale: 100 %
 
 The original contour is subdivided until each sub-contour only contains
 a single root and then the Newton-Raphson method is repeatedly used with
