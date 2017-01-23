@@ -9,9 +9,12 @@ from numpy.distutils.misc_util import get_numpy_include_dirs
 
 packages = ['cxroots']
 
-# configure setup
+# get the version
+exec(open('cxroots/version.py').read())
+
 setup(
     name = 'cxroots',
+    version = __version__,
     description = 'Find all the roots of a function within a contour in the complex plane',
     author = 'Robert Parini',
     packages = packages,

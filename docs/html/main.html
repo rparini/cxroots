@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Rootfinding &#8212; cxroots 0.0.1 documentation</title>
+    <title>Rootfinding &#8212; cxroots 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.1',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -49,7 +49,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to cxroots’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -357,7 +357,7 @@ Shares key word arguments with <a class="reference internal" href="#cxroots.Root
 <h2>showRoots<a class="headerlink" href="#showRoots" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="cxroots.showRoots">
-<code class="descclassname">cxroots.</code><code class="descname">showRoots</code><span class="sig-paren">(</span><em>originalContour</em>, <em>f</em>, <em>df=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/RootFinder.html#showRoots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.showRoots" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cxroots.</code><code class="descname">showRoots</code><span class="sig-paren">(</span><em>originalContour</em>, <em>f</em>, <em>df</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/RootFinder.html#showRoots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.showRoots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots all roots of a given function f within a given originalContour.
 Shares key word arguments with <a class="reference internal" href="#cxroots.RootFinder.findRootsGen" title="cxroots.RootFinder.findRootsGen"><code class="xref py py-func docutils literal"><span class="pre">cxroots.RootFinder.findRootsGen()</span></code></a>.</p>
 </dd></dl>
@@ -402,7 +402,7 @@ will be returned, rather than the animation be shown.</p>
 <h2>findRootsGen<a class="headerlink" href="#findRootsGen" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="cxroots.RootFinder.findRootsGen">
-<code class="descclassname">cxroots.RootFinder.</code><code class="descname">findRootsGen</code><span class="sig-paren">(</span><em>originalContour</em>, <em>f</em>, <em>df=None</em>, <em>guessRoot=[]</em>, <em>guessRootSymmetry=None</em>, <em>newtonStepTol=1e-08</em>, <em>newtonMaxIter=20</em>, <em>rootErrTol=1e-10</em>, <em>iterativeTries=20</em>, <em>integerTol=0.2</em>, <em>integrandUpperBound=10000.0</em>, <em>taylorOrder=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/RootFinder.html#findRootsGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.RootFinder.findRootsGen" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cxroots.RootFinder.</code><code class="descname">findRootsGen</code><span class="sig-paren">(</span><em>originalContour</em>, <em>f</em>, <em>df=None</em>, <em>guessRoot=[]</em>, <em>guessRootSymmetry=None</em>, <em>newtonStepTol=1e-08</em>, <em>newtonMaxIter=20</em>, <em>rootErrTol=1e-10</em>, <em>iterativeTries=20</em>, <em>integerTol=0.1</em>, <em>rombergDivMax=10</em>, <em>reqEqualZeros=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/RootFinder.html#findRootsGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.RootFinder.findRootsGen" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator which at each step takes a contour and either finds
 all the zeros of f within it or subdivides it further.</p>
 <p>The method used to compute the number of zeros depends on whether
@@ -442,19 +442,15 @@ root will exit if the number of iterations exceeds newtonMaxIter</li>
 <li><strong>iterativeTries</strong> (<em>int</em><em>, </em><em>optinal</em>) &#8211; The number of times an iterative method with a random start point
 should be used to find the root within a contour containing a single
 root before the contour is subdivided again.</li>
-<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; The numerical evaluation of the Cauchy integral will return a result
-if the result of the last two iterations differ by less than integerTol
-and the result of the last iteration is within integerTol of an integer.
-Since the Cauchy integral must be an integer it is only necessary to
-distinguish which integer the inegral is convering towards.  For this
-reason the integerTol can be set fairly large.</li>
-<li><strong>integrandUpperBound</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this
-value then a RuntimeError is raised.  If integrandUpperBound is too large then
-integrals may take a very long time to converge and it is generally be more
-efficient to allow the rootfinding procedure to instead choose another contour
-then spend time evaluting the integral along a contour very close to a root.</li>
-<li><strong>taylorOrder</strong> (<em>int</em><em>, </em><em>optional</em>) &#8211; The number of terms for the Taylor expansion approximating df, provided df is not
-already given by user.</li>
+<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; How close the result of the Romberg integration has to be to an
+integer for it to be accepted (only used if df is given).  The
+absolute tolerance of the Romberg integration will be integerTol/2.</li>
+<li><strong>rombergDivMax</strong> (<em>int</em><em>, </em><em>optional</em>) &#8211; The maximum order of extrapolation of the Romberg integration routine
+(only used if df is given)</li>
+<li><strong>reqEqualZeros</strong> (<em>int</em><em>, </em><em>optional</em>) &#8211; If the Cauchy integral is computed by continuing the argument around the
+contour (ie. if df is None) then the routine requires that the last
+reqEqualZeros evaluations of the number of enclosed zeros are equal and
+non-negative.  Default is 3.</li>
 </ul>
 </td>
 </tr>
@@ -490,7 +486,7 @@ already given by user.</li>
         <li class="right" >
           <a href="index.html" title="Welcome to cxroots’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
