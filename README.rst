@@ -34,13 +34,20 @@ the module is able to compute all the roots of within :math:`C`.
 
 
 The implementation is primarily based on [1] where the number of roots
-within a contour, :math:`N_C`, is calculated by numerical integration of
+within a contour, :math:`N`, is calculated by numerical integration of
 the Cauchy integral,
 
-.. figure:: https://latex.codecogs.com/svg.latex?N=\frac%7B1%7D%7B2i\pi%7D\oint_C\frac%7Bf'%28z%29%7D%7Bf%28z%29%7Ddz.
-   :alt: eqn
+.. raw:: html
 
-   eqn
+   <p align="center">
+
+|image0|
+
+.. raw:: html
+
+   </p>
+
+.. |image0| image:: https://latex.codecogs.com/svg.latex?N=\frac%7B1%7D%7B2i\pi%7D\oint_C\frac%7Bf'%28z%29%7D%7Bf%28z%29%7Ddz.
 
 The original contour is subdivided until each sub-contour only contains
 a single root and then the Newton-Raphson method is repeatedly used with
