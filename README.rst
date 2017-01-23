@@ -26,8 +26,7 @@ the module is able to compute all the roots of within :math:`C`.
     
     rect = Rectangle([-1.5,1.5],[-2,2])
     f  = lambda z: z**10 - 2*z**5 + sin(z)*cos(z/2)
-    df = lambda z: 10*(z**9 - z**4) + cos(z)*cos(z/2) - 0.5*sin(z)*sin(z/2)
-    showRoots(rect, f, df)
+    showRoots(rect, f)
 
 
 
@@ -38,11 +37,10 @@ The implementation is primarily based on [1] where the number of roots
 within a contour, :math:`N_C`, is calculated by numerical integration of
 the Cauchy integral,
 
-.. raw:: latex
+.. figure:: https://latex.codecogs.com/svg.latex?N=\frac%7B1%7D%7B2i\pi%7D\oint_C\frac%7Bf'%28z%29%7D%7Bf%28z%29%7Ddz.
+   :alt: eqn
 
-   \begin{equation}
-   N = \frac{1}{2\pi i} \oint_C \frac{f'(z)}{f(z)}.
-   \end{equation}
+   eqn
 
 The original contour is subdivided until each sub-contour only contains
 a single root and then the Newton-Raphson method is repeatedly used with
@@ -50,28 +48,6 @@ random startpoints until the root within each sub-contour is found.
 
 If :math:`f'(z)` is not provided by the user then it is approximated
 with a Taylor expansion as in [2].
-
-.. code:: python
-
-    findRoots(rect, f)
-
-
-
-
-.. parsed-literal::
-
-    ((-0.051732467259847377+0.86479412355070606j),
-     (0.84751999573672776+1.2631151125079103e-18j),
-     (7.8029627392746349e-23-3.746546563497014e-24j),
-     (0.43678493161695536+1.0565420188099093j),
-     (1.0834406707107858+1.4200351245887362e-15j),
-     (0.43678493161695553-1.0565420188099091j),
-     (-0.96178623941763552+0.70901063743402126j),
-     (-0.051732467259847391-0.86479412355070606j),
-     (-0.77754608881415588-8.223178586068228e-15j),
-     (-0.96178623941762409-0.70901063743401693j))
-
-
 
 Future improvements:
 ~~~~~~~~~~~~~~~~~~~~
@@ -114,4 +90,3 @@ Issue 100
 
 [3] P. Kravanja, T. Sakurai and M. Van Barel, "On locating clusters of
 zeros of analytic functions" BIT (1999) Vol. 39, No. 4
-
