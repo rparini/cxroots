@@ -44,11 +44,6 @@ the Cauchy integral,
    N = \frac{1}{2\pi i} \oint_C \frac{f'(z)}{f(z)}.
    \end{equation}
 
-.. image:: README_files/integral.png
-   :height: 172 px
-   :width: 580 px
-   :scale: 100 %
-
 The original contour is subdivided until each sub-contour only contains
 a single root and then the Newton-Raphson method is repeatedly used with
 random startpoints until the root within each sub-contour is found.
