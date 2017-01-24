@@ -2,8 +2,6 @@
 # cxroots
 A Python module to compute all the (simple) roots of an analytic function within a given contour.
 
----
-
 ## Introduction
 
 Given a contour $C$ in the complex plane and a function $f(z)$ (and optionally it's derivative $f'(z)$) which:

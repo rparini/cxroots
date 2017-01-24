@@ -2,8 +2,6 @@
 # cxroots
 A Python module to compute all the (simple) roots of an analytic function within a given contour.
 
----
-
 ## Introduction
 
 Given a contour <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/> in the complex plane and a function <img src="https://rawgit.com/RParini/cxroots/master/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> (and optionally it's derivative <img src="https://rawgit.com/RParini/cxroots/master/svgs/fc05b2681daad9671bb48c269dcca2d6.svg?invert_in_darkmode" align=middle width=35.47599pt height=24.668490000000013pt/>) which:
