@@ -48,7 +48,7 @@ python setup.py install
 ```
 
 ### Documentation
-For a tutorial on the use of this module and a discrption of how it works see the [documentation](docs/main.ipynb).
+For a tutorial on the use of this module and a discrption of how it works see the [documentation](https://rparini.github.io/cxroots/).
 
 ---
 
