@@ -54,9 +54,6 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.
 
-	The method used to compute the number of zeros depends on whether
-	the derivative, df, is provided.  See  
-
 	Parameters
 	----------
 	originalContour : subclass of Contour
