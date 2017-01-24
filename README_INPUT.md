@@ -25,7 +25,7 @@ showRoots(rect, f)
 ```
 
 
-![png](README_INPUT_files/README_INPUT_1_0.png)
+![png](readme_input_files/readme_input_1_0.png)
 
 
 The implementation is primarily based on [1] where the number of roots within a contour, $N$, is calculated by numerical integration of the Cauchy integral,
