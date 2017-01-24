@@ -28,7 +28,7 @@ showRoots(rect, f)
 ![png](readme_input_files/readme_input_1_0.png)
 
 
-The implementation is primarily based on [1] where the number of roots within a contour, $N$, is calculated by numerical integration of the Cauchy integral,
+The implementation is primarily based on [1] where the number of roots (including multiplicities) within a contour, $N$, is calculated by numerical integration of the Cauchy integral,
 
 $$
 N=\frac{1}{2i\pi}\oint_C\frac{f'(z)}{f(z)}dz.
@@ -39,7 +39,7 @@ The original contour is subdivided until each sub-contour only contains a single
 If $f'(z)$ is not provided by the user then it is approximated with a Taylor expansion as in [2].
 
 ### Future improvements:
-* Allow for multiplicities of roots within $C$.  Perhaps using the method of formal orthogonal polynomials suggested in [3]
+* Allow for multiplicities of roots within $C$.  Perhaps using the method of formal orthogonal polynomials suggested in [3] or by simply considering the roots of the derivatives of $f(z)$.
 * Approximate the roots of $f$ within a contour as the zeros of a constructed polynomial [2]
 * If $f'(z)$ is not provided then use the approximation to $f'(z)$ in the Newton-Raphson method
 
