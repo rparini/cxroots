@@ -1,0 +1,2 @@
+#!/bin/bash
+python3 -m sphinx . html -E -a

@@ -84,7 +84,7 @@
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">log</span>
 <span class="kn">import</span> <span class="nn">scipy</span>
 
-<span class="kn">from</span> <span class="nn">.ContArg</span> <span class="k">import</span> <span class="n">contArg</span>
+<span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">count_enclosed_roots</span>
 
 <span class="k">class</span> <span class="nc">ComplexPath</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot; A base class for paths in the complex plane &quot;&quot;&quot;</span>
@@ -207,10 +207,6 @@
 		<span class="sd">&quot;&quot;&quot; The parameterization of the arc in the variable t, where 0 &lt;= t &lt;= 1 &quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z0</span>
 
-<span class="k">class</span> <span class="nc">NonIntegerError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="k">pass</span>
-
-
 <span class="c1"># create a cache of the integrands created in the enclosed_zeros method</span>
 <span class="c1"># of the PolarRect class so that the segment integrals can be cached</span>
 <span class="n">zerosIntegrandCache</span> <span class="o">=</span> <span class="p">{}</span>
@@ -257,132 +253,14 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 		<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot; Integrate around the contour, same arguments the integrate method for ComplexPath</span>
 <span class="sd">		but the tolerance passed to each segment will be tol/len(self.segments) &quot;&quot;&quot;</span>
 		<span class="n">segmentTol</span> <span class="o">=</span> <span class="n">tol</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
-		<span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">segmentTol</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
+		<span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">segmentTol</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="p">,</span> <span class="n">show</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
 
-	<span class="k">def</span> <span class="nf">enclosed_zeros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">reqEqualZeros</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-		<span class="sd">r&quot;&quot;&quot;</span>
-<span class="sd">		For a function of one complex variable, f(z), which is analytic in and within the contour,</span>
-<span class="sd">		return the number of zeros (including multiplicities) within the contour calculated, using </span>
-<span class="sd">		Cauchy&#39;s argument principle, as</span>
-<span class="sd">		</span>
-<span class="sd">		.. math::</span>
-
-<span class="sd">			\frac{1}{2i\pi} \oint_C \frac{f&#39;(z)}{f(z)} dz.</span>
-
-<span class="sd">		If df(z), the derivative of f(z), is provided then the above integral is computed directly</span>
-<span class="sd">		using `SciPy&#39;s implementation of Romberg integration &lt;https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html&gt;`_.</span>
-
-<span class="sd">		If only f(z) is provided then instead the number of zeros is computed as the difference</span>
-<span class="sd">		of the argument of f(z) continued around the contour [DL,BVP].  This has the potential to be</span>
-<span class="sd">		unreliable since this method will always find that the integral is an integer, rather than</span>
-<span class="sd">		smoothly converging to an integer as the number of points at which f is sampled increases.  This</span>
-<span class="sd">		makes it difficult to tell when the number of zeros has genuinely converged.  </span>
-<span class="sd">		In this case the number of sample points is doubled until the last reqEqualZeros (3 by default) evaluations of </span>
-<span class="sd">		the number of zeros are equal and non-negative.  The contour is also rejected as being </span>
-<span class="sd">		unreliable if at any point :math:`|df/f| &gt; 10^6`.</span>
-<span class="sd">		</span>
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		f : function</span>
-<span class="sd">			Function of a single variable f(x)</span>
-<span class="sd">		df : function, optional</span>
-<span class="sd">			Function of a single variable, df(x), providing the</span>
-<span class="sd">			derivative of the function f(x) at the point x</span>
-<span class="sd">		integerTol : float, optional</span>
-<span class="sd">			How close the result of the Romberg integration has to be to an integer for it to be</span>
-<span class="sd">			accepted (only used if df is given).  The absolute tolerance of the Romberg integration</span>
-<span class="sd">			will be integerTol/2.</span>
-<span class="sd">		rombergDivMax : int, optional</span>
-<span class="sd">			The maximum order of extrapolation of the Romberg integration routine (only used if df is given)</span>
-<span class="sd">		reqEqualZeros : int, optional</span>
-<span class="sd">			If the Cauchy integral is computed by continuing the argument around the contour (ie. if df is None)</span>
-<span class="sd">			then the routine requires that the last reqEqualZeros evaluations of the number of enclosed zeros </span>
-<span class="sd">			are equal and non-negative.  Default is 3.</span>
-
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		int</span>
-<span class="sd">			The number of zeros of f (including multiplicities) which lie within the contour</span>
-<span class="sd">		</span>
-<span class="sd">		References</span>
-<span class="sd">		----------</span>
-<span class="sd">		[DSZ] &quot;Locating all the Zeros of an Analytic Function in one Complex Variable&quot; </span>
-<span class="sd">			M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2</span>
-
-<span class="sd">		[BVP] Gakhov, F. D. &quot;Boundary value problems&quot;, section 12 (2014), Elsevier.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-				<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
-
-				<span class="n">N</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># initial number of sample points</span>
-
-				<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-				<span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-				<span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span>
-				<span class="n">arg</span> <span class="o">=</span> <span class="n">contArg</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-				<span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="n">arg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">))]</span>
-
-				<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">reqEqualZeros</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="n">reqEqualZeros</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-					<span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">N</span>
-					<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-					<span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-
-					<span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-					<span class="n">val</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-					<span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># only compute f at new points</span>
-					<span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-
-					<span class="n">df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-
-					<span class="n">arg</span> <span class="o">=</span> <span class="n">contArg</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-					<span class="n">I</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="n">arg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)))</span>
-
-				<span class="n">numberOfZeros</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-				<span class="c1"># reject the result if the contour is believed to be on or very close to a root</span>
-				<span class="c1"># From [DL] |f&#39;(z)/f(z)| is of the order of (distance to nearest zero)^{-1}</span>
-				<span class="n">df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">df</span><span class="o">/</span><span class="n">val</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">):</span>
-					<span class="c1"># the contour might be too close to a root.  To determine this</span>
-					<span class="c1"># get a greater resolution in the area where abs(df/val[:-1]) is large</span>
-
-					<span class="c1"># try and converge to the true value of |df/f| to determine if it&#39;s too big</span>
-					<span class="n">maxdff</span> <span class="o">=</span> <span class="p">[]</span>
-					<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">maxdff</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">maxdff</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">maxdff</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
-						<span class="n">dff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">df</span><span class="o">/</span><span class="n">val</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-						<span class="n">maxdff</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">dff</span><span class="p">))</span>
-
-						<span class="k">if</span> <span class="n">maxdff</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="n">e6</span><span class="p">:</span>
-							<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Contour is believed to be on a very close to a root&#39;</span><span class="p">)</span>
-
-						<span class="k">else</span><span class="p">:</span>
-							<span class="c1"># zoom in further to see if |df/f| grows</span>
-							<span class="n">maxArg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dff</span><span class="p">)</span>
-							<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">maxArg</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">maxArg</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="mi">101</span><span class="p">)</span>
-							<span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-							<span class="n">val</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-							<span class="n">df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-
-		<span class="k">else</span><span class="p">:</span>
-			<span class="c1"># reuse the same integrand so that the same integrals along individual paths can be reused</span>
-			<span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span> <span class="ow">in</span> <span class="n">zerosIntegrandCache</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-				<span class="n">integrand</span> <span class="o">=</span> <span class="n">zerosIntegrandCache</span><span class="p">[(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">)]</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">integrand</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
-				<span class="n">zerosIntegrandCache</span><span class="p">[(</span><span class="n">f</span><span class="p">,</span><span class="n">df</span><span class="p">)]</span> <span class="o">=</span> <span class="n">integrand</span>
-
-			<span class="n">integralTol</span> <span class="o">=</span> <span class="n">integerTol</span><span class="o">/</span><span class="mf">2.</span>
-			<span class="n">integral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">integralTol</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="o">=</span><span class="n">rombergDivMax</span><span class="p">)</span>
-			<span class="n">numberOfZeros</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">integral</span><span class="o">.</span><span class="n">real</span><span class="p">))</span>
-			<span class="k">if</span> <span class="n">numberOfZeros</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">integral</span><span class="o">.</span><span class="n">real</span> <span class="o">-</span> <span class="n">numberOfZeros</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">integral</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="n">NonIntegerError</span><span class="p">(</span><span class="s1">&#39;Value of contour integral </span><span class="si">%s</span><span class="s1"> is not sufficiently close to a positive integer&#39;</span><span class="o">%</span><span class="n">integral</span><span class="p">)</span>
-
-		<span class="k">return</span> <span class="n">numberOfZeros</span>
+	<span class="k">def</span> <span class="nf">count_enclosed_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">count_enclosed_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">subdivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;alternating&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot; </span>
@@ -797,7 +675,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Robert Parini.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>
