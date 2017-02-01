@@ -34,7 +34,7 @@ class ComplexPath(object):
 
 		if f in self._trapValuesCache.keys():
 			vals = self._trapValuesCache[f]
-			vals_k = np.log2(len(vals)-1)
+			vals_k = int(np.log2(len(vals)-1))
 			
 			if vals_k >= kMin:
 				return vals

@@ -182,7 +182,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 	while len(I) < 2 or abs(I[-2] - I[-1]) > integerTol or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol or int(round(I[-1].real)) < 0:
 		N = 2*N
 		t = np.linspace(0,1,N+1)
-		k = np.log2(len(t)-1)
+		k = int(np.log2(len(t)-1))
 		dt = t[1]-t[0]
 
 		# get/store new function evaluations
