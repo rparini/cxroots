@@ -99,7 +99,7 @@ def count_enclosed_roots_arg(C, f, reqEqualZeros=3):
 	return numberOfZeros
 
 
-def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4, taylorOrder=20):
+def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -153,9 +153,6 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 		integrals may take a very long time to converge and it is generally be more 
 		efficient to allow the rootfinding procedure to instead choose another contour 
 		then spend time evaluating the integral along a contour very close to a root.
-	taylorOrder : int, optional
-		The number of terms for the Taylor expansion approximating df, provided df is not 
-		already given by user.
 
 	Returns
 	-------
@@ -191,6 +188,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 			z0 = C.centerPoint
 			a = []
 
+			taylorOrder = N+1
 			for s in range(taylorOrder):
 				a_s = 0
 				for i, segment in enumerate(C.segments):

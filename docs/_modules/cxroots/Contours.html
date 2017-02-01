@@ -92,6 +92,40 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span> <span class="o">=</span> <span class="p">{}</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_contArgCache</span> <span class="o">=</span> <span class="p">{}</span>
 
+		<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span> <span class="o">=</span> <span class="p">{}</span>
+
+	<span class="k">def</span> <span class="nf">trapValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		2**k+1 is the number of required points for the function f to</span>
+<span class="sd">		be evaluated at.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
+			<span class="n">vals_k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+			
+			<span class="k">if</span> <span class="n">vals_k</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">vals</span>
+			<span class="k">elif</span> <span class="n">vals_k</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">vals</span><span class="p">[::</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">vals_k</span><span class="o">-</span><span class="n">k</span><span class="p">)]</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+				<span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+				<span class="n">vals</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+				<span class="n">vals</span><span class="p">[::</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">[::</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="p">]))</span>
+				<span class="n">vals</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)]))</span>
+
+				<span class="c1"># cache values</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
+				<span class="k">return</span> <span class="n">vals</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+			<span class="n">vals</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
+			<span class="k">return</span> <span class="n">vals</span>
+
+
 	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Use matplotlib to plot, but not show, the path as a </span>
