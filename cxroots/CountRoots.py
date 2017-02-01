@@ -182,23 +182,17 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 	while len(I) < 2 or abs(I[-2] - I[-1]) > integerTol or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol or int(round(I[-1].real)) < 0:
 		N = 2*N
 		t = np.linspace(0,1,N+1)
+		k = np.log2(len(t)-1)
 		dt = t[1]-t[0]
 
-		# store new function evaluations
-		for i, segment in enumerate(C.segments):
-			z = segment(t)
-			if fVal[i] is None:
-				fVal[i] = f(z)
-			else:
-				newfVal = np.zeros_like(t, dtype=np.complex128)
-				newfVal[::2] = fVal[i]
-				newfVal[1::2] = f(z[1::2])
-				fVal[i] = newfVal
+		# get/store new function evaluations
+		fVal = [segment.trapValues(f,k) for segment in C.segments]
 
 		if approx_df:
 			# use available function evaluations to approximate df
 			z0 = C.centerPoint
 			a = []
+
 			for s in range(taylorOrder):
 				a_s = 0
 				for i, segment in enumerate(C.segments):
@@ -209,16 +203,11 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 				a.append(a_s)
 
 			df = lambda z: sum([j*a[j]*(z-z0)**(j-1) for j in range(taylorOrder)])
+			dVal = [df(segment(t)) for segment in C.segments]
 
-		for i, segment in enumerate(C.segments):
-			z = segment(t)
-			if dfVal[i] is None or approx_df:
-				dfVal[i] = df(z)
-			else:
-				newdfVal = np.zeros_like(t, dtype=np.complex128)
-				newdfVal[::2] = dfVal[i]
-				newdfVal[1::2] = df(z[1::2])
-				dfVal[i] = newdfVal
+		else:
+			dfVal = [segment.trapValues(df,k) for segment in C.segments]
+
 
 		with warnings.catch_warnings():
 			warnings.simplefilter("ignore")

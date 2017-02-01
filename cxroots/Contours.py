@@ -24,6 +24,38 @@ class ComplexPath(object):
 		self._integralCache = {}
 		self._contArgCache = {}
 
+		self._trapValuesCache = {}
+
+	def trapValues(self, f, kMin):
+		"""
+		2**kMin+1 is the minimum number of required points for the function f to
+		be evaluated at.
+		"""
+
+		if f in self._trapValuesCache.keys():
+			vals = self._trapValuesCache[f]
+			vals_k = np.log2(len(vals)-1)
+			
+			if vals_k >= kMin:
+				return vals
+			else:
+				t = np.linspace(0, 1, 2**kMin+1)
+				vals = np.empty(2**kMin+1, dtype=np.complex128)
+				vals.fill(np.nan)
+				vals[::2**kMin] = f(self(t[::2**kMin]))
+				vals[np.isnan(vals)] = f(self(t[np.isnan(vals)]))
+
+				# cache values
+				self._trapValuesCache[f] = vals
+				return vals
+
+		else:
+			t = np.linspace(0, 1, 2**kMin+1)
+			vals = f(self(t))
+			self._trapValuesCache[f] = vals
+			return vals
+
+
 	def plot(self, N=100, linecolor='b', linestyle='-'):
 		"""
 		Use matplotlib to plot, but not show, the path as a 
