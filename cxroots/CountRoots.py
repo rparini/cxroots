@@ -117,7 +117,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 	The number of points on each segment of the contour C at which f(z) and df(z) are sampled 
 	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration 
 	the above integral is calculated using `SciPy's implementation of the Romberg method <https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html>`_.
-	The routine exits if the difference between sucessive iterations is < integerTol.
+	The routine exits if the difference between successive iterations is < integerTol.
 
 	The number of roots is then the closest integer to the final value of the integral
 	and the result is only accepted if the final value of the integral is within integerTol
@@ -142,17 +142,17 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 		Function of a single variable, df(x), providing the derivative of the function f(x) 
 		at the point x.
 	integerTol : float, optional
-		The evaluation of the Cauchy integral will be accepted if the difference between sucessive
+		The evaluation of the Cauchy integral will be accepted if the difference between successive
 		iterations is < integerTol and the value of the integral is within integerTol of the 
 		closest integer.  Since the Cauchy integral must be an integer it is only necessary to
-		distinguish which integer the inegral is convering towards.  For this
+		distinguish which integer the integral is converging towards.  For this
 		reason the integerTol can be set fairly large.
 	integrandUpperBound : float, optional
 		The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this 
 		value then a RuntimeError is raised.  If integrandUpperBound is too large then 
 		integrals may take a very long time to converge and it is generally be more 
 		efficient to allow the rootfinding procedure to instead choose another contour 
-		then spend time evaluting the integral along a contour very close to a root.
+		then spend time evaluating the integral along a contour very close to a root.
 	taylorOrder : int, optional
 		The number of terms for the Taylor expansion approximating df, provided df is not 
 		already given by user.
@@ -175,7 +175,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 	if df is None:
 		approx_df = True
 
-	# XXX: define err as the difference between sucessive iterations of the Romberg
+	# XXX: define err as the difference between successive iterations of the Romberg
 	# 	   method for the same number of points?
 	while len(I) < 2 or abs(I[-2] - I[-1]) > integerTol or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol or int(round(I[-1].real)) < 0:
 		N = 2*N
@@ -210,14 +210,14 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 		with warnings.catch_warnings():
 			warnings.simplefilter("ignore")
 
-			# discard the integraion if it is too close to the contour
+			# discard the integration if it is too close to the contour
 			if not approx_df:
 				# if no approximation to df is being made then immediately exit if the 
 				# integrand is too large
 				if np.any(np.abs(dfVal/fVal) > integrandUpperBound):
 					raise RuntimeError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
 			else:
-				# if df is being approximated then the integrand might be artifically
+				# if df is being approximated then the integrand might be artificially
 				# large so wait until the maximum value has settled a little
 				integrandMax.append(np.max(np.abs(dfVal/fVal)))
 				if len(integrandMax) > 1 and abs(integrandMax[-2] - integrandMax[-1]) < 0.1*integrandUpperBound:
