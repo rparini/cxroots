@@ -168,8 +168,6 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 		L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
 	"""
 	N = 1
-	fVal  = [None]*len(C.segments)
-	dfVal = [None]*len(C.segments)
 	I = []
 	integrandMax = []
 
@@ -186,7 +184,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 		dt = t[1]-t[0]
 
 		# get/store new function evaluations
-		fVal = [segment.trapValues(f,k) for segment in C.segments]
+		fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
 
 		if approx_df:
 			# use available function evaluations to approximate df
@@ -203,10 +201,10 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 				a.append(a_s)
 
 			df = lambda z: sum([j*a[j]*(z-z0)**(j-1) for j in range(taylorOrder)])
-			dVal = [df(segment(t)) for segment in C.segments]
+			dfVal = np.array([df(segment(t)) for segment in C.segments])
 
 		else:
-			dfVal = [segment.trapValues(df,k) for segment in C.segments]
+			dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
 
 
 		with warnings.catch_warnings():
@@ -216,14 +214,14 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4,
 			if not approx_df:
 				# if no approximation to df is being made then immediately exit if the 
 				# integrand is too large
-				if np.any(np.abs(np.array(dfVal)/np.array(fVal)) > integrandUpperBound):
+				if np.any(np.abs(dfVal/fVal) > integrandUpperBound):
 					raise RuntimeError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
 			else:
 				# if df is being approximated then the integrand might be artifically
 				# large so wait until the maximum value has settled a little
-				integrandMax.append(np.max(np.abs(np.array(dfVal)/np.array(fVal))))
+				integrandMax.append(np.max(np.abs(dfVal/fVal)))
 				if len(integrandMax) > 1 and abs(integrandMax[-2] - integrandMax[-1]) < 0.1*integrandUpperBound:
-					if np.any(np.abs(np.array(dfVal)/np.array(fVal)) > integrandUpperBound):
+					if np.any(np.abs(dfVal/fVal) > integrandUpperBound):
 						raise RuntimeError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
 
 			segment_integrand = [dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
