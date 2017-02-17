@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Computing the number of roots within a contour &#8212; cxroots 0.2.0 documentation</title>
+    <title>Computing the number of roots within a contour &#8212; cxroots 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.0',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="contour.html" title="Contours"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.2.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -95,7 +95,7 @@ the function evaluations of f(z) on the contour C, as in method C of [DL].</p>
 <p>The number of points on each segment of the contour C at which f(z) and df(z) are sampled
 starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration
 the above integral is calculated using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html">SciPy&#8217;s implementation of the Romberg method</a>.
-The routine exits if the difference between sucessive iterations is &lt; integerTol.</p>
+The routine exits if the difference between successive iterations is &lt; integerTol.</p>
 <p>The number of roots is then the closest integer to the final value of the integral
 and the result is only accepted if the final value of the integral is within integerTol
 of the closest integer.</p>
@@ -116,16 +116,16 @@ since an inaccurate df(z) can cause abs(df(z)/f(z)) to be erroneously large.</p>
 <li><strong>f</strong> (<em>function</em>) &#8211; Function of a single variable f(x)</li>
 <li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) &#8211; Function of a single variable, df(x), providing the derivative of the function f(x)
 at the point x.</li>
-<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; The evaluation of the Cauchy integral will be accepted if the difference between sucessive
+<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; The evaluation of the Cauchy integral will be accepted if the difference between successive
 iterations is &lt; integerTol and the value of the integral is within integerTol of the
 closest integer.  Since the Cauchy integral must be an integer it is only necessary to
-distinguish which integer the inegral is convering towards.  For this
+distinguish which integer the integral is converging towards.  For this
 reason the integerTol can be set fairly large.</li>
 <li><strong>integrandUpperBound</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this
 value then a RuntimeError is raised.  If integrandUpperBound is too large then
 integrals may take a very long time to converge and it is generally be more
 efficient to allow the rootfinding procedure to instead choose another contour
-then spend time evaluting the integral along a contour very close to a root.</li>
+then spend time evaluating the integral along a contour very close to a root.</li>
 <li><strong>taylorOrder</strong> (<em>int</em><em>, </em><em>optional</em>) &#8211; The number of terms for the Taylor expansion approximating df, provided df is not
 already given by user.</li>
 </ul>
@@ -163,7 +163,7 @@ already given by user.</li>
         <li class="right" >
           <a href="contour.html" title="Contours"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.2.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

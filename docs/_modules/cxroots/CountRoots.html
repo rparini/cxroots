@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>cxroots.CountRoots &#8212; cxroots 0.2.0 documentation</title>
+    <title>cxroots.CountRoots &#8212; cxroots 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.2.0',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -41,7 +41,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -185,7 +185,7 @@
 <span class="sd">	The number of points on each segment of the contour C at which f(z) and df(z) are sampled </span>
 <span class="sd">	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration </span>
 <span class="sd">	the above integral is calculated using `SciPy&#39;s implementation of the Romberg method &lt;https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html&gt;`_.</span>
-<span class="sd">	The routine exits if the difference between sucessive iterations is &lt; integerTol.</span>
+<span class="sd">	The routine exits if the difference between successive iterations is &lt; integerTol.</span>
 
 <span class="sd">	The number of roots is then the closest integer to the final value of the integral</span>
 <span class="sd">	and the result is only accepted if the final value of the integral is within integerTol</span>
@@ -210,17 +210,17 @@
 <span class="sd">		Function of a single variable, df(x), providing the derivative of the function f(x) </span>
 <span class="sd">		at the point x.</span>
 <span class="sd">	integerTol : float, optional</span>
-<span class="sd">		The evaluation of the Cauchy integral will be accepted if the difference between sucessive</span>
+<span class="sd">		The evaluation of the Cauchy integral will be accepted if the difference between successive</span>
 <span class="sd">		iterations is &lt; integerTol and the value of the integral is within integerTol of the </span>
 <span class="sd">		closest integer.  Since the Cauchy integral must be an integer it is only necessary to</span>
-<span class="sd">		distinguish which integer the inegral is convering towards.  For this</span>
+<span class="sd">		distinguish which integer the integral is converging towards.  For this</span>
 <span class="sd">		reason the integerTol can be set fairly large.</span>
 <span class="sd">	integrandUpperBound : float, optional</span>
 <span class="sd">		The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this </span>
 <span class="sd">		value then a RuntimeError is raised.  If integrandUpperBound is too large then </span>
 <span class="sd">		integrals may take a very long time to converge and it is generally be more </span>
 <span class="sd">		efficient to allow the rootfinding procedure to instead choose another contour </span>
-<span class="sd">		then spend time evaluting the integral along a contour very close to a root.</span>
+<span class="sd">		then spend time evaluating the integral along a contour very close to a root.</span>
 <span class="sd">	taylorOrder : int, optional</span>
 <span class="sd">		The number of terms for the Taylor expansion approximating df, provided df is not </span>
 <span class="sd">		already given by user.</span>
@@ -236,8 +236,6 @@
 <span class="sd">		L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">N</span> <span class="o">=</span> <span class="mi">1</span>
-	<span class="n">fVal</span>  <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
-	<span class="n">dfVal</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
 	<span class="n">I</span> <span class="o">=</span> <span class="p">[]</span>
 	<span class="n">integrandMax</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -245,28 +243,22 @@
 	<span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 		<span class="n">approx_df</span> <span class="o">=</span> <span class="kc">True</span>
 
-	<span class="c1"># XXX: define err as the difference between sucessive iterations of the Romberg</span>
+	<span class="c1"># XXX: define err as the difference between successive iterations of the Romberg</span>
 	<span class="c1"># 	   method for the same number of points?</span>
 	<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">integerTol</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
 		<span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">N</span>
 		<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 		<span class="n">dt</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-		<span class="c1"># store new function evaluations</span>
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
-			<span class="n">z</span> <span class="o">=</span> <span class="n">segment</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-			<span class="k">if</span> <span class="n">fVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="n">fVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">newfVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-				<span class="n">newfVal</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">fVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-				<span class="n">newfVal</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span>
-				<span class="n">fVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">newfVal</span>
+		<span class="c1"># get/store new function evaluations</span>
+		<span class="n">fVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">trapValues</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
 
 		<span class="k">if</span> <span class="n">approx_df</span><span class="p">:</span>
 			<span class="c1"># use available function evaluations to approximate df</span>
 			<span class="n">z0</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">centerPoint</span>
 			<span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
 			<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">taylorOrder</span><span class="p">):</span>
 				<span class="n">a_s</span> <span class="o">=</span> <span class="mi">0</span>
 				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
@@ -277,32 +269,27 @@
 				<span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a_s</span><span class="p">)</span>
 
 			<span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([</span><span class="n">j</span><span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">z0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">taylorOrder</span><span class="p">)])</span>
+			<span class="n">dfVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">df</span><span class="p">(</span><span class="n">segment</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
 
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
-			<span class="n">z</span> <span class="o">=</span> <span class="n">segment</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-			<span class="k">if</span> <span class="n">dfVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">approx_df</span><span class="p">:</span>
-				<span class="n">dfVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">newdfVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-				<span class="n">newdfVal</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-				<span class="n">newdfVal</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span>
-				<span class="n">dfVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">newdfVal</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">dfVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">trapValues</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
+
 
 		<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
 			<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
-			<span class="c1"># discard the integraion if it is too close to the contour</span>
+			<span class="c1"># discard the integration if it is too close to the contour</span>
 			<span class="k">if</span> <span class="ow">not</span> <span class="n">approx_df</span><span class="p">:</span>
 				<span class="c1"># if no approximation to df is being made then immediately exit if the </span>
 				<span class="c1"># integrand is too large</span>
-				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dfVal</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fVal</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">integrandUpperBound</span><span class="p">):</span>
+				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dfVal</span><span class="o">/</span><span class="n">fVal</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integrandUpperBound</span><span class="p">):</span>
 					<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The absolute value of the integrand |dfVal/fVal| &gt; integrandUpperBound which indicates that the contour is too close to zero of f(z)&quot;</span><span class="p">)</span>
 			<span class="k">else</span><span class="p">:</span>
-				<span class="c1"># if df is being approximated then the integrand might be artifically</span>
+				<span class="c1"># if df is being approximated then the integrand might be artificially</span>
 				<span class="c1"># large so wait until the maximum value has settled a little</span>
-				<span class="n">integrandMax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dfVal</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fVal</span><span class="p">))))</span>
+				<span class="n">integrandMax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dfVal</span><span class="o">/</span><span class="n">fVal</span><span class="p">)))</span>
 				<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">integrandMax</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">integrandMax</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">integrandMax</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">integrandUpperBound</span><span class="p">:</span>
-					<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dfVal</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fVal</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">integrandUpperBound</span><span class="p">):</span>
+					<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dfVal</span><span class="o">/</span><span class="n">fVal</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integrandUpperBound</span><span class="p">):</span>
 						<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The absolute value of the integrand |dfVal/fVal| &gt; integrandUpperBound which indicates that the contour is too close to zero of f(z)&quot;</span><span class="p">)</span>
 
 			<span class="n">segment_integrand</span> <span class="o">=</span> <span class="p">[</span><span class="n">dfVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">fVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">)]</span>
@@ -328,7 +315,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
