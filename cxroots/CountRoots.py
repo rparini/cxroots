@@ -236,8 +236,6 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4)
 			segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
 			I.append(sum(segment_integral))
 
-			print(k, I[-1])
-
 			if np.isnan(I[-1]):
 				raise RuntimeError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
 
