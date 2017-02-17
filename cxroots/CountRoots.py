@@ -3,12 +3,13 @@ import numpy as np
 from numpy import inf, pi
 import scipy.integrate
 import warnings
+import numdifftools.fornberg as ndf
 
 def count_enclosed_roots_arg(C, f, reqEqualZeros=3):
 	r"""
-	Note: this fuction is not currently used by the module but is kept for experimentation.
+	Note: this function is not currently used by the module but is kept for experimentation.
 
-	Return the number of roots of f(z) (counting multiplicies) which lie within C.  
+	Return the number of roots of f(z) (counting multiplicities) which lie within C.  
 	The number of zeros is computed as the difference in the argument of f(z) continued
 	around the contour C [DL,BVP].  
 
@@ -16,7 +17,7 @@ def count_enclosed_roots_arg(C, f, reqEqualZeros=3):
 	number of zeros is an integer, rather than smoothly converging to an integer as the 
 	number of points at which f is sampled increases.  This makes it difficult to tell 
 	when the number of zeros has genuinely converged.  For this reason it seems preferable
-	to approximate f'(z) using a Taylor expansion if f'(z) it is not provided by the user.
+	to approximate f'(z) if not provided by the user.
 
 	In this case the number of sample points is doubled until the last reqEqualZeros 
 	(3 by default) evaluations of the number of zeros are equal and non-negative. 
@@ -110,9 +111,8 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4)
 		\frac{1}{2i\pi} \oint_C \frac{f'(z)}{f(z)} dz.
 
 	If df(z), the derivative of f(z), is provided then the above integral is computed directly.
-	Otherwise the derivative is approximated using a Taylor expansion about the central point
-	within the contour C.  The Taylor coefficients are calculated in such a way as to reuse
-	the function evaluations of f(z) on the contour C, as in method C of [DL].
+	Otherwise the derivative is approximated using a finite difference approximation implemented
+	in Numdifftools <https://pypi.python.org/pypi/Numdifftools>`_.
 
 	The number of points on each segment of the contour C at which f(z) and df(z) are sampled 
 	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration 
@@ -184,22 +184,41 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4)
 		fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
 
 		if approx_df:
-			# use available function evaluations to approximate df
-			z0 = C.centerPoint
-			a = []
+			### XXX: Could use available function evaluations to approximate df using Taylor expansion
+			### But not clear how to reliably determine if and when the Taylor expansion converges
+			### for a general analytic function on a general, perhaps very large, contour.
+			# z0 = C.centerPoint
+			# a = []
 
-			taylorOrder = N+1
-			for s in range(taylorOrder):
-				a_s = 0
-				for i, segment in enumerate(C.segments):
-					integrand = fVal[i]/(segment(t)-z0)**(s+1)*segment.dzdt(t)
+			# taylorOrder = 20
+			# for s in range(taylorOrder):
+			# 	a_s = 0
+			# 	for i, segment in enumerate(C.segments):
+			# 		integrand = fVal[i]/(segment(t)-z0)**(s+1)*segment.dzdt(t)
 					
-					# romberg integration on a set of sample points
-					a_s += scipy.integrate.romb(integrand, dx=dt)/(2j*pi)
-				a.append(a_s)
+			# 		# romberg integration on a set of sample points
+			# 		a_s += scipy.integrate.romb(integrand, dx=dt)/(2j*pi)
+			# 	a.append(a_s)
 
-			df = lambda z: sum([j*a[j]*(z-z0)**(j-1) for j in range(taylorOrder)])
-			dfVal = np.array([df(segment(t)) for segment in C.segments])
+			# df = lambda z: sum([j*a[j]*(z-z0)**(j-1) for j in range(taylorOrder)])
+			# dfVal = np.array([df(segment(t)) for segment in C.segments])
+
+
+			### approximate df/dz with Fornberg finite difference, see: numdifftools.fornberg
+			# interior stencil size = 2*m + 1
+			# boundary stencil size = 2*m + 2
+			m = k
+			dfdt = [ndf.fd_derivative(fx, t, n=1, m=m) for fx in fVal]
+			dfVal = [dfdt[i]/segment.dzdt(t) for i, segment in enumerate(C.segments)]
+
+			from numpy import sin, cos
+			dfActual = lambda z: 10*(z**9 - z**4) + cos(z)*cos(z/2) - 0.5*sin(z)*sin(z/2)
+
+			import matplotlib.pyplot as plt
+			for i, seg in enumerate(C.segments):
+				plt.plot(i+t, np.real(dfVal[i]-dfActual(seg(t))), color='b')
+				plt.plot(i+t, np.imag(dfVal[i]-dfActual(seg(t))), color='r')
+			plt.show()
 
 		else:
 			dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
@@ -226,9 +245,10 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4)
 			segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
 			I.append(sum(segment_integral))
 
+			print(k, I[-1])
+
 			if np.isnan(I[-1]):
 				raise RuntimeError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
-
 
 	numberOfZeros = int(round(I[-1].real))
 	return numberOfZeros

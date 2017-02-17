@@ -34,12 +34,11 @@ $$
 
 The original contour is subdivided until each sub-contour only contains a single root and then the Newton-Raphson method is repeatedly used with random startpoints until the root within each sub-contour is found.
 
-If $f'(z)$ is not provided by the user then it is approximated with a Taylor expansion as in [2].
+If $f'(z)$ is not provided by the user then it is approximated with a finite difference method implemented by [Numdifftools](https://pypi.python.org/pypi/Numdifftools).
 
 ### Future improvements:
 * Allow for multiplicities of roots within $C$.  Perhaps using the method of formal orthogonal polynomials suggested in [3] or by simply considering the roots of the derivatives of $f(z)$.
 * Approximate the roots of $f$ within a contour as the zeros of a constructed polynomial [2]
-* If $f'(z)$ is not provided then use the approximation to $f'(z)$ in the Newton-Raphson method
 
 ### Installation
 Can be downloaded from GitHub and installed by running the included 'setup.py' with
