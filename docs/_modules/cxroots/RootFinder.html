@@ -1,0 +1,356 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cxroots.RootFinder &#8212; cxroots 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cxroots.RootFinder</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cmath</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sin</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="k">import</span> <span class="n">uniform</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">.IterativeMethods</span> <span class="k">import</span> <span class="n">iterateToRoot</span>
+
+<span class="k">def</span> <span class="nf">subdivide</span><span class="p">(</span><span class="n">boxDeque</span><span class="p">,</span> <span class="n">boxToSubdivide</span><span class="p">,</span> <span class="n">boxToSubdivide_numberOfEnclosedZeros</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">dfunc</span><span class="p">,</span> <span class="n">integerTol</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="p">):</span>
+	<span class="k">for</span> <span class="n">subBoxes</span> <span class="ow">in</span> <span class="n">boxToSubdivide</span><span class="o">.</span><span class="n">subdivisions</span><span class="p">():</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">numberOfEnclosedZeros</span> <span class="o">=</span> <span class="p">[</span><span class="n">box</span><span class="o">.</span><span class="n">count_enclosed_roots</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dfunc</span><span class="p">,</span> <span class="n">integerTol</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="p">,)</span> <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">subBoxes</span><span class="p">)]</span>
+			<span class="k">if</span> <span class="n">boxToSubdivide_numberOfEnclosedZeros</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numberOfEnclosedZeros</span><span class="p">):</span>
+				<span class="k">break</span>
+		<span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+			<span class="c1"># If the number of zeros within either of the new contours is not an integer then it is</span>
+			<span class="c1"># likely that the introduced line which subdivides &#39;boxToSubdivide&#39; lies on a zero.</span>
+			<span class="c1"># To avoid this we will try to place the subdividing line at a different point along </span>
+			<span class="c1"># the division axis</span>
+			<span class="k">continue</span>
+
+	<span class="k">if</span> <span class="n">boxToSubdivide_numberOfEnclosedZeros</span> <span class="o">!=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numberOfEnclosedZeros</span><span class="p">):</span>
+		<span class="c1"># The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up </span>
+		<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Unable to subdivide box:</span>
+<span class="s2">			</span><span class="se">\t</span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">			Consider increasing the integrandUpperBound.  If only f has been provided then consider</span>
+<span class="s2">			try the.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">boxToSubdivide</span><span class="p">)</span>
+
+	<span class="n">boxDeque</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="n">box</span><span class="p">,</span> <span class="n">numberOfEnclosedZeros</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">box</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subBoxes</span><span class="p">)</span> <span class="k">if</span> <span class="n">numberOfEnclosedZeros</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
+		
+<span class="k">def</span> <span class="nf">addRoot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">roots</span><span class="p">,</span> <span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">):</span>
+	<span class="c1"># check that the root we have found is distinct from the ones we already have</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">roots</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">-</span> <span class="n">root</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">newtonStepTol</span><span class="p">):</span>
+		<span class="c1"># add the root to the list if it is within the original box</span>
+		<span class="k">if</span> <span class="n">originalContour</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+			<span class="n">roots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+		<span class="c1"># check to see if there are any other roots implied by the given symmetry</span>
+		<span class="k">if</span> <span class="n">guessRootSymmetry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">x0</span> <span class="ow">in</span> <span class="n">guessRootSymmetry</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+				<span class="n">root</span> <span class="o">=</span> <span class="n">iterateToRoot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="n">addRoot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">roots</span><span class="p">,</span> <span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="findRootsGen"><a class="viewcode-back" href="../../main.html#cxroots.findRootsGen">[docs]</a><span class="k">def</span> <span class="nf">findRootsGen</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">guessRoot</span><span class="o">=</span><span class="p">[],</span> <span class="n">guessRootSymmetry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+	<span class="n">newtonStepTol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">iterativeTries</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+	<span class="n">integerTol</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="o">=</span><span class="mi">1</span><span class="n">e4</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A generator which at each step takes a contour and either finds </span>
+<span class="sd">	all the zeros of f within it or subdivides it further.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	originalContour : subclass of Contour</span>
+<span class="sd">		The contour C which bounds the region in which all the </span>
+<span class="sd">		roots of f(z) are sought</span>
+<span class="sd">	f : function</span>
+<span class="sd">		A function of a single complex variable f(z) which is </span>
+<span class="sd">		analytic within C and has no poles or roots on C.</span>
+<span class="sd">		NOTE: Currently required that the function f(z) has only </span>
+<span class="sd">		simple roots in C</span>
+<span class="sd">	df : function, optional</span>
+<span class="sd">		Function of a single complex variable.</span>
+<span class="sd">		The derivative of the function f(z).  If given then the </span>
+<span class="sd">		number of zeros within a contour will be computed as the </span>
+<span class="sd">		integral of df(z)/(2j*pi*f(z)) around the contour.</span>
+<span class="sd">		If df is not given then the integral will instead be </span>
+<span class="sd">		computed using the diffrence in the argument of f(z) </span>
+<span class="sd">		continued around the contour.</span>
+<span class="sd">	guessRoot : list, optional</span>
+<span class="sd">		A list of suspected roots of the function f which lie </span>
+<span class="sd">		within the initial contour C.  Each element of the list </span>
+<span class="sd">		will be used as the initial point of an iterative </span>
+<span class="sd">		root-finding method so they need not be entirely </span>
+<span class="sd">		accurate.</span>
+<span class="sd">	guessRootSymmetry : function, optional</span>
+<span class="sd">		A function of a single complex variable, z, which returns </span>
+<span class="sd">		a list of all points which are expected to be roots of f, </span>
+<span class="sd">		given that z is a root of f.</span>
+<span class="sd">	newtonStepTol : float, optional</span>
+<span class="sd">		The iterative method used to give a final value for each</span>
+<span class="sd">		root will exit if the step size, dx, between sucessive </span>
+<span class="sd">		iterations satisfied abs(dx) &lt; newtonStepTol</span>
+<span class="sd">	newtonMaxIter : int, optional</span>
+<span class="sd">		The iterative method used to give a final value for each</span>
+<span class="sd">		root will exit if the number of iterations exceeds newtonMaxIter</span>
+<span class="sd">	rootErrTol : float, optional</span>
+<span class="sd">		For a point, x, to be confirmed as a root abs(f(x)) &lt; rootErrTol</span>
+<span class="sd">	iterativeTries : int, optinal</span>
+<span class="sd">		The number of times an iterative method with a random start point</span>
+<span class="sd">		should be used to find the root within a contour containing a single</span>
+<span class="sd">		root before the contour is subdivided again.</span>
+<span class="sd">	integerTol : float, optional</span>
+<span class="sd">		The numerical evaluation of the Cauchy integral will return a result</span>
+<span class="sd">		if the result of the last two iterations differ by less than integerTol</span>
+<span class="sd">		and the result of the last iteration is within integerTol of an integer.</span>
+<span class="sd">		Since the Cauchy integral must be an integer it is only necessary to</span>
+<span class="sd">		distinguish which integer the inegral is convering towards.  For this</span>
+<span class="sd">		reason the integerTol can be set fairly large.</span>
+<span class="sd">	integrandUpperBound : float, optional</span>
+<span class="sd">		The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this </span>
+<span class="sd">		value then a RuntimeError is raised.  If integrandUpperBound is too large then </span>
+<span class="sd">		integrals may take a very long time to converge and it is generally be more </span>
+<span class="sd">		efficient to allow the rootfinding procedure to instead choose another contour </span>
+<span class="sd">		then spend time evaluting the integral along a contour very close to a root.</span>
+
+<span class="sd">	Yields</span>
+<span class="sd">	------</span>
+<span class="sd">	tuple</span>
+<span class="sd">		All currently known roots of f(z) within the contour C</span>
+<span class="sd">	tuple</span>
+<span class="sd">		All the contours which still contain roots</span>
+<span class="sd">	int</span>
+<span class="sd">		Remaining number of roots to be found within the contour</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">totNumberOfRoots</span> <span class="o">=</span> <span class="n">originalContour</span><span class="o">.</span><span class="n">count_enclosed_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">df</span><span class="p">,</span><span class="n">integerTol</span><span class="p">,</span><span class="n">integrandUpperBound</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">			Integration along the intial contour has failed.  There is likely a root on or close to the initial contour</span>
+<span class="s2">			Try either changing the intial contour, if possible, or increasing the integrandUpperBound to allow for </span>
+<span class="s2">			a longer integration time.&quot;&quot;&quot;</span><span class="p">)</span>
+
+	<span class="n">loggedIterativeWarning</span> <span class="o">=</span> <span class="kc">False</span>
+	<span class="n">roots</span> <span class="o">=</span> <span class="p">[]</span>
+
+	<span class="c1"># check to see if the guesses we were passed are roots</span>
+	<span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">guessRoot</span><span class="p">:</span>
+		<span class="n">addRoot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">roots</span><span class="p">,</span> <span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">)</span>
+
+	<span class="n">boxes</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+	<span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">originalContour</span><span class="p">,</span><span class="n">totNumberOfRoots</span><span class="p">))</span>
+	<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">totNumberOfRoots</span><span class="p">:</span>
+		<span class="n">box</span><span class="p">,</span> <span class="n">numberOfEnclosedRoots</span> <span class="o">=</span> <span class="n">boxes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+		<span class="c1"># check we do not already have the correct number of known roots in this box</span>
+		<span class="n">knownRootsInBox</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span> <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">roots</span> <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">root</span><span class="p">)]</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">knownRootsInBox</span><span class="p">)</span> <span class="o">==</span> <span class="n">numberOfEnclosedRoots</span><span class="p">:</span>
+			<span class="k">continue</span>
+
+		<span class="k">if</span> <span class="n">numberOfEnclosedRoots</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="c1"># subdivide box further</span>
+			<span class="n">subdivide</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">numberOfEnclosedRoots</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">integerTol</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="p">)</span>
+
+		<span class="k">elif</span> <span class="n">numberOfEnclosedRoots</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="c1"># try to find the root in the box</span>
+			<span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterativeTries</span><span class="p">):</span>
+				<span class="n">x0</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">randomPoint</span><span class="p">()</span>
+				<span class="n">root</span> <span class="o">=</span> <span class="n">iterateToRoot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">)</span>
+
+				<span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="n">addRoot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">roots</span><span class="p">,</span> <span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">)</span>
+
+					<span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+						<span class="k">break</span>
+
+			<span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">box</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+				<span class="c1"># if the box is already very small then simply return the centerPoint coordinate of the box</span>
+				<span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">area</span> <span class="o">&lt;</span> <span class="n">newtonStepTol</span><span class="p">:</span>
+					<span class="n">root</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">centerPoint</span>
+					<span class="k">if</span> <span class="ow">not</span> <span class="n">loggedIterativeWarning</span><span class="p">:</span>
+						<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">							The Newton/secant method is failing to converge towards a root.  </span>
+<span class="s2">							The center point of contours bounding an area &lt; newtonStepTol and containing a single root will be added without confirmation that f &lt; rootErrTol at these points.</span>
+<span class="s2">							&quot;&quot;&quot;</span><span class="p">)</span>
+						<span class="n">loggedIterativeWarning</span> <span class="o">=</span> <span class="kc">True</span>
+					<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The point </span><span class="si">%s</span><span class="s1"> will be treated as a root since it is the center point of a contour with area </span><span class="si">%s</span><span class="s1"> containing a single root&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">area</span><span class="p">))</span>
+					<span class="n">addRoot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">roots</span><span class="p">,</span> <span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">)</span>
+
+				<span class="k">else</span><span class="p">:</span>
+					<span class="c1"># subdivide box again if we failed to find the root and the box is still too big</span>
+					<span class="n">subdivide</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">numberOfEnclosedRoots</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">integerTol</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="p">)</span>
+
+		<span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">boxes</span><span class="p">),</span> <span class="n">totNumberOfRoots</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">totNumberOfRoots</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">yield</span> <span class="p">[],</span> <span class="n">deque</span><span class="p">(),</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="findRoots"><a class="viewcode-back" href="../../main.html#cxroots.findRoots">[docs]</a><span class="k">def</span> <span class="nf">findRoots</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Return a list of all roots of a given function f within a given originalContour.  </span>
+<span class="sd">	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">rootFinder</span> <span class="o">=</span> <span class="n">findRootsGen</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">roots</span><span class="p">,</span> <span class="n">boxes</span><span class="p">,</span> <span class="n">numberOfRemainingRoots</span> <span class="ow">in</span> <span class="n">rootFinder</span><span class="p">:</span>
+		<span class="k">pass</span>
+	<span class="k">return</span> <span class="n">roots</span></div>
+
+<div class="viewcode-block" id="demo_findRoots"><a class="viewcode-back" href="../../main.html#cxroots.demo_findRoots">[docs]</a><span class="k">def</span> <span class="nf">demo_findRoots</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">automaticAnimation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">returnAnim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	An interactive demonstration of the processess used to find all the roots</span>
+<span class="sd">	of a given function f within a given originalContour.</span>
+<span class="sd">	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`. </span>
+
+<span class="sd">	If automaticAnimation is False (default) then press the SPACE key </span>
+<span class="sd">	to step the animation forward.</span>
+
+<span class="sd">	If automaticAnimation is True then the animation will play automatically</span>
+<span class="sd">	until all the roots have been found.</span>
+
+<span class="sd">	If returnAnim is true the animating object returned by matplotlib&#39;s animation.FuncAnimation</span>
+<span class="sd">	will be returned, rather than the animation be shown.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+	<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">animation</span>
+	<span class="n">rootFinder</span> <span class="o">=</span> <span class="n">findRootsGen</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+	<span class="n">originalContour</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+	<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+	<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+	<span class="k">def</span> <span class="nf">update_frame</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+		<span class="n">roots</span><span class="p">,</span> <span class="n">boxes</span><span class="p">,</span> <span class="n">numberOfRemainingRoots</span> <span class="o">=</span> <span class="n">args</span>
+		<span class="c1"># print(args)</span>
+
+		<span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span> <span class="c1"># clear axis</span>
+		<span class="n">originalContour</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+		<span class="n">originalContour</span><span class="o">.</span><span class="n">sizePlot</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">numberOfEnclosedRoots</span> <span class="ow">in</span> <span class="n">boxes</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="s1">&#39;_color&#39;</span><span class="p">):</span>
+				<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+				<span class="n">box</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+			
+			<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">centerPoint</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">centerPoint</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">numberOfEnclosedRoots</span><span class="p">)</span>
+			<span class="n">box</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linecolor</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+
+		<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">roots</span><span class="p">))</span>
+
+		<span class="n">rootsLabel</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">&#39;Zeros remaining: </span><span class="si">%i</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">numberOfRemainingRoots</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+
+		<span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+
+	<span class="k">if</span> <span class="n">returnAnim</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">update_frame</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">rootFinder</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">repeat_delay</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+
+	<span class="k">elif</span> <span class="n">automaticAnimation</span><span class="p">:</span>
+		<span class="n">ani</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">update_frame</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="n">rootFinder</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">def</span> <span class="nf">draw_next</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
+				<span class="n">update_frame</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">rootFinder</span><span class="p">))</span>
+
+		<span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s1">&#39;key_press_event&#39;</span><span class="p">,</span> <span class="n">draw_next</span><span class="p">)</span>
+
+	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="showRoots"><a class="viewcode-back" href="../../main.html#cxroots.showRoots">[docs]</a><span class="k">def</span> <span class="nf">showRoots</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Plots all roots of a given function f within a given originalContour.  </span>
+<span class="sd">	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+	<span class="n">originalContour</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+	<span class="n">roots</span> <span class="o">=</span> <span class="n">findRoots</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Robert Parini.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>
