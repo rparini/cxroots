@@ -211,15 +211,6 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4)
 			dfdt = [ndf.fd_derivative(fx, t, n=1, m=m) for fx in fVal]
 			dfVal = [dfdt[i]/segment.dzdt(t) for i, segment in enumerate(C.segments)]
 
-			from numpy import sin, cos
-			dfActual = lambda z: 10*(z**9 - z**4) + cos(z)*cos(z/2) - 0.5*sin(z)*sin(z/2)
-
-			import matplotlib.pyplot as plt
-			for i, seg in enumerate(C.segments):
-				plt.plot(i+t, np.real(dfVal[i]-dfActual(seg(t))), color='b')
-				plt.plot(i+t, np.imag(dfVal[i]-dfActual(seg(t))), color='r')
-			plt.show()
-
 		else:
 			dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
 
