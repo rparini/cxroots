@@ -10,10 +10,10 @@ import logging
 
 from .IterativeMethods import iterateToRoot
 
-def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, func, dfunc, integerTol, integrandUpperBound):
+def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, func, dfunc, integerTol, integrandUpperBound, taylorOrder):
 	for subBoxes in boxToSubdivide.subdivisions():
 		try:
-			numberOfEnclosedZeros = [box.count_enclosed_roots(func, dfunc, integerTol, integrandUpperBound,) for box in np.array(subBoxes)]
+			numberOfEnclosedZeros = [box.count_enclosed_roots(func, dfunc, integerTol, integrandUpperBound, taylorOrder) for box in np.array(subBoxes)]
 			if boxToSubdivide_numberOfEnclosedZeros == sum(numberOfEnclosedZeros):
 				break
 		except RuntimeError:
@@ -28,7 +28,7 @@ def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, fu
 		raise RuntimeError("""Unable to subdivide box:
 			\t%s
 			Consider increasing the integrandUpperBound.  If only f has been provided then consider
-			try the.""" % boxToSubdivide)
+			try the taylorOrder.""" % boxToSubdivide)
 
 	boxDeque.extend([(box, numberOfEnclosedZeros[i]) for i, box in enumerate(subBoxes) if numberOfEnclosedZeros[i] != 0])
 		
@@ -49,7 +49,7 @@ def addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTo
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-10, iterativeTries=20,
-	integerTol=0.2, integrandUpperBound=1e4):
+	integerTol=0.2, integrandUpperBound=1e4, taylorOrder=20):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.
@@ -108,6 +108,9 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		integrals may take a very long time to converge and it is generally be more 
 		efficient to allow the rootfinding procedure to instead choose another contour 
 		then spend time evaluting the integral along a contour very close to a root.
+	taylorOrder : int, optional
+		The number of terms for the Taylor expansion approximating df, provided df is not 
+		already given by user.
 
 	Yields
 	------
@@ -119,7 +122,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		Remaining number of roots to be found within the contour
 	"""
 	try:
-		totNumberOfRoots = originalContour.count_enclosed_roots(f,df,integerTol,integrandUpperBound)
+		totNumberOfRoots = originalContour.count_enclosed_roots(f,df,integerTol,integrandUpperBound,taylorOrder)
 	except RuntimeError:
 		raise RuntimeError("""
 			Integration along the intial contour has failed.  There is likely a root on or close to the initial contour
@@ -145,7 +148,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 		if numberOfEnclosedRoots > 1:
 			# subdivide box further
-			subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, integrandUpperBound)
+			subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, integrandUpperBound, taylorOrder)
 
 		elif numberOfEnclosedRoots == 1:
 			# try to find the root in the box
@@ -174,7 +177,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 				else:
 					# subdivide box again if we failed to find the root and the box is still too big
-					subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, integrandUpperBound)
+					subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, integrandUpperBound, taylorOrder)
 
 		yield tuple(roots), tuple(boxes), totNumberOfRoots - len(roots)
 
