@@ -36,6 +36,6 @@ $(window).resize(function(){
         $("li.nav-item-0 a").text("Top");
     }
     else {
-        $("li.nav-item-0 a").text("cxroots 0.2.0 documentation");
+        $("li.nav-item-0 a").text("cxroots 0.4.0 documentation");
     }
 });
