@@ -204,10 +204,10 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e4)
 			# dfVal = np.array([df(segment(t)) for segment in C.segments])
 
 
-			### approximate df/dz with Fornberg finite difference, see: numdifftools.fornberg
+			### approximate df/dz with finite difference, see: numdifftools.fornberg
 			# interior stencil size = 2*m + 1
 			# boundary stencil size = 2*m + 2
-			m = k
+			m = 1
 			dfdt = [ndf.fd_derivative(fx, t, n=1, m=m) for fx in fVal]
 			dfVal = [dfdt[i]/segment.dzdt(t) for i, segment in enumerate(C.segments)]
 
