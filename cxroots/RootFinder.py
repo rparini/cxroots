@@ -49,7 +49,7 @@ def addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTo
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-10, iterativeTries=20,
-	integerTol=0.2, integrandUpperBound=1e4):
+	integerTol=0.2, integrandUpperBound=1e3):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.
