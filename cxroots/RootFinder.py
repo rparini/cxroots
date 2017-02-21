@@ -13,7 +13,7 @@ from .IterativeMethods import iterateToRoot
 def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, func, dfunc, integerTol, integrandUpperBound):
 	for subBoxes in boxToSubdivide.subdivisions():
 		try:
-			numberOfEnclosedZeros = [box.count_enclosed_roots(func, dfunc, integerTol, integrandUpperBound,) for box in np.array(subBoxes)]
+			numberOfEnclosedZeros = [box.count_enclosed_roots(func, dfunc, integerTol, integrandUpperBound) for box in np.array(subBoxes)]
 			if boxToSubdivide_numberOfEnclosedZeros == sum(numberOfEnclosedZeros):
 				break
 		except RuntimeError:
@@ -27,8 +27,7 @@ def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, fu
 		# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
 		raise RuntimeError("""Unable to subdivide box:
 			\t%s
-			Consider increasing the integrandUpperBound.  If only f has been provided then consider
-			try the.""" % boxToSubdivide)
+			Consider increasing the integrandUpperBound.""" % boxToSubdivide)
 
 	boxDeque.extend([(box, numberOfEnclosedZeros[i]) for i, box in enumerate(subBoxes) if numberOfEnclosedZeros[i] != 0])
 		
