@@ -15,7 +15,7 @@
     "   N = \\frac{1}{2\\pi i} \\oint_C \\frac{f'(z)}{f(z)} dz.\n",
     "   \\end{equation}\n",
     "\n",
-    "   The integral is directly computed numerically using Romberg integration implemented in  [SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html).  If only $f(z)$ is provided by the user then $f'(z)$ is approximated with a Taylor expansion [2].\n",
+    "   The integral is directly computed numerically using Romberg integration implemented in  [SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html).  If only $f(z)$ is provided by the user then $f'(z)$ is approximated with a finite difference method implemented in [Numdifftools](https://pypi.python.org/pypi/Numdifftools).\n",
     "\n",
     "2. If...\n",
     "  * $N=0$ then discard the contour.\n",

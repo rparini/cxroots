@@ -13,7 +13,7 @@ from .IterativeMethods import iterateToRoot
 def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, func, dfunc, integerTol, integrandUpperBound, taylorOrder):
 	for subBoxes in boxToSubdivide.subdivisions():
 		try:
-			numberOfEnclosedZeros = [box.count_enclosed_roots(func, dfunc, integerTol, integrandUpperBound, taylorOrder) for box in np.array(subBoxes)]
+			numberOfEnclosedZeros = [box.count_enclosed_roots(func, dfunc, integerTol, integrandUpperBound) for box in np.array(subBoxes)]
 			if boxToSubdivide_numberOfEnclosedZeros == sum(numberOfEnclosedZeros):
 				break
 		except RuntimeError:
@@ -27,8 +27,7 @@ def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, fu
 		# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
 		raise RuntimeError("""Unable to subdivide box:
 			\t%s
-			Consider increasing the integrandUpperBound.  If only f has been provided then consider
-			try the taylorOrder.""" % boxToSubdivide)
+			Consider increasing the integrandUpperBound.""" % boxToSubdivide)
 
 	boxDeque.extend([(box, numberOfEnclosedZeros[i]) for i, box in enumerate(subBoxes) if numberOfEnclosedZeros[i] != 0])
 		
@@ -49,7 +48,7 @@ def addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTo
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-10, iterativeTries=20,
-	integerTol=0.2, integrandUpperBound=1e4, taylorOrder=20):
+	integerTol=0.2, integrandUpperBound=1e3):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.
