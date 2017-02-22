@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Rootfinding &#8212; cxroots 0.3.0 documentation</title>
+    <title>Rootfinding &#8212; cxroots 0.4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.0',
+        VERSION:     '0.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -49,7 +49,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to cxroots’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -273,7 +273,8 @@ it. This step relies on Cauchy&#8217;s argument principle,</li>
 implemented in
 <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html">SciPy</a>.
 If only <span class="math">\(f(z)\)</span> is provided by the user then <span class="math">\(f'(z)\)</span> is
-approximated with a Taylor expansion [2].</p>
+approximated with a finite difference method implemented in
+<a class="reference external" href="https://pypi.python.org/pypi/Numdifftools">Numdifftools</a>.</p>
 <ol class="arabic simple" start="2">
 <li>If...</li>
 </ol>
@@ -402,7 +403,7 @@ will be returned, rather than the animation be shown.</p>
 <h2>findRootsGen<a class="headerlink" href="#findRootsGen" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="cxroots.RootFinder.findRootsGen">
-<code class="descclassname">cxroots.RootFinder.</code><code class="descname">findRootsGen</code><span class="sig-paren">(</span><em>originalContour</em>, <em>f</em>, <em>df=None</em>, <em>guessRoot=[]</em>, <em>guessRootSymmetry=None</em>, <em>newtonStepTol=1e-08</em>, <em>newtonMaxIter=20</em>, <em>rootErrTol=1e-10</em>, <em>iterativeTries=20</em>, <em>integerTol=0.2</em>, <em>integrandUpperBound=10000.0</em>, <em>taylorOrder=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/RootFinder.html#findRootsGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.RootFinder.findRootsGen" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cxroots.RootFinder.</code><code class="descname">findRootsGen</code><span class="sig-paren">(</span><em>originalContour</em>, <em>f</em>, <em>df=None</em>, <em>guessRoot=[]</em>, <em>guessRootSymmetry=None</em>, <em>newtonStepTol=1e-08</em>, <em>newtonMaxIter=20</em>, <em>rootErrTol=1e-10</em>, <em>iterativeTries=20</em>, <em>integerTol=0.2</em>, <em>integrandUpperBound=1000.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/RootFinder.html#findRootsGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.RootFinder.findRootsGen" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator which at each step takes a contour and either finds
 all the zeros of f within it or subdivides it further.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -451,8 +452,6 @@ value then a RuntimeError is raised.  If integrandUpperBound is too large then
 integrals may take a very long time to converge and it is generally be more
 efficient to allow the rootfinding procedure to instead choose another contour
 then spend time evaluting the integral along a contour very close to a root.</li>
-<li><strong>taylorOrder</strong> (<em>int</em><em>, </em><em>optional</em>) &#8211; The number of terms for the Taylor expansion approximating df, provided df is not
-already given by user.</li>
 </ul>
 </td>
 </tr>
@@ -488,7 +487,7 @@ already given by user.</li>
         <li class="right" >
           <a href="index.html" title="Welcome to cxroots’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cxroots 0.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

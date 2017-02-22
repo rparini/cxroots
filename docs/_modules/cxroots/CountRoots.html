@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>cxroots.CountRoots &#8212; cxroots 0.3.0 documentation</title>
+    <title>cxroots.CountRoots &#8212; cxroots 0.4.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -41,7 +41,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.4.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -71,12 +71,13 @@
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">inf</span><span class="p">,</span> <span class="n">pi</span>
 <span class="kn">import</span> <span class="nn">scipy.integrate</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numdifftools.fornberg</span> <span class="k">as</span> <span class="nn">ndf</span>
 
 <span class="k">def</span> <span class="nf">count_enclosed_roots_arg</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">reqEqualZeros</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 	<span class="sd">r&quot;&quot;&quot;</span>
-<span class="sd">	Note: this fuction is not currently used by the module but is kept for experimentation.</span>
+<span class="sd">	Note: this function is not currently used by the module but is kept for experimentation.</span>
 
-<span class="sd">	Return the number of roots of f(z) (counting multiplicies) which lie within C.  </span>
+<span class="sd">	Return the number of roots of f(z) (counting multiplicities) which lie within C.  </span>
 <span class="sd">	The number of zeros is computed as the difference in the argument of f(z) continued</span>
 <span class="sd">	around the contour C [DL,BVP].  </span>
 
@@ -84,7 +85,7 @@
 <span class="sd">	number of zeros is an integer, rather than smoothly converging to an integer as the </span>
 <span class="sd">	number of points at which f is sampled increases.  This makes it difficult to tell </span>
 <span class="sd">	when the number of zeros has genuinely converged.  For this reason it seems preferable</span>
-<span class="sd">	to approximate f&#39;(z) using a Taylor expansion if f&#39;(z) it is not provided by the user.</span>
+<span class="sd">	to approximate f&#39;(z) if not provided by the user.</span>
 
 <span class="sd">	In this case the number of sample points is doubled until the last reqEqualZeros </span>
 <span class="sd">	(3 by default) evaluations of the number of zeros are equal and non-negative. </span>
@@ -167,7 +168,7 @@
 	<span class="k">return</span> <span class="n">numberOfZeros</span>
 
 
-<div class="viewcode-block" id="count_enclosed_roots"><a class="viewcode-back" href="../../countroots.html#cxroots.count_enclosed_roots">[docs]</a><span class="k">def</span> <span class="nf">count_enclosed_roots</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="o">=</span><span class="mi">1</span><span class="n">e4</span><span class="p">,</span> <span class="n">taylorOrder</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<div class="viewcode-block" id="count_enclosed_roots"><a class="viewcode-back" href="../../countroots.html#cxroots.count_enclosed_roots">[docs]</a><span class="k">def</span> <span class="nf">count_enclosed_roots</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="o">=</span><span class="mi">1</span><span class="n">e3</span><span class="p">):</span>
 	<span class="sd">r&quot;&quot;&quot;</span>
 <span class="sd">	For a function of one complex variable, f(z), which is analytic in and within the contour C,</span>
 <span class="sd">	return the number of zeros (counting multiplicities) within the contour calculated, using </span>
@@ -178,9 +179,8 @@
 <span class="sd">		\frac{1}{2i\pi} \oint_C \frac{f&#39;(z)}{f(z)} dz.</span>
 
 <span class="sd">	If df(z), the derivative of f(z), is provided then the above integral is computed directly.</span>
-<span class="sd">	Otherwise the derivative is approximated using a Taylor expansion about the central point</span>
-<span class="sd">	within the contour C.  The Taylor coefficients are calculated in such a way as to reuse</span>
-<span class="sd">	the function evaluations of f(z) on the contour C, as in method C of [DL].</span>
+<span class="sd">	Otherwise the derivative is approximated using a finite difference approximation implemented</span>
+<span class="sd">	in Numdifftools &lt;https://pypi.python.org/pypi/Numdifftools&gt;`_.</span>
 
 <span class="sd">	The number of points on each segment of the contour C at which f(z) and df(z) are sampled </span>
 <span class="sd">	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration </span>
@@ -255,21 +255,12 @@
 		<span class="n">fVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">trapValues</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
 
 		<span class="k">if</span> <span class="n">approx_df</span><span class="p">:</span>
-			<span class="c1"># use available function evaluations to approximate df</span>
-			<span class="n">z0</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">centerPoint</span>
-			<span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
-
-			<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">taylorOrder</span><span class="p">):</span>
-				<span class="n">a_s</span> <span class="o">=</span> <span class="mi">0</span>
-				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
-					<span class="n">integrand</span> <span class="o">=</span> <span class="n">fVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">segment</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="n">z0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-					
-					<span class="c1"># romberg integration on a set of sample points</span>
-					<span class="n">a_s</span> <span class="o">+=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">romb</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span>
-				<span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a_s</span><span class="p">)</span>
-
-			<span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([</span><span class="n">j</span><span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">z0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">taylorOrder</span><span class="p">)])</span>
-			<span class="n">dfVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">df</span><span class="p">(</span><span class="n">segment</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
+			<span class="c1">### approximate df/dz with finite difference, see: numdifftools.fornberg</span>
+			<span class="c1"># interior stencil size = 2*m + 1</span>
+			<span class="c1"># boundary stencil size = 2*m + 2</span>
+			<span class="n">m</span> <span class="o">=</span> <span class="mi">1</span>
+			<span class="n">dfdt</span> <span class="o">=</span> <span class="p">[</span><span class="n">ndf</span><span class="o">.</span><span class="n">fd_derivative</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">fx</span> <span class="ow">in</span> <span class="n">fVal</span><span class="p">]</span>
+			<span class="n">dfVal</span> <span class="o">=</span> <span class="p">[</span><span class="n">dfdt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">)]</span>
 
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">dfVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">trapValues</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
@@ -299,7 +290,6 @@
 			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
 				<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Result of integral is an invalid value.  Most likely because of a divide by zero error.&quot;</span><span class="p">)</span>
 
-
 	<span class="n">numberOfZeros</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">))</span>
 	<span class="k">return</span> <span class="n">numberOfZeros</span></div>
 </pre></div>
@@ -315,7 +305,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.4.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
