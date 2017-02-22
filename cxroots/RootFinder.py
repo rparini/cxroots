@@ -27,7 +27,7 @@ def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, fu
 		# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
 		raise RuntimeError("""Unable to subdivide box:
 			\t%s
-			Consider increasing the integrandUpperBound.""" % boxToSubdivide)
+			Consider increasing the integrandUpperBound to allow contours closer to roots to be integrated.""" % boxToSubdivide)
 
 	boxDeque.extend([(box, numberOfEnclosedZeros[i]) for i, box in enumerate(subBoxes) if numberOfEnclosedZeros[i] != 0])
 		
