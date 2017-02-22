@@ -36,10 +36,6 @@ $(window).resize(function(){
         $("li.nav-item-0 a").text("Top");
     }
     else {
-<<<<<<< HEAD
-        $("li.nav-item-0 a").text("cxroots 0.3.0 documentation");
-=======
         $("li.nav-item-0 a").text("cxroots 0.4.0 documentation");
->>>>>>> approximate_fPrime
     }
 });

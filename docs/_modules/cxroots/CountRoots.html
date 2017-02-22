@@ -7,11 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-<<<<<<< HEAD
-    <title>cxroots.CountRoots &#8212; cxroots 0.3.0 documentation</title>
-=======
     <title>cxroots.CountRoots &#8212; cxroots 0.4.0 documentation</title>
->>>>>>> approximate_fPrime
     
     <link rel="stylesheet" href="../../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -19,11 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-<<<<<<< HEAD
-        VERSION:     '0.3.0',
-=======
         VERSION:     '0.4.0',
->>>>>>> approximate_fPrime
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -49,11 +41,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-<<<<<<< HEAD
-        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.3.0 documentation</a> &#187;</li>
-=======
         <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.4.0 documentation</a> &#187;</li>
->>>>>>> approximate_fPrime
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -180,11 +168,7 @@
 	<span class="k">return</span> <span class="n">numberOfZeros</span>
 
 
-<<<<<<< HEAD
-<div class="viewcode-block" id="count_enclosed_roots"><a class="viewcode-back" href="../../countroots.html#cxroots.count_enclosed_roots">[docs]</a><span class="k">def</span> <span class="nf">count_enclosed_roots</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="o">=</span><span class="mi">1</span><span class="n">e4</span><span class="p">,</span> <span class="n">taylorOrder</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-=======
 <div class="viewcode-block" id="count_enclosed_roots"><a class="viewcode-back" href="../../countroots.html#cxroots.count_enclosed_roots">[docs]</a><span class="k">def</span> <span class="nf">count_enclosed_roots</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">integrandUpperBound</span><span class="o">=</span><span class="mi">1</span><span class="n">e3</span><span class="p">):</span>
->>>>>>> approximate_fPrime
 	<span class="sd">r&quot;&quot;&quot;</span>
 <span class="sd">	For a function of one complex variable, f(z), which is analytic in and within the contour C,</span>
 <span class="sd">	return the number of zeros (counting multiplicities) within the contour calculated, using </span>
@@ -271,37 +255,6 @@
 		<span class="n">fVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">trapValues</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
 
 		<span class="k">if</span> <span class="n">approx_df</span><span class="p">:</span>
-<<<<<<< HEAD
-			<span class="c1"># use available function evaluations to approximate df</span>
-			<span class="n">z0</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">centerPoint</span>
-			<span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
-
-			<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">taylorOrder</span><span class="p">):</span>
-				<span class="n">a_s</span> <span class="o">=</span> <span class="mi">0</span>
-				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
-					<span class="n">integrand</span> <span class="o">=</span> <span class="n">fVal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">segment</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="n">z0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-=======
-			<span class="c1">### XXX: Could use available function evaluations to approximate df using Taylor expansion</span>
-			<span class="c1">### But not clear how to reliably determine if and when the Taylor expansion converges</span>
-			<span class="c1">### for a general analytic function on a general, perhaps very large, contour.</span>
-			<span class="c1"># z0 = C.centerPoint</span>
-			<span class="c1"># a = []</span>
-
-			<span class="c1"># taylorOrder = 20</span>
-			<span class="c1"># for s in range(taylorOrder):</span>
-			<span class="c1"># 	a_s = 0</span>
-			<span class="c1"># 	for i, segment in enumerate(C.segments):</span>
-			<span class="c1"># 		integrand = fVal[i]/(segment(t)-z0)**(s+1)*segment.dzdt(t)</span>
->>>>>>> approximate_fPrime
-					
-			<span class="c1"># 		# romberg integration on a set of sample points</span>
-			<span class="c1"># 		a_s += scipy.integrate.romb(integrand, dx=dt)/(2j*pi)</span>
-			<span class="c1"># 	a.append(a_s)</span>
-
-			<span class="c1"># df = lambda z: sum([j*a[j]*(z-z0)**(j-1) for j in range(taylorOrder)])</span>
-			<span class="c1"># dfVal = np.array([df(segment(t)) for segment in C.segments])</span>
-
-
 			<span class="c1">### approximate df/dz with finite difference, see: numdifftools.fornberg</span>
 			<span class="c1"># interior stencil size = 2*m + 1</span>
 			<span class="c1"># boundary stencil size = 2*m + 2</span>
@@ -309,24 +262,8 @@
 			<span class="n">dfdt</span> <span class="o">=</span> <span class="p">[</span><span class="n">ndf</span><span class="o">.</span><span class="n">fd_derivative</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">fx</span> <span class="ow">in</span> <span class="n">fVal</span><span class="p">]</span>
 			<span class="n">dfVal</span> <span class="o">=</span> <span class="p">[</span><span class="n">dfdt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">)]</span>
 
-
-			<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
-			<span class="n">dfActual</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">9</span> <span class="o">-</span> <span class="n">z</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-			<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-			<span class="c1"># for i, seg in enumerate(C.segments):</span>
-			<span class="c1"># 	plt.plot(i+t, np.real(dfVal[i]-dfActual(seg(t))), color=&#39;b&#39;)</span>
-			<span class="c1"># 	plt.plot(i+t, np.imag(dfVal[i]-dfActual(seg(t))), color=&#39;r&#39;)</span>
-			<span class="c1"># plt.show()</span>
-
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">dfVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">trapValues</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
-
-
-		<span class="c1"># import matplotlib.pyplot as plt</span>
-		<span class="c1"># for i, seg in enumerate(C.segments):</span>
-		<span class="c1"># 	plt.plot(i+t, np.real(dfVal[i]/fVal[i]), color=&#39;g&#39;)</span>
-		<span class="c1"># 	plt.plot(i+t, np.imag(dfVal[i]/fVal[i]), color=&#39;y&#39;)</span>
-		<span class="c1"># plt.show()</span>
 
 
 		<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
@@ -350,30 +287,11 @@
 			<span class="n">segment_integral</span>  <span class="o">=</span> <span class="p">[</span><span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">romb</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span> <span class="k">for</span> <span class="n">integrand</span> <span class="ow">in</span> <span class="n">segment_integrand</span><span class="p">]</span>
 			<span class="n">I</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">segment_integral</span><span class="p">))</span>
 
-			<span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
 			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
 				<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Result of integral is an invalid value.  Most likely because of a divide by zero error.&quot;</span><span class="p">)</span>
 
 	<span class="n">numberOfZeros</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">))</span>
 	<span class="k">return</span> <span class="n">numberOfZeros</span></div>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-	<span class="kn">from</span> <span class="nn">cxroots</span> <span class="k">import</span> <span class="n">Rectangle</span><span class="p">,</span> <span class="n">showRoots</span><span class="p">,</span> <span class="n">demo_findRoots</span><span class="p">,</span> <span class="n">findRoots</span>
-	<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
-	<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-
-	<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
-
-	<span class="n">f</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">**</span><span class="mi">10</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span> <span class="o">+</span> <span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-	<span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">9</span> <span class="o">-</span> <span class="n">z</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-
-	<span class="n">count_enclosed_roots</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-	<span class="n">count_enclosed_roots</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-
-	<span class="c1"># demo_findRoots(rect, f, df)</span>
-	<span class="c1"># findRoots(rect, f)</span>
 </pre></div>
 
           </div>
@@ -387,11 +305,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-<<<<<<< HEAD
-        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.3.0 documentation</a> &#187;</li>
-=======
         <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.4.0 documentation</a> &#187;</li>
->>>>>>> approximate_fPrime
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
