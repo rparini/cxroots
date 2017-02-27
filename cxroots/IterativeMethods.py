@@ -1,7 +1,7 @@
 from __future__ import division
 # import scipy.optimize
 
-def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-14, maxIter=20):
+def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-12, maxIter=20):
 	# iterate to a root using initial point x0
 	if df is not None:
 		try:
@@ -24,7 +24,7 @@ def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-14, maxIter=20):
 	if err < roottol:
 		return root
 
-def newton(x0, f, df, steptol=1e-8, roottol=1e-14, maxIter=20, callback=None):
+def newton(x0, f, df, steptol=1e-8, roottol=1e-12, maxIter=20, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
 	scalar function f using Newton–Raphson iteration starting at 
