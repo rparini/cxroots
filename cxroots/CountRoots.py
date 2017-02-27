@@ -5,6 +5,57 @@ import scipy.integrate
 import warnings
 import numdifftools.fornberg as ndf
 
+def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12):
+	r"""
+	Compute the symmetric bilinear form used in (1.12) of [KB]
+
+	.. math::
+
+		<\phi,\psi> = \frac{1}{2i\pi} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
+	
+	References
+	----------
+	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	"""
+	N = 1
+	I = []
+	integrandMax = []
+
+	approx_df = False
+	if df is None:
+		approx_df = True
+
+	# XXX: define err as the difference between successive iterations of the Romberg
+	# 	   method for the same number of points?
+	while len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1])):
+		N = 2*N
+		t = np.linspace(0,1,N+1)
+		k = int(np.log2(len(t)-1))
+		dt = t[1]-t[0]
+
+		# get/store new function evaluations
+		fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
+		phiVal = np.array([phi(segment(t)) for segment in C.segments])
+		psiVal = np.array([psi(segment(t)) for segment in C.segments])
+
+		if approx_df:
+			### approximate df/dz with finite difference, see: numdifftools.fornberg
+			# interior stencil size = 2*m + 1
+			# boundary stencil size = 2*m + 2
+			m = 1
+			dfdt = [ndf.fd_derivative(fx, t, n=1, m=m) for fx in fVal]
+			dfVal = [dfdt[i]/segment.dzdt(t) for i, segment in enumerate(C.segments)]
+
+		else:
+			dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
+
+		segment_integrand = [phiVal[i]*psiVal[i]*dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
+		segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
+		I.append(sum(segment_integral))
+
+	return I[-1]
+
+
 def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e3):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
