@@ -11,7 +11,7 @@ def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-14, maxIter=20):
 			# root = scipy.optimize.newton(f, x0, df, tol=steptol, maxiter=maxIter)
 			# err = abs(f(root))
 			
-			root, err = newton(x0, f, df, steptol, maxIter)
+			root, err = newton(x0, f, df, steptol, roottol, maxIter)
 
 		except (RuntimeError, OverflowError):
 			return None
@@ -19,12 +19,12 @@ def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-14, maxIter=20):
 		# if only f is given then use secant method
 		# XXX: Perhaps implement Muller's method to use in the case were df is unavailable? 
 		x1, x2 = x0, x0*(1 + 1e-4) + 1e-4
-		root, err = secant(x1, x2, f, steptol=steptol, maxIter=maxIter)
+		root, err = secant(x1, x2, f, steptol, roottol, maxIter)
 
 	if err < roottol:
 		return root
 
-def newton(x0, f, df, steptol=1e-8, maxIter=20, callback=None):
+def newton(x0, f, df, steptol=1e-8, roottol=1e-14, maxIter=20, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
 	scalar function f using Newton–Raphson iteration starting at 
@@ -43,6 +43,8 @@ def newton(x0, f, df, steptol=1e-8, maxIter=20, callback=None):
 	steptol: float, optional
 		Routine will end if the step size, dx, between sucessive
 		iterations of x satisfies abs(dx) < steptol
+	roottol: float, optional
+		The routine will end if abs(f(x)) < roottol
 	maxIter : int, optional
 		Routine ends after maxIter iterations
 	callback : function, optional
@@ -71,12 +73,12 @@ def newton(x0, f, df, steptol=1e-8, maxIter=20, callback=None):
 		if callback is not None and callback(x, dx, y, iteration+1):
 			break
 
-		if abs(dx) < steptol:
+		if abs(dx) < steptol or abs(y) < roottol:
 			break
 
 	return x, abs(y)
 
-def secant(x1, x2, f, steptol=1e-10, maxIter=30, callback=None):
+def secant(x1, x2, f, steptol=1e-10, roottol=1e-14, maxIter=30, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
 	scalar function f using the secant method.  The method requires
@@ -96,6 +98,8 @@ def secant(x1, x2, f, steptol=1e-10, maxIter=30, callback=None):
 	steptol: float, optional
 		Routine will end if the step size, dx, between sucessive
 		iterations of x satisfies abs(dx) < steptol
+	roottol: float, optional
+		The routine will end if abs(f(x)) < roottol
 	maxIter : int, optional
 		Routine ends after maxIter iterations
 	callback : function, optional
@@ -128,7 +132,7 @@ def secant(x1, x2, f, steptol=1e-10, maxIter=30, callback=None):
 		if callback is not None and callback(x2, dx, y2, iteration+1):
 			break
 
-		if abs(dx) < steptol:
+		if abs(dx) < steptol or abs(y) < roottol:
 			break
 
 	return x2, abs(y2)
