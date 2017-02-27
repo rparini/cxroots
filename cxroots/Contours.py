@@ -16,7 +16,7 @@ import scipy.integrate
 from scipy import pi, exp, sin, log
 import scipy
 
-from .CountRoots import count_enclosed_roots
+from .CountRoots import count_enclosed_roots, prod
 
 class ComplexPath(object):
 	""" A base class for paths in the complex plane """
@@ -254,6 +254,22 @@ class Contour(object):
 		for divisionFactor in divisionFactorGen():
 			yield self.subdivide(axis, divisionFactor)
 
+	def count_distinct_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3):
+		# N = number of zeros counting multiplicities
+		N = count_enclosed_roots(self, f, df, integerTol, integrandUpperBound)
+
+		if N == 0:
+			return 0
+
+		# compute ordinary moments
+		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol) for p in range(1,2*N-1)]
+		s.insert(0, N)
+
+		# define NxN Hankel matrix H(N) = [s_{p+q}]_{p,q=0}^{N-1} as in [KB]
+		H = np.fromfunction(lambda p,q: np.take(s, np.array(p+q, dtype=int)), (N,N))
+
+		# return number of mutually distinct zeros
+		return np.linalg.matrix_rank(H)
 
 class Circle(Contour):
 	"""A positively oriented circle."""
