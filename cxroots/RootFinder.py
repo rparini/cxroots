@@ -122,8 +122,8 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		totNumberOfRoots = originalContour.count_distinct_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
 	except RuntimeError:
 		raise RuntimeError("""
-			Integration along the intial contour has failed.  There is likely a root on or close to the initial contour
-			Try either changing the intial contour, if possible, or increasing the integrandUpperBound to allow for 
+			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
+			Try either changing the initial contour, if possible, or increasing the integrandUpperBound to allow for 
 			a longer integration time.""")
 
 	loggedIterativeWarning = False
