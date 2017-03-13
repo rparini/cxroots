@@ -144,7 +144,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			continue
 
 		# approximate the roots in this box
-		approxRoots = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
+		approxRoots, multiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
 
 		for approxRoot in approxRoots:
 			if abs(f(approxRoot)) < rootErrTol:

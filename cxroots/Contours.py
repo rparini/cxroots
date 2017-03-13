@@ -288,8 +288,15 @@ class Contour(object):
 		# H<
 		H1 = np.fromfunction(lambda p,q: np.take(s, np.array(p+q+1, dtype=int)), (n,n))
 
+		# compute the roots
 		eigenvalues, eigenvectors = scipy.linalg.eig(H1,H,left=False,right=True)
-		return eigenvalues
+		roots = eigenvalues
+
+		# compute the multiplicities
+		Z = np.column_stack([roots**i for i in range(n)])
+		multiplicities = np.dot(s[:n], np.linalg.inv(Z))
+
+		return roots, multiplicities
 
 class Circle(Contour):
 	"""A positively oriented circle."""
