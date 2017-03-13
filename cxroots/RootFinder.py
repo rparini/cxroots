@@ -143,46 +143,25 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		if len(knownRootsInBox) == numberOfEnclosedRoots:
 			continue
 
-		if numberOfEnclosedRoots > 1:
-			# subdivide box further
-			subdivide(boxes, box, numberOfEnclosedRoots, f, df, absTol, relTol, integerTol, integrandUpperBound)
+		# approximate the roots in this box
+		approxRoots = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
 
-		elif numberOfEnclosedRoots == 1:
-			# only one distinct root in the box
-
-			# compute the multiplicity of this root
-			m = box.count_enclosed_roots(f, df, integerTol, integrandUpperBound)
-
-			# approximate the root with s1 = m * root
-			s1 = prod(box, f, df, lambda z: z, absTol=absTol, relTol=relTol)
-			approxRoot = s1/m
-
+		for approxRoot in approxRoots:
 			if abs(f(approxRoot)) < rootErrTol:
 				# the approximate root is good enough
 				root = approxRoot
 			else:
 				# attempt to refine the root
 				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
-
+			
 			if root is not None:
+				# if we found a root add it to the list of known roots
 				addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
 
-			if root is None or not box.contains(root):
-				# if the box is already very small then simply return the centerPoint coordinate of the box
-				if box.area < newtonStepTol:
-					root = box.centerPoint
-					if not loggedIterativeWarning:
-						logging.warning("""
-							The Newton/secant method is failing to converge towards a root.  
-							The center point of contours bounding an area < newtonStepTol and containing a single root will be added without confirmation that f < rootErrTol at these points.
-							""")
-						loggedIterativeWarning = True
-					logging.info('The point %s will be treated as a root since it is the center point of a contour with area %s containing a single root'%(root, box.area))
-					addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
-
-				else:
-					# subdivide box again if we failed to find the root and the box is still too big
-					subdivide(boxes, box, numberOfEnclosedRoots, f, df, absTol, relTol, integerTol, integrandUpperBound)
+		# if we haven't found all the roots then subdivide further
+		knownRootsInBox = [root for root in roots if box.contains(root)]
+		if len(knownRootsInBox) != numberOfEnclosedRoots:
+			subdivide(boxes, box, numberOfEnclosedRoots, f, df, absTol, relTol, integerTol, integrandUpperBound)
 
 		yield tuple(roots), tuple(boxes), totNumberOfRoots - len(roots)
 
