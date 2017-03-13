@@ -9,6 +9,7 @@ from collections import deque
 import logging
 
 from .IterativeMethods import iterateToRoot
+from .CountRoots import prod
 
 def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, f, df, absTol, relTol, integerTol, integrandUpperBound):
 	for subBoxes in boxToSubdivide.subdivisions():
@@ -147,16 +148,24 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			subdivide(boxes, box, numberOfEnclosedRoots, f, df, absTol, relTol, integerTol, integrandUpperBound)
 
 		elif numberOfEnclosedRoots == 1:
-			# try to find the root in the box
-			for iteration in range(iterativeTries):
-				x0 = box.randomPoint()
-				root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+			# only one distinct root in the box
 
-				if root is not None:
-					addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+			# compute the multiplicity of this root
+			m = box.count_enclosed_roots(f, df, integerTol, integrandUpperBound)
 
-					if box.contains(root):
-						break
+			# approximate the root with s1 = m * root
+			s1 = prod(box, f, df, lambda z: z, absTol=absTol, relTol=relTol)
+			approxRoot = s1/m
+
+			if abs(f(approxRoot)) < rootErrTol:
+				# the approximate root is good enough
+				root = approxRoot
+			else:
+				# attempt to refine the root
+				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+
+			if root is not None:
+				addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
 
 			if root is None or not box.contains(root):
 				# if the box is already very small then simply return the centerPoint coordinate of the box
