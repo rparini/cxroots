@@ -56,7 +56,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	return I[-1]
 
 
-def count_enclosed_roots(C, f, df=None, integerTol=0.2, integrandUpperBound=1e3):
+def count_enclosed_roots(C, f, df=None, integerTol=0.45, integrandUpperBound=1e3):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
