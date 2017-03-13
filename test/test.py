@@ -178,14 +178,23 @@ def simple_test():
 	# showRoots(rect, f, df)
 
 def test1():
-	from cxroots import Circle, findRoots
 	# Ex 1.4.3 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
-
+	from cxroots import Circle, findRoots, demo_findRoots
 	C = Circle(0,5)
-	f  = lambda z: z**2*(z-1)*(z-2)*(z-3)*(z-4)+z*sin(z)
+
+	global FVAL
+	FVAL = 0
+	def f(z):
+		global FVAL
+		FVAL += 1
+
+		return z**2*(z-1)*(z-2)*(z-3)*(z-4)+z*sin(z)
+
+	# f  = lambda z: z**2*(z-1)*(z-2)*(z-3)*(z-4)+z*sin(z)
 	df = lambda z: 2*z*(z-1)*(z-2)*(z-3)*(z-4) + z**2*(z-2)*(z-3)*(z-4) + z**2*(z-1)*(z-3)*(z-4) + z**2*(z-1)*(z-2)*(z-4) + z**2*(z-1)*(z-2)*(z-3) + z*cos(z) + sin(z)
 
-	print(findRoots(C, f, df))
+	print(findRoots(C, np.vectorize(f), df))
+	print('FVAL', FVAL)
 
 if __name__ == '__main__':
 	#### rootfinding_RingOscillator(), XXX: Not working
