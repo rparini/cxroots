@@ -32,12 +32,17 @@ def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, f,
 
 	boxDeque.extend([(box, numberOfEnclosedZeros[i]) for i, box in enumerate(subBoxes) if numberOfEnclosedZeros[i] != 0])
 		
-def addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter):
+def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity=None):
 	# check that the root we have found is distinct from the ones we already have
 	if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
+		# XXX: compute multiplicity of the root if not given
+		if multiplicity is None:
+			pass
+
 		# add the root to the list if it is within the original box
 		if originalContour.contains(root):
 			roots.append(root)
+			multiplicities.append(multiplicity)
 
 		# check to see if there are any other roots implied by the given symmetry
 		if guessRootSymmetry is not None:
@@ -128,10 +133,11 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 	loggedIterativeWarning = False
 	roots = []
+	multiplicities = []
 
 	# check to see if the guesses we were passed are roots
 	for root in guessRoot:
-		addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+		addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
 
 	boxes = deque()
 	boxes.append((originalContour,totNumberOfRoots))
@@ -144,9 +150,8 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			continue
 
 		# approximate the roots in this box
-		approxRoots, multiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
-
-		for approxRoot in approxRoots:
+		approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
+		for approxRoot, multiplicity in list(zip(approxRoots, approxRootMultiplicities)):
 			if abs(f(approxRoot)) < rootErrTol:
 				# the approximate root is good enough
 				root = approxRoot
@@ -156,17 +161,17 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			
 			if root is not None:
 				# if we found a root add it to the list of known roots
-				addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+				addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity)
 
 		# if we haven't found all the roots then subdivide further
 		knownRootsInBox = [root for root in roots if box.contains(root)]
 		if len(knownRootsInBox) != numberOfEnclosedRoots:
 			subdivide(boxes, box, numberOfEnclosedRoots, f, df, absTol, relTol, integerTol, integrandUpperBound)
 
-		yield tuple(roots), tuple(boxes), totNumberOfRoots - len(roots)
+		yield tuple(roots), tuple(multiplicities), tuple(boxes), totNumberOfRoots - len(roots)
 
 	if totNumberOfRoots == 0:
-		yield [], deque(), 0
+		yield (), (), deque(), 0
 
 def findRoots(originalContour, f, df=None, **kwargs):
 	"""
@@ -174,9 +179,9 @@ def findRoots(originalContour, f, df=None, **kwargs):
 	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`.
 	"""
 	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
-	for roots, boxes, numberOfRemainingRoots in rootFinder:
+	for roots, multiplicities, boxes, numberOfRemainingRoots in rootFinder:
 		pass
-	return roots
+	return roots, multiplicities
 
 def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, returnAnim=False, **kwargs):
 	"""
@@ -203,7 +208,7 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, return
 	ax = plt.gca()
 
 	def update_frame(args):
-		roots, boxes, numberOfRemainingRoots = args
+		roots, multiplicities, boxes, numberOfRemainingRoots = args
 		# print(args)
 
 		plt.cla() # clear axis

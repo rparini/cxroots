@@ -296,7 +296,7 @@ class Contour(object):
 		Z = np.column_stack([roots**i for i in range(n)])
 		multiplicities = np.dot(s[:n], np.linalg.inv(Z))
 
-		return roots, multiplicities
+		return tuple(roots), tuple(multiplicities)
 
 class Circle(Contour):
 	"""A positively oriented circle."""
