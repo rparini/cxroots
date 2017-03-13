@@ -271,6 +271,26 @@ class Contour(object):
 		# return number of mutually distinct zeros
 		return np.linalg.matrix_rank(H)
 
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3):
+		N = self.count_enclosed_roots(f, df, integerTol, integrandUpperBound)
+		n = self.count_distinct_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
+
+		if N == 0:
+			return np.array([])
+
+		# compute ordinary moments
+		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol) for p in range(1,2*n)]
+		s.insert(0, N)
+
+		# define nxn Hankel matrix H(n) = [s_{p+q}]_{p,q=0}^{n-1} as in [KB]
+		H  = np.fromfunction(lambda p,q: np.take(s, np.array(p+q, dtype=int)), (n,n))
+		
+		# H<
+		H1 = np.fromfunction(lambda p,q: np.take(s, np.array(p+q+1, dtype=int)), (n,n))
+
+		eigenvalues, eigenvectors = scipy.linalg.eig(H1,H,left=False,right=True)
+		return eigenvalues
+
 class Circle(Contour):
 	"""A positively oriented circle."""
 	def __init__(self, center, radius):
