@@ -256,7 +256,7 @@ class Contour(object):
 
 	def count_distinct_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3):
 		# N = number of zeros counting multiplicities
-		N = count_enclosed_roots(self, f, df, integerTol, integrandUpperBound)
+		N = self.count_enclosed_roots(f, df, integerTol, integrandUpperBound)
 
 		if N == 0:
 			return 0
