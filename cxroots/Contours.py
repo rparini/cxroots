@@ -44,7 +44,7 @@ class ComplexPath(object):
 				t = np.linspace(0, 1, 2**k+1)
 				vals = np.empty(2**k+1, dtype=np.complex128)
 				vals.fill(np.nan)
-				vals[::2**k] = f(self(t[::2**k]))
+				vals[::2**(k-vals_k)] = self._trapValuesCache[f]
 				vals[np.isnan(vals)] = f(self(t[np.isnan(vals)]))
 
 				# cache values
