@@ -254,7 +254,7 @@ class Contour(object):
 		for divisionFactor in divisionFactorGen():
 			yield self.subdivide(axis, divisionFactor)
 
-	def count_distinct_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3):
+	def count_distinct_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, divMax=20, integerTol=0.45, integrandUpperBound=1e3):
 		# N = number of zeros counting multiplicities
 		N = self.count_enclosed_roots(f, df, integerTol, integrandUpperBound)
 
@@ -271,9 +271,9 @@ class Contour(object):
 		# return number of mutually distinct zeros
 		return np.linalg.matrix_rank(H)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3):
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, divMax=20, integerTol=0.45, integrandUpperBound=1e3):
 		N = self.count_enclosed_roots(f, df, integerTol, integrandUpperBound)
-		n = self.count_distinct_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
+		n = self.count_distinct_roots(f, df, absTol, relTol, divMax, integerTol, integrandUpperBound)
 
 		if N == 0:
 			return np.array([])

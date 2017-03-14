@@ -5,7 +5,7 @@ import scipy.integrate
 import warnings
 import numdifftools.fornberg as ndf
 
-def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12):
+def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=20):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -18,6 +18,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
 	"""
 	N = 1
+	k = 0
 	I = []
 	integrandMax = []
 
@@ -27,7 +28,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 
 	# XXX: define err as the difference between successive iterations of the Romberg
 	# 	   method for the same number of points?
-	while len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1])):
+	while (len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
 		N = 2*N
 		t = np.linspace(0,1,N+1)
 		k = int(np.log2(len(t)-1))

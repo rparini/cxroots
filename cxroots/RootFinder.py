@@ -54,7 +54,7 @@ def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmet
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-12, iterativeTries=20,
-	absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3):
+	absTol=1e-12, relTol=1e-12, divMax=20, integerTol=0.45, integrandUpperBound=1e3):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.
@@ -124,7 +124,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		Remaining number of roots to be found within the contour
 	"""
 	try:
-		totNumberOfRoots = originalContour.count_distinct_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
+		totNumberOfRoots = originalContour.count_distinct_roots(f, df, absTol, relTol, integerTol, divMax, integrandUpperBound)
 	except RuntimeError:
 		raise RuntimeError("""
 			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
@@ -150,7 +150,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			continue
 
 		# approximate the roots in this box
-		approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound)
+		approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, divMax, integrandUpperBound)
 		for approxRoot, multiplicity in list(zip(approxRoots, approxRootMultiplicities)):
 			if abs(f(approxRoot)) < rootErrTol:
 				# the approximate root is good enough
