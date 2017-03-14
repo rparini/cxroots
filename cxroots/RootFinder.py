@@ -124,7 +124,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		Remaining number of roots to be found within the contour
 	"""
 	try:
-		totNumberOfRoots = originalContour.count_distinct_roots(f, df, absTol, relTol, integerTol, divMax, integrandUpperBound)
+		totNumberOfRoots = originalContour.count_distinct_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
 	except RuntimeError:
 		raise RuntimeError("""
 			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
@@ -150,7 +150,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			continue
 
 		# approximate the roots in this box
-		approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, divMax, integrandUpperBound)
+		approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
 		for approxRoot, multiplicity in list(zip(approxRoots, approxRootMultiplicities)):
 			if abs(f(approxRoot)) < rootErrTol:
 				# the approximate root is good enough
