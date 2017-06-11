@@ -17,6 +17,7 @@ from scipy import pi, exp, sin, log
 import scipy
 
 from .CountRoots import count_enclosed_roots, prod
+from .RootFinder import findRoots, demo_findRoots
 
 class ComplexPath(object):
 	""" A base class for paths in the complex plane """
@@ -297,6 +298,12 @@ class Contour(object):
 		multiplicities = np.dot(s[:n], np.linalg.inv(Z))
 
 		return tuple(roots), tuple(multiplicities)
+
+	def findRoots(self, f, df=None, **kwargs):
+		return findRoots(self, f, df, **kwargs)
+
+	def demo_findRoots(self, f, df=None, automaticAnimation=False, returnAnim=False, **kwargs):
+		return demo_findRoots(self, f, df, **kwargs)
 
 class Circle(Contour):
 	"""A positively oriented circle."""
