@@ -6,6 +6,7 @@ References
 [BVP] Gakhov, F. D. "Boundary value problems", section 12 (2014), Elsevier.
 [DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
 	L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
+[KB] "Computing the Zeros of Anayltic Functions"
 """
 
 from __future__ import division
@@ -13,8 +14,10 @@ import random
 import warnings
 import numpy as np
 import scipy.integrate
+import scipy.linalg
 from scipy import pi, exp, sin, log
 import scipy
+from functools import lru_cache
 
 from .CountRoots import count_enclosed_roots, prod
 from .RootFinder import findRoots, demo_findRoots
@@ -220,15 +223,6 @@ class Contour(object):
 		self.plot(*args, **kwargs)
 		plt.show()
 
-	def integrate(self, f, tol=1e-8, rombergDivMax=10, show=False):
-		""" Integrate around the contour, same arguments the integrate method for ComplexPath
-		but the tolerance passed to each segment will be tol/len(self.segments) """
-		segmentTol = tol/len(self.segments)
-		return sum([segment.integrate(f, segmentTol, rombergDivMax, show) for segment in self.segments])
-
-	def count_roots(self, *args, **kwargs):
-		return count_enclosed_roots(self, *args, **kwargs)
-
 	def subdivisions(self, axis='alternating'):
 		""" 
 		A generator of possible subdivisions of the contour, starting with an equal subdivision. 
@@ -255,47 +249,116 @@ class Contour(object):
 		for divisionFactor in divisionFactorGen():
 			yield self.subdivide(axis, divisionFactor)
 
-	def count_distinct_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3, divMax=20):
-		# N = number of zeros counting multiplicities
-		N = self.count_roots(f, df, integerTol, integrandUpperBound)
+	def integrate(self, f, tol=1e-8, rombergDivMax=10, show=False):
+		""" Integrate around the contour, same arguments the integrate method for ComplexPath
+		but the tolerance passed to each segment will be tol/len(self.segments) """
+		segmentTol = tol/len(self.segments)
+		return sum([segment.integrate(f, segmentTol, rombergDivMax, show) for segment in self.segments])
 
-		if N == 0:
-			return 0
-
-		# compute ordinary moments
-		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol) for p in range(1,2*N-1)]
-		s.insert(0, N)
-
-		# define NxN Hankel matrix H(N) = [s_{p+q}]_{p,q=0}^{N-1} as in [KB]
-		H = np.fromfunction(lambda p,q: np.take(s, np.array(p+q, dtype=int)), (N,N))
-
-		# return number of mutually distinct zeros
-		return np.linalg.matrix_rank(H)
+	@lru_cache(maxsize=None)
+	def count_roots(self, *args, **kwargs):
+		return count_enclosed_roots(self, *args, **kwargs)
 
 	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3, divMax=20):
 		N = self.count_roots(f, df, integerTol, integrandUpperBound)
-		n = self.count_distinct_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
 
 		if N == 0:
-			return np.array([])
+			return (), ()
 
-		# compute ordinary moments
-		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol) for p in range(1,2*n)]
-		s.insert(0, N)
+		mu = prod(self, f, df, lambda z: z, lambda z: 1, absTol, relTol, divMax)[0]/N
+		phiZeros = [[],[mu]]
 
-		# define nxn Hankel matrix H(n) = [s_{p+q}]_{p,q=0}^{n-1} as in [KB]
-		H  = np.fromfunction(lambda p,q: np.take(s, np.array(p+q, dtype=int)), (n,n))
-		
-		# H<
-		H1 = np.fromfunction(lambda p,q: np.take(s, np.array(p+q+1, dtype=int)), (n,n))
+		def phiFunc(i):
+			if phiZeros[i] == []:
+				return lambda z: 1
+			else:
+				coeff = np.poly(phiZeros[i])
+				return lambda z: np.polyval(coeff, z)
+			
+		# print('mu', mu)
 
-		# compute the roots
-		eigenvalues, eigenvectors = scipy.linalg.eig(H1,H,left=False,right=True)
-		roots = eigenvalues
+		err_stop = 1e-8
 
-		# compute the multiplicities
-		Z = np.column_stack([roots**i for i in range(n)])
-		multiplicities = np.dot(s[:n], np.linalg.inv(Z))
+		# initialize G_{pq} = <phi_p, phi_q>
+		G = np.zeros((N,N), dtype=np.complex128)
+		G[0,0] = N # = <phi0, phi0>
+
+		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
+		G1 = np.zeros((N,N), dtype=np.complex128)
+		ip, err = prod(self, f, df, phiFunc(0), lambda z: phiFunc(1)(z)*phiFunc(0)(z), absTol, relTol, divMax)
+		G1[0,0] = ip
+
+		take_regular = True
+
+		r, t = 1, 0
+		while r+t<N:
+			# define the next FOP of degree r+t+1
+			k = r+t+1
+
+			# Add new values to G
+			p = r+t
+			G[p, 0:p+1] = [prod(self, f, df, phiFunc(p), phiFunc(q), absTol, relTol, divMax)[0] for q in range(r+t+1)]
+			G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
+
+			# Add new values to G1
+			phi1 = phiFunc(1)
+			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMax)[0] for q in range(r+t+1)]
+			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
+
+			# print('G', G[:p+1,:p+1])
+			# print('G1', G1[:p+1,:p+1])
+
+			# The regular FOP only exists if H is non-singular
+			# An alternate citeration given by [KB] is to proceed as if it is regular and
+			# then compute its zeros.  If any they are arbitary or infinite then this
+			# polynomial should instead be defined as an inner polynomial.
+			# Here, an inner polynomial instead if any of the computed
+			# roots are outside of the interior of the contour.
+			polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu
+			# print('polyRoots', polyRoots)
+			if np.all([self.contains(z) for z in polyRoots]):
+				# define a regular polynomial
+				phiZeros.append(polyRoots)
+				r, t = r+t+1, 0
+				# print('regular', r+t)
+
+				# if any of these elements are not small then continue
+				allSmall = True
+				phiFuncLast = phiFunc(-1)
+				for j in range(N-r):
+					ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMax)
+
+					# if not small then carry on
+					# print(j, 'of', N-r, 'stop?', ip)
+					### XXX: Use the 'maxpsum' estimate for precision loss in [KB]?
+					if abs(ip) > err_stop:
+						allSmall = False
+						break
+
+				if allSmall:
+					# all the roots have been found
+					break
+
+			else:
+				t += 1
+
+				# define an inner polynomial phi_{r+t+1} = (z-mu) phi_{r+t}
+				# phiZeros.append(np.append(phiZeros[-1],mu))
+
+				# define an inner polynomial phi_{r+t+1} = phi_{t+1} phi_{r}
+				phiZeros.append(np.append(phiZeros[t],phiZeros[r]))
+
+				# print('inner poly', r+t)
+				# print('phiZeros', phiZeros)
+
+		roots = np.array(phiZeros[-1])
+		n = len(roots) # number of distinct roots
+
+		# compute the multiplicities, eq. (1.19)
+		V = np.column_stack([roots**i for i in range(n)])
+		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMax=divMax)[0] for p in range(n)] # ordinary moments
+		multiplicities = np.dot(s, np.linalg.inv(V))
+		multiplicities = np.round(multiplicities)
 
 		return tuple(roots), tuple(multiplicities)
 
