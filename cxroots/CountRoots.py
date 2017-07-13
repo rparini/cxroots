@@ -54,7 +54,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 		segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
 		I.append(sum(segment_integral))
 
-	return I[-1]
+	return I[-1], abs(I[-2] - I[-1])
 
 
 def count_enclosed_roots(C, f, df=None, integerTol=0.45, integrandUpperBound=1e3):
