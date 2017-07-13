@@ -51,7 +51,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 			dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
 
 		segment_integrand = [phiVal[i]*psiVal[i]*dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
-		segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
+		segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
 		I.append(sum(segment_integral))
 
 	return I[-1]
