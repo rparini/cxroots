@@ -155,7 +155,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
 			for approxRoot, multiplicity in list(zip(approxRoots, approxRootMultiplicities)):
 				# if all the roots within the box have been located then just exit
-				if numberOfRoots == sum([root*multiplicity for root, multiplicity in zip(roots, multiplicities) if box.contains(root)]):
+				if numberOfRoots == sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)]):
 					break
 
 				if abs(f(approxRoot)) < rootErrTol:
@@ -170,8 +170,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity)
 
 			# if we haven't found all the roots then subdivide further
-			knownRootsInBox = [root for root in roots if box.contains(root)]
-			if len(knownRootsInBox) != numberOfDistinctRoots:
+			if numberOfRoots != sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)]):
 				subdivide(boxes, box, numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
 
 		yield roots, multiplicities, boxes, totNumberOfRoots - len(roots)
