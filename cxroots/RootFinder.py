@@ -174,7 +174,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			if len(knownRootsInBox) != numberOfDistinctRoots:
 				subdivide(boxes, box, numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
 
-		yield tuple(roots), tuple(multiplicities), tuple(boxes), totNumberOfRoots - len(roots)
+		yield roots, multiplicities, boxes, totNumberOfRoots - len(roots)
 
 	if totNumberOfRoots == 0:
 		yield [], [], deque(), 0
