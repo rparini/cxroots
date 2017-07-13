@@ -177,7 +177,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		yield tuple(roots), tuple(multiplicities), tuple(boxes), totNumberOfRoots - len(roots)
 
 	if totNumberOfRoots == 0:
-		yield (), (), deque(), 0
+		yield [], [], deque(), 0
 
 def findRoots(originalContour, f, df=None, **kwargs):
 	"""
