@@ -134,7 +134,8 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	roots = []
 	multiplicities = []
 
-	# check to see if the guesses we were passed are roots
+	# Add given roots 
+	# XXX: check these roots and multiplcities
 	for root, multiplicity in guessRoot:
 		addRoot(root, multiplicity, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
 
