@@ -12,7 +12,9 @@ from __future__ import division
 from __future__ import print_function
 
 import numpy as np
-from numpy import sin, cos, exp, pi, cosh, sinh
+from numpy import sin, cos, exp, pi, cosh, sinh, sqrt
+
+np.set_printoptions(linewidth=1e20)
 
 def numberOfRoots_DellnitzSchutzeZheng_fdf():
 	from cxroots import Rectangle
@@ -165,36 +167,168 @@ def test_secant():
 	print(secant(0.5, pi/4, f, callback=callback))
 
 def simple_test():
-	from cxroots import Rectangle, showRoots, demo_findRoots
+	from cxroots import Rectangle, showRoots, demo_findRoots, findRoots
 	from numpy import pi, sin, cos
 	import numpy as np
 
 	rect = Rectangle([-2,2],[-2,2])
-	f  = lambda z: z**10 - 2*z**5 + sin(z)*cos(z/2)
-	df = lambda z: 10*(z**9 - z**4) + cos(z)*cos(z/2) - 0.5*sin(z)*sin(z/2)
+	# f  = lambda z: z*(z**10 - 2*z**5 + sin(z)*cos(z/2))8
+	# df = lambda z: z*(10*z**9 - 10*z**4 + cos(z)*cos(z/2) - 0.5*sin(z)*sin(z/2)) + z**10 - 2*z**5 + sin(z)*cos(z/2)
 
-	demo_findRoots(rect, f, df)
-	# demo_findRoots(rect, f, automaticAnimation=True)
+	f = lambda z: z**3 * (z-1.2)**2
+	df = lambda z: 3*(z)**2 * (z-1.2)**2 + 2*z**3 * (z-1.2)
+
+	roots, multiplicities = findRoots(rect, f, df)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+	# demo_findRoots(rect, f, df, absTol=1e-8, relTol=1e-8)
 	# showRoots(rect, f, df)
 
-def test1():
+def ex1():
+	# Ex 1.4.1 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Circle, findRoots, demo_findRoots
+	C = Circle(0,3)
+
+	e = 1e-2
+	f  = lambda z: (z-e)*(1+(z-sqrt(3))**2)
+	df = lambda z: (1+(z-sqrt(3))**2) + (z-e)*2*(z-sqrt(3))
+
+	roots, multiplicities = findRoots(C, f, df)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex2():
+	# Ex 1.4.2 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Circle, findRoots, demo_findRoots
+	C = Circle(0,2)
+
+	f  = lambda z: exp(3*z) + 2*z*cos(z) - 1
+	df = lambda z: 3*exp(3*z) + 2*cos(z) - 2*z*sin(z)
+
+	roots, multiplicities = findRoots(C, f, df)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex2b():
+	# Ex 1.4.2 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Rectangle, findRoots, demo_findRoots
+	C = Rectangle([-2,2],[-2,2])
+
+	f  = lambda z: exp(3*z) + 2*z*cos(z) - 1
+	df = lambda z: 3*exp(3*z) + 2*cos(z) - 2*z*sin(z)
+
+	roots, multiplicities = findRoots(C, f, df)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex3():
 	# Ex 1.4.3 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
 	from cxroots import Circle, findRoots, demo_findRoots
 	C = Circle(0,5)
 
-	global FVAL
-	FVAL = 0
-	def f(z):
-		global FVAL
-		FVAL += 1
+	f  = lambda z: z**2*(z-1)*(z-2)*(z-3)*(z-4)+z*sin(z)
+	df = lambda z: 2*z*(3*z**4-25*z**3+70*z**2-75*z+24)+sin(z)+z*cos(z)
 
-		return z**2*(z-1)*(z-2)*(z-3)*(z-4)+z*sin(z)
+	roots, multiplicities = findRoots(C, f, df)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
 
-	# f  = lambda z: z**2*(z-1)*(z-2)*(z-3)*(z-4)+z*sin(z)
-	df = lambda z: 2*z*(z-1)*(z-2)*(z-3)*(z-4) + z**2*(z-2)*(z-3)*(z-4) + z**2*(z-1)*(z-3)*(z-4) + z**2*(z-1)*(z-2)*(z-4) + z**2*(z-1)*(z-2)*(z-3) + z*cos(z) + sin(z)
+def ex4():
+	# Ex 1.4.4 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Circle, findRoots, demo_findRoots
+	C = Circle(0,3)
 
-	print(findRoots(C, np.vectorize(f), df))
-	print('FVAL', FVAL)
+	f  = lambda z: (z*(z-2))**2*(exp(2*z)*cos(z)+z**3-1-sin(z))
+	df = lambda z: 2*z*(z-2)**2*(exp(2*z)*cos(z)+z**3-1-sin(z))+2*(z-2)*z**2*(exp(2*z)*cos(z)+z**3-1-sin(z))+(z*(z-2))**2*(2*exp(2*z)*cos(z)-exp(2*z)*sin(z)+3*z**2-cos(z))
+
+	roots, multiplicities = findRoots(C, f, df)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex5():
+	# Ex 1.4.5 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Circle, findRoots, demo_findRoots
+	C = Circle(0,11)
+
+	f  = lambda z: np.prod([z-k for k in range(1,11)], axis=0)
+	df = lambda z: np.sum([np.prod([z-k for k in range(1,11) if k!=m], axis=0) for m in range(1,11)], axis=0)
+
+	roots, multiplicities = findRoots(C, f, df, absTol=1e-12, relTol=1e-12)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex5b():
+	# Ex 1.4.5 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Rectangle, findRoots, demo_findRoots
+	C = Rectangle([-1,11],[-1,1])
+
+	f  = lambda z: np.prod([z-k for k in range(1,11)], axis=0)
+	df = lambda z: np.sum([np.prod([z-k for k in range(1,11) if k!=m], axis=0) for m in range(1,11)], axis=0)
+
+	roots, multiplicities = findRoots(C, f, df, absTol=1e-12, relTol=1e-12)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex_ZEAL1a():
+	# Ex 1.5.1 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Rectangle, findRoots, demo_findRoots
+	C = Rectangle([-2,2], [-2,3])
+
+	f  = lambda z: exp(3*z) + 2*z*cos(z) - 1
+	df = lambda z: 3*exp(3*z) + 2*cos(z) - 2*z*sin(z)
+
+	roots, multiplicities = findRoots(C, f, df, absTol=1e-12, relTol=1e-12, M=5)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex_ZEAL1b():
+	# Ex 1.5.1 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	# This time with M=2
+	from cxroots import Rectangle, findRoots, demo_findRoots
+	C = Rectangle([-2,2], [-2,3])
+
+	f  = lambda z: exp(3*z) + 2*z*cos(z) - 1
+	df = lambda z: 3*exp(3*z) + 2*cos(z) - 2*z*sin(z)
+
+	roots, multiplicities = findRoots(C, f, df, absTol=1e-12, relTol=1e-12, M=2)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex_ZEAL2():
+	# Ex 1.5.2 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Rectangle, findRoots, demo_findRoots
+	C = Rectangle([-0.5,5.5], [-0.5,1.5])
+
+	f  = lambda z: z**2*(z-1)*(z-2)*(z-3)*(z-4)+z*sin(z)
+	df = lambda z: 2*z*(3*z**4-25*z**3+70*z**2-75*z+24)+sin(z)+z*cos(z)
+
+	roots, multiplicities = findRoots(C, f, df, absTol=1e-12, relTol=1e-12, M=5)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
+
+def ex_ZEAL3():
+	# Ex 1.5.3 from "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	from cxroots import Rectangle, findRoots, demo_findRoots
+	C = Rectangle([-1,3], [-1,1])
+
+	f  = lambda z: (z*(z-2))**2 * (exp(2*z)*cos(z)+z**3-1-sin(z))
+	df = lambda z: 2*z*(z-2)**2 * (exp(2*z)*cos(z)+z**3-1-sin(z)) + 2*z**2*(z-2) * (exp(2*z)*cos(z)+z**3-1-sin(z)) + (z*(z-2))**2 * (2*exp(2*z)*cos(z)-exp(2*z)*sin(z)+3*z**2-cos(z))
+
+	roots, multiplicities = findRoots(C, f, df, absTol=1e-12, relTol=1e-12, M=5)
+	print('----- Roots -----')
+	for root, multiplicity in zip(roots, multiplicities):
+		print(multiplicity, root)
 
 if __name__ == '__main__':
 	#### rootfinding_RingOscillator(), XXX: Not working
@@ -212,4 +346,5 @@ if __name__ == '__main__':
 	# print('-- Secant --')
 	# test_secant()
 
-	test1()
+	# ex2b()
+
