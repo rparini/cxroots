@@ -14,7 +14,7 @@ from .CountRoots import prod
 def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax):
 	for subBoxes in parentBox.subdivisions():
 		try:
-			numberOfRoots = [box.count_roots(f, df, integerTol, integrandUpperBound) for box in np.array(subBoxes)]
+			numberOfRoots = [box.count_roots(f, df, integerTol, integrandUpperBound, divMax) for box in np.array(subBoxes)]
 			if parentBox_numberOfRoots == sum(numberOfRoots):
 				break
 		except RuntimeError:
@@ -123,7 +123,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	"""
 	try:
 		# total number of zeros, including multiplicities
-		totNumberOfRoots = originalContour.count_roots(f, df, integerTol, integrandUpperBound)
+		totNumberOfRoots = originalContour.count_roots(f, df, integerTol, integrandUpperBound, divMax)
 	except RuntimeError:
 		raise RuntimeError("""
 			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
