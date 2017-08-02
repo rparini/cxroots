@@ -50,7 +50,7 @@ def addRoot(root, multiplicity, roots, multiplicities, originalContour, f, df, g
 
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
-	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-12, iterativeTries=20,
+	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-12,
 	absTol=1e-12, relTol=1e-12, divMax=20, integerTol=0.25, integrandUpperBound=1e3,
 	M=5):
 	"""
@@ -94,10 +94,6 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		root will exit if the number of iterations exceeds newtonMaxIter
 	rootErrTol : float, optional
 		For a point, x, to be confirmed as a root abs(f(x)) < rootErrTol
-	iterativeTries : int, optinal
-		The number of times an iterative method with a random start point
-		should be used to find the root within a contour containing a single
-		root before the contour is subdivided again.
 	integerTol : float, optional
 		The numerical evaluation of the Cauchy integral will return a result
 		if the result of the last two iterations differ by less than integerTol
