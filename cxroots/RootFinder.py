@@ -61,59 +61,75 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	----------
 	originalContour : subclass of Contour
 		The contour C which bounds the region in which all the 
-		roots of f(z) are sought
+		roots of f(z) are sought.
 	f : function
-		A function of a single complex variable f(z) which is 
+		A function of a single complex variable, z, which is 
 		analytic within C and has no poles or roots on C.
-		NOTE: Currently required that the function f(z) has only 
-		simple roots in C
 	df : function, optional
-		Function of a single complex variable.
-		The derivative of the function f(z).  If given then the 
-		number of zeros within a contour will be computed as the 
-		integral of df(z)/(2j*pi*f(z)) around the contour.
-		If df is not given then the integral will instead be 
-		computed using the diffrence in the argument of f(z) 
-		continued around the contour.
+		A function of a single complex variable which is the 
+		derivative of the function f(z). If df is not given 
+		then it will be approximated with a finite difference 
+		formula.
 	guessRoot : list, optional
-		A list of suspected roots of the function f which lie 
-		within the initial contour C.  Each element of the list 
-		will be used as the initial point of an iterative 
-		root-finding method so they need not be entirely 
-		accurate.
+		A list of (root, multiplicity) tuples giving the already 
+		known roots of the function f. 
 	guessRootSymmetry : function, optional
-		A function of a single complex variable, z, which returns 
-		a list of all points which are expected to be roots of f, 
-		given that z is a root of f.
+		A function of a single complex variable, z, which 
+		returns a list of all points which are expected to be 
+		roots of f, given that z is a root of f.  It is assumed 
+		that the symmetric roots have the same multiplicity of 
+		the original root.
 	newtonStepTol : float, optional
 		The iterative method used to give a final value for each
 		root will exit if the step size, dx, between sucessive 
 		iterations satisfied abs(dx) < newtonStepTol
 	newtonMaxIter : int, optional
 		The iterative method used to give a final value for each
-		root will exit if the number of iterations exceeds newtonMaxIter
+		root will exit if the number of iterations exceeds newtonMaxIter.
 	rootErrTol : float, optional
-		For a point, x, to be confirmed as a root abs(f(x)) < rootErrTol
+		The iterative method used to give a final value for each
+		root will exit if, for a point approimating the root, x, 
+		abs(f(x)) < rootErrTol.
+	absTol : float, optional
+		The integration along a path will return a result if the
+		difference between the last two iterations is less than abstol.
+	relTol : float, optional
+		The integration along a path will return a result if the 
+		difference between the last two iterations are less than 
+		relTol multiplied by the last iteration.
+	divMax : int, optional
+		The maximum number of divisions before the Romberg integration
+		routine of a path exits.
 	integerTol : float, optional
-		The numerical evaluation of the Cauchy integral will return a result
-		if the result of the last two iterations differ by less than integerTol
-		and the result of the last iteration is within integerTol of an integer.
-		Since the Cauchy integral must be an integer it is only necessary to
-		distinguish which integer the inegral is convering towards.  For this
-		reason the integerTol can be set fairly large.
+		If the result of a contour integration is expected to be 
+		an integer (ie. when computing the number of zeros within 
+		a contour) then the result of the last iteration of the 
+		intergration must be within integerTol of an integer.
+		The parameters absTol and relTol are not used in this case.
 	integrandUpperBound : float, optional
-		The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this 
-		value then a RuntimeError is raised.  If integrandUpperBound is too large then 
-		integrals may take a very long time to converge and it is generally be more 
-		efficient to allow the rootfinding procedure to instead choose another contour 
-		then spend time evaluting the integral along a contour very close to a root.
+		The maximum allowed value of abs(df(z)/f(z)) along a contour.  
+		If abs(df(z)/f(z)) is found to exceed this value then there 
+		is likely to be a root close to the contour and the
+		contour is discarded and a new subdivision created.
+		If integrandUpperBound is too large then integrals may take 
+		a very long time to converge and it is generally be more 
+		efficient to allow the rootfinding procedure to instead 
+		choose another contour then spend time evaluting the 
+		integral along a contour very close to a root.
+	M : int, optional
+		If the number of roots (including multiplicites) within a
+		contour is greater than M then the contour is subdivided
+		further.  M must be greater than or equal to the largest 
+		multiplcity of any root.  
 
 	Yields
 	------
-	tuple
-		All currently known roots of f(z) within the contour C
-	tuple
-		All the contours which still contain roots
+	list
+		Roots of f(z) within the contour C
+	list
+		Multiplicites of roots
+	deque
+		The contours which still contain roots
 	int
 		Remaining number of roots to be found within the contour
 	"""
