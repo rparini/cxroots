@@ -188,7 +188,8 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			if smallBoxWarning is False:
 				warnings.warn('The area of the interior of a contour containing %i is smaller than newtonStepTol!  \
 					\nThe center of the box has been recored as a root of multiplicity %i but this could not be verified.  \
-					\nThe same assumption will be made for future contours this small without an additional warning.'%(numberOfRoots, numberOfRoots))
+					\nThe same assumption will be made for future contours this small without an additional warning.  \
+					\nrootErrTol may be too small.'%(numberOfRoots, numberOfRoots))
 			root = box.centralPoint
 			addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity=numberOfRoots)
 			continue
