@@ -332,6 +332,13 @@ def ex_ZEAL3():
 
 if __name__ == '__main__':
 	#### rootfinding_RingOscillator(), XXX: Not working
+def test_multiplicity():
+	from cxroots.RootFinder import find_multiplicity
+	f = lambda z: (z-1)**3*exp(2j*z)
+	df = lambda z: 1j*exp(2j*z)*(z-1)**2*(2*z-2-3j)
+
+	print('With f - multiplicity:', find_multiplicity(1, f))
+	print('With f & df - multiplicity:', find_multiplicity(1, f, df))
 
 	# numberOfRoots_DellnitzSchutzeZheng_fdf()
 	# numberOfRoots_DellnitzSchutzeZheng_f()

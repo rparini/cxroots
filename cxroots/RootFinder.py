@@ -32,13 +32,13 @@ def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTo
 
 	boxDeque.extend([(box, numberOfRoots[i]) for i, box in enumerate(subBoxes) if numberOfRoots[i] != 0])
 		
-def addRoot(root, multiplicity, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter):
+def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter):
 	# check that the root we have found is distinct from the ones we already have
 	if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
 		# add the root to the list if it is within the original box
 		if originalContour.contains(root):
 			roots.append(root)
-			multiplicities.append(multiplicity)
+			multiplicities.append(find_multiplicity(root, f, df, rootErrTol))
 
 		# check to see if there are any other roots implied by the given symmetry
 		if guessRootSymmetry is not None:
@@ -46,8 +46,22 @@ def addRoot(root, multiplicity, roots, multiplicities, originalContour, f, df, g
 				root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
 				if root is not None:
 					# XXX: check multiplicity of the root
-					addRoot(root, multiplicity, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+					addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
 
+def find_multiplicity(root, f, df=None, rootErrTol=1e-12):
+	# given a root of the function f find determine the multiplicity
+	# of the root numerically
+	i, f_root = 0, f(root)
+	while abs(f_root) < rootErrTol:
+		i += 1
+		if df == None:
+			f_root = scipy.misc.derivative(f, root, dx=rootErrTol, n=i, order=2*i+1)
+		else:
+			if i == 1:
+				f_root = df(root)
+			else:
+				f_root = scipy.misc.derivative(df, root, dx=rootErrTol, n=i-1, order=2*(i-1)+1)
+	return i
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-12,
@@ -155,7 +169,9 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	# Add given roots 
 	# XXX: check these roots and multiplcities
 	for root, multiplicity in guessRoot:
-		addRoot(root, multiplicity, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+		addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+
+	print('Tot number of Roots', totNumberOfRoots)
 
 	boxes = deque()
 	boxes.append((originalContour,totNumberOfRoots))
@@ -183,7 +199,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 				if root is not None:
 					# if we found a root add it to the list of known roots
-					addRoot(root, multiplicity, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
 
 			# if we haven't found all the roots then subdivide further
 			if numberOfRoots != sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)]):
