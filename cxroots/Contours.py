@@ -372,10 +372,10 @@ class Contour(object):
 class Circle(Contour):
 	"""A positively oriented circle."""
 	def __init__(self, center, radius):
-		self.center = self.centerPoint = center
+		self.center = center
 		self.radius = radius
 		self.axisName = ['r']
-		self.centerPoint = center
+		self.centralPoint = center
 
 		segments = [ComplexArc(center, radius, 0, 2*pi)]
 		super(Circle, self).__init__(segments)
@@ -441,7 +441,7 @@ class Annulus(Contour):
 		return 'Annulus: center=%.3f, inner radius=%.3f, outer radius=%.3f' % (self.center, self.radii[0], self.radii[1])
 	
 	@property
-	def centerPoint(self):
+	def centralPoint(self):
 		# get the central point within the contour
 		r = (self.radii[0] + self.radii[1])/2
 		return r
@@ -549,7 +549,7 @@ class PolarRect(Contour):
 		return 'Polar rectangle: r0=%.3f, r1=%.3f, phi0=%.3f, phi1=%.3f' % (self.rRange[0], self.rRange[1], self.phiRange[0], self.phiRange[1])
 	
 	@property
-	def centerPoint(self):
+	def centralPoint(self):
 		# get the central point within the contour
 		r = (self.rRange[0] + self.rRange[1])/2
 		phi = (self.phiRange[0] + self.phiRange[1])/2
@@ -659,7 +659,7 @@ class Rectangle(Contour):
 		return "Rectangle: %.3f+i%.3f, %.3f+i%.3f, %.3f+i%.3f, %.3f+i%.3f"%(self.z1.real, self.z1.imag, self.z2.real, self.z2.imag, self.z3.real, self.z3.imag, self.z4.real, self.z4.imag)
 
 	@property
-	def centerPoint(self):
+	def centralPoint(self):
 		# get the central point within the contour
 		x = (self.xRange[0] + self.xRange[1])/2
 		y = (self.yRange[0] + self.yRange[1])/2

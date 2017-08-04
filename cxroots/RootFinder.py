@@ -256,7 +256,7 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, return
 				cmap = plt.get_cmap('jet')
 				box._color = cmap(np.random.random())
 			
-			plt.text(box.centerPoint.real, box.centerPoint.imag, numberOfEnclosedRoots)
+			plt.text(box.centralPoint.real, box.centralPoint.imag, numberOfEnclosedRoots)
 			box.plot(linecolor=box._color)
 
 		plt.scatter(np.real(roots), np.imag(roots))
