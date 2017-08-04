@@ -55,7 +55,8 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	M=5):
 	"""
 	A generator which at each step takes a contour and either finds 
-	all the zeros of f within it or subdivides it further.
+	all the zeros of f within it or subdivides it further.  Based
+	on the algorithm in [KB]
 
 	Parameters
 	----------
@@ -132,6 +133,11 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		The contours which still contain roots
 	int
 		Remaining number of roots to be found within the contour
+
+	References
+	----------
+	[KB] Peter Kravanja, Marc Van Barel, "Computing the Zeros of 
+	Anayltic Functions", Springer (2000)
 	"""
 	try:
 		# total number of zeros, including multiplicities

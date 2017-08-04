@@ -34,7 +34,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 		k = int(np.log2(len(t)-1))
 		dt = t[1]-t[0]
 
-		# get/store new function evaluations
+		# compute/retrieve function evaluations
 		fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
 		phiVal = np.array([phi(segment(t)) for segment in C.segments])
 		psiVal = np.array([psi(segment(t)) for segment in C.segments])
@@ -143,7 +143,7 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.45, integrandUpperBound=1e3
 		k = int(np.log2(len(t)-1))
 		dt = t[1]-t[0]
 
-		# get/store new function evaluations
+		# compute/retrieve function evaluations
 		fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
 
 		if approx_df:

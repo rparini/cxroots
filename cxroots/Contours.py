@@ -6,7 +6,8 @@ References
 [BVP] Gakhov, F. D. "Boundary value problems", section 12 (2014), Elsevier.
 [DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
 	L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
-[KB] "Computing the Zeros of Anayltic Functions"
+[KB] "Computing the Zeros of Anayltic Functions", Peter Kravanja, Marc Van Barel,
+	Springer (2000)
 """
 
 from __future__ import division
@@ -308,9 +309,9 @@ class Contour(object):
 			# print('G', G[:p+1,:p+1])
 			# print('G1', G1[:p+1,:p+1])
 
-			# The regular FOP only exists if H is non-singular
+			# The regular FOP only exists if H is non-singular.
 			# An alternate citeration given by [KB] is to proceed as if it is regular and
-			# then compute its zeros.  If any they are arbitary or infinite then this
+			# then compute its zeros.  If any are arbitary or infinite then this
 			# polynomial should instead be defined as an inner polynomial.
 			# Here, an inner polynomial instead if any of the computed
 			# roots are outside of the interior of the contour.
