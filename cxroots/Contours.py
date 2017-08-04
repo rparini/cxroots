@@ -366,6 +366,7 @@ class Contour(object):
 		n = len(roots) # number of distinct roots
 
 		# compute the multiplicities, eq. (1.19)
+		# compute the multiplicities, eq. (1.19) in [KB]
 		V = np.column_stack([roots**i for i in range(n)])
 		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMax=divMax)[0] for p in range(n)] # ordinary moments
 		multiplicities = np.dot(s, np.linalg.inv(V))
