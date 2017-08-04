@@ -260,7 +260,7 @@ class Contour(object):
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, integrandUpperBound=1e3, divMax=20):
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, integrandUpperBound=1e3, divMax=20, rootTol=1e-8):
 		N = self.count_roots(f, df, integerTol, integrandUpperBound, divMax)
 
 		if N == 0:
@@ -355,10 +355,12 @@ class Contour(object):
 		roots = np.array(phiZeros[-1])
 
 		# remove any roots which are not distinct
-		distinctTol = 1e-8
 		removeList = []
 		for i, root in enumerate(roots):
-			if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < distinctTol):
+			print(root, roots[i+1:], np.abs(root-roots[i+1:]))
+			print(len(roots[i+1:]) > 0)
+			print(np.any(np.abs(root-roots[i+1:]) < rootTol))
+			if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < rootTol):
 				removeList.append(i)
 
 		roots = np.delete(roots, removeList)

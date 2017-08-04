@@ -98,6 +98,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		that the symmetric roots have the same multiplicity of 
 		the original root.
 	newtonStepTol : float, optional
+		The required accuracy of the root.
 		The iterative method used to give a final value for each
 		root will exit if the step size, dx, between sucessive 
 		iterations satisfied abs(dx) < newtonStepTol
@@ -199,7 +200,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 		else:
 			# approximate the roots in this box
-			approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
+			approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol=newtonStepTol)
 			for approxRoot, multiplicity in list(zip(approxRoots, approxRootMultiplicities)):
 				# if all the roots within the box have been located then just exit
 				if numberOfRoots == sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)]):
