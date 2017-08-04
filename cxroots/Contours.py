@@ -332,7 +332,7 @@ class Contour(object):
 					# if not small then carry on
 					# print(j, 'of', N-r, 'stop?', ip)
 					### XXX: Use the 'maxpsum' estimate for precision loss in [KB]?
-					if abs(ip) > err_stop:
+					if abs(ip) + err > err_stop:
 						allSmall = False
 						break
 
