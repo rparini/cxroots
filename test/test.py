@@ -24,7 +24,7 @@ def numberOfRoots_DellnitzSchutzeZheng_fdf():
 	f = lambda z: z**50 + z**12 - 5*sin(20*z)*cos(12*z) - 1
 	df = lambda z: 50*z**49 + 12*z**11 + 60*sin(12*z)*sin(20*z) - 100*cos(12*z)*cos(20*z)
 	
-	enclosedZeros = rectangle.count_enclosed_roots(f, df)
+	enclosedZeros = rectangle.count_roots(f, df)
 
 	# should be 424 roots according to [DSZ]
 	print('enclosed zeros with f and df: %i'%enclosedZeros, 'should be 424')
@@ -36,7 +36,7 @@ def numberOfRoots_DellnitzSchutzeZheng_f():
 	f = lambda z: z**50 + z**12 - 5*sin(20*z)*cos(12*z) - 1
 
 	# require a higher number of equal consecutive evaluations of the number of roots than by default
-	enclosedZeros = rectangle.count_enclosed_roots(f, reqEqualZeros=4)
+	enclosedZeros = rectangle.count_roots(f)
 
 	# should be 424 roots according to [DSZ]
 	print('enclosed zeros with just f: %i'%enclosedZeros, 'should be 424')
