@@ -220,7 +220,8 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			if numberOfRoots != sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)]):
 				subdivide(boxes, box, numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
 
-		yield roots, multiplicities, boxes, totNumberOfRoots - len(roots)
+		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
+		yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
 
 	if totNumberOfRoots == 0:
 		yield [], [], deque(), 0
