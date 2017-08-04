@@ -60,7 +60,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	return I[-1], abs(I[-2] - I[-1])
 
 
-def count_enclosed_roots(C, f, df=None, integerTol=0.45, integrandUpperBound=1e3, divMax=20):
+def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3, divMax=20):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -113,9 +113,9 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.45, integrandUpperBound=1e3
 		integrals may take a very long time to converge and it is generally be more 
 		efficient to allow the rootfinding procedure to instead choose another contour 
 		then spend time evaluating the integral along a contour very close to a root.
-	taylorOrder : int, optional
-		The number of terms for the Taylor expansion approximating df, provided df is not 
-		already given by user.
+	divMax : int, optional
+		The maximum number of divisions before the Romberg integration
+		routine of a path exits.
 
 	Returns
 	-------
@@ -178,8 +178,6 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.45, integrandUpperBound=1e3
 			segment_integrand = [dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
 			segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
 			I.append(sum(segment_integral))
-
-			# print('k', k, 'I', I[-1])
 
 			if np.isnan(I[-1]):
 				raise RuntimeError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
