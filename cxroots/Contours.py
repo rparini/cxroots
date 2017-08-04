@@ -363,7 +363,7 @@ class Contour(object):
 
 		return tuple(roots), tuple(multiplicities)
 
-	def findRoots(self, f, df=None, **kwargs):
+	def roots(self, f, df=None, **kwargs):
 		return findRoots(self, f, df, **kwargs)
 
 	def demo_findRoots(self, f, df=None, automaticAnimation=False, returnAnim=False, **kwargs):
