@@ -48,19 +48,19 @@ def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmet
 				if root is not None:
 					addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
 
-def find_multiplicity(root, f, df=None, rootErrTol=1e-12):
+def find_multiplicity(root, f, df=None, rootErrTol=1e-12, dx=1e-8):
 	# given a root of the function f find determine the multiplicity
 	# of the root numerically
 	i, f_root = 0, f(root)
 	while abs(f_root) < rootErrTol:
 		i += 1
 		if df == None:
-			f_root = scipy.misc.derivative(f, root, dx=rootErrTol, n=i, order=2*i+1)
+			f_root = scipy.misc.derivative(f, root, dx=dx, n=i, order=2*i+1)
 		else:
 			if i == 1:
 				f_root = df(root)
 			else:
-				f_root = scipy.misc.derivative(df, root, dx=rootErrTol, n=i-1, order=2*(i-1)+1)
+				f_root = scipy.misc.derivative(df, root, dx=dx, n=i-1, order=2*(i-1)+1)
 	return i
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
