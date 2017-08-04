@@ -253,12 +253,14 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, return
 	"""
 	import matplotlib.pyplot as plt
 	from matplotlib import animation
-	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
-
-	originalContour.plot(linecolor='k', linestyle='--')
-
 	fig = plt.gcf()
 	ax = plt.gca()
+
+	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
+	originalContour.plot(linecolor='k', linestyle='--')
+
+	### XXX: show total number of roots to be found at the start
+	# ax.text(0.02, 0.95, 'Zeros remaining: %i'%originalContour.count_roots(f,df,**kwargs), transform=ax.transAxes)
 
 	def update_frame(args):
 		roots, multiplicities, boxes, numberOfRemainingRoots = args
