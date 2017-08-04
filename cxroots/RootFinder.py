@@ -12,6 +12,7 @@ from .IterativeMethods import iterateToRoot
 from .CountRoots import prod, RootError
 
 def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax):
+	numberOfRoots = None
 	for subBoxes in parentBox.subdivisions():
 		try:
 			numberOfRoots = [box.count_roots(f, df, integerTol, integrandUpperBound, divMax) for box in np.array(subBoxes)]
@@ -24,7 +25,7 @@ def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTo
 			# the division axis
 			continue
 
-	if parentBox_numberOfRoots != sum(numberOfRoots):
+	if numberOfRoots is None or parentBox_numberOfRoots != sum(numberOfRoots):
 		# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
 		raise RuntimeError("""Unable to subdivide box:
 			\t%s
