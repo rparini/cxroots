@@ -353,6 +353,16 @@ class Contour(object):
 				# print('phiZeros', phiZeros)
 
 		roots = np.array(phiZeros[-1])
+
+		# remove any roots which are not distinct
+		distinctTol = 1e-8
+		removeList = []
+		for i, root in enumerate(roots):
+			if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < distinctTol):
+				removeList.append(i)
+
+		roots = np.delete(roots, removeList)
+
 		n = len(roots) # number of distinct roots
 
 		# compute the multiplicities, eq. (1.19)
