@@ -260,7 +260,7 @@ class Contour(object):
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.45, integrandUpperBound=1e3, divMax=20):
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, integrandUpperBound=1e3, divMax=20):
 		N = self.count_roots(f, df, integerTol, integrandUpperBound, divMax)
 
 		if N == 0:
