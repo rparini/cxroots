@@ -27,7 +27,7 @@ def numberOfRoots_DellnitzSchutzeZheng_fdf():
 	enclosedZeros = rectangle.count_roots(f, df)
 
 	# should be 424 roots according to [DSZ]
-	print('enclosed zeros with f and df: %i'%enclosedZeros, 'should be 424')
+	print('Enclosed zeros with f and df: %i'%enclosedZeros, 'should be 424')
 	
 def numberOfRoots_DellnitzSchutzeZheng_f():
 	from cxroots import Rectangle
@@ -39,7 +39,7 @@ def numberOfRoots_DellnitzSchutzeZheng_f():
 	enclosedZeros = rectangle.count_roots(f)
 
 	# should be 424 roots according to [DSZ]
-	print('enclosed zeros with just f: %i'%enclosedZeros, 'should be 424')
+	print('Enclosed zeros with just f: %i'%enclosedZeros, 'should be 424')
 
 def rootfinding_AnnularCombustionChamber():
 	# problem in section 4.2 of [DSZ]
