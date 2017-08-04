@@ -6,7 +6,7 @@ import scipy
 from numpy.random import uniform
 import itertools
 from collections import deque
-import logging
+import warnings
 
 from .IterativeMethods import iterateToRoot
 from .CountRoots import prod, RootError
@@ -33,13 +33,16 @@ def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTo
 
 	boxDeque.extend([(box, numberOfRoots[i]) for i, box in enumerate(subBoxes) if numberOfRoots[i] != 0])
 		
-def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter):
+def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity=None):
 	# check that the root we have found is distinct from the ones we already have
 	if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
 		# add the root to the list if it is within the original box
 		if originalContour.contains(root):
 			roots.append(root)
-			multiplicities.append(find_multiplicity(root, f, df, rootErrTol))
+			if multiplicity is None:
+				multiplicities.append(find_multiplicity(root, f, df, rootErrTol, dx=newtonStepTol))
+			else:
+				multiplicities.append(multiplicity)
 
 		# check to see if there are any other roots implied by the given symmetry
 		if guessRootSymmetry is not None:
@@ -162,7 +165,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			Try either changing the initial contour, if possible, or increasing the integrandUpperBound to allow for 
 			a longer integration time.""")
 
-	loggedIterativeWarning = False
+	smallBoxWarning = False
 	roots = []
 	multiplicities = []
 
@@ -178,6 +181,17 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	while boxes:
 		box, numberOfRoots = boxes.pop()
 
+		# if box is smaller than the newtonStepTol then just assume that the root is
+		# at the center of the box, print a warning and move on
+		if box.area < newtonStepTol:
+			smallBoxWarning = True
+			if smallBoxWarning is False:
+				warnings.warn('The area of the interior of a contour containing %i is smaller than newtonStepTol!  \
+					\nThe center of the box has been recored as a root of multiplicity %i but this could not be verified.  \
+					\nThe same assumption will be made for future contours this small without an additional warning.'%(numberOfRoots, numberOfRoots))
+			root = box.centralPoint
+			addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity=numberOfRoots)
+			continue
 
 		if numberOfRoots > M:
 			subdivide(boxes, box, numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax)
