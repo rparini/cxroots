@@ -59,6 +59,8 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 
 	return I[-1], abs(I[-2] - I[-1])
 
+class RootError(RuntimeError):
+	pass
 
 def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3, divMax=20):
 	r"""
@@ -166,21 +168,22 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 				# if no approximation to df is being made then immediately exit if the 
 				# integrand is too large
 				if np.any(np.abs(dfVal/fVal) > integrandUpperBound):
-					raise RuntimeError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
+					raise RootError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
+
 			else:
 				# if df is being approximated then the integrand might be artificially
 				# large so wait until the maximum value has settled a little
 				integrandMax.append(np.max(np.abs(dfVal/fVal)))
 				if len(integrandMax) > 1 and abs(integrandMax[-2] - integrandMax[-1]) < 0.1*integrandUpperBound:
 					if np.any(np.abs(dfVal/fVal) > integrandUpperBound):
-						raise RuntimeError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
+						raise RootError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
 
 			segment_integrand = [dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
 			segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
 			I.append(sum(segment_integral))
 
 			if np.isnan(I[-1]):
-				raise RuntimeError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
+				raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
 
 	numberOfZeros = int(round(I[-1].real))
 	return numberOfZeros

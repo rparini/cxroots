@@ -9,7 +9,7 @@ from collections import deque
 import logging
 
 from .IterativeMethods import iterateToRoot
-from .CountRoots import prod
+from .CountRoots import prod, RootError
 
 def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax):
 	for subBoxes in parentBox.subdivisions():
@@ -17,7 +17,7 @@ def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTo
 			numberOfRoots = [box.count_roots(f, df, integerTol, integrandUpperBound, divMax) for box in np.array(subBoxes)]
 			if parentBox_numberOfRoots == sum(numberOfRoots):
 				break
-		except RuntimeError:
+		except RootError:
 			# If the number of zeros within either of the new contours is not an integer then it is
 			# likely that the introduced line which subdivides 'parentBox' lies on a zero.
 			# To avoid this we will try to place the subdividing line at a different point along 
