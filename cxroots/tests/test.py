@@ -142,22 +142,6 @@ def rootfinding_realCoeffPoly():
 	conjugateSymmetry = lambda z: [z.conjugate()]
 	showRoots(circle, f, df, guessRootSymmetry = conjugateSymmetry)
 
-def test_secant():
-	from cxroots.IterativeMethods import secant
-
-	# example from Table 2.5 of "Numerical Analysis" by Richard L. Burden, J. Douglas Faires
-	answer = [0.7363841388,
-			  0.7390581392,
-			  0.7390851493,
-			  0.7390851332,
-			  0.7390851332]
-
-	f  = lambda x: cos(x)-x
-	df = lambda x: -sin(x)-1
-	callback = lambda x, dx, y, iteration: print(iteration, x, dx, x-answer[iteration-1])
-	
-	print(secant(0.5, pi/4, f, callback=callback))
-
 def simple_test(demo=False):
 	from cxroots import Rectangle, showRoots, demo_findRoots, findRoots
 	from numpy import pi, sin, cos
@@ -334,10 +318,8 @@ def test_multiplicity():
 
 
 if __name__ == '__main__':
-	# numberOfRoots_DellnitzSchutzeZheng_fdf()
+	numberOfRoots_DellnitzSchutzeZheng_fdf()
 	# numberOfRoots_DellnitzSchutzeZheng_f()
-
-	# test_multiplicity()
 
 	# ex_ZEAL1a()
 
