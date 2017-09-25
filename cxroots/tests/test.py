@@ -142,21 +142,6 @@ def rootfinding_realCoeffPoly():
 	conjugateSymmetry = lambda z: [z.conjugate()]
 	showRoots(circle, f, df, guessRootSymmetry = conjugateSymmetry)
 
-def test_newton():
-	from cxroots.IterativeMethods import newton
-
-	# example from Table 2.4 of "Numerical Analysis" by Richard L. Burden, J. Douglas Faires
-	answer = [0.7395361337,
-			  0.7390851781,
-			  0.7390851332,
-			  0.7390851332]
-
-	f  = lambda x: cos(x)-x
-	df = lambda x: -sin(x)-1
-	callback = lambda x, dx, y, iteration: print(iteration, x, dx, x-answer[iteration-1])
-	
-	print(newton(pi/4, f, df, callback=callback))
-
 def test_secant():
 	from cxroots.IterativeMethods import secant
 
@@ -354,7 +339,7 @@ if __name__ == '__main__':
 
 	# test_multiplicity()
 
-	ex_ZEAL1a()
+	# ex_ZEAL1a()
 
 	# rootfinding_AnnularCombustionChamber()
 
