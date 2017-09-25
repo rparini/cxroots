@@ -54,25 +54,31 @@ def rootfinding_AnnularCombustionChamber():
 	df = lambda z: 2*z + A - B*T*exp(-T*z)
 
 	rectangle = Rectangle([-15000,5000], [-15000,15000])
-	roots_fdf = findRoots(rectangle, f, df)
-	roots_f = findRoots(rectangle, f)
+	# roots_fdf = rectangle.roots(f, df, integrandUpperBound=np.inf, rootErrTol=1e-8)
+	# roots_fdf = rectangle.demo_findRoots(f, df, automaticAnimation=True, integrandUpperBound=np.inf, rootErrTol=1e-8)
+	# roots_f   = rectangle.roots(f)
+	roots_f = rectangle.demo_findRoots(f, automaticAnimation=True, integrandUpperBound=np.inf, rootErrTol=1e-8, M=1)
 
 	# compare with fig 3 of [DSZ]
 	import matplotlib.pyplot as plt
-	plt.scatter(np.real(roots_fdf), np.imag(roots_fdf), marker='+')
+	# plt.scatter(np.real(roots_fdf), np.imag(roots_fdf), marker='+')
 	plt.scatter(np.real(roots_f), np.imag(roots_f), marker='x')
 	plt.show()
 
 def rootfinding_RingOscillator():
-	# XXX: Not working
+	# XXX: Not working, function values too close to zero everywhere?
 	# problem in section 4.3 of [DSZ]
 	from cxroots import Rectangle, findRoots
 
-	t = 2.
-	A = lambda z: np.array([[-0.0166689-2.12e-14*z, 1/60. + 6e-16*exp(-t*z)*z],
-		 		  			[0.0166659+exp(-t*z)*(-0.000037485+6e-16*z), -0.0166667-6e-16*z]])
-	dA = lambda z: np.array([[-2.12e-14, 6e-16*exp(-t*z) - t*6e-16*exp(-t*z)*z],
-				   			 [-t*exp(-t*z)*(-0.000037485+6e-16*z)+exp(-t*z)*6e-16, -6e-16]])
+	def A(z):
+		t = 2.
+		return np.array([[-0.0166689-2.12e-14*z, 1/60. + 6e-16*exp(-t*z)*z],
+		 		  		 [0.0166659+exp(-t*z)*(-0.000037485+6e-16*z), -0.0166667-6e-16*z]])
+
+	def dA(z):
+		t = 2.
+		return np.array([[-2.12e-14*z/z, 6e-16*exp(-t*z) - t*6e-16*exp(-t*z)*z],
+				   		 [-t*exp(-t*z)*(-0.000037485+6e-16*z)+exp(-t*z)*6e-16, -6e-16*z/z]])
 	
 	def f(z):
 		AVal = np.rollaxis(A(z),-1,0)
@@ -82,14 +88,15 @@ def rootfinding_RingOscillator():
 		dAVal = np.rollaxis(dA(z),-1,0)
 		return np.linalg.det(dAVal)
 
-	box = Rectangle([-12,0], [-40,40])
-	roots_fdf = findRoots(box, f, df, integerTol=1e-2)
-	roots_f = findRoots(box, f, reqEqualZeros=10)
 
-	# XXX: There don't seem to be any roots within the initial contour?
-	# 	Perhaps there is an issue with the coefficents of z being very small?
-	print(box.count_enclosed_roots(f, df, integerTol=1e-2))
-	print(box.count_enclosed_roots(f, reqEqualZeros=10))
+	box = Rectangle([-12,0], [-40,40])
+	roots_fdf = findRoots(box, f, df)
+	# roots_f = findRoots(box, f)
+
+	# # XXX: There don't seem to be any roots within the initial contour?
+	# # 	Perhaps there is an issue with the coefficents of z being very small?
+	# print(box.count_enclosed_roots(f, df, integerTol=1e-2))
+	# print(box.count_enclosed_roots(f, reqEqualZeros=10))
 
 	# compare with fig 4 of [DSZ]
 	# import matplotlib.pyplot as plt
@@ -166,7 +173,7 @@ def test_secant():
 	
 	print(secant(0.5, pi/4, f, callback=callback))
 
-def simple_test():
+def simple_test(demo=False):
 	from cxroots import Rectangle, showRoots, demo_findRoots, findRoots
 	from numpy import pi, sin, cos
 	import numpy as np
@@ -182,7 +189,9 @@ def simple_test():
 	print('----- Roots -----')
 	for root, multiplicity in zip(roots, multiplicities):
 		print(multiplicity, root)
-	# demo_findRoots(rect, f, df, absTol=1e-8, relTol=1e-8)
+
+	if demo:
+		demo_findRoots(rect, f, df, absTol=1e-8, relTol=1e-8)
 	# showRoots(rect, f, df)
 
 def ex1():
@@ -330,8 +339,6 @@ def ex_ZEAL3():
 	for root, multiplicity in zip(roots, multiplicities):
 		print(multiplicity, root)
 
-if __name__ == '__main__':
-	#### rootfinding_RingOscillator(), XXX: Not working
 def test_multiplicity():
 	from cxroots.RootFinder import find_multiplicity
 	f = lambda z: (z-1)**3*exp(2j*z)
@@ -340,10 +347,19 @@ def test_multiplicity():
 	print('With f - multiplicity:', find_multiplicity(1, f))
 	print('With f & df - multiplicity:', find_multiplicity(1, f, df))
 
+
+if __name__ == '__main__':
 	# numberOfRoots_DellnitzSchutzeZheng_fdf()
 	# numberOfRoots_DellnitzSchutzeZheng_f()
 
+	# test_multiplicity()
+
+	ex_ZEAL1a()
+
 	# rootfinding_AnnularCombustionChamber()
+
+
+	# rootfinding_RingOscillator(), # XXX: Not working
 
 	# rootfinding_polynomial()
 	# rootfinding_realCoeffPoly()
@@ -354,4 +370,6 @@ def test_multiplicity():
 	# test_secant()
 
 	# ex2b()
+
+	# rootfinding_RingOscillator()
 
