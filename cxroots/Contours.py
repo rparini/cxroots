@@ -270,7 +270,7 @@ class Contour(object):
 		phiZeros = [[],[mu]]
 
 		def phiFunc(i):
-			if phiZeros[i] == []:
+			if len(phiZeros[i]) == 0:
 				return lambda z: 1
 			else:
 				coeff = np.poly(phiZeros[i])
