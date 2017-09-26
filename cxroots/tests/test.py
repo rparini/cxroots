@@ -16,31 +16,6 @@ from numpy import sin, cos, exp, pi, cosh, sinh, sqrt
 
 np.set_printoptions(linewidth=1e20)
 
-def numberOfRoots_DellnitzSchutzeZheng_fdf():
-	from cxroots import Rectangle
-
-	rectangle = Rectangle([-20.3,20.7], [-20.3,20.7])
-
-	f = lambda z: z**50 + z**12 - 5*sin(20*z)*cos(12*z) - 1
-	df = lambda z: 50*z**49 + 12*z**11 + 60*sin(12*z)*sin(20*z) - 100*cos(12*z)*cos(20*z)
-	
-	enclosedZeros = rectangle.count_roots(f, df)
-
-	# should be 424 roots according to [DSZ]
-	print('Enclosed zeros with f and df: %i'%enclosedZeros, 'should be 424')
-	
-def numberOfRoots_DellnitzSchutzeZheng_f():
-	from cxroots import Rectangle
-
-	rectangle = Rectangle([-20.3,20.7], [-20.3,20.7])
-	f = lambda z: z**50 + z**12 - 5*sin(20*z)*cos(12*z) - 1
-
-	# require a higher number of equal consecutive evaluations of the number of roots than by default
-	enclosedZeros = rectangle.count_roots(f)
-
-	# should be 424 roots according to [DSZ]
-	print('Enclosed zeros with just f: %i'%enclosedZeros, 'should be 424')
-
 def rootfinding_AnnularCombustionChamber():
 	# problem in section 4.2 of [DSZ]
 	from cxroots import Rectangle, findRoots
