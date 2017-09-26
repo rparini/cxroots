@@ -79,29 +79,6 @@ def rootfinding_RingOscillator():
 	# plt.scatter(np.real(roots_f), np.imag(roots_f), marker='x')
 	# plt.show()
 
-def rootfinding_polynomial():
-	from cxroots import Circle, Rectangle, PolarRect, findRoots
-
-	roots = [0, 1-1j, 1+1j, -1.234, 2.345]
-
-	f = lambda z: (z-roots[0])*(z-roots[1])*(z-roots[2])*(z-roots[3])*(z-roots[4])
-	df = lambda z: (z-roots[1])*(z-roots[2])*(z-roots[3])*(z-roots[4]) + (z-roots[0])*(z-roots[2])*(z-roots[3])*(z-roots[4]) + (z-roots[0])*(z-roots[1])*(z-roots[3])*(z-roots[4]) + (z-roots[0])*(z-roots[1])*(z-roots[2])*(z-roots[4]) + (z-roots[0])*(z-roots[1])*(z-roots[2])*(z-roots[3])
-
-	# try different contours to make sure we are getting the right roots
-	# unlike the proposal in [DL] there is no 'buffer zone'.  Only the user specified
-	# region is searched
-
-	circle = Circle(0,3)
-	print(findRoots(circle, f))
-	print(findRoots(circle, f, df))
-
-	rectangle = Rectangle([-1,3],[-2,2])
-	print(findRoots(rectangle, f))
-	print(findRoots(rectangle, f, df))
-
-	halfAnnulus = PolarRect(0, [0.5,3], [-pi/2, pi/2])
-	print(findRoots(halfAnnulus, f))
-	print(findRoots(halfAnnulus, f, df))
 
 def rootfinding_realCoeffPoly():
 	from cxroots import Circle, Rectangle, PolarRect, findRoots, showRoots
@@ -293,10 +270,7 @@ def test_multiplicity():
 
 
 if __name__ == '__main__':
-	numberOfRoots_DellnitzSchutzeZheng_fdf()
-	# numberOfRoots_DellnitzSchutzeZheng_f()
-
-	# ex_ZEAL1a()
+	ex_ZEAL1a()
 
 	# rootfinding_AnnularCombustionChamber()
 
