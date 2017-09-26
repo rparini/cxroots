@@ -1,12 +1,3 @@
-"""
-References
-----------
-[DSZ] "Locating all the Zeros of an Analytic Function in one Complex Variable"
-	M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
-[DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
-	L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
-"""
-
 import unittest
 import numpy as np
 from scipy import pi
@@ -15,6 +6,10 @@ from cxroots import Circle, Rectangle, PolarRect
 from cxroots.tests.SetsApproxEqual import sets_approx_equal
 
 class TestSimpleRootfindingPolynomial(unittest.TestCase):
+	"""
+	Rootfinding but only simple roots
+	"""
+
 	def setUp(self):
 		self.roots = roots = [-1.234, 0,  1+1j, 1-1j, 2.345]
 		self.f  = lambda z: (z-roots[0])*(z-roots[1])*(z-roots[2])*(z-roots[3])*(z-roots[4])
