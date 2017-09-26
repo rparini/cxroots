@@ -5,7 +5,7 @@ from scipy import pi
 from cxroots import Circle, Rectangle, PolarRect
 from cxroots.tests.SetsApproxEqual import sets_approx_equal
 
-class TestSimpleRootfindingPolynomial(unittest.TestCase):
+class TestSimpleRootfinding(unittest.TestCase):
 	"""
 	Rootfinding but only simple roots
 	"""
