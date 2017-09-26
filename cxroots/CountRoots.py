@@ -5,7 +5,7 @@ import scipy.integrate
 import warnings
 import numdifftools.fornberg as ndf
 
-def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=20):
+def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -62,7 +62,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 class RootError(RuntimeError):
 	pass
 
-def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3, divMax=20):
+def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3, divMax=10):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -182,8 +182,10 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 			segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
 			I.append(sum(segment_integral))
 
-			if np.isnan(I[-1]):
-				raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
+			# print('k', k, 'I[-1]', I[-1])
+
+			# if np.isnan(I[-1]):
+			# 	raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
 
 	numberOfZeros = int(round(I[-1].real))
 	return numberOfZeros
