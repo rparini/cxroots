@@ -7,7 +7,7 @@ from distutils.core import setup, Command
 from distutils.extension import Extension
 from numpy.distutils.misc_util import get_numpy_include_dirs
 
-packages = ['cxroots']
+packages = ['cxroots', 'cxroots.tests']
 
 # get the version
 exec(open('cxroots/version.py').read())
