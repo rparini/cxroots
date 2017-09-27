@@ -432,6 +432,12 @@ class Circle(Contour):
 			box1.segments[0] = self.segments[0]
 			box1.segments[1]._reversePath = box2.segments[0]
 			box2.segments[0]._reversePath = box1.segments[1]
+
+			for box in [box1, box2]:
+				box._createdBySubdivisionAxis = axis
+				box._parentBox = self
+				self._childBoxes = [box1, box2]
+
 			return box1, box2
 
 	def randomPoint(self):
@@ -500,7 +506,6 @@ class Annulus(Contour):
 
 			box1._createdBySubdivisionAxis = axis
 			box2._createdBySubdivisionAxis = axis
-			boxes = [box1, box2]
 
 		elif axis == 'phi' or self.axisName[axis] == 'phi':
 			# Subdividing into two radial boxes rather than one to 
@@ -518,11 +523,12 @@ class Annulus(Contour):
 			box2.segments[2]._reversePath = box1.segments[0]
 			box1.segments[2]._reversePath = box2.segments[0]
 			box2.segments[0]._reversePath = box1.segments[2]
-			boxes = [box1, box2]
 
-		for box in boxes:
+		for box in [box1, box2]:
 			box._createdBySubdivisionAxis = axis
-		return boxes
+			box._parentBox = self
+		self._childBoxes = [box1, box2]
+
 
 	def randomPoint(self):
 		""" Returns a random point inside the Annulus """
@@ -639,6 +645,9 @@ class PolarRect(Contour):
 
 		for box in [box1, box2]:
 			box._createdBySubdivisionAxis = axis
+			box._parentBox = self
+		self._childBoxes = [box1, box2]
+
 		return box1, box2
 
 	def randomPoint(self):
@@ -736,6 +745,9 @@ class Rectangle(Contour):
 
 		for box in [box1, box2]:
 			box._createdBySubdivisionAxis = axis
+			box._parentBox = self
+		self._childBoxes = [box1, box2]
+
 		return box1, box2
 
 	def randomPoint(self):
