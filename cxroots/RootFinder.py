@@ -183,14 +183,14 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity=numberOfRoots)
 			continue
 
-		# if all the roots within the box have been located then just exit
+		# if all the roots within the box have been located then coninue to the next box
 		numberOfKnownRootsInBox = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)])
 		# print('box', box, 'N', numberOfRoots, 'knownN', numberOfKnownRootsInBox)
 		# print(roots)
 		# print(multiplicities)
 
 		if numberOfRoots == numberOfKnownRootsInBox:
-			break
+			continue
 
 		# if there are too many roots within the contour then subdivide
 		# if there are any known roots within the contour then subdivide (so as not to waste resources re-approximating them)
