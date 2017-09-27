@@ -51,7 +51,6 @@ def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmet
 				C = Circle(root, 1e-2)
 				# multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol=newtonStepTol)[1]
 				multiplicity, = C.approximate_roots(f, df, rootTol=newtonStepTol)[1]
-				print('root', root, 'multiplicity', multiplicity)
 
 			multiplicities.append(multiplicity)
 
