@@ -40,9 +40,10 @@ def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmet
 		if originalContour.contains(root):
 			roots.append(root)
 			if multiplicity is None:
-				multiplicities.append(find_multiplicity(root, f, df, rootErrTol, dx=newtonStepTol))
-			else:
-				multiplicities.append(multiplicity)
+				C = Circle(root, 1e-2)
+				multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol)[1]
+			
+			multiplicities.append(multiplicity)
 
 		# check to see if there are any other roots implied by the given symmetry
 		if guessRootSymmetry is not None:
@@ -50,21 +51,6 @@ def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmet
 				root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
 				if root is not None:
 					addRoot(root, roots, multiplicities, originalContour, f, df, None, newtonStepTol, rootErrTol, newtonMaxIter)
-
-def find_multiplicity(root, f, df=None, rootErrTol=1e-12, dx=1e-8):
-	# given a root of the function f find determine the multiplicity
-	# of the root numerically
-	i, f_root = 0, f(root)
-	while abs(f_root) < rootErrTol:
-		i += 1
-		if df == None:
-			f_root = scipy.misc.derivative(f, root, dx=dx, n=i, order=2*i+1)
-		else:
-			if i == 1:
-				f_root = df(root)
-			else:
-				f_root = scipy.misc.derivative(df, root, dx=dx, n=i-1, order=2*(i-1)+1)
-	return i
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-12,
@@ -223,7 +209,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 				if root is not None:
 					# if we found a root add it to the list of known roots
-					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity)
 
 			# if we haven't found all the roots then subdivide further
 			if numberOfRoots != sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)]):
