@@ -762,6 +762,6 @@ def divisionFactorGen():
 	x = 0.5
 	yield x
 	for power in [1e1, 1e2, 1e3]:
-		for diff in np.linspace(0, 0.5, 1+power/2)[1:-1]:
+		for diff in np.linspace(0, 0.5, int(1+power/2))[1:-1]:
 			yield x + diff
 			yield x - diff
