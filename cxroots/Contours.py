@@ -373,6 +373,11 @@ class Contour(object):
 		multiplicities = np.dot(s, np.linalg.inv(V))
 		multiplicities = np.round(multiplicities)
 
+		# remove any roots with multiplicity zero
+		zeroArgs = np.where(multiplicities == 0)
+		multiplicities = np.delete(multiplicities, zeroArgs)
+		roots = np.delete(roots, zeroArgs)
+
 		return tuple(roots), tuple(multiplicities)
 
 	def roots(self, f, df=None, **kwargs):
