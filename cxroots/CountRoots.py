@@ -5,7 +5,7 @@ import scipy.integrate
 import warnings
 import numdifftools.fornberg as ndf
 
-def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10):
+def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10, method='quad'):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -26,38 +26,59 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	if df is None:
 		approx_df = True
 
-	# XXX: define err as the difference between successive iterations of the Romberg
-	# 	   method for the same number of points?
-	while (len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
-		N = 2*N
-		t = np.linspace(0,1,N+1)
-		k = int(np.log2(len(t)-1))
-		dt = t[1]-t[0]
+	if approx_df or method == 'romb':
+		# XXX: define err as the difference between successive iterations of the Romberg
+		# 	   method for the same number of points?
+		while (len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
+			N = 2*N
+			t = np.linspace(0,1,N+1)
+			k = int(np.log2(len(t)-1))
+			dt = t[1]-t[0]
 
-		# compute/retrieve function evaluations
-		fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
-		phiVal = np.array([phi(segment(t)) for segment in C.segments])
-		psiVal = np.array([psi(segment(t)) for segment in C.segments])
+			# compute/retrieve function evaluations
+			fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
+			phiVal = np.array([phi(segment(t)) for segment in C.segments])
+			psiVal = np.array([psi(segment(t)) for segment in C.segments])
 
-		if approx_df:
-			### approximate df/dz with finite difference, see: numdifftools.fornberg
-			# interior stencil size = 2*m + 1
-			# boundary stencil size = 2*m + 2
-			m = 1
-			dfdt = [ndf.fd_derivative(fx, t, n=1, m=m) for fx in fVal]
-			dfVal = [dfdt[i]/segment.dzdt(t) for i, segment in enumerate(C.segments)]
+			if approx_df:
+				### approximate df/dz with finite difference, see: numdifftools.fornberg
+				# interior stencil size = 2*m + 1
+				# boundary stencil size = 2*m + 2
+				m = 1
+				dfdt = [ndf.fd_derivative(fx, t, n=1, m=m) for fx in fVal]
+				dfVal = [dfdt[i]/segment.dzdt(t) for i, segment in enumerate(C.segments)]
 
-		else:
-			dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
+			else:
+				dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
 
-		segment_integrand = [phiVal[i]*psiVal[i]*dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
-		segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
-		I.append(sum(segment_integral))
+			segment_integrand = [phiVal[i]*psiVal[i]*dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
+			segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
+			I.append(sum(segment_integral))
 
-		# if k > 1:
-		# 	print(k, I[-1], 'aTol:', abs(I[-2] - I[-1]), 'relTol', abs(I[-2] - I[-1])/abs(I[-1]))
+		return I[-1], abs(I[-2] - I[-1])
 
-	return I[-1], abs(I[-2] - I[-1])
+	elif method == 'quad':
+		I, err = 0, 0
+		for segment in C.segments:
+			def integrand(t):
+				z = segment(t)
+				return (phi(z)*psi(z) * df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+
+			# integrate real part
+			integrand_real = lambda t: np.real(integrand(t))
+			result_real = scipy.integrate.quad(integrand_real, 0, 1, full_output=1, epsabs=absTol, epsrel=relTol)
+			I_real, abserr_real, infodict_real = result_real[:3]
+
+			# integrate imaginary part			
+			integrand_imag = lambda t: np.imag(integrand(t))
+			result_imag = scipy.integrate.quad(integrand_imag, 0, 1, full_output=1, epsabs=absTol, epsrel=relTol)
+			I_imag, abserr_imag, infodict_imag = result_imag[:3]
+
+			I   += I_real + 1j*I_imag
+			err += abserr_real + 1j*abserr_imag
+
+		return I, abs(err)
+
 
 class RootError(RuntimeError):
 	pass
