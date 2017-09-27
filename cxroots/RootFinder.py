@@ -40,9 +40,11 @@ def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmet
 		if originalContour.contains(root):
 			roots.append(root)
 			if multiplicity is None:
+				from .Contours import Circle
 				C = Circle(root, 1e-2)
-				multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol)[1]
-			
+				# multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol=newtonStepTol)[1]
+				multiplicity, = C.approximate_roots(f, df, rootTol=newtonStepTol)[1]
+
 			multiplicities.append(multiplicity)
 
 		# check to see if there are any other roots implied by the given symmetry
@@ -209,7 +211,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 				if root is not None:
 					# if we found a root add it to the list of known roots
-					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, multiplicity)
+					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, approxRootMultiplicity)
 
 			# if we haven't found all the roots then subdivide further
 			if numberOfRoots != sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)]):
