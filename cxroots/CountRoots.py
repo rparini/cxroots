@@ -207,9 +207,10 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 			I.append(sum(segment_integral))
 
 			# print('k', k, 'I[-1]', I[-1])
+			if np.isnan(I[-1]):
+				raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
 
-			# if np.isnan(I[-1]):
-			# 	raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
+
 
 	numberOfZeros = int(round(I[-1].real))
 	return numberOfZeros
