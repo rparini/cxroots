@@ -166,6 +166,9 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 		k = int(np.log2(len(t)-1))
 		dt = t[1]-t[0]
 
+		if k > divMax:
+			break
+
 		# compute/retrieve function evaluations
 		fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
 
