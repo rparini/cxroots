@@ -570,7 +570,7 @@ class PolarRect(Contour):
 		super(PolarRect, self).__init__(segments)
 
 	def __str__(self):
-		return 'Polar rectangle: r0=%.3f, r1=%.3f, phi0=%.3f, phi1=%.3f' % (self.rRange[0], self.rRange[1], self.phiRange[0], self.phiRange[1])
+		return 'Polar rectangle: center=%.3f, r0=%.3f, r1=%.3f, phi0=%.3f, phi1=%.3f' % (self.center, self.rRange[0], self.rRange[1], self.phiRange[0], self.phiRange[1])
 	
 	@property
 	def centralPoint(self):
