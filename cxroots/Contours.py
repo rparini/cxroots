@@ -433,12 +433,12 @@ class Circle(Contour):
 			box1.segments[1]._reversePath = box2.segments[0]
 			box2.segments[0]._reversePath = box1.segments[1]
 
-			for box in [box1, box2]:
-				box._createdBySubdivisionAxis = axis
-				box._parentBox = self
-				self._childBoxes = [box1, box2]
+		for box in [box1, box2]:
+			box._createdBySubdivisionAxis = axis
+			box._parentBox = self
+			self._childBoxes = [box1, box2]
 
-			return box1, box2
+		return box1, box2
 
 	def randomPoint(self):
 		""" Returns a random point inside the Circle """
