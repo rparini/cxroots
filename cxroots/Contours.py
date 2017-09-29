@@ -529,6 +529,7 @@ class Annulus(Contour):
 			box._parentBox = self
 		self._childBoxes = [box1, box2]
 
+		return box1, box2
 
 	def randomPoint(self):
 		""" Returns a random point inside the Annulus """
