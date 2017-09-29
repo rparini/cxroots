@@ -383,7 +383,7 @@ class Contour(object):
 	def roots(self, f, df=None, **kwargs):
 		return findRoots(self, f, df, **kwargs)
 
-	def demo_findRoots(self, *args, **kwargs):
+	def demo_roots(self, *args, **kwargs):
 		return demo_findRoots(self, *args, **kwargs)
 
 class Circle(Contour):
