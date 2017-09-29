@@ -15,8 +15,8 @@ def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTo
 	numberOfRoots = None
 	for subBoxes in parentBox.subdivisions():
 		# if a box has already been used and caused an error then skip it
-		failedBoxDescriptions = list(map(str, failedBoxes))
-		if str(subBoxes[0]) in failedBoxDescriptions or str(subBoxes[1]) in failedBoxDescriptions:
+		failedBoxDesc = list(map(str, failedBoxes))
+		if np.any([boxDesc in failedBoxDesc for boxDesc in list(map(str, subBoxes))]):
 			continue
 
 		# XXX: if a root is near to a box then subdivide again?
