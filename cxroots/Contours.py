@@ -590,7 +590,7 @@ class PolarRect(Contour):
 		
 		phi = np.mod(self.phiRange, 2*pi)
 		if phi[0] > phi[1]:
-			angleCorrect = phi[0] < angle < 2*pi or 0 < angle < phi[1]
+			angleCorrect = phi[0] < angle <= 2*pi or 0 <= angle < phi[1]
 		else:
 			angleCorrect = phi[0] < angle < phi[1]
 
