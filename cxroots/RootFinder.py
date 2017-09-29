@@ -222,31 +222,32 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 					root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
 					# print('refined root', root)
 
-				# if the root is very close to the contour then disregard this contour and compute the root multiplicity directly
-				# XXX: implement a distance function returning the shortest distance from a point to any point on a contour
-				t = np.linspace(0,1,10001) 
-				if np.any(np.abs(box(t) - root) < 1/integrandUpperBound):
-					parent = box._parentBox
-					siblings = parent._childBoxes
-					siblings.remove(box)
-
-					# remove siblings from boxes
-					parent_numberOfRoots = numberOfRoots
-					sibling_subBoxes = [(C, C_NumberOfRoots) for C, C_NumberOfRoots in boxes if C in siblings]
-					for C, C_NumberOfRoots in sibling_subBoxes:
-						parent_numberOfRoots += C_NumberOfRoots
-						boxes.remove((C, C_NumberOfRoots))
-
-					# put the parent box back into the list of boxes to subdivide again
-					boxes.append((parent, parent_numberOfRoots))
-
-					# compute the root multiplicity directly
-					approxRootMultiplicity = None
-
-					# do not use this box again
-					failedBoxes.append(box)
-
 				if root is not None:
+					# if the root is very close to the contour then disregard this contour and compute the root multiplicity directly
+					# XXX: implement a distance function returning the shortest distance from a point to any point on a contour
+					t = np.linspace(0,1,10001) 
+					if np.any(np.abs(box(t) - root) < 1/integrandUpperBound):
+						parent = box._parentBox
+						siblings = parent._childBoxes
+						siblings.remove(box)
+
+						# remove siblings from boxes
+						parent_numberOfRoots = numberOfRoots
+						sibling_subBoxes = [(C, C_NumberOfRoots) for C, C_NumberOfRoots in boxes if C in siblings]
+						for C, C_NumberOfRoots in sibling_subBoxes:
+							parent_numberOfRoots += C_NumberOfRoots
+							boxes.remove((C, C_NumberOfRoots))
+
+						# put the parent box back into the list of boxes to subdivide again
+						boxes.append((parent, parent_numberOfRoots))
+
+						# compute the root multiplicity directly
+						approxRootMultiplicity = None
+
+						# do not use this box again
+						failedBoxes.append(box)
+
+					
 					# if we found a root add it to the list of known roots
 					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, integrandUpperBound, approxRootMultiplicity)
 
