@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/rparini/cxroots.svg?branch=master)](https://travis-ci.org/rparini/cxroots)
 
 # cxroots
 A Python module to compute all the (simple) roots of an analytic function within a given contour.
