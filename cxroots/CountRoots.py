@@ -84,7 +84,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 class RootError(RuntimeError):
 	pass
 
-def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3, divMax=10):
+def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3, divMax=20, absTol=1e-4):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -210,6 +210,9 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 			I.append(sum(segment_integral))
 
 			# print('k', k, 'I[-1]', I[-1])
+			if k>1 and abs(I[-2].real - I[-1].real) < absTol:
+				raise RootError("The number of enclosed roots has not converged to an integer")
+
 			if np.isnan(I[-1]):
 				raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
 
