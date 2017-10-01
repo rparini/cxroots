@@ -80,7 +80,7 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, callback=None):
 		if callback is not None and callback(x, dx, y, iteration+1):
 			break
 
-		if abs(dx) < steptol and abs(y) < roottol:
+		if abs(dx) < steptol or abs(y) < roottol:
 			break
 
 	return x, abs(y)
@@ -139,7 +139,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 		if callback is not None and callback(x2, dx, y2, iteration+1):
 			break
 
-		if abs(dx) < steptol and abs(y2) < roottol:
+		if abs(dx) < steptol or abs(y2) < roottol:
 			break
 
 	return x2, abs(y2)
