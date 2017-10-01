@@ -16,10 +16,17 @@ def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-12, maxIter=20):
 		except (RuntimeError, OverflowError):
 			return None
 	else:
-		# if only f is given then use secant method
-		# XXX: Perhaps implement Muller's method to use in the case were df is unavailable? 
+		# Secant method: 
 		x1, x2 = x0, x0*(1 + 1e-4) + 1e-4
 		root, err = secant(x1, x2, f, steptol, roottol, maxIter)
+
+		# XXX: Secant method is very slow to converge.  Use Muller's method instead?
+		# Muller's method: uses 3 initial points
+
+		# import mpmath # XXX: mpmath insists on functions accepting mpc which is inconvenient
+		# x1, x2, x3 = x0, x0*(1 + 1e-4) + 1e-4, x0*(1 + 2e-4) + 2e-4
+		# root = mpmath.findroot(f, (x1, x2, x3), solver='muller', tol=roottol, verbose=False, verify=False)
+		# err = abs(root)
 
 	if err < roottol:
 		return root
