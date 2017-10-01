@@ -1,4 +1,4 @@
 scipy
 numpy
 matplotlib
-numdifftools
+git+git://github.com/rparini/numdifftools@master#egg=numdifftools
