@@ -114,14 +114,17 @@ class TestRootfinding_151(unittest.TestCase, TestRootfinding):
 		self.f  = lambda z: exp(3*z) + 2*z*cos(z) - 1
 		self.df = lambda z: 3*exp(3*z) + 2*cos(z) - 2*z*sin(z)
 
-		self.roots = [-1.84423395326221337491592440,
+		self.roots = np.array([-1.84423395326221337491592440,
 				 0,
 				 0.5308949302929305274642203840 - 1.331791876751120981651544228j,
-				 0.5308949302929305274642203840 + 1.331791876751120981651544228j]
+				 0.5308949302929305274642203840 + 1.331791876751120981651544228j], dtype=complex)
 		self.multiplicities = [1,1,1,1]
 
 	def test_rootfinding_b_df(self):
 		roots_approx_equal(self.C.roots(self.f, self.df, M=2), (self.roots, self.multiplicities), decimal=12)
+
+	def test_rootfinding_b_f(self):
+		roots_approx_equal(self.C.roots(self.f, M=2), (self.roots, self.multiplicities), decimal=12)
 
 class TestRootfinding_152(unittest.TestCase, TestRootfinding):
 	def setUp(self):
