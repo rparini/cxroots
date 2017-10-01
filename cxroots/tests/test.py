@@ -123,22 +123,3 @@ def test_multiplicity():
 	print('With f - multiplicity:', find_multiplicity(1, f))
 	print('With f & df - multiplicity:', find_multiplicity(1, f, df))
 
-
-if __name__ == '__main__':
-	# rootfinding_AnnularCombustionChamber()
-
-
-	# rootfinding_RingOscillator(), # XXX: Not working
-
-	# rootfinding_polynomial()
-	# rootfinding_realCoeffPoly()
-
-	# print('-- Newton --')
-	# test_newton()
-	# print('-- Secant --')
-	# test_secant()
-
-	# ex2b()
-
-	# rootfinding_RingOscillator()
-
