@@ -18,7 +18,6 @@ import scipy.integrate
 import scipy.linalg
 from scipy import pi, exp, sin, log
 import scipy
-from functools import lru_cache
 
 from .CountRoots import count_enclosed_roots, prod
 from .RootFinder import findRoots, demo_findRoots
@@ -256,7 +255,6 @@ class Contour(object):
 		segmentTol = tol/len(self.segments)
 		return sum([segment.integrate(f, segmentTol, rombergDivMax, show) for segment in self.segments])
 
-	@lru_cache(maxsize=None)
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
