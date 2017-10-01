@@ -155,13 +155,15 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 	I = []
 	integrandMax = []
 
+	minimum_iterations = 2
 	approx_df = False
 	if df is None:
 		approx_df = True
+		minimum_iterations = 5
 
 	# XXX: define err as the difference between successive iterations of the Romberg
 	# 	   method for the same number of points?
-	while len(I) < 2 or abs(I[-2] - I[-1]) > integerTol or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol or int(round(I[-1].real)) < 0:
+	while len(I) < minimum_iterations or abs(I[-2] - I[-1]) > integerTol or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol or int(round(I[-1].real)) < 0:
 		N = 2*N
 		t = np.linspace(0,1,N+1)
 		k = int(np.log2(len(t)-1))
