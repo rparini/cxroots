@@ -4,13 +4,12 @@ from numpy import inf, pi
 import scipy.integrate
 import math
 
-from cxroots.Contours import Circle, Rectangle
-
 def CxDeriv(f, contour=None):
 	"""
 	Compute derivaive of an analytic function using Cauchy's Integral Formula for Derivatives
 	"""
 	if contour is None:
+		from cxroots.Contours import Circle
 		C = lambda z0: Circle(z0, 1e-3)
 	else:
 		C = lambda z0: contour
