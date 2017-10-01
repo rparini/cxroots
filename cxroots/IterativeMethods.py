@@ -1,5 +1,4 @@
 from __future__ import division
-# import scipy.optimize
 
 def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-12, maxIter=20):
 	# iterate to a root using initial point x0
@@ -8,6 +7,7 @@ def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-12, maxIter=20):
 			# uses Newton-Raphson method if f and df are given.
 
 			# SciPy implementation
+			# import scipy.optimize
 			# root = scipy.optimize.newton(f, x0, df, tol=steptol, maxiter=maxIter)
 			# err = abs(f(root))
 			
