@@ -14,7 +14,7 @@ def CxDeriv(f, contour=None):
 	else:
 		C = lambda z0: contour
 
-	def df(z0, n):
+	def df(z0, n=1):
 		integrand = lambda z: f(z)/(z-z0)**(n+1)
 		return C(z0).integrate(integrand) * math.factorial(n)/(2j*pi)
 
