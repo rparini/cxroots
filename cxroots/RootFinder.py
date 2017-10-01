@@ -39,6 +39,9 @@ def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTo
 			Consider increasing the integrandUpperBound to allow contours closer to roots to be integrated.""" % parentBox)
 
 	boxDeque.extend([(box, numberOfRoots[i]) for i, box in enumerate(subBoxes) if numberOfRoots[i] != 0])
+
+	for i, box in enumerate(subBoxes):
+		box._numberOfRoots = numberOfRoots[i]
 		
 def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, integrandUpperBound,  multiplicity=None):
 	# check that the root we have found is distinct from the ones we already have
@@ -155,6 +158,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	try:
 		# total number of zeros, including multiplicities
 		totNumberOfRoots = originalContour.count_roots(f, df, integerTol, integrandUpperBound, divMax)
+		originalContour._numberOfRoots = totNumberOfRoots
 	except RuntimeError:
 		raise RuntimeError("""
 			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
