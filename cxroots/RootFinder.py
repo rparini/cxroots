@@ -182,6 +182,46 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	while boxes:
 		box, numberOfRoots = boxes.pop()
 
+		def remove_relations(C):
+			# remove itself
+			try:
+				boxes.remove((C, C._numberOfRoots))
+			except ValueError:
+				pass
+
+			# get all direct relations
+			# siblings:
+			relations = C._parentBox._childBoxes 
+			relations.remove(C)
+
+			# children:
+			if hasattr(C, '_childBoxes'):
+				relations.extend(C._childBoxes)
+
+			# interate over all relations
+			for relation in relations:
+				remove_relations(relation)
+
+		# if a known root is too near this box then reverse the subdivision that created it 
+		t = np.linspace(0,1,10001) 
+		if np.any([np.any(np.abs(box(t) - root) < 1/integrandUpperBound) for root in roots]):
+			# remove the box and any relations
+			remove_relations(box)
+
+			# put the parent box back into the list of boxes to subdivide again
+			parent = box._parentBox
+			boxes.append((parent, parent._numberOfRoots))
+
+			# compute the root multiplicity directly
+			approxRootMultiplicity = None
+
+			# do not use this box again
+			failedBoxes.append(box)
+
+			continue
+
+		# print(numberOfRoots, box)
+
 		# if box is smaller than the newtonStepTol then just assume that the root is
 		# at the center of the box, print a warning and move on
 		if box.area < newtonStepTol:
@@ -198,9 +238,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		# if all the roots within the box have been located then coninue to the next box
 		numberOfKnownRootsInBox = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)])
 		# print('box', box, 'N', numberOfRoots, 'knownN', numberOfKnownRootsInBox)
-		# print(roots)
-		# print(multiplicities)
-
+		
 		if numberOfRoots == numberOfKnownRootsInBox:
 			continue
 
@@ -231,26 +269,18 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 					# XXX: implement a distance function returning the shortest distance from a point to any point on a contour
 					t = np.linspace(0,1,10001) 
 					if np.any(np.abs(box(t) - root) < 1/integrandUpperBound):
-						parent = box._parentBox
-						siblings = parent._childBoxes
-						siblings.remove(box)
-
-						# remove siblings from boxes
-						parent_numberOfRoots = numberOfRoots
-						sibling_subBoxes = [(C, C_NumberOfRoots) for C, C_NumberOfRoots in boxes if C in siblings]
-						for C, C_NumberOfRoots in sibling_subBoxes:
-							parent_numberOfRoots += C_NumberOfRoots
-							boxes.remove((C, C_NumberOfRoots))
+						# remove the box and any relations
+						remove_relations(box)
 
 						# put the parent box back into the list of boxes to subdivide again
-						boxes.append((parent, parent_numberOfRoots))
+						parent = box._parentBox
+						boxes.append((parent, parent._numberOfRoots))
 
 						# compute the root multiplicity directly
 						approxRootMultiplicity = None
 
 						# do not use this box again
 						failedBoxes.append(box)
-
 					
 					# if we found a root add it to the list of known roots
 					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, integrandUpperBound, approxRootMultiplicity)
