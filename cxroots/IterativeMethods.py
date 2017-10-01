@@ -22,6 +22,12 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
 
 		# XXX: Secant method is very slow to converge.  Use Muller's method instead?
 		# Muller's method: uses 3 initial points
+		# git+git://github.com/mnishida/PyMuller@master#egg=pymuller
+		# from pymuller import Muller
+		# muller = Muller(f, 1, args=None, xis=[x0], dxs=[1e-4*(1+x0)], xtol=steptol, ftol=0, maxiter=maxIter)
+		# muller()
+		# root = muller.roots[0]
+		# err = abs(root)
 
 		# import mpmath # XXX: mpmath insists on functions accepting mpc which is inconvenient
 		# x1, x2, x3 = x0, x0*(1 + 1e-4) + 1e-4, x0*(1 + 2e-4) + 2e-4
@@ -131,6 +137,8 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 		x1, x2 = x2, x1
 		y1, y2 = y2, y1
 
+	# print('--secant--')
+
 	for iteration in range(maxIter):
 		dx =  -(x2-x1)*y2/(y2-y1)
 		x1, x2 = x2, x2 + dx
@@ -141,5 +149,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 
 		if abs(dx) < steptol or abs(y2) < roottol:
 			break
+
+		# print(iteration, x2, abs(y2))
 
 	return x2, abs(y2)
