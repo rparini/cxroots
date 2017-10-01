@@ -11,14 +11,14 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
 			# root = scipy.optimize.newton(f, x0, df, tol=steptol, maxiter=maxIter)
 			# err = abs(f(root))
 			
-			root, err = newton(x0, f, df, steptol, roottol, maxIter)
+			root, err = newton(x0, f, df, steptol, 0, maxIter)
 
 		except (RuntimeError, OverflowError):
 			return None
 	else:
 		# Secant method: 
 		x1, x2 = x0, x0*(1 + 1e-4) + 1e-4
-		root, err = secant(x1, x2, f, steptol, roottol, maxIter)
+		root, err = secant(x1, x2, f, steptol, 0, maxIter)
 
 		# XXX: Secant method is very slow to converge.  Use Muller's method instead?
 		# Muller's method: uses 3 initial points
