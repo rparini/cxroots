@@ -367,7 +367,6 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, return
 
 	plt.show()
 
-	return roots, multiplicities
 
 def showRoots(originalContour, f, df=None, **kwargs):
 	"""
