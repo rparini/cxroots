@@ -376,7 +376,7 @@ def showRoots(originalContour, f, df=None, **kwargs):
 	"""
 	import matplotlib.pyplot as plt
 	originalContour.plot(linecolor='k', linestyle='--')
-	roots = findRoots(originalContour, f, df, **kwargs)
+	roots, multiplicities = findRoots(originalContour, f, df, **kwargs)
 	plt.scatter(np.real(roots), np.imag(roots), color='k', marker='x')
 	plt.show()
 
