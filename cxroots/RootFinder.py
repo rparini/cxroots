@@ -256,7 +256,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 				# attempt to refine the root
 				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
 
-				# print('approx', approxRoot, 'refined root', root)
+				print('approx', approxRoot, 'refined root', root)
 
 				if abs(f(approxRoot)) < rootErrTol and (root is None or abs(f(approxRoot)) < abs(f(root))):
 					# stick with the original approximation
