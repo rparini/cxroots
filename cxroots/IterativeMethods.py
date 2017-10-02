@@ -151,7 +151,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 		if callback is not None and callback(x2, dx, y2, iteration+1):
 			break
 
-		print(iteration, x2, abs(y2))
+		print(iteration, x2, abs(dx), abs(y2))
 
 		if abs(dx) < steptol or abs(y2) < roottol:
 			break
