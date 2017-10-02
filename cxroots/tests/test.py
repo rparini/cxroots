@@ -31,8 +31,9 @@ def rootfinding_AnnularCombustionChamber():
 	rectangle = Rectangle([-15000,5000], [-15000,15000])
 	# roots_fdf = rectangle.roots(f, df, integrandUpperBound=np.inf, rootErrTol=1e-8)
 	# roots_fdf = rectangle.demo_findRoots(f, df, automaticAnimation=True, integrandUpperBound=np.inf, rootErrTol=1e-8)
+	roots_fdf = rectangle.demo_roots(f, df, automaticAnimation=True)
 	# roots_f   = rectangle.roots(f)
-	roots_f = rectangle.demo_findRoots(f, automaticAnimation=True, integrandUpperBound=np.inf, rootErrTol=1e-8, M=1)
+	# roots_f = rectangle.demo_findRoots(f, automaticAnimation=True, integrandUpperBound=np.inf, rootErrTol=1e-8, M=1)
 
 	# compare with fig 3 of [DSZ]
 	import matplotlib.pyplot as plt
@@ -65,8 +66,10 @@ def rootfinding_RingOscillator():
 
 
 	box = Rectangle([-12,0], [-40,40])
-	roots_fdf = findRoots(box, f, df)
+	roots_fdf = findRoots(box, f, df, integrandUpperBound=1e6)
 	# roots_f = findRoots(box, f)
+
+	print(roots_fdf)
 
 	# # XXX: There don't seem to be any roots within the initial contour?
 	# # 	Perhaps there is an issue with the coefficents of z being very small?
@@ -78,21 +81,6 @@ def rootfinding_RingOscillator():
 	# plt.scatter(np.real(roots_fdf), np.imag(roots_fdf), marker='+')
 	# plt.scatter(np.real(roots_f), np.imag(roots_f), marker='x')
 	# plt.show()
-
-
-def rootfinding_realCoeffPoly():
-	from cxroots import Circle, Rectangle, PolarRect, findRoots, showRoots
-
-	circle = Circle(0, 1.5)
-
-	# time it
-	f = lambda z: z**27-2*z**11+0.5*z**6-1
-	df = lambda z: 27*z**26-22*z**10+3*z**5
-
-	# findRoots(circle, f, df)
-
-	conjugateSymmetry = lambda z: [z.conjugate()]
-	showRoots(circle, f, df, guessRootSymmetry = conjugateSymmetry)
 
 def simple_test(demo=False):
 	from cxroots import Rectangle, showRoots, demo_findRoots, findRoots
@@ -123,3 +111,6 @@ def test_multiplicity():
 	print('With f - multiplicity:', find_multiplicity(1, f))
 	print('With f & df - multiplicity:', find_multiplicity(1, f, df))
 
+
+if __name__ == '__main__':
+	test_multiplicity()
