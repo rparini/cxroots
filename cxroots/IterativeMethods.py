@@ -77,7 +77,7 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, callback=None):
 
 	# XXX: Could use deflated polynomials to ensure that known roots are not found again?
 	
-	print('--newton--')
+	# print('--newton--')
 
 	x, y = x0, f(x0)
 	for iteration in range(maxIter):
@@ -88,7 +88,7 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, callback=None):
 		if callback is not None and callback(x, dx, y, iteration+1):
 			break
 
-		print(iteration, y, abs(y))
+		# print(iteration, y, abs(y))
 
 		if abs(dx) < steptol or abs(y) < roottol:
 			break
@@ -141,7 +141,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 		x1, x2 = x2, x1
 		y1, y2 = y2, y1
 
-	print('--secant--')
+	# print('--secant--')
 
 	for iteration in range(maxIter):
 		dx =  -(x2-x1)*y2/(y2-y1)
@@ -151,7 +151,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 		if callback is not None and callback(x2, dx, y2, iteration+1):
 			break
 
-		print(iteration, x2, abs(dx), abs(y2))
+		# print(iteration, x2, abs(dx), abs(y2))
 
 		if abs(dx) < steptol or abs(y2) < roottol:
 			break
