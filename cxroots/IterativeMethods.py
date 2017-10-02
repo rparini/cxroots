@@ -17,7 +17,7 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
 			return None
 	else:
 		# Secant method: 
-		x1, x2 = x0, x0*(1 + 1e-4) + 1e-4
+		x1, x2 = x0, x0 + (x0+1)*1e-8
 		root, err = secant(x1, x2, f, steptol, 0, maxIter)
 
 		# XXX: Secant method is very slow to converge.  Use Muller's method instead?
