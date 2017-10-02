@@ -62,7 +62,7 @@ def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmet
 			for x0 in guessRootSymmetry(root):
 				root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
 				if root is not None:
-					addRoot(root, roots, multiplicities, originalContour, f, df, None, newtonStepTol, rootErrTol, newtonMaxIter)
+					addRoot(root, roots, multiplicities, originalContour, f, df, None, newtonStepTol, rootErrTol, newtonMaxIter, integrandUpperBound)
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-12,
