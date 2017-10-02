@@ -169,16 +169,20 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	roots = []
 	multiplicities = []
 	failedBoxes = []
+	boxes = deque()
+	boxes.append((originalContour,totNumberOfRoots))
 
 	# Add given roots 
 	# XXX: check these roots and multiplcities
 	for root, multiplicity in guessRoot:
 		addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
 
+	# yield so that the animation shows the first frame
+	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
+	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
+
 	# print('Tot number of Roots', totNumberOfRoots)
 
-	boxes = deque()
-	boxes.append((originalContour,totNumberOfRoots))
 	while boxes:
 		box, numberOfRoots = boxes.pop()
 
@@ -291,6 +295,9 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
 		yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
 
+	# yield one more time so that the animation shows the final frame
+	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
+
 	if totNumberOfRoots == 0:
 		yield [], [], deque(), 0
 
@@ -304,7 +311,7 @@ def findRoots(originalContour, f, df=None, **kwargs):
 		pass
 	return roots, multiplicities
 
-def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, returnAnim=False, **kwargs):
+def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, saveFile=None, **kwargs):
 	"""
 	An interactive demonstration of the processess used to find all the roots
 	of a given function f within a given originalContour.
@@ -316,8 +323,7 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, return
 	If automaticAnimation is True then the animation will play automatically
 	until all the roots have been found.
 
-	If returnAnim is true the animating object returned by matplotlib's animation.FuncAnimation
-	will be returned, rather than the animation be shown.
+	If saveFile is given as a string then the anmation will be saved
 	"""
 	import matplotlib.pyplot as plt
 	from matplotlib import animation
@@ -351,21 +357,23 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, return
 
 		fig.canvas.draw()
 
+	if saveFile:
+		automaticAnimation = True
 
-	if returnAnim:
-		return animation.FuncAnimation(fig, update_frame, frames=list(rootFinder), interval=500, repeat_delay=2000)
-
-	elif automaticAnimation:
-		ani = animation.FuncAnimation(fig, update_frame, frames=rootFinder, interval=500)
+	if automaticAnimation:
+		anim = animation.FuncAnimation(fig, update_frame, frames=rootFinder, interval=500)
 
 	else:
 		def draw_next(event):
 			if event.key == ' ':
-				update_frame(next(rootFinder))
-
+				update_frame(next(rootFinder)) 
 		fig.canvas.mpl_connect('key_press_event', draw_next)
 
-	plt.show()
+	if saveFile:
+		anim.save(filename=saveFile, fps=1, dpi=200)
+		plt.close()
+	else:
+		plt.show()
 
 
 def showRoots(originalContour, f, df=None, **kwargs):
