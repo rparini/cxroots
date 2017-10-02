@@ -6,6 +6,8 @@ import scipy
 import warnings
 import numdifftools.fornberg as ndf
 
+from .CxDerivative import CxDeriv
+
 def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10, method='quad'):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
@@ -27,7 +29,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	if df is None:
 		approx_df = True
 
-	if approx_df or method == 'romb':
+	if method == 'romb':
 		# XXX: define err as the difference between successive iterations of the Romberg
 		# 	   method for the same number of points?
 		while (len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
@@ -59,6 +61,12 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 		return I[-1], abs(I[-2] - I[-1])
 
 	elif method == 'quad':
+		if approx_df:
+			dx = 1e-8
+			df = lambda z: scipy.misc.derivative(f, z, dx=dx, n=1, order=3)
+			
+			# df = CxDeriv(f) # too slow
+
 		I, err = 0, 0
 		for segment in C.segments:
 			def integrand(t):
