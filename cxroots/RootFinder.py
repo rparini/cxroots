@@ -250,14 +250,13 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		else:
 			# approximate the roots in this box
 			approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol=newtonStepTol)
-			# print('approxRoots', approxRoots)
-			# print('approxRootsAbs', np.abs(f(np.array(approxRoots))))
-			# print('approxRootMultiplicities', approxRootMultiplicities)
 			for approxRoot, approxRootMultiplicity in list(zip(approxRoots, approxRootMultiplicities)):
 				# XXX: if the approximate root is not in this box then desregard and redo the subdivision?
 
 				# attempt to refine the root
 				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+
+				print('approx', approxRoot, 'refined root', root)
 
 				if abs(f(approxRoot)) < rootErrTol and (root is None or abs(f(approxRoot)) < abs(f(root))):
 					# stick with the original approximation

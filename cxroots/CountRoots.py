@@ -29,6 +29,8 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	if df is None:
 		approx_df = True
 
+	print('prod:', C)
+
 	if method == 'romb':
 		# XXX: define err as the difference between successive iterations of the Romberg
 		# 	   method for the same number of points?
@@ -57,6 +59,9 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 			segment_integrand = [phiVal[i]*psiVal[i]*dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
 			segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
 			I.append(sum(segment_integral))
+
+			if k>1:
+				print(k, 'I', I[-1], 'err', I[-2] - I[-1])
 
 		return I[-1], abs(I[-2] - I[-1])
 
@@ -169,6 +174,8 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 		approx_df = True
 		minimum_iterations = 5
 
+	print('counting roots:', C)
+
 	# XXX: define err as the difference between successive iterations of the Romberg
 	# 	   method for the same number of points?
 	while len(I) < minimum_iterations or abs(I[-2] - I[-1]) > integerTol or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol or int(round(I[-1].real)) < 0:
@@ -217,7 +224,9 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 			segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
 			I.append(sum(segment_integral))
 
-			# print('k', k, 'I[-1]', I[-1])
+			if k>1:
+				print(k, 'I', I[-1], 'err', abs(I[-2] - I[-1]), absTol)
+
 			if k>1 and abs(I[-2].real - I[-1].real) < absTol:
 				raise RootError("The number of enclosed roots has not converged to an integer")
 
