@@ -20,7 +20,7 @@ from scipy import pi, exp, sin, log
 import scipy
 
 from .CountRoots import count_enclosed_roots, prod
-from .RootFinder import findRoots, demo_findRoots
+from .RootFinder import findRoots, demo_findRoots, showRoots
 
 class ComplexPath(object):
 	""" A base class for paths in the complex plane """
@@ -383,6 +383,9 @@ class Contour(object):
 
 	def demo_roots(self, *args, **kwargs):
 		return demo_findRoots(self, *args, **kwargs)
+
+	def show_roots(self, *args, **kwargs):
+		return showRoots(self, *args, **kwargs)
 
 class Circle(Contour):
 	"""A positively oriented circle."""
