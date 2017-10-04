@@ -55,7 +55,7 @@ def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmet
 				# multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol=newtonStepTol)[1]
 				multiplicity, = C.approximate_roots(f, df, rootTol=newtonStepTol)[1]
 
-			multiplicities.append(multiplicity)
+			multiplicities.append(multiplicity.real)
 
 		# check to see if there are any other roots implied by the given symmetry
 		if guessRootSymmetry is not None:
