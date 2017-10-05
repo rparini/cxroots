@@ -7,17 +7,17 @@ A Python module to compute all the roots of an analytic function $f(z)$ within a
 The implementation is based on the method in [1].
 
 ```python
-from cxroots import Rectangle
-from numpy import sin, cos
+from cxroots import Circle
+from numpy import exp, cos, sin
 
-f = lambda z: (sin(z)*cos(z/2)-2*z**5)*(z**2+1)*(z**2-1)**2
+f = lambda z: (z*(z+2))**2 * (exp(2*z)*cos(z)-1-sin(z)+z**5)
 
-rect = Rectangle([-1.5,1.5],[-2,2])
-rect.print_roots(f)
+C = Circle(0,3)
+C.print_roots(f)
 ```
 
-```python
-rect.show_roots(f)
+```{python, f_size = (4,4)}
+C.show_roots(f)
 ```
 
 ### Installation

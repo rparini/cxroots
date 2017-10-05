@@ -85,6 +85,8 @@ class ComplexPath(object):
 		plt.plot(path.real, path.imag, color=linecolor, linestyle=linestyle)
 		plt.xlabel('Re[$z$]', size=16)
 		plt.ylabel('Im[$z$]', size=16)
+		plt.gca().set_aspect(1)
+		plt.tight_layout()
 
 		# add arrow to indicate direction of path
 		arrow_direction = (self(0.51) - self(0.5))/abs(self(0.51) - self(0.5))
