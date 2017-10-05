@@ -15,7 +15,7 @@ from .CountRoots import prod, RootError
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10,
 	absTol=0, relTol=1e-12, divMax=20, integerTol=0.07, integrandUpperBound=1e3,
-	M=5):
+	M=5, NintAbsTol=0.07):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.  Based
@@ -105,7 +105,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	"""
 	try:
 		# total number of zeros, including multiplicities
-		totNumberOfRoots = originalContour.count_roots(f, df, integerTol, integrandUpperBound, divMax)
+		totNumberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, integrandUpperBound, divMax)
 		originalContour._numberOfRoots = totNumberOfRoots
 	except RuntimeError:
 		raise RuntimeError("""
@@ -134,7 +134,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 			# XXX: if a root is near to a box then subdivide again?
 
 			try:
-				numberOfRoots = [box.count_roots(f, df, integerTol, integrandUpperBound, divMax) for box in np.array(subBoxes)]
+				numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, integrandUpperBound, divMax) for box in np.array(subBoxes)]
 				if parentBox._numberOfRoots == sum(numberOfRoots):
 					break
 			except RootError:

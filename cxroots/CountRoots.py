@@ -2,12 +2,12 @@ from __future__ import division
 import numpy as np
 from numpy import inf, pi
 import scipy.integrate
-import scipy
+import scipy.misc
 import warnings
 
 from .CxDerivative import CxDeriv
 
-def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10, method='quad'):
+def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10, method='quad', callback=None):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -97,7 +97,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 class RootError(RuntimeError):
 	pass
 
-def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3, divMax=20, absTol=1e-4):
+def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, integrandUpperBound=1e3, divMax=20, method='quad'):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -164,78 +164,19 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 	[DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
 		L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
 	"""
-	import numdifftools.fornberg as ndf
-	
-	N = 1
-	I = []
-	integrandMax = []
+	with warnings.catch_warnings():
+		# ignore warnings and catch if I is NaN later
+		warnings.simplefilter("ignore")
+		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMax=divMax, method=method)
 
-	minimum_iterations = 2
-	approx_df = False
-	if df is None:
-		approx_df = True
-		minimum_iterations = 5
+	if np.isnan(I):
+		raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
 
-	# print('counting roots:', C)
+	elif abs(int(round(I.real)) - I.real) < integerTol and abs(I.imag) < integerTol:
+		# integral is sufficiently close to an integer
+		numberOfZeros = int(round(I.real))
+		return numberOfZeros
 
-	# XXX: define err as the difference between successive iterations of the Romberg
-	# 	   method for the same number of points?
-	while len(I) < minimum_iterations or abs(I[-2] - I[-1]) > integerTol or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol or int(round(I[-1].real)) < 0:
-		N = 2*N
-		t = np.linspace(0,1,N+1)
-		k = int(np.log2(len(t)-1))
-		dt = t[1]-t[0]
+	else:
+		raise RootError("The number of enclosed roots has not converged to an integer")
 
-		if k > divMax:
-			break
-
-		# compute/retrieve function evaluations
-		fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
-
-		if approx_df:
-			### approximate df/dz with finite difference, see: numdifftools.fornberg
-			# interior stencil size = 2*m + 1
-			# boundary stencil size = 2*m + 2
-			m = 1
-			dfdt = [ndf.fd_derivative(fx, t, n=1, m=m) for fx in fVal]
-			dfVal = [dfdt[i]/segment.dzdt(t) for i, segment in enumerate(C.segments)]
-
-		else:
-			dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
-
-
-		with warnings.catch_warnings():
-			warnings.simplefilter("ignore")
-
-			# discard the integration if it is too close to the contour
-			if not approx_df:
-				# if no approximation to df is being made then immediately exit if the 
-				# integrand is too large
-				if np.any(np.abs(dfVal/fVal) > integrandUpperBound):
-					raise RootError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
-
-			else:
-				# if df is being approximated then the integrand might be artificially
-				# large so wait until the maximum value has settled a little
-				integrandMax.append(np.max(np.abs(dfVal/fVal)))
-				if len(integrandMax) > 1 and abs(integrandMax[-2] - integrandMax[-1]) < 0.1*integrandUpperBound:
-					if np.any(np.abs(dfVal/fVal) > integrandUpperBound):
-						raise RootError("The absolute value of the integrand |dfVal/fVal| > integrandUpperBound which indicates that the contour is too close to zero of f(z)")
-
-			segment_integrand = [dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
-			segment_integral  = [scipy.integrate.romb(integrand, dx=dt)/(2j*pi) for integrand in segment_integrand]
-			I.append(sum(segment_integral))
-
-			# if k>1:
-			# 	print(k, 'I', I[-1], 'err', abs(I[-2] - I[-1]), absTol)
-
-			if k>1 and abs(I[-2].real - I[-1].real) < absTol:
-				raise RootError("The number of enclosed roots has not converged to an integer")
-
-			if np.isnan(I[-1]):
-				raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
-
-
-
-	numberOfZeros = int(round(I[-1].real))
-	return numberOfZeros
