@@ -199,6 +199,19 @@ class TestConjugate(unittest.TestCase):
 		roots = self.C.roots(self.f, guessRootSymmetry = self.symmetry)
 		roots_approx_equal(roots, (self.roots, self.multiplicities), decimal=12)
 
+class TestIntroduction(unittest.TestCase, TestRootfinding):
+	def setUp(self):
+		self.C = Circle(0,3)
+		self.f = lambda z: (z*(z+2))**2 * (exp(2*z)*cos(z)-1-sin(z)+z**5)
+		self.df = lambda z: 2*(exp(2*z)*cos(z)-1-sin(z)+z**5)*(z**2*(z+2)+(z+2)**2*z) + (z*(z+2))**2*(2*exp(2*z)*cos(z)-exp(2*z)*sin(z)-cos(z)+5*z**4)
+
+		self.roots = [0, -2,
+					  2.23755778246706002284084684,
+					  -0.6511140702635986824274097994 - 0.3904257190882864369857773146j,
+					  -0.6511140702635986824274097994 + 0.3904257190882864369857773146j,
+					  0.64857808095387581293067569277 - 1.35662268398824203963215495605j,
+					  0.64857808095387581293067569277 + 1.35662268398824203963215495605j]
+		self.multiplicities = [3,2,1,1,1,1,1]
 
 if __name__ == '__main__':
 	unittest.main(verbosity=3)
