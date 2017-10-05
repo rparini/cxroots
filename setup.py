@@ -18,5 +18,6 @@ setup(
     description = 'Find all the roots of a function within a contour in the complex plane',
     author = 'Robert Parini',
     packages = packages,
-    platforms = ['all']
+    platforms = ['all'],
+    install_requires = ['numpy', 'scipy']
 )
