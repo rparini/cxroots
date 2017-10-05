@@ -15,6 +15,7 @@ f = lambda z: (sin(z)*cos(z/2)-2*z**5)*(z**2+1)*(z**2-1)**2
 rect = Rectangle([-1.5,1.5],[-2,2])
 rect.show_roots(f)
 ```
+
 ```python
 rect.print_roots(f)
 ```
@@ -29,7 +30,7 @@ python setup.py install
 For a tutorial on the use of this module and a discrption of how it works see the [documentation](https://rparini.github.io/cxroots/).
 
 ### See also
-The Fortran 90 package [ZEAL](http://cpc.cs.qub.ac.uk/summaries/ADKW_v1_0.html) is a direct implementation of [1] for rectangular initial contours].
+The Fortran 90 package [ZEAL](http://cpc.cs.qub.ac.uk/summaries/ADKW_v1_0.html) is a direct implementation of [1].
 
 ---
 

@@ -20,6 +20,7 @@ rect.show_roots(f)
 ![](figures/readme_input_figure1_1.png)\
 
 
+
 ```python
 rect.print_roots(f)
 ```
@@ -50,7 +51,7 @@ python setup.py install
 For a tutorial on the use of this module and a discrption of how it works see the [documentation](https://rparini.github.io/cxroots/).
 
 ### See also
-The Fortran 90 package [ZEAL](http://cpc.cs.qub.ac.uk/summaries/ADKW_v1_0.html) is a direct implementation of [1] for rectangular initial contours].
+The Fortran 90 package [ZEAL](http://cpc.cs.qub.ac.uk/summaries/ADKW_v1_0.html) is a direct implementation of [1].
 
 ---
 
