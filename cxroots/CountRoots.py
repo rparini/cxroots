@@ -4,7 +4,6 @@ from numpy import inf, pi
 import scipy.integrate
 import scipy
 import warnings
-import numdifftools.fornberg as ndf
 
 from .CxDerivative import CxDeriv
 
@@ -32,6 +31,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	# print('prod:', C)
 
 	if method == 'romb':
+		import numdifftools.fornberg as ndf
 		# XXX: define err as the difference between successive iterations of the Romberg
 		# 	   method for the same number of points?
 		while (len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
