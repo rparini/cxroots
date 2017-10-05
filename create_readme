@@ -1,4 +1,4 @@
 #!/bin/bash
 rm -rf svgs
-jupyter nbconvert --to markdown readme_input.ipynb 
-python3 -m readme2tex --output README.md readme_input.md
+pweave -f markdown --output README.md readme_input.pmd
+python3 -m readme2tex --output README.md README.md
