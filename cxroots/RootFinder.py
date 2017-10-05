@@ -387,3 +387,26 @@ def showRoots(originalContour, f, df=None, **kwargs):
 	plt.scatter(np.real(roots), np.imag(roots), color='k', marker='x')
 	plt.show()
 
+def printRoots(*args, **kwargs):
+	roots, multiplicities = findRoots(*args, **kwargs)
+
+	# reorder roots
+	sortargs = np.argsort(roots)
+	roots, multiplicities = np.array(roots), np.array(multiplicities)
+	roots, multiplicities = roots[sortargs], multiplicities[sortargs]
+
+
+	print(' Multiplicity |               Root              ')
+	print('------------------------------------------------')
+	for i, root in enumerate(roots):
+		if root.real < 0:
+			print('{: ^14d}| {:.12f} {:+.12f}i'.format(int(multiplicities[i]), root.real, root.imag))
+		else:
+			print('{: ^14d}|  {:.12f} {:+.12f}i'.format(int(multiplicities[i]), root.real, root.imag))
+
+		# if root.imag < 0:
+		# 	print('re')
+		# 	print('      %i      | %.12f %+=.12fi' % (multiplicities[i], root.real, root.imag))
+		# else:
+		# 	print('      %i      | %.12f %+=.12fi' % (multiplicities[i], root.real, root.imag))
+
