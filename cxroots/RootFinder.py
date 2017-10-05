@@ -11,62 +11,10 @@ import warnings
 from .IterativeMethods import iterateToRoot
 from .CountRoots import prod, RootError
 
-def subdivide(boxDeque, parentBox, parentBox_numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, failedBoxes):
-	numberOfRoots = None
-	for subBoxes in parentBox.subdivisions():
-		# if a box has already been used and caused an error then skip it
-		failedBoxDesc = list(map(str, failedBoxes))
-		if np.any([boxDesc in failedBoxDesc for boxDesc in list(map(str, subBoxes))]):
-			continue
-
-		# XXX: if a root is near to a box then subdivide again?
-
-		try:
-			numberOfRoots = [box.count_roots(f, df, integerTol, integrandUpperBound, divMax) for box in np.array(subBoxes)]
-			if parentBox_numberOfRoots == sum(numberOfRoots):
-				break
-		except RootError:
-			# If the number of zeros within either of the new contours is not an integer then it is
-			# likely that the introduced line which subdivides 'parentBox' lies on a zero.
-			# To avoid this we will try to place the subdividing line at a different point along 
-			# the division axis
-			continue
-
-	if numberOfRoots is None or parentBox_numberOfRoots != sum(numberOfRoots):
-		# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
-		raise RuntimeError("""Unable to subdivide box:
-			\t%s
-			Consider increasing the integrandUpperBound to allow contours closer to roots to be integrated.""" % parentBox)
-
-	boxDeque.extend([(box, numberOfRoots[i]) for i, box in enumerate(subBoxes) if numberOfRoots[i] != 0])
-
-	for i, box in enumerate(subBoxes):
-		box._numberOfRoots = numberOfRoots[i]
-		
-def addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, integrandUpperBound,  multiplicity=None):
-	# check that the root we have found is distinct from the ones we already have
-	if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
-		# add the root to the list if it is within the original box
-		if originalContour.contains(root):
-			roots.append(root)
-			if multiplicity is None:
-				from .Contours import Circle
-				C = Circle(root, 2/integrandUpperBound)
-				# multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol=newtonStepTol)[1]
-				multiplicity, = C.approximate_roots(f, df, rootTol=newtonStepTol)[1]
-
-			multiplicities.append(multiplicity.real)
-
-		# check to see if there are any other roots implied by the given symmetry
-		if guessRootSymmetry is not None:
-			for x0 in guessRootSymmetry(root):
-				root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
-				if root is not None:
-					addRoot(root, roots, multiplicities, originalContour, f, df, None, newtonStepTol, rootErrTol, newtonMaxIter, integrandUpperBound)
 
 def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10,
-	absTol=1e-12, relTol=1e-12, divMax=20, integerTol=0.25, integrandUpperBound=1e3,
+	absTol=0, relTol=1e-12, divMax=20, integerTol=0.07, integrandUpperBound=1e3,
 	M=5):
 	"""
 	A generator which at each step takes a contour and either finds 
@@ -172,10 +120,68 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 	boxes = deque()
 	boxes.append((originalContour,totNumberOfRoots))
 
+	def subdivide(parentBox):
+		"""
+		Given a contour, parentBox, subdivide it into multiple contours.
+		"""
+		numberOfRoots = None
+		for subBoxes in parentBox.subdivisions():
+			# if a box has already been used and caused an error then skip it
+			failedBoxDesc = list(map(str, failedBoxes))
+			if np.any([boxDesc in failedBoxDesc for boxDesc in list(map(str, subBoxes))]):
+				continue
+
+			# XXX: if a root is near to a box then subdivide again?
+
+			try:
+				numberOfRoots = [box.count_roots(f, df, integerTol, integrandUpperBound, divMax) for box in np.array(subBoxes)]
+				if parentBox._numberOfRoots == sum(numberOfRoots):
+					break
+			except RootError:
+				# If the number of zeros within either of the new contours is not an integer then it is
+				# likely that the introduced line which subdivides 'parentBox' lies on a zero.
+				# To avoid this we will try to place the subdividing line at a different point along 
+				# the division axis
+				continue
+
+		if numberOfRoots is None or parentBox._numberOfRoots != sum(numberOfRoots):
+			# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
+			raise RuntimeError("""Unable to subdivide box:
+				\t%s
+				Consider increasing the integrandUpperBound to allow contours closer to roots to be integrated.""" % parentBox)
+
+		boxes.extend([(box, numberOfRoots[i]) for i, box in enumerate(subBoxes) if numberOfRoots[i] != 0])
+
+		for i, box in enumerate(subBoxes):
+			box._numberOfRoots = numberOfRoots[i]
+
+
+	def addRoot(root, multiplicity=None, useGuessRootSymmetry=None):
+		# check that the root we have found is distinct from the ones we already have
+		if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
+			# add the root to the list if it is within the original box
+			if originalContour.contains(root):
+				roots.append(root)
+				if multiplicity is None:
+					from .Contours import Circle
+					C = Circle(root, 2/integrandUpperBound)
+					# multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, rootTol=newtonStepTol)[1]
+					multiplicity, = C.approximate_roots(f, df, rootTol=newtonStepTol)[1]
+
+				multiplicities.append(multiplicity.real)
+
+			# check to see if there are any other roots implied by the given symmetry
+			if guessRootSymmetry is not None:
+				for x0 in guessRootSymmetry(root):
+					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+					if root is not None:
+						addRoot(root)
+
+
 	# Add given roots 
 	# XXX: check these roots and multiplcities
 	for root, multiplicity in guessRoot:
-		addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+		addRoot(root, multiplicity)
 
 	# yield so that the animation shows the first frame
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
@@ -236,7 +242,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 					\nThe same assumption will be made for future contours this small without an additional warning.  \
 					\nrootErrTol may be too small.'%(numberOfRoots, numberOfRoots))
 			root = box.centralPoint
-			addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, integrandUpperBound, multiplicity=numberOfRoots)
+			addRoot(root,  multiplicity=numberOfRoots)
 			continue
 
 		# if all the roots within the box have been located then coninue to the next box
@@ -249,7 +255,7 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		# if there are too many roots within the contour then subdivide
 		# if there are any known roots within the contour then subdivide (so as not to waste resources re-approximating them)
 		if numberOfKnownRootsInBox > 0 or numberOfRoots > M:
-			subdivide(boxes, box, numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, failedBoxes)
+			subdivide(box)
 
 		else:
 			# approximate the roots in this box
@@ -285,12 +291,12 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 						failedBoxes.append(box)
 					
 					# if we found a root add it to the list of known roots
-					addRoot(root, roots, multiplicities, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter, integrandUpperBound, approxRootMultiplicity)
+					addRoot(root, approxRootMultiplicity)
 
 			# if we haven't found all the roots then subdivide further
 			numberOfKnownRootsInBox = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)])
 			if numberOfRoots != numberOfKnownRootsInBox and box not in failedBoxes:
-				subdivide(boxes, box, numberOfRoots, f, df, absTol, relTol, integerTol, integrandUpperBound, divMax, failedBoxes)
+				subdivide(box)
 
 		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
 		yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
