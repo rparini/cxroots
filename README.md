@@ -14,14 +14,6 @@ from numpy import sin, cos
 f = lambda z: (sin(z)*cos(z/2)-2*z**5)*(z**2+1)*(z**2-1)**2
 
 rect = Rectangle([-1.5,1.5],[-2,2])
-rect.show_roots(f)
-```
-
-![](figures/readme_input_figure1_1.png)\
-
-
-
-```python
 rect.print_roots(f)
 ```
 
@@ -39,6 +31,14 @@ Multiplicity |               Root
       2       |  1.000000000000 +0.000000000000i
 ```
 
+
+
+
+```python
+rect.show_roots(f)
+```
+
+![](figures/readme_input_figure2_1.png)\
 
 
 ### Installation
