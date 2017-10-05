@@ -15,28 +15,17 @@ from numpy import exp, cos, sin
 f = lambda z: (z*(z+2))**2 * (exp(2*z)*cos(z)-1-sin(z)+z**5)
 
 C = Circle(0,3)
-C.print_roots(f)
-```
-
-     Multiplicity |               Root              
-    ------------------------------------------------
-          2       | -2.000000000000 -0.000000000000i
-          1       | -0.651114070264 -0.390425719088i
-          1       | -0.651114070264 +0.390425719088i
-          3       |  0.000000000000 +0.000000000000i
-          1       |  0.648578080954 -1.356622683988i
-          1       |  0.648578080954 +1.356622683988i
-          1       |  2.237557782467 +0.000000000000i
-
-
-
-```python
 C.show_roots(f)
 ```
 
 
-![png](README_files/README_2_0.png)
+![png](README_files/README_1_0.png)
 
+
+
+```python
+C.print_roots(f)
+```
 
 ### Installation
 To install cxroots click the green download button above and then from the command line run the included 'setup.py' using

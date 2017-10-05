@@ -1,5 +1,5 @@
 #!/bin/bash
 rm -rf svgs
 rm -rf README_files
-ipython nbconvert --to markdown README.ipynb
+jupyter nbconvert --to markdown README.ipynb
 python3 -m readme2tex --output README.md README.md
