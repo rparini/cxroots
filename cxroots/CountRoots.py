@@ -164,6 +164,8 @@ def count_enclosed_roots(C, f, df=None, integerTol=0.25, integrandUpperBound=1e3
 	[DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
 		L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
 	"""
+	import numdifftools.fornberg as ndf
+	
 	N = 1
 	I = []
 	integrandMax = []
