@@ -20,7 +20,7 @@ from scipy import pi, exp, sin, log
 import scipy
 
 from .CountRoots import count_enclosed_roots, prod
-from .RootFinder import findRoots, demo_findRoots, showRoots, printRoots
+from .RootFinder import findRoots, demo_findRoots
 from .Paths import ComplexLine, ComplexArc
 
 # create a cache of the integrands created in the enclosed_zeros method
@@ -231,10 +231,12 @@ class Contour(object):
 		return demo_findRoots(self, *args, **kwargs)
 
 	def show_roots(self, *args, **kwargs):
-		return showRoots(self, *args, **kwargs)
+		roots = self.roots(*args, **kwargs)
+		roots.show()
 
 	def print_roots(self, *args, **kwargs):
-		return printRoots(self, *args, **kwargs)
+		roots = self.roots(*args, **kwargs)
+		print(roots)
 
 class Circle(Contour):
 	"""A positively oriented circle."""

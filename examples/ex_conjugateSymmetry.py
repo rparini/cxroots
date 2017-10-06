@@ -14,7 +14,7 @@ df = lambda z: 27*z**26-22*z**10+3*z**5
 
 # So for example here:
 conjugateSymmetry = lambda z: [z.conjugate()]
-roots, multiplicities = C.roots(f, df, guessRootSymmetry = conjugateSymmetry)
+C.roots(f, df, guessRootSymmetry = conjugateSymmetry)
 
 # The rootfinding process can be saved to a video file:
 C.demo_roots(f, df, guessRootSymmetry=conjugateSymmetry, saveFile='ex_conjugateSymmetry.mov')
