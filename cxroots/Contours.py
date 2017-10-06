@@ -24,10 +24,6 @@ from .RootFinder import findRoots
 from .DemoRootFinder import demo_findRoots
 from .Paths import ComplexLine, ComplexArc
 
-# create a cache of the integrands created in the enclosed_zeros method
-# of the PolarRect class so that the segment integrals can be cached
-zerosIntegrandCache = {}
-
 class Contour(object):
 	def __init__(self, segments):
 		self.segments = np.array(segments, dtype=object)
