@@ -14,7 +14,8 @@ f = lambda z: (z*(z+2))**2 * (exp(2*z)*cos(z)-1-sin(z)+z**5)
 
 from cxroots import Circle
 C = Circle(0,3)
-C.show_roots(f)
+roots = C.roots(f)
+roots.show()
 ```
 
 
@@ -23,7 +24,7 @@ C.show_roots(f)
 
 
 ```python
-C.print_roots(f)
+print(roots)
 ```
 
      Multiplicity |               Root              
