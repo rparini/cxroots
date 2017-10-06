@@ -20,7 +20,8 @@ from scipy import pi, exp, sin, log
 import scipy
 
 from .CountRoots import count_enclosed_roots, prod
-from .RootFinder import findRoots, demo_findRoots
+from .RootFinder import findRoots
+from .DemoRootFinder import demo_findRoots
 from .Paths import ComplexLine, ComplexArc
 
 # create a cache of the integrands created in the enclosed_zeros method
