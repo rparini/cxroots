@@ -11,6 +11,7 @@ import warnings
 from .IterativeMethods import iterateToRoot
 from .CountRoots import prod, RootError
 from .RootResult import RootResult
+from .CxDerivative import multiplicity_correct
 
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10,
@@ -185,6 +186,8 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 		else:
 			root, multiplicity = guess, None
+
+		# XXX: refine root with Newton-Raphson?
 		
 		if abs(f(root)) < rootErrTol:
 			addRoot(root, multiplicity)

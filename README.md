@@ -1,9 +1,9 @@
 
 # cxroots
-A Python module to compute all the roots of an analytic function <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> within a given contour <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/> provided that <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/>:
+A Python module to compute all the roots of an analytic function <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.970500000000005pt height=24.65759999999998pt/> within a given contour <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.924780000000005pt height=22.46574pt/> provided that <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.970500000000005pt height=24.65759999999998pt/>:
 
-* has no roots or poles on <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>
-* is analytic in the interior of <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>
+* has no roots or poles on <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.924780000000005pt height=22.46574pt/>
+* is analytic in the interior of <img src="https://rawgit.com/RParini/cxroots/multiplicities/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.924780000000005pt height=22.46574pt/>
 
 The implementation is based on the method in [1].
 
