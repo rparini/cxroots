@@ -13,7 +13,7 @@ df = lambda z: 27*z**26-22*z**10+3*z**5
 # assuming that z is a root.
 
 # So for example here:
-conjugateSymmetry = lambda z: [z.conjugate()]
+rootSymmetry = lambda z: [z.conjugate()]
 C.roots(f, df, guessRootSymmetry = conjugateSymmetry)
 
 # The rootfinding process can be saved to a video file:

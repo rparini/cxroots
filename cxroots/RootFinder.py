@@ -12,7 +12,7 @@ from .IterativeMethods import iterateToRoot
 from .CountRoots import prod, RootError
 from .RootResult import RootResult
 
-def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
+def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10,
 	absTol=0, relTol=1e-12, divMax=20, integerTol=0.07, integrandUpperBound=1e3,
 	M=5, NintAbsTol=0.07):
@@ -35,14 +35,12 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 		then it will be approximated with a finite difference 
 		formula.
 	guessRoot : list, optional
-		A list of (root, multiplicity) tuples giving the already 
-		known roots of the function f. 
+		A list of known roots or, if the multiplicity is known, 
+		a list of (root, multiplicity) tuples.
 	guessRootSymmetry : function, optional
 		A function of a single complex variable, z, which 
 		returns a list of all points which are expected to be 
-		roots of f, given that z is a root of f.  It is assumed 
-		that the symmetric roots have the same multiplicity of 
-		the original root.
+		roots of f, given that z is a root of f.
 	newtonStepTol : float, optional
 		The required accuracy of the root.
 		The iterative method used to give a final value for each
@@ -179,9 +177,17 @@ def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=No
 
 
 	# Add given roots 
-	# XXX: check these roots and multiplcities
-	for root, multiplicity in guessRoot:
-		addRoot(root, multiplicity)
+	for guess in guessRoots:
+		if hasattr(guess, '__iter__'):
+			root, multiplicity = guess
+			if not multiplicity_correct(f, df, root, multiplicity):
+				continue
+
+		else:
+			root, multiplicity = guess, None
+		
+		if abs(f(root)) < rootErrTol:
+			addRoot(root, multiplicity)
 
 	# yield so that the animation shows the first frame
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
@@ -316,3 +322,4 @@ def findRoots(originalContour, f, df=None, **kwargs):
 	for roots, multiplicities, boxes, numberOfRemainingRoots in rootFinder:
 		pass
 	return RootResult(roots, multiplicities, originalContour)
+

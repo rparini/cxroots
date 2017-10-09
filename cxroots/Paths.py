@@ -91,7 +91,7 @@ class ComplexPath(object):
 		self.plot(*args, **kwargs)
 		plt.show()
 
-	def integrate(self, f, tol=1e-8, rombergDivMax=10, show=False):
+	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', show=False):
 		"""
 		Integrate the function f along the path using SciPy's Romberg
 		algorithm.  The value of the integral is cached and will be
@@ -112,7 +112,7 @@ class ComplexPath(object):
 			The integral of the function f along the path.
 		"""
 
-		args = (f, tol)
+		args = (f, absTol, relTol, rombergDivMax, method)
 		if args in self._integralCache.keys():
 			integral = self._integralCache[args]
 
@@ -125,7 +125,16 @@ class ComplexPath(object):
 			with warnings.catch_warnings():
 				warnings.simplefilter("ignore")
 				integrand = lambda t: f(self(t))*self.dzdt(t)
-				integral = scipy.integrate.romberg(integrand,0,1,tol=tol,divmax=rombergDivMax,show=show)
+
+				if method == 'romb':
+					integral = scipy.integrate.romberg(integrand, 0, 1, tol=absTol, rtol=relTol, divmax=rombergDivMax, show=show)
+				elif method == 'quad':
+					integrand_real = lambda t: np.real(integrand(t))
+					integrand_imag = lambda t: np.imag(integrand(t))
+
+					integral_real, abserr_real = scipy.integrate.quad(integrand_real, 0, 1, epsabs=absTol, epsrel=relTol)
+					integral_imag, abserr_imag = scipy.integrate.quad(integrand_imag, 0, 1, epsabs=absTol, epsrel=relTol)
+					integral = integral_real + 1j*integral_imag
 
 			if np.isnan(integral):
 				raise RuntimeError('The integral along the segment %s is NaN.\

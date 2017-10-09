@@ -1,7 +1,9 @@
 from __future__ import division
+import numpy as np
+
 from .RootFinder import findRootsGen
 
-def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, saveFile=None, **kwargs):
+def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, saveFile=None, returnAnim=False, **kwargs):
 	"""
 	An interactive demonstration of the processess used to find all the roots
 	of a given function f within a given originalContour.
@@ -50,8 +52,11 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, saveFi
 	if saveFile:
 		automaticAnimation = True
 
-	if automaticAnimation:
+	if automaticAnimation or returnAnim:
 		anim = animation.FuncAnimation(fig, update_frame, frames=rootFinder, interval=500)
+
+		if returnAnim:
+			return anim
 
 	else:
 		def draw_next(event):

@@ -92,11 +92,9 @@ class Contour(object):
 		for divisionFactor in divisionFactorGen():
 			yield self.subdivide(axis, divisionFactor)
 
-	def integrate(self, f, tol=1e-8, rombergDivMax=10, show=False):
-		""" Integrate around the contour, same arguments the integrate method for ComplexPath
-		but the tolerance passed to each segment will be tol/len(self.segments) """
-		segmentTol = tol/len(self.segments)
-		return sum([segment.integrate(f, segmentTol, rombergDivMax, show) for segment in self.segments])
+	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', show=False):
+		""" Integrate around the contour, same arguments the integrate method for ComplexPath """
+		return sum([segment.integrate(f, absTol, relTol, rombergDivMax, method, show) for segment in self.segments])
 
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
