@@ -6,7 +6,7 @@ import math
 
 def CxDeriv(f, contour=None):
 	"""
-	Compute derivaive of an analytic function using Cauchy's Integral Formula for Derivatives
+	Compute the derivaive of an analytic function using Cauchy's Integral Formula for Derivatives
 	"""
 	if contour is None:
 		from cxroots.Contours import Circle
