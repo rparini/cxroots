@@ -1,4 +1,6 @@
 #!/bin/bash
 rm -rf ../docs
 python3 docex_contour.py
+python3 docex_guessRootSymmetry.py
+
 sphinx-build -b html . ../docs

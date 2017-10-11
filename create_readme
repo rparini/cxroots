@@ -3,4 +3,3 @@ rm -rf svgs
 rm -rf README_files
 jupyter nbconvert --to markdown README.ipynb
 python3 -m readme2tex --output README.md README.md
-python3 docex_guessRootSymmetry.py
