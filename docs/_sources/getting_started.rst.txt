@@ -20,13 +20,13 @@ The first step for the user is to specify this region as the interior of one of 
 
 .. Would be good if images were hyperlinks to the relevant sections of documentation but this seems impossible.
 
-.. |circlefig| image:: circle.pdf 
+.. |circlefig| image:: circle.png 
 
-.. |annulusfig| image:: annulus.pdf 
+.. |annulusfig| image:: annulus.png 
 
-.. |rectanglefig| image:: rectangle.pdf 
+.. |rectanglefig| image:: rectangle.png 
 
-.. |annulussefig| image:: annulussefig.pdf 
+.. |annulussefig| image:: annulussefig.png 
 
 +------------------------+------------------------+
 | :ref:`circle`          | :ref:`annulus`         |
