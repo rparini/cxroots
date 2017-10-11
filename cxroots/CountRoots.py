@@ -97,7 +97,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 class RootError(RuntimeError):
 	pass
 
-def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, integrandUpperBound=1e3, divMax=20, method='quad'):
+def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=20, method='quad'):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -120,15 +120,6 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, integra
 	and the result is only accepted if the final value of the integral is within integerTol
 	of the closest integer.
 	
-	If the contour is too close to a root then the integral will take a very long time to
-	converge and it is generally more efficient to instead choose a different contour.
-	For this reason the integration will be abandoned and a RuntimError raised if at any 
-	point abs(df(z)/f(z)) > integrandUpperBound since, according to [DL], the value of 
-	abs(df(z)/f(z)) is of the order of 1/(distance to nearest root).  If df is being 
-	approximated then the routine will wait for the maximum value of abs(df(z)/f(z)) on
-	the contour to settle down a little before considering if the routine should exit,
-	since an inaccurate df(z) can cause abs(df(z)/f(z)) to be erroneously large.
-
 	Parameters
 	----------
 	C : Contour
@@ -144,12 +135,6 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, integra
 		closest integer.  Since the Cauchy integral must be an integer it is only necessary to
 		distinguish which integer the integral is converging towards.  For this
 		reason the integerTol can be set fairly large.
-	integrandUpperBound : float, optional
-		The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this 
-		value then a RuntimeError is raised.  If integrandUpperBound is too large then 
-		integrals may take a very long time to converge and it is generally be more 
-		efficient to allow the rootfinding procedure to instead choose another contour 
-		then spend time evaluating the integral along a contour very close to a root.
 	divMax : int, optional
 		The maximum number of divisions before the Romberg integration
 		routine of a path exits.

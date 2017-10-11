@@ -1,2 +1,4 @@
 #!/bin/bash
+rm -rf ../docs
+python3 docex_contour.py
 sphinx-build -b html . ../docs

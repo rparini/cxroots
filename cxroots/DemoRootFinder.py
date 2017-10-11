@@ -3,19 +3,23 @@ import numpy as np
 
 from .RootFinder import findRootsGen
 
-def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, saveFile=None, returnAnim=False, **kwargs):
+def demo_findRoots(originalContour, f, df=None, automaticAnim=False, saveFile=None, returnAnim=False, writer=None, **kwargs):
 	"""
-	An interactive demonstration of the processess used to find all the roots
-	of a given function f within a given originalContour.
-	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`. 
+	An animated demonstration of the root finding process using matplotlib.
+	Takes all the parameters of :func:`cxroots.RootFinder.findRoots` as well as:
 
-	If automaticAnimation is False (default) then press the SPACE key 
-	to step the animation forward.
-
-	If automaticAnimation is True then the animation will play automatically
-	until all the roots have been found.
-
-	If saveFile is given as a string then the anmation will be saved
+	Parameters
+	----------
+	automaticAnim : bool, optional
+		If False (default) then press SPACE to step the animation forward
+		If True then the animation will play automatically until all the 
+		roots have been found.
+	saveFile : str, optional
+		If given then the animation will be saved to disk with filename 
+		equal to saveFile instead of being shown.
+	returnAnim : bool, optional
+		If True then the matplotlib animation object will be returned 
+		instead of being shown.  Defaults to False.
 	"""
 	import matplotlib.pyplot as plt
 	from matplotlib import animation
@@ -24,9 +28,7 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, saveFi
 
 	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
 	originalContour.plot(linecolor='k', linestyle='--')
-
-	### XXX: show total number of roots to be found at the start
-	# ax.text(0.02, 0.95, 'Zeros remaining: %i'%originalContour.count_roots(f,df,**kwargs), transform=ax.transAxes)
+	originalContour.sizePlot()
 
 	def update_frame(args):
 		roots, multiplicities, boxes, numberOfRemainingRoots = args
@@ -50,9 +52,9 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, saveFi
 		fig.canvas.draw()
 
 	if saveFile:
-		automaticAnimation = True
+		automaticAnim = True
 
-	if automaticAnimation or returnAnim:
+	if automaticAnim or returnAnim:
 		anim = animation.FuncAnimation(fig, update_frame, frames=rootFinder, interval=500)
 
 		if returnAnim:
@@ -65,7 +67,7 @@ def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, saveFi
 		fig.canvas.mpl_connect('key_press_event', draw_next)
 
 	if saveFile:
-		anim.save(filename=saveFile, fps=1, dpi=200)
+		anim.save(filename=saveFile, fps=1, dpi=200, writer=writer)
 		plt.close()
 	else:
 		plt.show()

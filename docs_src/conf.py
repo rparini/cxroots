@@ -39,8 +39,14 @@ extensions = ['nbsphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx.ext.napoleon']
-
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autosectionlabel',
+    'sphinxcontrib.programoutput',
+    'matplotlib.sphinxext.only_directives',
+    'matplotlib.sphinxext.plot_directive',
+    'IPython.sphinxext.ipython_directive',
+    'IPython.sphinxext.ipython_console_highlighting']
+    
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -55,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'cxroots'
-copyright = '2017, Robert Parini'
+# XXX: copyright = '2017, Robert Parini'
 author = 'Robert Parini'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -92,18 +98,18 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'bizstyle'
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {'rightsidebar':False}
+html_theme_options = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 
 # -- Options for HTMLHelp output ------------------------------------------

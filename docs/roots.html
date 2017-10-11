@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Root Finding &mdash; cxroots 0.5.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cxroots 0.5.0 documentation" href="index.html"/>
+        <link rel="next" title="Root Viewing" href="rootresult.html"/>
+        <link rel="prev" title="Contours" href="contours.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Root Finding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#guessing-roots">Guessing Roots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#guessing-root-symmetry">Guessing Root Symmetry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rootresult.html">Root Viewing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Root Finding</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/roots.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="root-finding">
+<h1>Root Finding<a class="headerlink" href="#root-finding" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The roots within a <a class="reference internal" href="contours.html#contours"><span class="std std-ref">Contour</span></a> are found by calling the method:</p>
+<dl class="method">
+<dt id="cxroots.Contours.Contour.roots">
+<code class="descclassname">Contour.</code><code class="descname">roots</code><span class="sig-paren">(</span><em>f</em>, <em>df=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contours.html#Contour.roots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Contours.Contour.roots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all the roots of the complex analytic function f within the given contour.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f</strong> (<em>function</em>) – A function of a single complex variable, z, which is
+analytic within C and has no poles or roots on C.</li>
+<li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – A function of a single complex variable which is the
+derivative of the function f(z). If df is not given
+then it will be approximated with a finite difference
+formula.</li>
+<li><strong>guessRoots</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of known roots or, if the multiplicity is known,
+a list of (root, multiplicity) tuples.</li>
+<li><strong>guessRootSymmetry</strong> (<em>function</em><em>, </em><em>optional</em>) – A function of a single complex variable, z, which
+returns a list of all points which are expected to be
+roots of f, given that z is a root of f.</li>
+<li><strong>newtonStepTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The required accuracy of the root.
+The iterative method used to give a final value for each
+root will exit if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; newtonStepTol</li>
+<li><strong>newtonMaxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The iterative method used to give a final value for each
+root will exit if the number of iterations exceeds newtonMaxIter.</li>
+<li><strong>rootErrTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A complex value z is considered a root if abs(f(z)) &lt; rootErrTol</li>
+<li><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance used by the contour integration.</li>
+<li><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance used by the contour integration.</li>
+<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
+maximum number of divisions before the Romberg integration
+routine of a path exits.</li>
+<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A number is considered an integer if it is within
+integerTol of an integer.  Used when calculating the
+number of roots within a contour.</li>
+<li><strong>NintAbsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute error tolerance used for the contour
+integration when determining the number of roots
+within a contour.  Since the result of this integration
+must be an integer it can be much less accurate
+than usual.</li>
+<li><strong>M</strong> (<em>int</em><em>, </em><em>optional</em>) – If the number of roots (including multiplicites) within a
+contour is greater than M then the contour is subdivided
+further.  M must be greater than or equal to the largest
+multiplcity of any root.</li>
+<li><strong>intMethod</strong> (<em>str</em><em>, </em><em>optional</em>) – Either ‘quad’ to integrate using scipy.integrate.quad or
+‘romb’ to integrate using Romberg’s method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result</strong> – A container for the roots and their multiplicities</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">rootResult</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The <em>Contour.roots</em> method returns a <a class="reference internal" href="rootresult.html#root-viewing"><span class="std std-ref">rootResult</span></a> object which stores the roots and their multiplicites and provides convienent methods for displaying them.</p>
+<dl class="method">
+<dt id="cxroots.Contours.Contour.demo_roots">
+<code class="descclassname">Contour.</code><code class="descname">demo_roots</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contours.html#Contour.demo_roots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Contours.Contour.demo_roots" title="Permalink to this definition">¶</a></dt>
+<dd><p>An animated demonstration of the root finding process using matplotlib.
+Takes all the parameters of <a class="reference internal" href="#cxroots.Contours.Contour.roots" title="cxroots.Contours.Contour.roots"><code class="xref py py-func docutils literal"><span class="pre">Contour.roots</span></code></a> as well as:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>automaticAnim</strong> (<em>bool</em><em>, </em><em>optional</em>) – If False (default) then press SPACE to step the animation forward
+If True then the animation will play automatically until all the
+roots have been found.</li>
+<li><strong>saveFile</strong> (<em>str</em><em>, </em><em>optional</em>) – If given then the animation will be saved to disk with filename
+equal to saveFile instead of being shown.</li>
+<li><strong>returnAnim</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then the matplotlib animation object will be returned
+instead of being shown.  Defaults to False.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="guessing-roots">
+<h2>Guessing Roots<a class="headerlink" href="#guessing-roots" title="Permalink to this headline">¶</a></h2>
+<p>The <em>guessRoots</em> argument of <a class="reference internal" href="#cxroots.Contours.Contour.roots" title="cxroots.Contours.Contour.roots"><code class="xref py py-func docutils literal"><span class="pre">Contour.roots</span></code></a> can be used to supply any roots or approximations to roots the user already knows.
+The <em>guessRoots</em> argument should be a list of roots or, if the multiplicity is known, a list of (root, multiplicity) tuples.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
+<span class="kn">from</span> <span class="nn">cxroots</span> <span class="k">import</span> <span class="n">Circle</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="mf">2.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mf">1.2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mf">1.2</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+
+<span class="n">roots</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">guessRoots</span><span class="o">=</span><span class="p">[(</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text"><div class="highlight"><pre><span></span> Multiplicity |               Root              
+------------------------------------------------
+      1       | -1.200000000000 +0.000000000000i
+      1       | -0.974651035111 +1.381047768247i
+      1       | -0.974651035111 -1.381047768247i
+      1       |  1.440251130167 +0.000000000000i
+      2       |  2.500000000000 +0.000000000000i
+</pre></div>
+</div>
+<p>The roots are immediately checked and recorded by cxroots</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">C</span><span class="o">.</span><span class="n">demo_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">guessRoots</span><span class="o">=</span><span class="p">[(</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span><span class="mi">1</span><span class="p">)],</span> <span class="n">M</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="s1">&#39;guessRoots.gif&#39;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/guessRoots.gif"><img alt="_images/guessRoots.gif" src="_images/guessRoots.gif" style="width: 400px;" /></a>
+</div>
+<div class="section" id="guessing-root-symmetry">
+<h2>Guessing Root Symmetry<a class="headerlink" href="#guessing-root-symmetry" title="Permalink to this headline">¶</a></h2>
+<p>It may be that something is known about the structure of the roots.
+The rootfinder can be told this using the <em>guessRootSymmetry</em> argument which should be a function of a complex number, $z$, which returns a list of roots assuming that <span class="math">\(z\)</span> is a root.</p>
+<p>For example, if <span class="math">\(z_i\)</span> is a root of</p>
+<div class="math">
+\[f(z)=z^{26}-2z^{10}+\frac{1}{2}z^6-1\]</div>
+<p>then so to is <span class="math">\(\overline{z_i}\)</span> and <span class="math">\(-z\)</span>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="k">import</span> <span class="n">Rectangle</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">])</span>
+<span class="n">f</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">**</span><span class="mi">26</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">10</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">6</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">26</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">25</span><span class="o">-</span><span class="mi">20</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">3</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span>
+
+<span class="n">rootSymmetry</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="o">-</span><span class="n">z</span><span class="p">]</span>
+<span class="n">C</span><span class="o">.</span><span class="n">demo_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="o">=</span><span class="n">rootSymmetry</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="s1">&#39;ex_rootSymmetry.gif&#39;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/ex_rootSymmetry.gif"><img alt="_images/ex_rootSymmetry.gif" src="_images/ex_rootSymmetry.gif" style="width: 400px;" /></a>
+<p>Using guessRootSymmetry can same some time:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span> <span class="o">=</span> <span class="n">rootSymmetry</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time without symmetry:&#39;</span><span class="p">,</span> <span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time with symmetry:&#39;</span><span class="p">,</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 12.401941061019897
+Time with symmetry: 8.866063117980957
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rootresult.html" class="btn btn-neutral float-right" title="Root Viewing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="contours.html" class="btn btn-neutral" title="Contours" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright .
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.5.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

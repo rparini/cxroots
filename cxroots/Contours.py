@@ -23,6 +23,7 @@ from .CountRoots import count_enclosed_roots, prod
 from .RootFinder import findRoots
 from .DemoRootFinder import demo_findRoots
 from .Paths import ComplexLine, ComplexArc
+from .Misc import doc_tab_to_space, docstrings
 
 class Contour(object):
 	def __init__(self, segments):
@@ -58,13 +59,24 @@ class Contour(object):
 		plt.xlim([xmin, xmax])
 		plt.ylim([ymin, ymax])
 
-	def show(self, *args, **kwargs):
-		""" Shows the path as a 2D plot in the complex plane using 
-		the same arguments as the plot method """
+	def show(self, saveFile=None, *args, **kwargs):
+		""" 
+		Shows the contour as a 2D plot in the complex plane.
+
+		Parameters
+		==========
+		saveFile : str (optional)
+			If given then the plot will be saved to disk with name 'saveFile' instead of being shown.
+		"""
 		import matplotlib.pyplot as plt
 		self.sizePlot()
 		self.plot(*args, **kwargs)
-		plt.show()
+
+		if saveFile is not None:
+			plt.savefig(saveFile)
+			plt.close()
+		else:
+			plt.show()
 
 	def subdivisions(self, axis='alternating'):
 		""" 
@@ -99,8 +111,8 @@ class Contour(object):
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, integrandUpperBound=1e3, divMax=10, rootTol=1e-8):
-		N = self.count_roots(f, df, integerTol, integrandUpperBound, divMax)
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, divMax=10, rootTol=1e-8):
+		N = self.count_roots(f, df, integerTol, divMax)
 
 		if N == 0:
 			return (), ()
@@ -223,6 +235,23 @@ class Contour(object):
 		return findRoots(self, f, df, **kwargs)
 
 	def demo_roots(self, *args, **kwargs):
+		"""
+		An animated demonstration of the root finding process using matplotlib.
+		Takes all the parameters of :func:`Contour.roots <cxroots.Contours.Contour.roots>` as well as:
+
+		Parameters
+		----------
+		automaticAnim : bool, optional
+			If False (default) then press SPACE to step the animation forward
+			If True then the animation will play automatically until all the 
+			roots have been found.
+		saveFile : str, optional
+			If given then the animation will be saved to disk with filename 
+			equal to saveFile instead of being shown.
+		returnAnim : bool, optional
+			If True then the matplotlib animation object will be returned 
+			instead of being shown.  Defaults to False.
+		"""
 		return demo_findRoots(self, *args, **kwargs)
 
 	def show_roots(self, *args, **kwargs):
@@ -233,8 +262,22 @@ class Contour(object):
 		roots = self.roots(*args, **kwargs)
 		print(roots)
 
+# Reuse docs for roots
+Contour.roots.__doc__ = docstrings.delete_params_s(findRoots.__doc__, ['originalContour'])
+
+
+
 class Circle(Contour):
-	"""A positively oriented circle."""
+	"""
+	A positively oriented circle in the complex plane.
+
+	Parameters
+	----------
+	center : complex
+		The center of the circle.
+	radius : float
+		The radius of the circle.
+	"""
 	def __init__(self, center, radius):
 		self.center = center
 		self.radius = radius
@@ -295,9 +338,15 @@ class Circle(Contour):
 
 class Annulus(Contour):
 	"""
-	An annulus with given center and radii=[inner_radius, outer_radius].
-	The outer circle is positively oriented and the inner circle is
-	negatively oriented.
+	An annulus in the complex plane with the outer circle positively oriented
+	and the inner circle negatively oriented.
+
+	Parameters
+	----------
+	center : complex
+		The center of the annulus in the complex plane.
+	radii : list
+		A list of length two of the form [inner_radius, outer_radius]
 	"""
 	def __init__(self, center, radii):
 		self.center = center
@@ -363,8 +412,8 @@ class Annulus(Contour):
 			phi0 = 2*pi*divisionFactor
 			phi1 = phi0 + pi
 
-			box1 = PolarRect(self.center, self.radii, [phi0, phi1])
-			box2 = PolarRect(self.center, self.radii, [phi1, phi0])
+			box1 = AnnulusSector(self.center, self.radii, [phi0, phi1])
+			box2 = AnnulusSector(self.center, self.radii, [phi1, phi0])
 
 			box1.segments[0]._reversePath = box2.segments[2]
 			box2.segments[2]._reversePath = box1.segments[0]
@@ -385,10 +434,20 @@ class Annulus(Contour):
 		return r*exp(1j*phi) + self.center
 
 
-class PolarRect(Contour):
+class AnnulusSector(Contour):
 	"""
-	A positively oriented contour which is a rectangle in polar 
-	coordinates with verticies: [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]] 
+	A sector of an annulus in the complex plane.
+	
+	Parameters
+	==========
+	center : complex
+		The center of the annulus sector.
+	rRange : list
+		List of length two of the form [inner_radius, outer_radius]
+	phiRange : list
+		List of length two of the form [phi0, phi1].
+		The segment of the contour containing inner and outer circular arcs 
+		will be joined, counter clockwise from phi0 to phi1.
 	"""
 	def __init__(self, center, rRange, phiRange):
 		self.center = center
@@ -404,6 +463,7 @@ class PolarRect(Contour):
 		if r0 < 0 or r1 <= 0:
 			raise ValueError('Radius > 0')
 
+		# verticies [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]] 
 		self.z1 = z1 = center + r0*exp(1j*phi0)
 		self.z2 = z2 = center + r1*exp(1j*phi0)
 		self.z3 = z3 = center + r1*exp(1j*phi1)
@@ -414,7 +474,7 @@ class PolarRect(Contour):
 					ComplexLine(z3,z4),
 					ComplexArc(center,r0,phi1,phi0-phi1)]
 
-		super(PolarRect, self).__init__(segments)
+		super(AnnulusSector, self).__init__(segments)
 
 	def __str__(self):
 		return 'Polar rectangle: center=%.3f, r0=%.3f, r1=%.3f, phi0=%.3f, phi1=%.3f' % (self.center, self.rRange[0], self.rRange[1], self.phiRange[0], self.phiRange[1])
@@ -456,23 +516,23 @@ class PolarRect(Contour):
 
 		Returns
 		-------
-		box1 : PolarRect
-			If axis is 'r' then phiRange and the inner radius is the same as original PolarRect
+		box1 : AnnulusSector
+			If axis is 'r' then phiRange and the inner radius is the same as original AnnulusSector
 			with the outer radius determined by the divisionFactor.
-			If axis is 'phi' then the rRange and phiRange[0] is the same as the original PolarRect
+			If axis is 'phi' then the rRange and phiRange[0] is the same as the original AnnulusSector
 			with phiRange[1] determined by the divisionFactor.
-		box2 : PolarRect
-			If axis is 'r' then phiRange and the outer radius is the same as original PolarRect
+		box2 : AnnulusSector
+			If axis is 'r' then phiRange and the outer radius is the same as original AnnulusSector
 			with the inner radius determined equal to the outer radius of box1.
-			If axis is 'phi' then the rRange and phiRange[1] is the same as the original PolarRect
+			If axis is 'phi' then the rRange and phiRange[1] is the same as the original AnnulusSector
 			with phiRange[0] equal to phiRange[1] of box1.
 		"""
 		r0, r1 = self.rRange
 		phi0, phi1 = self.phiRange
 		if axis == 0 or axis == self.axisName[0]:
 			divisionPoint = r0 + divisionFactor*(r1-r0)
-			box1 = PolarRect(self.center, [r0, divisionPoint], self.phiRange)
-			box2 = PolarRect(self.center, [divisionPoint, r1], self.phiRange)
+			box1 = AnnulusSector(self.center, [r0, divisionPoint], self.phiRange)
+			box2 = AnnulusSector(self.center, [divisionPoint, r1], self.phiRange)
 
 			# reuse line segments from original box where possible
 			# this allows the cached integrals to be used
@@ -483,8 +543,8 @@ class PolarRect(Contour):
 
 		elif axis == 1 or axis == self.axisName[1]:
 			divisionPoint = phi0 + divisionFactor*(phi1-phi0)
-			box1 = PolarRect(self.center, self.rRange, [phi0, divisionPoint])
-			box2 = PolarRect(self.center, self.rRange, [divisionPoint, phi1])
+			box1 = AnnulusSector(self.center, self.rRange, [phi0, divisionPoint])
+			box2 = AnnulusSector(self.center, self.rRange, [divisionPoint, phi1])
 
 			box1.segments[0] = self.segments[0]
 			box2.segments[2] = self.segments[2]
@@ -499,7 +559,7 @@ class PolarRect(Contour):
 		return box1, box2
 
 	def randomPoint(self):
-		"""Returns a random point inside the contour of the PolarRect."""
+		"""Returns a random point inside the contour of the AnnulusSector."""
 		r = np.random.uniform(*self.rRange)
 		phiRange = np.mod(self.phiRange, 2*pi)
 		if phiRange[0] > phiRange[1]:
@@ -512,7 +572,16 @@ class PolarRect(Contour):
 
 
 class Rectangle(Contour):
-	"""A positively oriented rectangle in the complex plane"""
+	"""
+	A positively oriented rectangle in the complex plane.
+	
+	Parameters
+	==========
+	xRange : list
+		List of length 2 giving the range of the rectangle along the real axis.
+	yRange : list
+		List of length 2 giving the range of the rectangle along the imaginary axis.
+	"""
 	def __init__(self, xRange, yRange):
 		self.xRange = xRange
 		self.yRange = yRange
