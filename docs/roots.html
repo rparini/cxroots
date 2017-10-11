@@ -323,14 +323,14 @@ The rootfinder can be told this using the <em>guessRootSymmetry</em> argument wh
 <p>For example, if <span class="math">\(z_i\)</span> is a root of</p>
 <div class="math">
 \[f(z)=z^{26}-2z^{10}+\frac{1}{2}z^6-1\]</div>
-<p>then so to is <span class="math">\(\overline{z_i}\)</span> and <span class="math">\(-z\)</span>.</p>
+<p>then so is <span class="math">\(\overline{z_i}\)</span> and <span class="math">\(-z\)</span>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="k">import</span> <span class="n">Rectangle</span>
 <span class="n">C</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">])</span>
 <span class="n">f</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">**</span><span class="mi">26</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">10</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">6</span><span class="o">-</span><span class="mi">1</span>
 <span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">26</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">25</span><span class="o">-</span><span class="mi">20</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">3</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span>
 
 <span class="n">rootSymmetry</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="o">-</span><span class="n">z</span><span class="p">]</span>
-<span class="n">C</span><span class="o">.</span><span class="n">demo_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="o">=</span><span class="n">rootSymmetry</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="s1">&#39;ex_rootSymmetry.gif&#39;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">demo_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="o">=</span><span class="n">rootSymmetry</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="s1">&#39;ex_rootSymmetry.gif&#39;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/ex_rootSymmetry.gif"><img alt="_images/ex_rootSymmetry.gif" src="_images/ex_rootSymmetry.gif" style="width: 400px;" /></a>
@@ -346,8 +346,8 @@ The rootfinder can be told this using the <em>guessRootSymmetry</em> argument wh
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time with symmetry:&#39;</span><span class="p">,</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 12.044145822525024
-Time with symmetry: 8.719555139541626
+<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 13.499063968658447
+Time with symmetry: 9.302105903625488
 </pre></div>
 </div>
 </div>
