@@ -1,69 +1,162 @@
 
 
-<!doctype html>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cxroots.Contours &mdash; cxroots 1.0.0 documentation</title>
+  
 
+  
+  
+  
+  
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  
+
+  
+  
     
-    <title>cxroots.Contours &#8212; cxroots 0.4.0 documentation</title>
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="cxroots 1.0.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
     
-    <link rel="stylesheet" href="../../_static/bizstyle.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.4.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="../../_static/bizstyle.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
-    <![endif]-->
-  </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.4.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roots.html">Root Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rootresult.html">Root Viewing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory.html">Theory</a></li>
+</ul>
+
+            
+          
         </div>
       </div>
+    </nav>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>cxroots.Contours</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <h1>Source code for cxroots.Contours</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -74,6 +167,8 @@
 <span class="sd">[BVP] Gakhov, F. D. &quot;Boundary value problems&quot;, section 12 (2014), Elsevier.</span>
 <span class="sd">[DL] &quot;A Numerical Method for Locating the Zeros of an Analytic function&quot;, </span>
 <span class="sd">	L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100</span>
+<span class="sd">[KB] &quot;Computing the Zeros of Anayltic Functions&quot;, Peter Kravanja, Marc Van Barel,</span>
+<span class="sd">	Springer (2000)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
@@ -81,169 +176,15 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.integrate</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">log</span>
 <span class="kn">import</span> <span class="nn">scipy</span>
 
-<span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">count_enclosed_roots</span>
-
-<span class="k">class</span> <span class="nc">ComplexPath</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot; A base class for paths in the complex plane &quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span> <span class="o">=</span> <span class="p">{}</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_contArgCache</span> <span class="o">=</span> <span class="p">{}</span>
-
-		<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span> <span class="o">=</span> <span class="p">{}</span>
-
-	<span class="k">def</span> <span class="nf">trapValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		2**k+1 is the number of required points for the function f to</span>
-<span class="sd">		be evaluated at.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-
-		<span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-			<span class="n">vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
-			<span class="n">vals_k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-			
-			<span class="k">if</span> <span class="n">vals_k</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
-				<span class="k">return</span> <span class="n">vals</span>
-			<span class="k">elif</span> <span class="n">vals_k</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">:</span>
-				<span class="k">return</span> <span class="n">vals</span><span class="p">[::</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">vals_k</span><span class="o">-</span><span class="n">k</span><span class="p">)]</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-				<span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-				<span class="n">vals</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-				<span class="n">vals</span><span class="p">[::</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">[::</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="p">]))</span>
-				<span class="n">vals</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)]))</span>
-
-				<span class="c1"># cache values</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
-				<span class="k">return</span> <span class="n">vals</span>
-
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-			<span class="n">vals</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
-			<span class="k">return</span> <span class="n">vals</span>
-
-
-	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Use matplotlib to plot, but not show, the path as a </span>
-<span class="sd">		2D plot in the Complex plane.  To show use pyplot.show()</span>
-
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		N : int, optional</span>
-<span class="sd">			The number of points to use when plotting the path.  Default is 100</span>
-<span class="sd">		linecolor : optional</span>
-<span class="sd">			The colour of the plotted path, passed to the pyplot.plot function </span>
-<span class="sd">			as the keyword argument of &#39;color&#39;.</span>
-<span class="sd">		linestyle : str, optional</span>
-<span class="sd">			The line style of the plotted path, passed to the pyplot.plot </span>
-<span class="sd">			function as the keyword argument of &#39;linestyle&#39;.  Default is &#39;-&#39; </span>
-<span class="sd">			which corresponds to a solid line.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-		<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
-		<span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-		<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">linecolor</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">)</span>
-		<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Re[$z$]&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-		<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Im[$z$]&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-
-		<span class="c1"># add arrow to indicate direction of path</span>
-		<span class="n">arrow_direction</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mf">0.51</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mf">0.51</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
-		<span class="n">arrow_extent</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="o">*</span><span class="n">arrow_direction</span>
-		<span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
-		<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
-		<span class="n">head_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">))</span><span class="o">/</span><span class="mf">40.</span>
-		<span class="n">plt</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
-				  <span class="n">arrow_extent</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">arrow_extent</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
-				  <span class="n">head_width</span><span class="o">=</span><span class="n">head_length</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="mf">3.</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="n">head_length</span><span class="p">,</span> 
-				  <span class="n">fc</span><span class="o">=</span><span class="n">linecolor</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">linecolor</span><span class="p">)</span>
-
-	<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot; Shows the path as a 2D plot in the complex plane using </span>
-<span class="sd">		the same arguments as the plot method &quot;&quot;&quot;</span>
-		<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-		<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Integrate the function f along the path using SciPy&#39;s Romberg</span>
-<span class="sd">		algorithm.  The value of the integral is cached and will be</span>
-<span class="sd">		reused if the method is called with same function f and tol. </span>
-
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		f : function of a single complex variable</span>
-<span class="sd">		tol : float, optional</span>
-<span class="sd">			The absolute tolerance passed to SciPy&#39;s Romberg function.</span>
-<span class="sd">			Default is 1e-8.</span>
-<span class="sd">		rombergDivMax : int, optional</span>
-<span class="sd">			The maximum order of extrapolation passed to SciPy&#39;s Romberg function</span>
-
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		integral : complex</span>
-<span class="sd">			The integral of the function f along the path.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-
-		<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">args</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-			<span class="n">integral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
-
-		<span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_reversePath&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">args</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reversePath</span><span class="o">.</span><span class="n">_integralCache</span><span class="p">:</span>
-			<span class="c1"># if we have already computed the reverse of this path</span>
-			<span class="n">integral</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_reversePath</span><span class="o">.</span><span class="n">_integralCache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
-
-		<span class="k">else</span><span class="p">:</span>			
-			<span class="c1"># suppress accuracy warnings</span>
-			<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-				<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
-				<span class="n">integrand</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-				<span class="n">integral</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">romberg</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span><span class="n">divmax</span><span class="o">=</span><span class="n">rombergDivMax</span><span class="p">,</span><span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">)</span>
-
-			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">integral</span><span class="p">):</span>
-				<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;The integral along the segment </span><span class="si">%s</span><span class="s1"> is NaN.</span><span class="se">\</span>
-<span class="s1">					</span><span class="se">\n</span><span class="s1">This is most likely due to a root being on or very close to the path of integration.&#39;</span><span class="o">%</span><span class="bp">self</span><span class="p">)</span>
-
-			<span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span> <span class="o">=</span> <span class="n">integral</span>
-
-		<span class="k">return</span> <span class="n">integral</span>
-
-
-<span class="k">class</span> <span class="nc">ComplexLine</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot; A straight line in the complex plane from a to b &quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">dzdt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span>
-		<span class="nb">super</span><span class="p">(</span><span class="n">ComplexLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-
-	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="s1">&#39;ComplexLine from </span><span class="si">%.3f</span><span class="s1">+</span><span class="si">%.3f</span><span class="s1">i to </span><span class="si">%.3f</span><span class="s1">+</span><span class="si">%.3f</span><span class="s1">i&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
-
-	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot; The parameterization of the line in the variable t, where 0 &lt;= t &lt;= 1 &quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">ComplexArc</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot; An arc with center z0, radius R, initial angle t0 and change of angle dt &quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">z0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">z0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">dt</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">dzdt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span>
-		<span class="nb">super</span><span class="p">(</span><span class="n">ComplexArc</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-
-	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="s1">&#39;ComplexArc: z0=</span><span class="si">%.3f</span><span class="s1">, R=</span><span class="si">%.3f</span><span class="s1">, t0=</span><span class="si">%.3f</span><span class="s1">, dt=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
-
-	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot; The parameterization of the arc in the variable t, where 0 &lt;= t &lt;= 1 &quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z0</span>
-
-<span class="c1"># create a cache of the integrands created in the enclosed_zeros method</span>
-<span class="c1"># of the PolarRect class so that the segment integrals can be cached</span>
-<span class="n">zerosIntegrandCache</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">count_enclosed_roots</span><span class="p">,</span> <span class="n">prod</span>
+<span class="kn">from</span> <span class="nn">.RootFinder</span> <span class="k">import</span> <span class="n">findRoots</span>
+<span class="kn">from</span> <span class="nn">.DemoRootFinder</span> <span class="k">import</span> <span class="n">demo_findRoots</span>
+<span class="kn">from</span> <span class="nn">.Paths</span> <span class="k">import</span> <span class="n">ComplexLine</span><span class="p">,</span> <span class="n">ComplexArc</span>
+<span class="kn">from</span> <span class="nn">.Misc</span> <span class="k">import</span> <span class="n">doc_tab_to_space</span><span class="p">,</span> <span class="n">docstrings</span>
 
 <span class="k">class</span> <span class="nc">Contour</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
@@ -279,22 +220,24 @@
 		<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">])</span>
 		<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">])</span>
 
-	<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot; Shows the path as a 2D plot in the complex plane using </span>
-<span class="sd">		the same arguments as the plot method &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Contour.show"><a class="viewcode-back" href="../../contours.html#cxroots.Contours.Contour.show">[docs]</a>	<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">		Shows the contour as a 2D plot in the complex plane.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		==========</span>
+<span class="sd">		saveFile : str (optional)</span>
+<span class="sd">			If given then the plot will be saved to disk with name &#39;saveFile&#39; instead of being shown.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sizePlot</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-		<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot; Integrate around the contour, same arguments the integrate method for ComplexPath</span>
-<span class="sd">		but the tolerance passed to each segment will be tol/len(self.segments) &quot;&quot;&quot;</span>
-		<span class="n">segmentTol</span> <span class="o">=</span> <span class="n">tol</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
-		<span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">segmentTol</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="p">,</span> <span class="n">show</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
-
-	<span class="k">def</span> <span class="nf">count_enclosed_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="k">return</span> <span class="n">count_enclosed_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">saveFile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">saveFile</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 	<span class="k">def</span> <span class="nf">subdivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;alternating&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot; </span>
@@ -322,17 +265,192 @@
 		<span class="k">for</span> <span class="n">divisionFactor</span> <span class="ow">in</span> <span class="n">divisionFactorGen</span><span class="p">():</span>
 			<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">subdivide</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">divisionFactor</span><span class="p">)</span>
 
+	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;quad&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; Integrate around the contour, same arguments the integrate method for ComplexPath &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">show</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../../contour.html#cxroots.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;A positively oriented circle.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">count_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">count_enclosed_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">approximate_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rootTol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
+		<span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">integerTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="p">(),</span> <span class="p">()</span>
+
+		<span class="n">mu</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">N</span>
+		<span class="n">phiZeros</span> <span class="o">=</span> <span class="p">[[],[</span><span class="n">mu</span><span class="p">]]</span>
+
+		<span class="k">def</span> <span class="nf">phiFunc</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="k">return</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">1</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">coeff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+				<span class="k">return</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+			
+		<span class="c1"># print(&#39;mu&#39;, mu)</span>
+
+		<span class="n">err_stop</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+		<span class="c1"># initialize G_{pq} = &lt;phi_p, phi_q&gt;</span>
+		<span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+		<span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">N</span> <span class="c1"># = &lt;phi0, phi0&gt;</span>
+
+		<span class="c1"># initialize G1_{pq} = &lt;phi_p, phi_1 phi_q&gt;</span>
+		<span class="n">G1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+		<span class="n">ip</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">phiFunc</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">phiFunc</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">phiFunc</span><span class="p">(</span><span class="mi">0</span><span class="p">)(</span><span class="n">z</span><span class="p">),</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)</span>
+		<span class="n">G1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ip</span>
+
+		<span class="n">take_regular</span> <span class="o">=</span> <span class="kc">True</span>
+
+		<span class="n">r</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+		<span class="k">while</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">&lt;</span><span class="n">N</span><span class="p">:</span>
+			<span class="c1"># define the next FOP of degree r+t+1</span>
+			<span class="n">k</span> <span class="o">=</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span>
+
+			<span class="c1"># Add new values to G</span>
+			<span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span>
+			<span class="n">G</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">phiFunc</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">phiFunc</span><span class="p">(</span><span class="n">q</span><span class="p">),</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+			<span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># G is symmetric</span>
+
+			<span class="c1"># Add new values to G1</span>
+			<span class="n">phi1</span> <span class="o">=</span> <span class="n">phiFunc</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+			<span class="n">G1</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">phiFunc</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">phi1</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">phiFunc</span><span class="p">(</span><span class="n">q</span><span class="p">)(</span><span class="n">z</span><span class="p">),</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+			<span class="n">G1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">G1</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># G1 is symmetric</span>
+
+			<span class="c1"># print(&#39;G&#39;, G[:p+1,:p+1])</span>
+			<span class="c1"># print(&#39;G1&#39;, G1[:p+1,:p+1])</span>
+
+			<span class="c1"># The regular FOP only exists if H is non-singular.</span>
+			<span class="c1"># An alternate citeration given by [KB] is to proceed as if it is regular and</span>
+			<span class="c1"># then compute its zeros.  If any are arbitary or infinite then this</span>
+			<span class="c1"># polynomial should instead be defined as an inner polynomial.</span>
+			<span class="c1"># Here, an inner polynomial instead if any of the computed</span>
+			<span class="c1"># roots are outside of the interior of the contour.</span>
+			<span class="n">polyRoots</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">G1</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">G</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">mu</span>
+			<span class="c1"># print(&#39;polyRoots&#39;, polyRoots)</span>
+			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">polyRoots</span><span class="p">]):</span>
+				<span class="c1"># define a regular polynomial</span>
+				<span class="n">phiZeros</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">polyRoots</span><span class="p">)</span>
+				<span class="n">r</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+				<span class="c1"># print(&#39;regular&#39;, r+t)</span>
+
+				<span class="c1"># if any of these elements are not small then continue</span>
+				<span class="n">allSmall</span> <span class="o">=</span> <span class="kc">True</span>
+				<span class="n">phiFuncLast</span> <span class="o">=</span> <span class="n">phiFunc</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+				<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">r</span><span class="p">):</span>
+					<span class="n">ip</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">phiFuncLast</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="n">j</span><span class="p">,</span> <span class="n">phiFuncLast</span><span class="p">,</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)</span>
+
+					<span class="c1"># if not small then carry on</span>
+					<span class="c1"># print(j, &#39;of&#39;, N-r, &#39;stop?&#39;, ip)</span>
+					<span class="c1">### XXX: Use the &#39;maxpsum&#39; estimate for precision loss in [KB]?</span>
+					<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span> <span class="o">+</span> <span class="n">err</span> <span class="o">&gt;</span> <span class="n">err_stop</span><span class="p">:</span>
+						<span class="n">allSmall</span> <span class="o">=</span> <span class="kc">False</span>
+						<span class="k">break</span>
+
+				<span class="k">if</span> <span class="n">allSmall</span><span class="p">:</span>
+					<span class="c1"># all the roots have been found</span>
+					<span class="k">break</span>
+
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+
+				<span class="c1"># define an inner polynomial phi_{r+t+1} = (z-mu) phi_{r+t}</span>
+				<span class="c1"># phiZeros.append(np.append(phiZeros[-1],mu))</span>
+
+				<span class="c1"># define an inner polynomial phi_{r+t+1} = phi_{t+1} phi_{r}</span>
+				<span class="n">phiZeros</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">t</span><span class="p">],</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">r</span><span class="p">]))</span>
+
+				<span class="c1"># print(&#39;inner poly&#39;, r+t)</span>
+				<span class="c1"># print(&#39;phiZeros&#39;, phiZeros)</span>
+
+		<span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+		<span class="c1"># remove any roots which are not distinct</span>
+		<span class="n">removeList</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">root</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">roots</span><span class="p">):</span>
+			<span class="c1"># print(root, roots[i+1:], np.abs(root-roots[i+1:]))</span>
+			<span class="c1"># print(len(roots[i+1:]) &gt; 0)</span>
+			<span class="c1"># print(np.any(np.abs(root-roots[i+1:]) &lt; rootTol))</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">root</span><span class="o">-</span><span class="n">roots</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&lt;</span> <span class="n">rootTol</span><span class="p">):</span>
+				<span class="n">removeList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+		<span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">removeList</span><span class="p">)</span>
+
+		<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="c1"># number of distinct roots</span>
+
+		<span class="c1"># compute the multiplicities, eq. (1.19) in [KB]</span>
+		<span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">roots</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+		<span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">**</span><span class="n">p</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="n">divMax</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="c1"># ordinary moments</span>
+		<span class="n">multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">V</span><span class="p">))</span>
+		<span class="n">multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
+
+		<span class="c1"># remove any roots with multiplicity zero</span>
+		<span class="n">zeroArgs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">multiplicities</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="n">multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">,</span> <span class="n">zeroArgs</span><span class="p">)</span>
+		<span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">zeroArgs</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Contour.roots"><a class="viewcode-back" href="../../roots.html#cxroots.Contours.Contour.roots">[docs]</a>	<span class="k">def</span> <span class="nf">roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">findRoots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Contour.demo_roots"><a class="viewcode-back" href="../../roots.html#cxroots.Contours.Contour.demo_roots">[docs]</a>	<span class="k">def</span> <span class="nf">demo_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		An animated demonstration of the root finding process using matplotlib.</span>
+<span class="sd">		Takes all the parameters of :func:`Contour.roots &lt;cxroots.Contours.Contour.roots&gt;` as well as:</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		automaticAnim : bool, optional</span>
+<span class="sd">			If False (default) then press SPACE to step the animation forward</span>
+<span class="sd">			If True then the animation will play automatically until all the </span>
+<span class="sd">			roots have been found.</span>
+<span class="sd">		saveFile : str, optional</span>
+<span class="sd">			If given then the animation will be saved to disk with filename </span>
+<span class="sd">			equal to saveFile instead of being shown.</span>
+<span class="sd">		returnAnim : bool, optional</span>
+<span class="sd">			If True then the matplotlib animation object will be returned </span>
+<span class="sd">			instead of being shown.  Defaults to False.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">demo_findRoots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="nf">show_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="n">roots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="n">roots</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+	<span class="k">def</span> <span class="nf">print_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="n">roots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+
+<span class="c1"># Reuse docs for roots</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="n">Contour</span><span class="o">.</span><span class="n">roots</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">docstrings</span><span class="o">.</span><span class="n">delete_params_s</span><span class="p">(</span><span class="n">findRoots</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;originalContour&#39;</span><span class="p">])</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+	<span class="c1"># for Python 2.7</span>
+	<span class="n">Contour</span><span class="o">.</span><span class="n">roots</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">docstrings</span><span class="o">.</span><span class="n">delete_params_s</span><span class="p">(</span><span class="n">findRoots</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;originalContour&#39;</span><span class="p">])</span>
+
+
+
+<div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../../contours.html#cxroots.Contours.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A positively oriented circle in the complex plane.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	center : complex</span>
+<span class="sd">		The center of the circle.</span>
+<span class="sd">	radius : float</span>
+<span class="sd">		The radius of the circle.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">centerPoint</span> <span class="o">=</span> <span class="n">center</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">axisName</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">centerPoint</span> <span class="o">=</span> <span class="n">center</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">centralPoint</span> <span class="o">=</span> <span class="n">center</span>
 
 		<span class="n">segments</span> <span class="o">=</span> <span class="p">[</span><span class="n">ComplexArc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)]</span>
-		<span class="nb">super</span><span class="p">(</span><span class="n">Circle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">Circle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="s1">&#39;Circle: center=</span><span class="si">%.3f</span><span class="s1">, radius=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
@@ -369,7 +487,13 @@
 			<span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 			<span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_reversePath</span> <span class="o">=</span> <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 			<span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_reversePath</span> <span class="o">=</span> <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-			<span class="k">return</span> <span class="n">box1</span><span class="p">,</span> <span class="n">box2</span>
+
+		<span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]:</span>
+			<span class="n">box</span><span class="o">.</span><span class="n">_createdBySubdivisionAxis</span> <span class="o">=</span> <span class="n">axis</span>
+			<span class="n">box</span><span class="o">.</span><span class="n">_parentBox</span> <span class="o">=</span> <span class="bp">self</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_childBoxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]</span>
+
+		<span class="k">return</span> <span class="n">box1</span><span class="p">,</span> <span class="n">box2</span>
 
 	<span class="k">def</span> <span class="nf">randomPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot; Returns a random point inside the Circle &quot;&quot;&quot;</span>
@@ -377,11 +501,17 @@
 		<span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">r</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span></div>
 
-<div class="viewcode-block" id="Annulus"><a class="viewcode-back" href="../../contour.html#cxroots.Annulus">[docs]</a><span class="k">class</span> <span class="nc">Annulus</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
+<div class="viewcode-block" id="Annulus"><a class="viewcode-back" href="../../contours.html#cxroots.Contours.Annulus">[docs]</a><span class="k">class</span> <span class="nc">Annulus</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	An annulus with given center and radii=[inner_radius, outer_radius].</span>
-<span class="sd">	The outer circle is positively oriented and the inner circle is</span>
-<span class="sd">	negatively oriented.</span>
+<span class="sd">	An annulus in the complex plane with the outer circle positively oriented</span>
+<span class="sd">	and the inner circle negatively oriented.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	center : complex</span>
+<span class="sd">		The center of the annulus in the complex plane.</span>
+<span class="sd">	radii : list</span>
+<span class="sd">		A list of length two of the form [inner_radius, outer_radius]</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
@@ -389,13 +519,13 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">axisName</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;phi&#39;</span><span class="p">]</span>
 
 		<span class="n">segments</span> <span class="o">=</span> <span class="p">[</span><span class="n">ComplexArc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="n">ComplexArc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)]</span>
-		<span class="nb">super</span><span class="p">(</span><span class="n">Annulus</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">Annulus</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="s1">&#39;Annulus: center=</span><span class="si">%.3f</span><span class="s1">, inner radius=</span><span class="si">%.3f</span><span class="s1">, outer radius=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 	
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">centerPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">centralPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="c1"># get the central point within the contour</span>
 		<span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
 		<span class="k">return</span> <span class="n">r</span>
@@ -437,7 +567,6 @@
 
 			<span class="n">box1</span><span class="o">.</span><span class="n">_createdBySubdivisionAxis</span> <span class="o">=</span> <span class="n">axis</span>
 			<span class="n">box2</span><span class="o">.</span><span class="n">_createdBySubdivisionAxis</span> <span class="o">=</span> <span class="n">axis</span>
-			<span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]</span>
 
 		<span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;phi&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">axisName</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;phi&#39;</span><span class="p">:</span>
 			<span class="c1"># Subdividing into two radial boxes rather than one to </span>
@@ -448,18 +577,20 @@
 			<span class="n">phi0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">divisionFactor</span>
 			<span class="n">phi1</span> <span class="o">=</span> <span class="n">phi0</span> <span class="o">+</span> <span class="n">pi</span>
 
-			<span class="n">box1</span> <span class="o">=</span> <span class="n">PolarRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span> <span class="p">[</span><span class="n">phi0</span><span class="p">,</span> <span class="n">phi1</span><span class="p">])</span>
-			<span class="n">box2</span> <span class="o">=</span> <span class="n">PolarRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span> <span class="p">[</span><span class="n">phi1</span><span class="p">,</span> <span class="n">phi0</span><span class="p">])</span>
+			<span class="n">box1</span> <span class="o">=</span> <span class="n">AnnulusSector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span> <span class="p">[</span><span class="n">phi0</span><span class="p">,</span> <span class="n">phi1</span><span class="p">])</span>
+			<span class="n">box2</span> <span class="o">=</span> <span class="n">AnnulusSector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span> <span class="p">[</span><span class="n">phi1</span><span class="p">,</span> <span class="n">phi0</span><span class="p">])</span>
 
 			<span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_reversePath</span> <span class="o">=</span> <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 			<span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">_reversePath</span> <span class="o">=</span> <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 			<span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">_reversePath</span> <span class="o">=</span> <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 			<span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_reversePath</span> <span class="o">=</span> <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-			<span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]</span>
 
-		<span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">boxes</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]:</span>
 			<span class="n">box</span><span class="o">.</span><span class="n">_createdBySubdivisionAxis</span> <span class="o">=</span> <span class="n">axis</span>
-		<span class="k">return</span> <span class="n">boxes</span>
+			<span class="n">box</span><span class="o">.</span><span class="n">_parentBox</span> <span class="o">=</span> <span class="bp">self</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_childBoxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]</span>
+
+		<span class="k">return</span> <span class="n">box1</span><span class="p">,</span> <span class="n">box2</span>
 
 	<span class="k">def</span> <span class="nf">randomPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot; Returns a random point inside the Annulus &quot;&quot;&quot;</span>
@@ -468,10 +599,20 @@
 		<span class="k">return</span> <span class="n">r</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span></div>
 
 
-<div class="viewcode-block" id="PolarRect"><a class="viewcode-back" href="../../contour.html#cxroots.PolarRect">[docs]</a><span class="k">class</span> <span class="nc">PolarRect</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
+<div class="viewcode-block" id="AnnulusSector"><a class="viewcode-back" href="../../contours.html#cxroots.Contours.AnnulusSector">[docs]</a><span class="k">class</span> <span class="nc">AnnulusSector</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	A positively oriented contour which is a rectangle in polar </span>
-<span class="sd">	coordinates with verticies: [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]] </span>
+<span class="sd">	A sector of an annulus in the complex plane.</span>
+<span class="sd">	</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	==========</span>
+<span class="sd">	center : complex</span>
+<span class="sd">		The center of the annulus sector.</span>
+<span class="sd">	rRange : list</span>
+<span class="sd">		List of length two of the form [inner_radius, outer_radius]</span>
+<span class="sd">	phiRange : list</span>
+<span class="sd">		List of length two of the form [phi0, phi1].</span>
+<span class="sd">		The segment of the contour containing inner and outer circular arcs </span>
+<span class="sd">		will be joined, counter clockwise from phi0 to phi1.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">rRange</span><span class="p">,</span> <span class="n">phiRange</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
@@ -487,6 +628,7 @@
 		<span class="k">if</span> <span class="n">r0</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">r1</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Radius &gt; 0&#39;</span><span class="p">)</span>
 
+		<span class="c1"># verticies [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]] </span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">z1</span> <span class="o">=</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="n">r0</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi0</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">z2</span> <span class="o">=</span> <span class="n">z2</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="n">r1</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi0</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">z3</span> <span class="o">=</span> <span class="n">z3</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="n">r1</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi1</span><span class="p">)</span>
@@ -497,13 +639,13 @@
 					<span class="n">ComplexLine</span><span class="p">(</span><span class="n">z3</span><span class="p">,</span><span class="n">z4</span><span class="p">),</span>
 					<span class="n">ComplexArc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">phi1</span><span class="p">,</span><span class="n">phi0</span><span class="o">-</span><span class="n">phi1</span><span class="p">)]</span>
 
-		<span class="nb">super</span><span class="p">(</span><span class="n">PolarRect</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">AnnulusSector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="s1">&#39;Polar rectangle: r0=</span><span class="si">%.3f</span><span class="s1">, r1=</span><span class="si">%.3f</span><span class="s1">, phi0=</span><span class="si">%.3f</span><span class="s1">, phi1=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="k">return</span> <span class="s1">&#39;Polar rectangle: center=</span><span class="si">%.3f</span><span class="s1">, r0=</span><span class="si">%.3f</span><span class="s1">, r1=</span><span class="si">%.3f</span><span class="s1">, phi0=</span><span class="si">%.3f</span><span class="s1">, phi1=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 	
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">centerPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">centralPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="c1"># get the central point within the contour</span>
 		<span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
 		<span class="n">phi</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
@@ -520,7 +662,7 @@
 		
 		<span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-			<span class="n">angleCorrect</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="ow">or</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+			<span class="n">angleCorrect</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">angle</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="ow">or</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">angleCorrect</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
@@ -539,23 +681,23 @@
 
 <span class="sd">		Returns</span>
 <span class="sd">		-------</span>
-<span class="sd">		box1 : PolarRect</span>
-<span class="sd">			If axis is &#39;r&#39; then phiRange and the inner radius is the same as original PolarRect</span>
+<span class="sd">		box1 : AnnulusSector</span>
+<span class="sd">			If axis is &#39;r&#39; then phiRange and the inner radius is the same as original AnnulusSector</span>
 <span class="sd">			with the outer radius determined by the divisionFactor.</span>
-<span class="sd">			If axis is &#39;phi&#39; then the rRange and phiRange[0] is the same as the original PolarRect</span>
+<span class="sd">			If axis is &#39;phi&#39; then the rRange and phiRange[0] is the same as the original AnnulusSector</span>
 <span class="sd">			with phiRange[1] determined by the divisionFactor.</span>
-<span class="sd">		box2 : PolarRect</span>
-<span class="sd">			If axis is &#39;r&#39; then phiRange and the outer radius is the same as original PolarRect</span>
+<span class="sd">		box2 : AnnulusSector</span>
+<span class="sd">			If axis is &#39;r&#39; then phiRange and the outer radius is the same as original AnnulusSector</span>
 <span class="sd">			with the inner radius determined equal to the outer radius of box1.</span>
-<span class="sd">			If axis is &#39;phi&#39; then the rRange and phiRange[1] is the same as the original PolarRect</span>
+<span class="sd">			If axis is &#39;phi&#39; then the rRange and phiRange[1] is the same as the original AnnulusSector</span>
 <span class="sd">			with phiRange[0] equal to phiRange[1] of box1.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">r0</span><span class="p">,</span> <span class="n">r1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span>
 		<span class="n">phi0</span><span class="p">,</span> <span class="n">phi1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span>
 		<span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">axis</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">axisName</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
 			<span class="n">divisionPoint</span> <span class="o">=</span> <span class="n">r0</span> <span class="o">+</span> <span class="n">divisionFactor</span><span class="o">*</span><span class="p">(</span><span class="n">r1</span><span class="o">-</span><span class="n">r0</span><span class="p">)</span>
-			<span class="n">box1</span> <span class="o">=</span> <span class="n">PolarRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="n">divisionPoint</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">)</span>
-			<span class="n">box2</span> <span class="o">=</span> <span class="n">PolarRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">[</span><span class="n">divisionPoint</span><span class="p">,</span> <span class="n">r1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">)</span>
+			<span class="n">box1</span> <span class="o">=</span> <span class="n">AnnulusSector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="n">divisionPoint</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">)</span>
+			<span class="n">box2</span> <span class="o">=</span> <span class="n">AnnulusSector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">[</span><span class="n">divisionPoint</span><span class="p">,</span> <span class="n">r1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">)</span>
 
 			<span class="c1"># reuse line segments from original box where possible</span>
 			<span class="c1"># this allows the cached integrals to be used</span>
@@ -566,8 +708,8 @@
 
 		<span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">axis</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">axisName</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
 			<span class="n">divisionPoint</span> <span class="o">=</span> <span class="n">phi0</span> <span class="o">+</span> <span class="n">divisionFactor</span><span class="o">*</span><span class="p">(</span><span class="n">phi1</span><span class="o">-</span><span class="n">phi0</span><span class="p">)</span>
-			<span class="n">box1</span> <span class="o">=</span> <span class="n">PolarRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">,</span> <span class="p">[</span><span class="n">phi0</span><span class="p">,</span> <span class="n">divisionPoint</span><span class="p">])</span>
-			<span class="n">box2</span> <span class="o">=</span> <span class="n">PolarRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">,</span> <span class="p">[</span><span class="n">divisionPoint</span><span class="p">,</span> <span class="n">phi1</span><span class="p">])</span>
+			<span class="n">box1</span> <span class="o">=</span> <span class="n">AnnulusSector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">,</span> <span class="p">[</span><span class="n">phi0</span><span class="p">,</span> <span class="n">divisionPoint</span><span class="p">])</span>
+			<span class="n">box2</span> <span class="o">=</span> <span class="n">AnnulusSector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">,</span> <span class="p">[</span><span class="n">divisionPoint</span><span class="p">,</span> <span class="n">phi1</span><span class="p">])</span>
 
 			<span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 			<span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
@@ -576,10 +718,13 @@
 
 		<span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]:</span>
 			<span class="n">box</span><span class="o">.</span><span class="n">_createdBySubdivisionAxis</span> <span class="o">=</span> <span class="n">axis</span>
+			<span class="n">box</span><span class="o">.</span><span class="n">_parentBox</span> <span class="o">=</span> <span class="bp">self</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_childBoxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]</span>
+
 		<span class="k">return</span> <span class="n">box1</span><span class="p">,</span> <span class="n">box2</span>
 
 	<span class="k">def</span> <span class="nf">randomPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Returns a random point inside the contour of the PolarRect.&quot;&quot;&quot;</span>
+		<span class="sd">&quot;&quot;&quot;Returns a random point inside the contour of the AnnulusSector.&quot;&quot;&quot;</span>
 		<span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">rRange</span><span class="p">)</span>
 		<span class="n">phiRange</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">phiRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">phiRange</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
@@ -591,8 +736,17 @@
 		<span class="k">return</span> <span class="n">r</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span></div>
 
 
-<div class="viewcode-block" id="Rectangle"><a class="viewcode-back" href="../../contour.html#cxroots.Rectangle">[docs]</a><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;A positively oriented rectangle in the complex plane&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Rectangle"><a class="viewcode-back" href="../../contours.html#cxroots.Contours.Rectangle">[docs]</a><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A positively oriented rectangle in the complex plane.</span>
+<span class="sd">	</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	==========</span>
+<span class="sd">	xRange : list</span>
+<span class="sd">		List of length 2 giving the range of the rectangle along the real axis.</span>
+<span class="sd">	yRange : list</span>
+<span class="sd">		List of length 2 giving the range of the rectangle along the imaginary axis.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xRange</span><span class="p">,</span> <span class="n">yRange</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">xRange</span> <span class="o">=</span> <span class="n">xRange</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">yRange</span> <span class="o">=</span> <span class="n">yRange</span>
@@ -607,13 +761,13 @@
 					<span class="n">ComplexLine</span><span class="p">(</span><span class="n">z2</span><span class="p">,</span><span class="n">z3</span><span class="p">),</span>
 					<span class="n">ComplexLine</span><span class="p">(</span><span class="n">z3</span><span class="p">,</span><span class="n">z4</span><span class="p">),</span>
 					<span class="n">ComplexLine</span><span class="p">(</span><span class="n">z4</span><span class="p">,</span><span class="n">z1</span><span class="p">)]</span>
-		<span class="nb">super</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="s2">&quot;Rectangle: </span><span class="si">%.3f</span><span class="s2">+i</span><span class="si">%.3f</span><span class="s2">, </span><span class="si">%.3f</span><span class="s2">+i</span><span class="si">%.3f</span><span class="s2">, </span><span class="si">%.3f</span><span class="s2">+i</span><span class="si">%.3f</span><span class="s2">, </span><span class="si">%.3f</span><span class="s2">+i</span><span class="si">%.3f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z1</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z1</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z3</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z3</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z4</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z4</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
 
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">centerPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">centralPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="c1"># get the central point within the contour</span>
 		<span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
 		<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">yRange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
@@ -673,6 +827,9 @@
 
 		<span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]:</span>
 			<span class="n">box</span><span class="o">.</span><span class="n">_createdBySubdivisionAxis</span> <span class="o">=</span> <span class="n">axis</span>
+			<span class="n">box</span><span class="o">.</span><span class="n">_parentBox</span> <span class="o">=</span> <span class="bp">self</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_childBoxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]</span>
+
 		<span class="k">return</span> <span class="n">box1</span><span class="p">,</span> <span class="n">box2</span>
 
 	<span class="k">def</span> <span class="nf">randomPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -686,30 +843,73 @@
 	<span class="sd">&quot;&quot;&quot;A generator for divisionFactors&quot;&quot;&quot;</span>
 	<span class="n">x</span> <span class="o">=</span> <span class="mf">0.5</span>
 	<span class="k">yield</span> <span class="n">x</span>
-	<span class="k">for</span> <span class="n">power</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="n">e1</span><span class="p">,</span> <span class="mi">1</span><span class="n">e2</span><span class="p">,</span> <span class="mi">1</span><span class="n">e3</span><span class="p">]:</span>
-		<span class="k">for</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="n">power</span><span class="o">/</span><span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+	<span class="k">for</span> <span class="n">power</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">1e1</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">]:</span>
+		<span class="k">for</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">power</span><span class="o">/</span><span class="mi">2</span><span class="p">))[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
 			<span class="k">yield</span> <span class="n">x</span> <span class="o">+</span> <span class="n">diff</span>
 			<span class="k">yield</span> <span class="n">x</span> <span class="o">-</span> <span class="n">diff</span>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">cxroots 0.4.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, Robert Parini.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

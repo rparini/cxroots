@@ -6,6 +6,8 @@ References
 [BVP] Gakhov, F. D. "Boundary value problems", section 12 (2014), Elsevier.
 [DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
 	L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
+[KB] "Computing the Zeros of Anayltic Functions", Peter Kravanja, Marc Van Barel,
+	Springer (2000)
 """
 
 from __future__ import division
@@ -13,169 +15,15 @@ import random
 import warnings
 import numpy as np
 import scipy.integrate
+import scipy.linalg
 from scipy import pi, exp, sin, log
 import scipy
 
-from .CountRoots import count_enclosed_roots
-
-class ComplexPath(object):
-	""" A base class for paths in the complex plane """
-	def __init__(self):
-		self._integralCache = {}
-		self._contArgCache = {}
-
-		self._trapValuesCache = {}
-
-	def trapValues(self, f, k):
-		"""
-		2**k+1 is the number of required points for the function f to
-		be evaluated at.
-		"""
-
-		if f in self._trapValuesCache.keys():
-			vals = self._trapValuesCache[f]
-			vals_k = int(np.log2(len(vals)-1))
-			
-			if vals_k == k:
-				return vals
-			elif vals_k > k:
-				return vals[::2**(vals_k-k)]
-			else:
-				t = np.linspace(0, 1, 2**k+1)
-				vals = np.empty(2**k+1, dtype=np.complex128)
-				vals.fill(np.nan)
-				vals[::2**k] = f(self(t[::2**k]))
-				vals[np.isnan(vals)] = f(self(t[np.isnan(vals)]))
-
-				# cache values
-				self._trapValuesCache[f] = vals
-				return vals
-
-		else:
-			t = np.linspace(0, 1, 2**k+1)
-			vals = f(self(t))
-			self._trapValuesCache[f] = vals
-			return vals
-
-
-	def plot(self, N=100, linecolor='b', linestyle='-'):
-		"""
-		Use matplotlib to plot, but not show, the path as a 
-		2D plot in the Complex plane.  To show use pyplot.show()
-
-		Parameters
-		----------
-		N : int, optional
-			The number of points to use when plotting the path.  Default is 100
-		linecolor : optional
-			The colour of the plotted path, passed to the pyplot.plot function 
-			as the keyword argument of 'color'.
-		linestyle : str, optional
-			The line style of the plotted path, passed to the pyplot.plot 
-			function as the keyword argument of 'linestyle'.  Default is '-' 
-			which corresponds to a solid line.
-		"""
-		import matplotlib.pyplot as plt
-		t = np.linspace(0,1,N)
-		path = self(t)
-		plt.plot(path.real, path.imag, color=linecolor, linestyle=linestyle)
-		plt.xlabel('Re[$z$]', size=16)
-		plt.ylabel('Im[$z$]', size=16)
-
-		# add arrow to indicate direction of path
-		arrow_direction = (self(0.51) - self(0.5))/abs(self(0.51) - self(0.5))
-		arrow_extent = 1e-6*arrow_direction
-		ymin, ymax = plt.gca().get_ylim()
-		xmin, xmax = plt.gca().get_xlim()
-		head_length = max(abs(ymax - ymin), abs(xmax - xmin))/40.
-		plt.arrow(self(0.5).real, self(0.5).imag,
-				  arrow_extent.real, arrow_extent.imag,
-				  head_width=head_length*2/3., head_length=head_length, 
-				  fc=linecolor, ec=linecolor)
-
-	def show(self, *args, **kwargs):
-		""" Shows the path as a 2D plot in the complex plane using 
-		the same arguments as the plot method """
-		import matplotlib.pyplot as plt
-		self.plot(*args, **kwargs)
-		plt.show()
-
-	def integrate(self, f, tol=1e-8, rombergDivMax=10, show=False):
-		"""
-		Integrate the function f along the path using SciPy's Romberg
-		algorithm.  The value of the integral is cached and will be
-		reused if the method is called with same function f and tol. 
-
-		Parameters
-		----------
-		f : function of a single complex variable
-		tol : float, optional
-			The absolute tolerance passed to SciPy's Romberg function.
-			Default is 1e-8.
-		rombergDivMax : int, optional
-			The maximum order of extrapolation passed to SciPy's Romberg function
-
-		Returns
-		-------
-		integral : complex
-			The integral of the function f along the path.
-		"""
-
-		args = (f, tol)
-		if args in self._integralCache.keys():
-			integral = self._integralCache[args]
-
-		elif hasattr(self, '_reversePath') and args in self._reversePath._integralCache:
-			# if we have already computed the reverse of this path
-			integral = -self._reversePath._integralCache[args]
-
-		else:			
-			# suppress accuracy warnings
-			with warnings.catch_warnings():
-				warnings.simplefilter("ignore")
-				integrand = lambda t: f(self(t))*self.dzdt(t)
-				integral = scipy.integrate.romberg(integrand,0,1,tol=tol,divmax=rombergDivMax,show=show)
-
-			if np.isnan(integral):
-				raise RuntimeError('The integral along the segment %s is NaN.\
-					\nThis is most likely due to a root being on or very close to the path of integration.'%self)
-
-			self._integralCache[args] = integral
-
-		return integral
-
-
-class ComplexLine(ComplexPath):
-	""" A straight line in the complex plane from a to b """
-	def __init__(self, a, b):
-		self.a, self.b = a, b
-		self.dzdt = lambda t: self.b-self.a
-		super(ComplexLine, self).__init__()
-
-	def __str__(self):
-		return 'ComplexLine from %.3f+%.3fi to %.3f+%.3fi' % (self.a.real, self.a.imag, self.b.real, self.b.imag)
-
-	def __call__(self, t):
-		""" The parameterization of the line in the variable t, where 0 <= t <= 1 """
-		return self.a + t*(self.b-self.a)
-
-class ComplexArc(ComplexPath):
-	""" An arc with center z0, radius R, initial angle t0 and change of angle dt """
-	def __init__(self, z0, R, t0, dt):
-		self.z0, self.R, self.t0, self.dt = z0, R, t0, dt
-		self.dzdt = lambda t: 1j*self.dt*self.R*exp(1j*(self.t0 + t*self.dt))
-		super(ComplexArc, self).__init__()
-
-	def __str__(self):
-		return 'ComplexArc: z0=%.3f, R=%.3f, t0=%.3f, dt=%.3f' % (self.z0, self.R, self.t0, self.dt)
-
-	def __call__(self, t):
-		""" The parameterization of the arc in the variable t, where 0 <= t <= 1 """
-		return self.R*exp(1j*(self.t0 + t*self.dt)) + self.z0
-
-# create a cache of the integrands created in the enclosed_zeros method
-# of the PolarRect class so that the segment integrals can be cached
-zerosIntegrandCache = {}
+from .CountRoots import count_enclosed_roots, prod
+from .RootFinder import findRoots
+from .DemoRootFinder import demo_findRoots
+from .Paths import ComplexLine, ComplexArc
+from .Misc import doc_tab_to_space, docstrings
 
 class Contour(object):
 	def __init__(self, segments):
@@ -211,22 +59,24 @@ class Contour(object):
 		plt.xlim([xmin, xmax])
 		plt.ylim([ymin, ymax])
 
-	def show(self, *args, **kwargs):
-		""" Shows the path as a 2D plot in the complex plane using 
-		the same arguments as the plot method """
+	def show(self, saveFile=None, *args, **kwargs):
+		""" 
+		Shows the contour as a 2D plot in the complex plane.
+
+		Parameters
+		==========
+		saveFile : str (optional)
+			If given then the plot will be saved to disk with name 'saveFile' instead of being shown.
+		"""
 		import matplotlib.pyplot as plt
 		self.sizePlot()
 		self.plot(*args, **kwargs)
-		plt.show()
 
-	def integrate(self, f, tol=1e-8, rombergDivMax=10, show=False):
-		""" Integrate around the contour, same arguments the integrate method for ComplexPath
-		but the tolerance passed to each segment will be tol/len(self.segments) """
-		segmentTol = tol/len(self.segments)
-		return sum([segment.integrate(f, segmentTol, rombergDivMax, show) for segment in self.segments])
-
-	def count_enclosed_roots(self, *args, **kwargs):
-		return count_enclosed_roots(self, *args, **kwargs)
+		if saveFile is not None:
+			plt.savefig(saveFile)
+			plt.close()
+		else:
+			plt.show()
 
 	def subdivisions(self, axis='alternating'):
 		""" 
@@ -254,14 +104,189 @@ class Contour(object):
 		for divisionFactor in divisionFactorGen():
 			yield self.subdivide(axis, divisionFactor)
 
+	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', show=False):
+		""" Integrate around the contour, same arguments the integrate method for ComplexPath """
+		return sum([segment.integrate(f, absTol, relTol, rombergDivMax, method, show) for segment in self.segments])
+
+	def count_roots(self, *args, **kwargs):
+		return count_enclosed_roots(self, *args, **kwargs)
+
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, divMax=10, rootTol=1e-8):
+		N = self.count_roots(f, df, integerTol, divMax)
+
+		if N == 0:
+			return (), ()
+
+		mu = prod(self, f, df, lambda z: z, lambda z: 1, absTol, relTol, divMax)[0]/N
+		phiZeros = [[],[mu]]
+
+		def phiFunc(i):
+			if len(phiZeros[i]) == 0:
+				return lambda z: 1
+			else:
+				coeff = np.poly(phiZeros[i])
+				return lambda z: np.polyval(coeff, z)
+			
+		# print('mu', mu)
+
+		err_stop = 1e-8
+
+		# initialize G_{pq} = <phi_p, phi_q>
+		G = np.zeros((N,N), dtype=np.complex128)
+		G[0,0] = N # = <phi0, phi0>
+
+		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
+		G1 = np.zeros((N,N), dtype=np.complex128)
+		ip, err = prod(self, f, df, phiFunc(0), lambda z: phiFunc(1)(z)*phiFunc(0)(z), absTol, relTol, divMax)
+		G1[0,0] = ip
+
+		take_regular = True
+
+		r, t = 1, 0
+		while r+t<N:
+			# define the next FOP of degree r+t+1
+			k = r+t+1
+
+			# Add new values to G
+			p = r+t
+			G[p, 0:p+1] = [prod(self, f, df, phiFunc(p), phiFunc(q), absTol, relTol, divMax)[0] for q in range(r+t+1)]
+			G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
+
+			# Add new values to G1
+			phi1 = phiFunc(1)
+			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMax)[0] for q in range(r+t+1)]
+			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
+
+			# print('G', G[:p+1,:p+1])
+			# print('G1', G1[:p+1,:p+1])
+
+			# The regular FOP only exists if H is non-singular.
+			# An alternate citeration given by [KB] is to proceed as if it is regular and
+			# then compute its zeros.  If any are arbitary or infinite then this
+			# polynomial should instead be defined as an inner polynomial.
+			# Here, an inner polynomial instead if any of the computed
+			# roots are outside of the interior of the contour.
+			polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu
+			# print('polyRoots', polyRoots)
+			if np.all([self.contains(z) for z in polyRoots]):
+				# define a regular polynomial
+				phiZeros.append(polyRoots)
+				r, t = r+t+1, 0
+				# print('regular', r+t)
+
+				# if any of these elements are not small then continue
+				allSmall = True
+				phiFuncLast = phiFunc(-1)
+				for j in range(N-r):
+					ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMax)
+
+					# if not small then carry on
+					# print(j, 'of', N-r, 'stop?', ip)
+					### XXX: Use the 'maxpsum' estimate for precision loss in [KB]?
+					if abs(ip) + err > err_stop:
+						allSmall = False
+						break
+
+				if allSmall:
+					# all the roots have been found
+					break
+
+			else:
+				t += 1
+
+				# define an inner polynomial phi_{r+t+1} = (z-mu) phi_{r+t}
+				# phiZeros.append(np.append(phiZeros[-1],mu))
+
+				# define an inner polynomial phi_{r+t+1} = phi_{t+1} phi_{r}
+				phiZeros.append(np.append(phiZeros[t],phiZeros[r]))
+
+				# print('inner poly', r+t)
+				# print('phiZeros', phiZeros)
+
+		roots = np.array(phiZeros[-1])
+
+		# remove any roots which are not distinct
+		removeList = []
+		for i, root in enumerate(roots):
+			# print(root, roots[i+1:], np.abs(root-roots[i+1:]))
+			# print(len(roots[i+1:]) > 0)
+			# print(np.any(np.abs(root-roots[i+1:]) < rootTol))
+			if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < rootTol):
+				removeList.append(i)
+
+		roots = np.delete(roots, removeList)
+
+		n = len(roots) # number of distinct roots
+
+		# compute the multiplicities, eq. (1.19) in [KB]
+		V = np.column_stack([roots**i for i in range(n)])
+		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMax=divMax)[0] for p in range(n)] # ordinary moments
+		multiplicities = np.dot(s, np.linalg.inv(V))
+		multiplicities = np.round(multiplicities)
+
+		# remove any roots with multiplicity zero
+		zeroArgs = np.where(multiplicities == 0)
+		multiplicities = np.delete(multiplicities, zeroArgs)
+		roots = np.delete(roots, zeroArgs)
+
+		return tuple(roots), tuple(multiplicities)
+
+	def roots(self, f, df=None, **kwargs):
+		return findRoots(self, f, df, **kwargs)
+
+	def demo_roots(self, *args, **kwargs):
+		"""
+		An animated demonstration of the root finding process using matplotlib.
+		Takes all the parameters of :func:`Contour.roots <cxroots.Contours.Contour.roots>` as well as:
+
+		Parameters
+		----------
+		automaticAnim : bool, optional
+			If False (default) then press SPACE to step the animation forward
+			If True then the animation will play automatically until all the 
+			roots have been found.
+		saveFile : str, optional
+			If given then the animation will be saved to disk with filename 
+			equal to saveFile instead of being shown.
+		returnAnim : bool, optional
+			If True then the matplotlib animation object will be returned 
+			instead of being shown.  Defaults to False.
+		"""
+		return demo_findRoots(self, *args, **kwargs)
+
+	def show_roots(self, *args, **kwargs):
+		roots = self.roots(*args, **kwargs)
+		roots.show()
+
+	def print_roots(self, *args, **kwargs):
+		roots = self.roots(*args, **kwargs)
+		print(roots)
+
+# Reuse docs for roots
+try:
+	Contour.roots.__doc__ = docstrings.delete_params_s(findRoots.__doc__, ['originalContour'])
+except AttributeError:
+	# for Python 2.7
+	Contour.roots.__func__.__doc__ = docstrings.delete_params_s(findRoots.__doc__, ['originalContour'])
+
+
 
 class Circle(Contour):
-	"""A positively oriented circle."""
+	"""
+	A positively oriented circle in the complex plane.
+
+	Parameters
+	----------
+	center : complex
+		The center of the circle.
+	radius : float
+		The radius of the circle.
+	"""
 	def __init__(self, center, radius):
-		self.center = self.centerPoint = center
+		self.center = center
 		self.radius = radius
 		self.axisName = ['r']
-		self.centerPoint = center
+		self.centralPoint = center
 
 		segments = [ComplexArc(center, radius, 0, 2*pi)]
 		super(Circle, self).__init__(segments)
@@ -301,7 +326,13 @@ class Circle(Contour):
 			box1.segments[0] = self.segments[0]
 			box1.segments[1]._reversePath = box2.segments[0]
 			box2.segments[0]._reversePath = box1.segments[1]
-			return box1, box2
+
+		for box in [box1, box2]:
+			box._createdBySubdivisionAxis = axis
+			box._parentBox = self
+			self._childBoxes = [box1, box2]
+
+		return box1, box2
 
 	def randomPoint(self):
 		""" Returns a random point inside the Circle """
@@ -311,9 +342,15 @@ class Circle(Contour):
 
 class Annulus(Contour):
 	"""
-	An annulus with given center and radii=[inner_radius, outer_radius].
-	The outer circle is positively oriented and the inner circle is
-	negatively oriented.
+	An annulus in the complex plane with the outer circle positively oriented
+	and the inner circle negatively oriented.
+
+	Parameters
+	----------
+	center : complex
+		The center of the annulus in the complex plane.
+	radii : list
+		A list of length two of the form [inner_radius, outer_radius]
 	"""
 	def __init__(self, center, radii):
 		self.center = center
@@ -327,7 +364,7 @@ class Annulus(Contour):
 		return 'Annulus: center=%.3f, inner radius=%.3f, outer radius=%.3f' % (self.center, self.radii[0], self.radii[1])
 	
 	@property
-	def centerPoint(self):
+	def centralPoint(self):
 		# get the central point within the contour
 		r = (self.radii[0] + self.radii[1])/2
 		return r
@@ -369,7 +406,6 @@ class Annulus(Contour):
 
 			box1._createdBySubdivisionAxis = axis
 			box2._createdBySubdivisionAxis = axis
-			boxes = [box1, box2]
 
 		elif axis == 'phi' or self.axisName[axis] == 'phi':
 			# Subdividing into two radial boxes rather than one to 
@@ -380,18 +416,20 @@ class Annulus(Contour):
 			phi0 = 2*pi*divisionFactor
 			phi1 = phi0 + pi
 
-			box1 = PolarRect(self.center, self.radii, [phi0, phi1])
-			box2 = PolarRect(self.center, self.radii, [phi1, phi0])
+			box1 = AnnulusSector(self.center, self.radii, [phi0, phi1])
+			box2 = AnnulusSector(self.center, self.radii, [phi1, phi0])
 
 			box1.segments[0]._reversePath = box2.segments[2]
 			box2.segments[2]._reversePath = box1.segments[0]
 			box1.segments[2]._reversePath = box2.segments[0]
 			box2.segments[0]._reversePath = box1.segments[2]
-			boxes = [box1, box2]
 
-		for box in boxes:
+		for box in [box1, box2]:
 			box._createdBySubdivisionAxis = axis
-		return boxes
+			box._parentBox = self
+		self._childBoxes = [box1, box2]
+
+		return box1, box2
 
 	def randomPoint(self):
 		""" Returns a random point inside the Annulus """
@@ -400,10 +438,20 @@ class Annulus(Contour):
 		return r*exp(1j*phi) + self.center
 
 
-class PolarRect(Contour):
+class AnnulusSector(Contour):
 	"""
-	A positively oriented contour which is a rectangle in polar 
-	coordinates with verticies: [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]] 
+	A sector of an annulus in the complex plane.
+	
+	Parameters
+	==========
+	center : complex
+		The center of the annulus sector.
+	rRange : list
+		List of length two of the form [inner_radius, outer_radius]
+	phiRange : list
+		List of length two of the form [phi0, phi1].
+		The segment of the contour containing inner and outer circular arcs 
+		will be joined, counter clockwise from phi0 to phi1.
 	"""
 	def __init__(self, center, rRange, phiRange):
 		self.center = center
@@ -419,6 +467,7 @@ class PolarRect(Contour):
 		if r0 < 0 or r1 <= 0:
 			raise ValueError('Radius > 0')
 
+		# verticies [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]] 
 		self.z1 = z1 = center + r0*exp(1j*phi0)
 		self.z2 = z2 = center + r1*exp(1j*phi0)
 		self.z3 = z3 = center + r1*exp(1j*phi1)
@@ -429,13 +478,13 @@ class PolarRect(Contour):
 					ComplexLine(z3,z4),
 					ComplexArc(center,r0,phi1,phi0-phi1)]
 
-		super(PolarRect, self).__init__(segments)
+		super(AnnulusSector, self).__init__(segments)
 
 	def __str__(self):
-		return 'Polar rectangle: r0=%.3f, r1=%.3f, phi0=%.3f, phi1=%.3f' % (self.rRange[0], self.rRange[1], self.phiRange[0], self.phiRange[1])
+		return 'Polar rectangle: center=%.3f, r0=%.3f, r1=%.3f, phi0=%.3f, phi1=%.3f' % (self.center, self.rRange[0], self.rRange[1], self.phiRange[0], self.phiRange[1])
 	
 	@property
-	def centerPoint(self):
+	def centralPoint(self):
 		# get the central point within the contour
 		r = (self.rRange[0] + self.rRange[1])/2
 		phi = (self.phiRange[0] + self.phiRange[1])/2
@@ -452,7 +501,7 @@ class PolarRect(Contour):
 		
 		phi = np.mod(self.phiRange, 2*pi)
 		if phi[0] > phi[1]:
-			angleCorrect = phi[0] < angle < 2*pi or 0 < angle < phi[1]
+			angleCorrect = phi[0] < angle <= 2*pi or 0 <= angle < phi[1]
 		else:
 			angleCorrect = phi[0] < angle < phi[1]
 
@@ -471,23 +520,23 @@ class PolarRect(Contour):
 
 		Returns
 		-------
-		box1 : PolarRect
-			If axis is 'r' then phiRange and the inner radius is the same as original PolarRect
+		box1 : AnnulusSector
+			If axis is 'r' then phiRange and the inner radius is the same as original AnnulusSector
 			with the outer radius determined by the divisionFactor.
-			If axis is 'phi' then the rRange and phiRange[0] is the same as the original PolarRect
+			If axis is 'phi' then the rRange and phiRange[0] is the same as the original AnnulusSector
 			with phiRange[1] determined by the divisionFactor.
-		box2 : PolarRect
-			If axis is 'r' then phiRange and the outer radius is the same as original PolarRect
+		box2 : AnnulusSector
+			If axis is 'r' then phiRange and the outer radius is the same as original AnnulusSector
 			with the inner radius determined equal to the outer radius of box1.
-			If axis is 'phi' then the rRange and phiRange[1] is the same as the original PolarRect
+			If axis is 'phi' then the rRange and phiRange[1] is the same as the original AnnulusSector
 			with phiRange[0] equal to phiRange[1] of box1.
 		"""
 		r0, r1 = self.rRange
 		phi0, phi1 = self.phiRange
 		if axis == 0 or axis == self.axisName[0]:
 			divisionPoint = r0 + divisionFactor*(r1-r0)
-			box1 = PolarRect(self.center, [r0, divisionPoint], self.phiRange)
-			box2 = PolarRect(self.center, [divisionPoint, r1], self.phiRange)
+			box1 = AnnulusSector(self.center, [r0, divisionPoint], self.phiRange)
+			box2 = AnnulusSector(self.center, [divisionPoint, r1], self.phiRange)
 
 			# reuse line segments from original box where possible
 			# this allows the cached integrals to be used
@@ -498,8 +547,8 @@ class PolarRect(Contour):
 
 		elif axis == 1 or axis == self.axisName[1]:
 			divisionPoint = phi0 + divisionFactor*(phi1-phi0)
-			box1 = PolarRect(self.center, self.rRange, [phi0, divisionPoint])
-			box2 = PolarRect(self.center, self.rRange, [divisionPoint, phi1])
+			box1 = AnnulusSector(self.center, self.rRange, [phi0, divisionPoint])
+			box2 = AnnulusSector(self.center, self.rRange, [divisionPoint, phi1])
 
 			box1.segments[0] = self.segments[0]
 			box2.segments[2] = self.segments[2]
@@ -508,10 +557,13 @@ class PolarRect(Contour):
 
 		for box in [box1, box2]:
 			box._createdBySubdivisionAxis = axis
+			box._parentBox = self
+		self._childBoxes = [box1, box2]
+
 		return box1, box2
 
 	def randomPoint(self):
-		"""Returns a random point inside the contour of the PolarRect."""
+		"""Returns a random point inside the contour of the AnnulusSector."""
 		r = np.random.uniform(*self.rRange)
 		phiRange = np.mod(self.phiRange, 2*pi)
 		if phiRange[0] > phiRange[1]:
@@ -524,7 +576,16 @@ class PolarRect(Contour):
 
 
 class Rectangle(Contour):
-	"""A positively oriented rectangle in the complex plane"""
+	"""
+	A positively oriented rectangle in the complex plane.
+	
+	Parameters
+	==========
+	xRange : list
+		List of length 2 giving the range of the rectangle along the real axis.
+	yRange : list
+		List of length 2 giving the range of the rectangle along the imaginary axis.
+	"""
 	def __init__(self, xRange, yRange):
 		self.xRange = xRange
 		self.yRange = yRange
@@ -545,7 +606,7 @@ class Rectangle(Contour):
 		return "Rectangle: %.3f+i%.3f, %.3f+i%.3f, %.3f+i%.3f, %.3f+i%.3f"%(self.z1.real, self.z1.imag, self.z2.real, self.z2.imag, self.z3.real, self.z3.imag, self.z4.real, self.z4.imag)
 
 	@property
-	def centerPoint(self):
+	def centralPoint(self):
 		# get the central point within the contour
 		x = (self.xRange[0] + self.xRange[1])/2
 		y = (self.yRange[0] + self.yRange[1])/2
@@ -605,6 +666,9 @@ class Rectangle(Contour):
 
 		for box in [box1, box2]:
 			box._createdBySubdivisionAxis = axis
+			box._parentBox = self
+		self._childBoxes = [box1, box2]
+
 		return box1, box2
 
 	def randomPoint(self):
@@ -619,6 +683,6 @@ def divisionFactorGen():
 	x = 0.5
 	yield x
 	for power in [1e1, 1e2, 1e3]:
-		for diff in np.linspace(0, 0.5, 1+power/2)[1:-1]:
+		for diff in np.linspace(0, 0.5, int(1+power/2))[1:-1]:
 			yield x + diff
 			yield x - diff

@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Contours &mdash; cxroots 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cxroots 1.0.0 documentation" href="index.html"/>
+        <link rel="next" title="Root Finding" href="roots.html"/>
+        <link rel="prev" title="Getting Started" href="getting_started.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contours</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#circle">Circle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rectangle">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#annulus">Annulus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#annulus-sector">Annulus Sector</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">Root Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rootresult.html">Root Viewing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Contours</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/contours.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="contours">
+<h1>Contours<a class="headerlink" href="#contours" title="Permalink to this headline">¶</a></h1>
+<p>cxroots finds all the roots an analytic function which lie in the interior of a user specified contour.
+The posibilities for choosing this contour are:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#circle"><span class="std std-ref">Circle</span></a></li>
+<li><a class="reference internal" href="#rectangle"><span class="std std-ref">Rectangle</span></a></li>
+<li><a class="reference internal" href="#annulus"><span class="std std-ref">Annulus</span></a></li>
+<li><a class="reference internal" href="#annulus-sector"><span class="std std-ref">Annulus Sector</span></a></li>
+</ul>
+<p>Contours can be plotted using:</p>
+<dl class="method">
+<dt id="cxroots.Contours.Contour.show">
+<code class="descclassname">Contour.</code><code class="descname">show</code><span class="sig-paren">(</span><em>saveFile=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contours.html#Contour.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Contours.Contour.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the contour as a 2D plot in the complex plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>saveFile</strong> (<em>str</em><em> (</em><em>optional</em><em>)</em>) – If given then the plot will be saved to disk with name ‘saveFile’ instead of being shown.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="circle">
+<h2>Circle<a class="headerlink" href="#circle" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cxroots.Circle">
+<em class="property">class </em><code class="descclassname">cxroots.</code><code class="descname">Circle</code><span class="sig-paren">(</span><em>center</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contours.html#Circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>A positively oriented circle in the complex plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>center</strong> (<em>complex</em>) – The center of the circle.</li>
+<li><strong>radius</strong> (<em>float</em>) – The radius of the circle.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+<span class="n">center</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+<span class="n">circle</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//docex_contour_circle.py">Source code</a>, <a class="reference external" href=".//docex_contour_circle.png">png</a>, <a class="reference external" href=".//docex_contour_circle.hires.png">hires.png</a>, <a class="reference external" href=".//docex_contour_circle.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/docex_contour_circle.png" src="_images/docex_contour_circle.png" />
+</div>
+</div>
+<div class="section" id="rectangle">
+<h2>Rectangle<a class="headerlink" href="#rectangle" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cxroots.Rectangle">
+<em class="property">class </em><code class="descclassname">cxroots.</code><code class="descname">Rectangle</code><span class="sig-paren">(</span><em>xRange</em>, <em>yRange</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contours.html#Rectangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>A positively oriented rectangle in the complex plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xRange</strong> (<em>list</em>) – List of length 2 giving the range of the rectangle along the real axis.</li>
+<li><strong>yRange</strong> (<em>list</em>) – List of length 2 giving the range of the rectangle along the imaginary axis.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="n">xRange</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">yRange</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="n">xRange</span><span class="p">,</span> <span class="n">yRange</span><span class="p">)</span>
+<span class="n">rect</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//docex_contour_rectangle.py">Source code</a>, <a class="reference external" href=".//docex_contour_rectangle.png">png</a>, <a class="reference external" href=".//docex_contour_rectangle.hires.png">hires.png</a>, <a class="reference external" href=".//docex_contour_rectangle.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/docex_contour_rectangle.png" src="_images/docex_contour_rectangle.png" />
+</div>
+</div>
+<div class="section" id="annulus">
+<h2>Annulus<a class="headerlink" href="#annulus" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cxroots.Annulus">
+<em class="property">class </em><code class="descclassname">cxroots.</code><code class="descname">Annulus</code><span class="sig-paren">(</span><em>center</em>, <em>radii</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contours.html#Annulus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Annulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>An annulus in the complex plane with the outer circle positively oriented
+and the inner circle negatively oriented.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>center</strong> (<em>complex</em>) – The center of the annulus in the complex plane.</li>
+<li><strong>radii</strong> (<em>list</em>) – A list of length two of the form [inner_radius, outer_radius]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Annulus</span>
+<span class="n">center</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.75</span><span class="p">]</span>
+<span class="n">annulus</span> <span class="o">=</span> <span class="n">Annulus</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">)</span>
+<span class="n">annulus</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//docex_contour_annulus.py">Source code</a>, <a class="reference external" href=".//docex_contour_annulus.png">png</a>, <a class="reference external" href=".//docex_contour_annulus.hires.png">hires.png</a>, <a class="reference external" href=".//docex_contour_annulus.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/docex_contour_annulus.png" src="_images/docex_contour_annulus.png" />
+</div>
+</div>
+<div class="section" id="annulus-sector">
+<h2>Annulus Sector<a class="headerlink" href="#annulus-sector" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cxroots.AnnulusSector">
+<em class="property">class </em><code class="descclassname">cxroots.</code><code class="descname">AnnulusSector</code><span class="sig-paren">(</span><em>center</em>, <em>rRange</em>, <em>phiRange</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contours.html#AnnulusSector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.AnnulusSector" title="Permalink to this definition">¶</a></dt>
+<dd><p>A sector of an annulus in the complex plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>center</strong> (<em>complex</em>) – The center of the annulus sector.</li>
+<li><strong>rRange</strong> (<em>list</em>) – List of length two of the form [inner_radius, outer_radius]</li>
+<li><strong>phiRange</strong> (<em>list</em>) – List of length two of the form [phi0, phi1].
+The segment of the contour containing inner and outer circular arcs
+will be joined, counter clockwise from phi0 to phi1.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">AnnulusSector</span>
+<span class="n">center</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">]</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">annulusSector</span> <span class="o">=</span> <span class="n">AnnulusSector</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+<span class="n">annulusSector</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//docex_contour_annulussector_a.py">Source code</a>, <a class="reference external" href=".//docex_contour_annulussector_a.png">png</a>, <a class="reference external" href=".//docex_contour_annulussector_a.hires.png">hires.png</a>, <a class="reference external" href=".//docex_contour_annulussector_a.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/docex_contour_annulussector_a.png" src="_images/docex_contour_annulussector_a.png" />
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">AnnulusSector</span>
+<span class="n">center</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">]</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="p">[</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">annulusSector</span> <span class="o">=</span> <span class="n">AnnulusSector</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+<span class="n">annulusSector</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//docex_contour_annulussector_b.py">Source code</a>, <a class="reference external" href=".//docex_contour_annulussector_b.png">png</a>, <a class="reference external" href=".//docex_contour_annulussector_b.hires.png">hires.png</a>, <a class="reference external" href=".//docex_contour_annulussector_b.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/docex_contour_annulussector_b.png" src="_images/docex_contour_annulussector_b.png" />
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="roots.html" class="btn btn-neutral float-right" title="Root Finding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -6,259 +6,329 @@ import scipy
 from numpy.random import uniform
 import itertools
 from collections import deque
-import logging
+import warnings
 
 from .IterativeMethods import iterateToRoot
+from .CountRoots import prod, RootError
+from .RootResult import RootResult
+from .CxDerivative import multiplicity_correct
 
-def subdivide(boxDeque, boxToSubdivide, boxToSubdivide_numberOfEnclosedZeros, func, dfunc, integerTol, integrandUpperBound):
-	for subBoxes in boxToSubdivide.subdivisions():
-		try:
-			numberOfEnclosedZeros = [box.count_enclosed_roots(func, dfunc, integerTol, integrandUpperBound) for box in np.array(subBoxes)]
-			if boxToSubdivide_numberOfEnclosedZeros == sum(numberOfEnclosedZeros):
-				break
-		except RuntimeError:
-			# If the number of zeros within either of the new contours is not an integer then it is
-			# likely that the introduced line which subdivides 'boxToSubdivide' lies on a zero.
-			# To avoid this we will try to place the subdividing line at a different point along 
-			# the division axis
-			continue
+from .Misc import doc_tab_to_space, docstrings
 
-	if boxToSubdivide_numberOfEnclosedZeros != sum(numberOfEnclosedZeros):
-		# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
-		raise RuntimeError("""Unable to subdivide box:
-			\t%s
-			Consider increasing the integrandUpperBound to allow contours closer to roots to be integrated.""" % boxToSubdivide)
-
-	boxDeque.extend([(box, numberOfEnclosedZeros[i]) for i, box in enumerate(subBoxes) if numberOfEnclosedZeros[i] != 0])
-		
-def addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter):
-	# check that the root we have found is distinct from the ones we already have
-	if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
-		# add the root to the list if it is within the original box
-		if originalContour.contains(root):
-			roots.append(root)
-
-		# check to see if there are any other roots implied by the given symmetry
-		if guessRootSymmetry is not None:
-			for x0 in guessRootSymmetry(root):
-				root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
-				if root is not None:
-					addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
-
-
-def findRootsGen(originalContour, f, df=None, guessRoot=[], guessRootSymmetry=None, 
-	newtonStepTol=1e-8, newtonMaxIter=20, rootErrTol=1e-10, iterativeTries=20,
-	integerTol=0.2, integrandUpperBound=1e3):
+@docstrings.get_sectionsf('findRootsGen')
+@docstrings.dedent
+@doc_tab_to_space
+def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
+	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10, absTol=0, relTol=1e-12, 
+	divMax=20, integerTol=0.07, NintAbsTol=0.07, M=5, intMethod='quad'):
 	"""
 	A generator which at each step takes a contour and either finds 
-	all the zeros of f within it or subdivides it further.
+	all the zeros of f within it or subdivides it further.  Based
+	on the algorithm in [KB]
 
 	Parameters
 	----------
-	originalContour : subclass of Contour
+	originalContour : Contour
 		The contour C which bounds the region in which all the 
-		roots of f(z) are sought
+		roots of f(z) are sought.
 	f : function
-		A function of a single complex variable f(z) which is 
+		A function of a single complex variable, z, which is 
 		analytic within C and has no poles or roots on C.
-		NOTE: Currently required that the function f(z) has only 
-		simple roots in C
 	df : function, optional
-		Function of a single complex variable.
-		The derivative of the function f(z).  If given then the 
-		number of zeros within a contour will be computed as the 
-		integral of df(z)/(2j*pi*f(z)) around the contour.
-		If df is not given then the integral will instead be 
-		computed using the diffrence in the argument of f(z) 
-		continued around the contour.
-	guessRoot : list, optional
-		A list of suspected roots of the function f which lie 
-		within the initial contour C.  Each element of the list 
-		will be used as the initial point of an iterative 
-		root-finding method so they need not be entirely 
-		accurate.
+		A function of a single complex variable which is the 
+		derivative of the function f(z). If df is not given 
+		then it will be approximated with a finite difference 
+		formula.
+	guessRoots : list, optional
+		A list of known roots or, if the multiplicity is known, 
+		a list of (root, multiplicity) tuples.
 	guessRootSymmetry : function, optional
-		A function of a single complex variable, z, which returns 
-		a list of all points which are expected to be roots of f, 
-		given that z is a root of f.
+		A function of a single complex variable, z, which 
+		returns a list of all points which are expected to be 
+		roots of f, given that z is a root of f.
 	newtonStepTol : float, optional
+		The required accuracy of the root.
 		The iterative method used to give a final value for each
 		root will exit if the step size, dx, between sucessive 
-		iterations satisfied abs(dx) < newtonStepTol
+		iterations satisfies abs(dx) < newtonStepTol
 	newtonMaxIter : int, optional
 		The iterative method used to give a final value for each
-		root will exit if the number of iterations exceeds newtonMaxIter
+		root will exit if the number of iterations exceeds newtonMaxIter.
 	rootErrTol : float, optional
-		For a point, x, to be confirmed as a root abs(f(x)) < rootErrTol
-	iterativeTries : int, optinal
-		The number of times an iterative method with a random start point
-		should be used to find the root within a contour containing a single
-		root before the contour is subdivided again.
+		A complex value z is considered a root if abs(f(z)) < rootErrTol
+	absTol : float, optional
+		Absolute error tolerance used by the contour integration.
+	relTol : float, optional
+		Relative error tolerance used by the contour integration.
+	divMax : int, optional
+		If the Romberg integration method is used then divMax is the
+		maximum number of divisions before the Romberg integration
+		routine of a path exits.
 	integerTol : float, optional
-		The numerical evaluation of the Cauchy integral will return a result
-		if the result of the last two iterations differ by less than integerTol
-		and the result of the last iteration is within integerTol of an integer.
-		Since the Cauchy integral must be an integer it is only necessary to
-		distinguish which integer the inegral is convering towards.  For this
-		reason the integerTol can be set fairly large.
-	integrandUpperBound : float, optional
-		The maximum allowed value of abs(df(z)/f(z)).  If abs(df(z)/f(z)) exceeds this 
-		value then a RuntimeError is raised.  If integrandUpperBound is too large then 
-		integrals may take a very long time to converge and it is generally be more 
-		efficient to allow the rootfinding procedure to instead choose another contour 
-		then spend time evaluting the integral along a contour very close to a root.
+		A number is considered an integer if it is within 
+		integerTol of an integer.  Used when calculating the 
+		number of roots within a contour.
+	NintAbsTol : float, optional
+		The absolute error tolerance used for the contour 
+		integration when determining the number of roots 
+		within a contour.  Since the result of this integration
+		must be an integer it can be much less accurate
+		than usual.
+	M : int, optional
+		If the number of roots (including multiplicites) within a
+		contour is greater than M then the contour is subdivided
+		further.  M must be greater than or equal to the largest 
+		multiplcity of any root.  
+	intMethod : str, optional
+		Either 'quad' to integrate using scipy.integrate.quad or
+		'romb' to integrate using Romberg's method.
 
 	Yields
 	------
-	tuple
-		All currently known roots of f(z) within the contour C
-	tuple
-		All the contours which still contain roots
+	list
+		Roots of f(z) within the contour C
+	list
+		Multiplicites of roots
+	deque
+		The contours which still contain roots
 	int
 		Remaining number of roots to be found within the contour
+
+	References
+	----------
+	[KB] Peter Kravanja, Marc Van Barel, "Computing the Zeros of 
+	Anayltic Functions", Springer (2000)
 	"""
 	try:
-		totNumberOfRoots = originalContour.count_enclosed_roots(f,df,integerTol,integrandUpperBound)
+		# total number of zeros, including multiplicities
+		totNumberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMax)
+		originalContour._numberOfRoots = totNumberOfRoots
 	except RuntimeError:
 		raise RuntimeError("""
-			Integration along the intial contour has failed.  There is likely a root on or close to the initial contour
-			Try either changing the intial contour, if possible, or increasing the integrandUpperBound to allow for 
-			a longer integration time.""")
+			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
+			Try changing the initial contour, if possible.""")
 
-	loggedIterativeWarning = False
+	smallBoxWarning = False
 	roots = []
-
-	# check to see if the guesses we were passed are roots
-	for root in guessRoot:
-		addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
-
+	multiplicities = []
+	failedBoxes = []
 	boxes = deque()
 	boxes.append((originalContour,totNumberOfRoots))
-	while len(roots) < totNumberOfRoots:
-		box, numberOfEnclosedRoots = boxes.pop()
 
-		# check we do not already have the correct number of known roots in this box
-		knownRootsInBox = [root for root in roots if box.contains(root)]
-		if len(knownRootsInBox) == numberOfEnclosedRoots:
+	def subdivide(parentBox):
+		"""
+		Given a contour, parentBox, subdivide it into multiple contours.
+		"""
+		numberOfRoots = None
+		for subBoxes in parentBox.subdivisions():
+			# if a box has already been used and caused an error then skip it
+			failedBoxDesc = list(map(str, failedBoxes))
+			if np.any([boxDesc in failedBoxDesc for boxDesc in list(map(str, subBoxes))]):
+				continue
+
+			# XXX: if a root is near to a box then subdivide again?
+
+			try:
+				numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMax) for box in np.array(subBoxes)]
+				if parentBox._numberOfRoots == sum(numberOfRoots):
+					break
+			except RootError:
+				# If the number of zeros within either of the new contours is not an integer then it is
+				# likely that the introduced line which subdivides 'parentBox' lies on a zero.
+				# To avoid this we will try to place the subdividing line at a different point along 
+				# the division axis
+				continue
+
+		if numberOfRoots is None or parentBox._numberOfRoots != sum(numberOfRoots):
+			# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
+			raise RuntimeError("""Unable to subdivide box:
+				\t%s
+				""" % parentBox)
+
+		boxes.extend([(box, numberOfRoots[i]) for i, box in enumerate(subBoxes) if numberOfRoots[i] != 0])
+
+		for i, box in enumerate(subBoxes):
+			box._numberOfRoots = numberOfRoots[i]
+
+
+	def addRoot(root, multiplicity=None, useGuessRootSymmetry=None):
+		# check that the root we have found is distinct from the ones we already have
+		if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
+			# add the root to the list if it is within the original box
+			if originalContour.contains(root):
+				roots.append(root)
+				if multiplicity is None:
+					from .Contours import Circle
+					C = Circle(root, 1e-3)
+					# multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, divMax, rootTol=newtonStepTol)[1]
+					multiplicity, = C.approximate_roots(f, df, rootTol=newtonStepTol)[1]
+
+				multiplicities.append(multiplicity.real)
+
+			# check to see if there are any other roots implied by the given symmetry
+			if guessRootSymmetry is not None:
+				for x0 in guessRootSymmetry(root):
+					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+					if root is not None:
+						addRoot(root)
+
+
+	# Add given roots 
+	for guess in guessRoots:
+		if hasattr(guess, '__iter__'):
+			root, multiplicity = guess
+			if not multiplicity_correct(f, df, root, multiplicity):
+				continue
+
+		else:
+			root, multiplicity = guess, None
+
+		# XXX: refine root with Newton-Raphson?
+		
+		if abs(f(root)) < rootErrTol:
+			addRoot(root, multiplicity)
+
+	# yield so that the animation shows the first frame
+	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
+	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
+
+	# print('Tot number of Roots', totNumberOfRoots)
+
+	while boxes:
+		box, numberOfRoots = boxes.pop()
+
+		def remove_relations(C):
+			# remove itself
+			try:
+				boxes.remove((C, C._numberOfRoots))
+			except ValueError:
+				pass
+
+			# get all direct relations
+			# siblings:
+			relations = C._parentBox._childBoxes 
+			relations.remove(C)
+
+			# children:
+			if hasattr(C, '_childBoxes'):
+				relations.extend(C._childBoxes)
+
+			# interate over all relations
+			for relation in relations:
+				remove_relations(relation)
+
+		# if a known root is too near this box then reverse the subdivision that created it 
+		t = np.linspace(0,1,10001) 
+		if np.any([np.any(np.abs(box(t) - root) < 1e-3) for root in roots]):
+			# remove the box and any relations
+			remove_relations(box)
+
+			# put the parent box back into the list of boxes to subdivide again
+			parent = box._parentBox
+			boxes.append((parent, parent._numberOfRoots))
+
+			# compute the root multiplicity directly
+			approxRootMultiplicity = None
+
+			# do not use this box again
+			failedBoxes.append(box)
+
 			continue
 
-		if numberOfEnclosedRoots > 1:
-			# subdivide box further
-			subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, integrandUpperBound)
+		# print(numberOfRoots, box)
 
-		elif numberOfEnclosedRoots == 1:
-			# try to find the root in the box
-			for iteration in range(iterativeTries):
-				x0 = box.randomPoint()
-				root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+		# if box is smaller than the newtonStepTol then just assume that the root is
+		# at the center of the box, print a warning and move on
+		if box.area < newtonStepTol:
+			smallBoxWarning = True
+			if smallBoxWarning is False:
+				warnings.warn('The area of the interior of a contour containing %i is smaller than newtonStepTol!  \
+					\nThe center of the box has been recored as a root of multiplicity %i but this could not be verified.  \
+					\nThe same assumption will be made for future contours this small without an additional warning.  \
+					\nrootErrTol may be too small.'%(numberOfRoots, numberOfRoots))
+			root = box.centralPoint
+			addRoot(root,  multiplicity=numberOfRoots)
+			continue
+
+		# if all the roots within the box have been located then coninue to the next box
+		numberOfKnownRootsInBox = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)])
+		# print('box', box, 'N', numberOfRoots, 'knownN', numberOfKnownRootsInBox)
+		
+		if numberOfRoots == numberOfKnownRootsInBox:
+			continue
+
+		# if there are too many roots within the contour then subdivide
+		# if there are any known roots within the contour then subdivide (so as not to waste resources re-approximating them)
+		if numberOfKnownRootsInBox > 0 or numberOfRoots > M:
+			subdivide(box)
+
+		else:
+			# approximate the roots in this box
+			approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, divMax, rootTol=newtonStepTol)
+			for approxRoot, approxRootMultiplicity in list(zip(approxRoots, approxRootMultiplicities)):
+				# XXX: if the approximate root is not in this box then desregard and redo the subdivision?
+
+				# attempt to refine the root
+				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+
+				# print('approx', approxRoot, 'refined root', root)
+
+				if abs(f(approxRoot)) < rootErrTol and (root is None or abs(f(approxRoot)) < abs(f(root))):
+					# stick with the original approximation
+					root = approxRoot
 
 				if root is not None:
-					addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+					# if the root is very close to the contour then disregard this contour and compute the root multiplicity directly
+					# XXX: implement a distance function returning the shortest distance from a point to any point on a contour
+					t = np.linspace(0,1,10001) 
+					if np.any(np.abs(box(t) - root) < 1e-3):
+						# remove the box and any relations
+						remove_relations(box)
 
-					if box.contains(root):
-						break
+						# put the parent box back into the list of boxes to subdivide again
+						parent = box._parentBox
+						boxes.append((parent, parent._numberOfRoots))
 
-			if root is None or not box.contains(root):
-				# if the box is already very small then simply return the centerPoint coordinate of the box
-				if box.area < newtonStepTol:
-					root = box.centerPoint
-					if not loggedIterativeWarning:
-						logging.warning("""
-							The Newton/secant method is failing to converge towards a root.  
-							The center point of contours bounding an area < newtonStepTol and containing a single root will be added without confirmation that f < rootErrTol at these points.
-							""")
-						loggedIterativeWarning = True
-					logging.info('The point %s will be treated as a root since it is the center point of a contour with area %s containing a single root'%(root, box.area))
-					addRoot(root, roots, originalContour, f, df, guessRootSymmetry, newtonStepTol, rootErrTol, newtonMaxIter)
+						# compute the root multiplicity directly
+						approxRootMultiplicity = None
 
-				else:
-					# subdivide box again if we failed to find the root and the box is still too big
-					subdivide(boxes, box, numberOfEnclosedRoots, f, df, integerTol, integrandUpperBound)
+						# do not use this box again
+						failedBoxes.append(box)
+					
+					# if we found a root add it to the list of known roots
+					addRoot(root, approxRootMultiplicity)
 
-		yield tuple(roots), tuple(boxes), totNumberOfRoots - len(roots)
+			# if we haven't found all the roots then subdivide further
+			numberOfKnownRootsInBox = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)])
+			if numberOfRoots != numberOfKnownRootsInBox and box not in failedBoxes:
+				subdivide(box)
+
+		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
+		yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
+
+	# yield one more time so that the animation shows the final frame
+	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
 
 	if totNumberOfRoots == 0:
-		yield [], deque(), 0
+		yield [], [], deque(), 0
 
+@docstrings.dedent
+@doc_tab_to_space
 def findRoots(originalContour, f, df=None, **kwargs):
 	"""
-	Return a list of all roots of a given function f within a given originalContour.  
-	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`.
+	Find all the roots of the complex analytic function f within the given contour.
+
+	Parameters
+	----------
+	%(findRootsGen.parameters)s
+
+	Returns
+	-------
+	result : rootResult
+		A container for the roots and their multiplicities
 	"""
 	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
-	for roots, boxes, numberOfRemainingRoots in rootFinder:
+	for roots, multiplicities, boxes, numberOfRemainingRoots in rootFinder:
 		pass
-	return roots
-
-def demo_findRoots(originalContour, f, df=None, automaticAnimation=False, returnAnim=False, **kwargs):
-	"""
-	An interactive demonstration of the processess used to find all the roots
-	of a given function f within a given originalContour.
-	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`. 
-
-	If automaticAnimation is False (default) then press the SPACE key 
-	to step the animation forward.
-
-	If automaticAnimation is True then the animation will play automatically
-	until all the roots have been found.
-
-	If returnAnim is true the animating object returned by matplotlib's animation.FuncAnimation
-	will be returned, rather than the animation be shown.
-	"""
-	import matplotlib.pyplot as plt
-	from matplotlib import animation
-	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
-
-	originalContour.plot(linecolor='k', linestyle='--')
-
-	fig = plt.gcf()
-	ax = plt.gca()
-
-	def update_frame(args):
-		roots, boxes, numberOfRemainingRoots = args
-		# print(args)
-
-		plt.cla() # clear axis
-		originalContour.plot(linecolor='k', linestyle='--')
-		originalContour.sizePlot()
-		for box, numberOfEnclosedRoots in boxes:
-			if not hasattr(box, '_color'):
-				cmap = plt.get_cmap('jet')
-				box._color = cmap(np.random.random())
-			
-			plt.text(box.centerPoint.real, box.centerPoint.imag, numberOfEnclosedRoots)
-			box.plot(linecolor=box._color)
-
-		plt.scatter(np.real(roots), np.imag(roots))
-
-		rootsLabel = ax.text(0.02, 0.95, 'Zeros remaining: %i'%numberOfRemainingRoots, transform=ax.transAxes)
-
-		fig.canvas.draw()
-
-
-	if returnAnim:
-		return animation.FuncAnimation(fig, update_frame, frames=list(rootFinder), interval=500, repeat_delay=2000)
-
-	elif automaticAnimation:
-		ani = animation.FuncAnimation(fig, update_frame, frames=rootFinder, interval=500)
-
-	else:
-		def draw_next(event):
-			if event.key == ' ':
-				update_frame(next(rootFinder))
-
-		fig.canvas.mpl_connect('key_press_event', draw_next)
-
-	plt.show()
-
-def showRoots(originalContour, f, df=None, **kwargs):
-	"""
-	Plots all roots of a given function f within a given originalContour.  
-	Shares key word arguments with :func:`cxroots.RootFinder.findRootsGen`.
-	"""
-	import matplotlib.pyplot as plt
-	originalContour.plot(linecolor='k', linestyle='--')
-	roots = findRoots(originalContour, f, df, **kwargs)
-	plt.scatter(np.real(roots), np.imag(roots), color='k', marker='x')
-	plt.show()
+	return RootResult(roots, multiplicities, originalContour)
 

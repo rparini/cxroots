@@ -1,33 +1,46 @@
 from __future__ import division
-# import scipy.optimize
 
-def iterateToRoot(x0, f, df=None, steptol=1e-8, roottol=1e-10, maxIter=20):
+def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
 	# iterate to a root using initial point x0
 	if df is not None:
 		try:
 			# uses Newton-Raphson method if f and df are given.
 
 			# SciPy implementation
+			# import scipy.optimize
 			# root = scipy.optimize.newton(f, x0, df, tol=steptol, maxiter=maxIter)
 			# err = abs(f(root))
 			
-			root, err = newton(x0, f, df, steptol, maxIter)
+			root, err = newton(x0, f, df, steptol, 0, maxIter)
 
 		except (RuntimeError, OverflowError):
 			return None
 	else:
-		# if only f is given then use secant method
-		# XXX: Perhaps implement Muller's method to use in the case were df is unavailable? 
-		x1, x2 = x0, x0*(1 + 1e-4) + 1e-4
-		root, err = secant(x1, x2, f, steptol=steptol, maxIter=maxIter)
+		# Secant method: 
+		x1, x2 = x0, x0 + (x0+1)*1e-8
+		root, err = secant(x1, x2, f, steptol, 0, maxIter)
+
+		# XXX: Secant method is very slow to converge.  Use Muller's method instead?
+		# Muller's method: uses 3 initial points
+		# git+git://github.com/mnishida/PyMuller@master#egg=pymuller
+		# from pymuller import Muller
+		# muller = Muller(f, 1, args=None, xis=[x0], dxs=[1e-4*(1+x0)], xtol=steptol, ftol=0, maxiter=maxIter)
+		# muller()
+		# root = muller.roots[0]
+		# err = abs(root)
+
+		# import mpmath # XXX: mpmath insists on functions accepting mpc which is inconvenient
+		# x1, x2, x3 = x0, x0*(1 + 1e-4) + 1e-4, x0*(1 + 2e-4) + 2e-4
+		# root = mpmath.findroot(f, (x1, x2, x3), solver='muller', tol=roottol, verbose=False, verify=False)
+		# err = abs(root)
 
 	if err < roottol:
 		return root
 
-def newton(x0, f, df, steptol=1e-10, maxIter=20, callback=None):
+def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
-	scalar function f using Newton–Raphson iteration starting at 
+	scalar function f using Newton-Raphson iteration starting at 
 	the point x0.
 
 	Parameters
@@ -43,6 +56,8 @@ def newton(x0, f, df, steptol=1e-10, maxIter=20, callback=None):
 	steptol: float, optional
 		Routine will end if the step size, dx, between sucessive
 		iterations of x satisfies abs(dx) < steptol
+	roottol: float, optional
+		The routine will end if abs(f(x)) < roottol
 	maxIter : int, optional
 		Routine ends after maxIter iterations
 	callback : function, optional
@@ -62,6 +77,8 @@ def newton(x0, f, df, steptol=1e-10, maxIter=20, callback=None):
 
 	# XXX: Could use deflated polynomials to ensure that known roots are not found again?
 	
+	# print('--newton--')
+
 	x, y = x0, f(x0)
 	for iteration in range(maxIter):
 		dx = -y/df(x)
@@ -71,12 +88,14 @@ def newton(x0, f, df, steptol=1e-10, maxIter=20, callback=None):
 		if callback is not None and callback(x, dx, y, iteration+1):
 			break
 
-		if abs(dx) < steptol:
+		# print(iteration, y, abs(y))
+
+		if abs(dx) < steptol or abs(y) < roottol:
 			break
 
 	return x, abs(y)
 
-def secant(x1, x2, f, steptol=1e-10, maxIter=30, callback=None):
+def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
 	scalar function f using the secant method.  The method requires
@@ -96,6 +115,8 @@ def secant(x1, x2, f, steptol=1e-10, maxIter=30, callback=None):
 	steptol: float, optional
 		Routine will end if the step size, dx, between sucessive
 		iterations of x satisfies abs(dx) < steptol
+	roottol: float, optional
+		The routine will end if abs(f(x)) < roottol
 	maxIter : int, optional
 		Routine ends after maxIter iterations
 	callback : function, optional
@@ -120,6 +141,8 @@ def secant(x1, x2, f, steptol=1e-10, maxIter=30, callback=None):
 		x1, x2 = x2, x1
 		y1, y2 = y2, y1
 
+	# print('--secant--')
+
 	for iteration in range(maxIter):
 		dx =  -(x2-x1)*y2/(y2-y1)
 		x1, x2 = x2, x2 + dx
@@ -128,7 +151,9 @@ def secant(x1, x2, f, steptol=1e-10, maxIter=30, callback=None):
 		if callback is not None and callback(x2, dx, y2, iteration+1):
 			break
 
-		if abs(dx) < steptol:
+		# print(iteration, x2, abs(dx), abs(y2))
+
+		if abs(dx) < steptol or abs(y2) < roottol:
 			break
 
 	return x2, abs(y2)
