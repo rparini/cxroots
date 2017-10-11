@@ -263,7 +263,7 @@ class Contour(object):
 		print(roots)
 
 # Reuse docs for roots
-Contour.roots.__doc__ = docstrings.delete_params_s(findRoots.__doc__, ['originalContour'])
+Contour.roots.__func__.__doc__ = docstrings.delete_params_s(findRoots.__doc__, ['originalContour'])
 
 
 
