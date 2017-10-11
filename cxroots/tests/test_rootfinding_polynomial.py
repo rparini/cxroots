@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from scipy import pi
 
-from cxroots import Circle, Rectangle, PolarRect
+from cxroots import Circle, Rectangle, AnnulusSector
 from cxroots.tests.ApproxEqual import roots_approx_equal
 
 class TestRootfindingPolynomial(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestRootfindingPolynomial(unittest.TestCase):
 	
 		self.Circle = Circle(0,3)
 		self.Rectangle = Rectangle([-2,2],[-2,2])
-		self.halfAnnulus = PolarRect(0, [0.5,3], [-pi/2, pi/2])
+		self.halfAnnulus = AnnulusSector(0, [0.5,3], [-pi/2, pi/2])
 
 	def test_rootfinding_polynomial_circle_fdf(self):
 		roots_approx_equal(self.Circle.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=7)

@@ -1,6 +1,6 @@
 import unittest
 
-from cxroots import PolarRect
+from cxroots import AnnulusSector
 
 class TestContains(unittest.TestCase):
 	def test_PolarRect_contains(self):
@@ -10,7 +10,7 @@ class TestContains(unittest.TestCase):
 		phi1=6.519
 
 		z = (9-1.04825594683e-18j)
-		C = PolarRect(0, [r0,r1], [phi0,phi1])
+		C = AnnulusSector(0, [r0,r1], [phi0,phi1])
 
 		# import matplotlib.pyplot as plt
 		# plt.scatter((9),(0))
