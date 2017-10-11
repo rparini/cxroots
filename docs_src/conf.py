@@ -61,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'cxroots'
-# XXX: copyright = '2017, Robert Parini'
+copyright = '2017, Robert Parini'
 author = 'Robert Parini'
 
 # The version info for the project you're documenting, acts as replacement for
