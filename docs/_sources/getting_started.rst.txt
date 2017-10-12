@@ -44,7 +44,7 @@ The corresponding script would be:
 .. literalinclude:: docex_gettingstarted.py
 
 For the full list of arguments for the `.roots(f,df)` method see :ref:`Root Finding`.
-The `.roots(f,df)` method returns a :ref:`Root Viewing` object which contains lists of the roots and multiplicites as lists as attributes:
+The `.roots(f,df)` method returns a :ref:`Root Viewing` object which contains lists of the roots and multiplicites as attributes:
 
 .. literalinclude:: docex_gettingstarted_a.py
 	:lines: 3

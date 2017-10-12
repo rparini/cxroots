@@ -1,10 +1,10 @@
 
 ![](https://travis-ci.org/rparini/cxroots.svg?branch=master)
 # cxroots
-A Python module to compute all the roots of a function <img src="https://rawgit.com/RParini/cxroots/master/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.970500000000005pt height=24.65759999999998pt/> of a single complex variable which lie within a given contour <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.924780000000005pt height=22.46574pt/>.  The function <img src="https://rawgit.com/RParini/cxroots/master/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.970500000000005pt height=24.65759999999998pt/> must:
+A Python module to compute all the roots of a function <img src="https://rawgit.com/RParini/cxroots/master/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> of a single complex variable which lie within a given contour <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>.  The function <img src="https://rawgit.com/RParini/cxroots/master/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> must:
 
-* have no roots or poles on <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.924780000000005pt height=22.46574pt/>
-* be analytic in the interior of <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.924780000000005pt height=22.46574pt/>
+* have no roots or poles on <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>
+* be analytic in the interior of <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>
 
 The implementation is based on the method in [1].
 
