@@ -17,7 +17,7 @@ setup(
     version = __version__,
     description = 'Find all the roots of a function within a contour in the complex plane',
     author = 'Robert Parini',
-    url = 'https://github.com/rparini/cxroots',
+    url = 'https://rparini.github.io/cxroots/',
     license = 'BSD',
     packages = packages,
     platforms = ['all'],
