@@ -3,3 +3,5 @@ build/
 .ipynb_checkpoints
 *.mov
 .DS_Store
+MANIFEST
+dist/*
