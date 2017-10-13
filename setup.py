@@ -19,7 +19,7 @@ with open('README_pip.rst') as file:
 setup(
     name = 'cxroots',
     version = __version__,
-    description = 'Find all the roots of a function within a contour in the complex plane',
+    description = 'Find all the roots (zeros) of a complex analytic function within a given contour in the complex plane.',
     long_description = long_description,
     author = 'Robert Parini',
     author_email = 'rp910@york.ac.uk',
