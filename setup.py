@@ -3,8 +3,7 @@ import os
 import sys
 import shutil
 import unittest
-from distutils.core import setup, Command
-from distutils.extension import Extension
+from setuptools import setup
 from numpy.distutils.misc_util import get_numpy_include_dirs
 
 packages = ['cxroots', 'cxroots.tests']
