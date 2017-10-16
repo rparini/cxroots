@@ -19,7 +19,6 @@ class TestSecant(unittest.TestCase):
 			  				  0.7390581392,
 			  				  0.7390851493,
 			  				  0.7390851332,
-			  				  0.7390851332,
 			  				  0.7390851332]
 
 		np.testing.assert_almost_equal(iterations, correct_iterations, decimal=10)
