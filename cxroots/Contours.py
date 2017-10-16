@@ -241,6 +241,7 @@ class Contour(object):
 
 		# round multiplicities
 		multiplicities = np.round(multiplicities)
+		multiplicities = np.array([int(m.real) for m in multiplicities])
 
 		# remove any roots with multiplicity zero
 		zeroArgs = np.where(multiplicities == 0)
