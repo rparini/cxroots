@@ -17,6 +17,7 @@ with open('README_pip.rst') as file:
 
 # create test commmand
 class TestCommand(Command):
+    # See: https://justin.abrah.ms/python/setuppy_distutils_testing.html by Justin Abrahms
     user_options = []
 
     def initialize_options(self):
