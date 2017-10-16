@@ -27,6 +27,7 @@ setup(
     packages = packages,
     platforms = ['all'],
     install_requires = ['numpy', 'scipy', 'docrep'],
+    test_suite='cxroots.tests',
     keywords='roots zeros complex analytic functions',
     classifiers=[
 	    'Development Status :: 4 - Beta',
