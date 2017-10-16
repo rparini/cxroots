@@ -111,7 +111,7 @@ class Contour(object):
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, divMax=10, rootTol=1e-8):
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, divMax=10, rootTol=1e-8, verbose=False):
 		N = self.count_roots(f, df, integerTol, divMax)
 
 		if N == 0:
@@ -126,10 +126,12 @@ class Contour(object):
 			else:
 				coeff = np.poly(phiZeros[i])
 				return lambda z: np.polyval(coeff, z)
-			
-		# print('mu', mu)
+		
+		if verbose:
+			print('Approximating roots in: ' + str(self))
+			print('mu', mu)
 
-		err_stop = 1e-8
+		err_stop = 1e-18
 
 		# initialize G_{pq} = <phi_p, phi_q>
 		G = np.zeros((N,N), dtype=np.complex128)
@@ -157,8 +159,9 @@ class Contour(object):
 			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMax)[0] for q in range(r+t+1)]
 			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
 
-			# print('G', G[:p+1,:p+1])
-			# print('G1', G1[:p+1,:p+1])
+			if verbose:
+				print('G', G[:p+1,:p+1])
+				print('G1', G1[:p+1,:p+1])
 
 			# The regular FOP only exists if H is non-singular.
 			# An alternate citeration given by [KB] is to proceed as if it is regular and
@@ -167,12 +170,13 @@ class Contour(object):
 			# Here, an inner polynomial instead if any of the computed
 			# roots are outside of the interior of the contour.
 			polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu
-			# print('polyRoots', polyRoots)
 			if np.all([self.contains(z) for z in polyRoots]):
 				# define a regular polynomial
 				phiZeros.append(polyRoots)
 				r, t = r+t+1, 0
-				# print('regular', r+t)
+
+				if verbose:
+					print('Regular poly', r+t, 'roots:', phiZeros[-1])
 
 				# if any of these elements are not small then continue
 				allSmall = True
@@ -200,10 +204,14 @@ class Contour(object):
 				# define an inner polynomial phi_{r+t+1} = phi_{t+1} phi_{r}
 				phiZeros.append(np.append(phiZeros[t],phiZeros[r]))
 
-				# print('inner poly', r+t)
-				# print('phiZeros', phiZeros)
+				if verbose:
+					print('Inner poly', r+t, 'roots:', phiZeros[-1])
 
 		roots = np.array(phiZeros[-1])
+
+		if verbose:
+			print('Roots:')
+			print(roots)
 
 		# remove any roots which are not distinct
 		removeList = []
@@ -216,18 +224,34 @@ class Contour(object):
 
 		roots = np.delete(roots, removeList)
 
+		if verbose:
+			print('Post-removed roots:')
+			print(roots)
+
 		n = len(roots) # number of distinct roots
 
 		# compute the multiplicities, eq. (1.19) in [KB]
 		V = np.column_stack([roots**i for i in range(n)])
 		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMax=divMax)[0] for p in range(n)] # ordinary moments
 		multiplicities = np.dot(s, np.linalg.inv(V))
+
+		if verbose:
+			print('Computed multiplicities:')
+			print(multiplicities)
+
+		# round multiplicities
 		multiplicities = np.round(multiplicities)
 
 		# remove any roots with multiplicity zero
 		zeroArgs = np.where(multiplicities == 0)
 		multiplicities = np.delete(multiplicities, zeroArgs)
 		roots = np.delete(roots, zeroArgs)
+
+		if verbose:
+			print('Final roots:')
+			print(roots)
+			print('Final multiplicities:')
+			print(multiplicities)
 
 		return tuple(roots), tuple(multiplicities)
 
