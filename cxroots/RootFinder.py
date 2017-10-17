@@ -20,7 +20,7 @@ from .Misc import doc_tab_to_space, docstrings
 @doc_tab_to_space
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10, absTol=0, relTol=1e-12, 
-	integerTol=0.07, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=20):
+	integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=20):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.  Based
