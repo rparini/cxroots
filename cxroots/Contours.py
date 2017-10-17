@@ -239,7 +239,7 @@ class Contour(object):
 		### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
 		### the result must be an integer anyway.
 		# import vandermonde
-		# vandermonde.solve_transpose(np.array(roots), np.array(s))
+		# multiplicities = vandermonde.solve_transpose(np.array(roots), np.array(s))
 
 		if verbose:
 			print('Computed multiplicities:')
