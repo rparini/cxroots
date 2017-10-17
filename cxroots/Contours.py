@@ -111,8 +111,8 @@ class Contour(object):
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, divMax=10, rootTol=1e-8, verbose=False):
-		N = self.count_roots(f, df, integerTol, divMax)
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, NAbsTol=0.07, integerTol=0.1, errStop=1e-8, divMax=10, rootTol=1e-8, verbose=False):
+		N = self.count_roots(f, df, NAbsTol, integerTol, divMax)
 
 		if N == 0:
 			return (), ()
@@ -131,7 +131,6 @@ class Contour(object):
 			print('Approximating roots in: ' + str(self))
 			print('mu', mu)
 
-		err_stop = 1e-18
 
 		# initialize G_{pq} = <phi_p, phi_q>
 		G = np.zeros((N,N), dtype=np.complex128)
@@ -185,9 +184,10 @@ class Contour(object):
 					ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMax)
 
 					# if not small then carry on
-					# print(j, 'of', N-r, 'stop?', ip)
+					if verbose:
+						print(j, 'of', N-r, 'stop?', abs(ip) + err)
 					### XXX: Use the 'maxpsum' estimate for precision loss in [KB]?
-					if abs(ip) + err > err_stop:
+					if abs(ip) + err > errStop:
 						allSmall = False
 						break
 

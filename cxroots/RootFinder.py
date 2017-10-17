@@ -20,7 +20,7 @@ from .Misc import doc_tab_to_space, docstrings
 @doc_tab_to_space
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10, absTol=0, relTol=1e-12, 
-	integerTol=0.07, NintAbsTol=0.07, M=5, intMethod='quad', divMax=20):
+	integerTol=0.07, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=20):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.  Based
@@ -75,6 +75,12 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		contour is greater than M then the contour is subdivided
 		further.  M must be greater than or equal to the largest 
 		multiplcity of any root.  
+	errStop : float, optional
+		The number of distinct roots within a contour, n, is 
+		determined by checking if all the elements of a list of 
+		contour integrals involving formal orthogonal polynomials 
+		are sufficently close to zero, ie. that the absolute 
+		value of each element is < errStop.
 	intMethod : str, optional
 		Either 'quad' to integrate using scipy.integrate.quad or
 		'romb' to integrate using Romberg's method.
@@ -160,7 +166,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				if multiplicity is None:
 					from .Contours import Circle
 					C = Circle(root, 1e-3)
-					multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, divMax, rootTol=newtonStepTol)[1]
+					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol)[1]
 
 				multiplicities.append(multiplicity.real)
 
@@ -263,7 +269,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 		else:
 			# approximate the roots in this box
-			approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, integerTol, divMax, rootTol=newtonStepTol)
+			approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol)
 			for approxRoot, approxRootMultiplicity in list(zip(approxRoots, approxRootMultiplicities)):
 				# XXX: if the approximate root is not in this box then desregard and redo the subdivision?
 
