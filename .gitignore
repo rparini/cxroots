@@ -6,3 +6,4 @@ build/
 MANIFEST
 dist/*
 cxroots.egg-info/*
+upload
