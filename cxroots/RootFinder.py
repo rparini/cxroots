@@ -160,8 +160,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				if multiplicity is None:
 					from .Contours import Circle
 					C = Circle(root, 1e-3)
-					# multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, divMax, rootTol=newtonStepTol)[1]
-					multiplicity, = C.approximate_roots(f, df, rootTol=newtonStepTol)[1]
+					multiplicity, = C.approximate_roots(f, df, absTol, relTol, integerTol, divMax, rootTol=newtonStepTol)[1]
 
 				multiplicities.append(multiplicity.real)
 
