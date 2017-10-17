@@ -20,7 +20,7 @@ from .Misc import doc_tab_to_space, docstrings
 @doc_tab_to_space
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10, absTol=0, relTol=1e-12, 
-	divMax=20, integerTol=0.07, NintAbsTol=0.07, M=5, intMethod='quad'):
+	integerTol=0.07, NintAbsTol=0.07, M=5, intMethod='quad', divMax=20):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.  Based
@@ -60,10 +60,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		Absolute error tolerance used by the contour integration.
 	relTol : float, optional
 		Relative error tolerance used by the contour integration.
-	divMax : int, optional
-		If the Romberg integration method is used then divMax is the
-		maximum number of divisions before the Romberg integration
-		routine of a path exits.
 	integerTol : float, optional
 		A number is considered an integer if it is within 
 		integerTol of an integer.  Used when calculating the 
@@ -82,6 +78,10 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	intMethod : str, optional
 		Either 'quad' to integrate using scipy.integrate.quad or
 		'romb' to integrate using Romberg's method.
+	divMax : int, optional
+		If the Romberg integration method is used then divMax is the
+		maximum number of divisions before the Romberg integration
+		routine of a path exits.
 
 	Yields
 	------
