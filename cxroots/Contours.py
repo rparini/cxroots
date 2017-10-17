@@ -235,6 +235,12 @@ class Contour(object):
 		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMax=divMax)[0] for p in range(n)] # ordinary moments
 		multiplicities = np.dot(s, np.linalg.inv(V))
 
+		### The method used in the vandermonde module doesn't seem significantly
+		### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
+		### the result must be an integer anyway.
+		# import vandermonde
+		# vandermonde.solve_transpose(np.array(roots), np.array(s))
+
 		if verbose:
 			print('Computed multiplicities:')
 			print(multiplicities)
