@@ -12,8 +12,11 @@ packages = ['cxroots', 'cxroots.tests']
 exec(open('cxroots/version.py').read())
 
 # read the README_pip.rst
-with open('README_pip.rst') as file:
-    long_description = file.read()
+try:
+    with open('README_pip.rst') as file:
+        long_description = file.read()
+except:
+    long_description = None
 
 # create test commmand
 class TestCommand(Command):
