@@ -104,6 +104,15 @@ class Contour(object):
 		for divisionFactor in divisionFactorGen():
 			yield self.subdivide(axis, divisionFactor)
 
+	def distance(self, P):
+		"""
+		Get the distance from the point P in the complex plane to the nearest point on the contour.
+		This is a general, rough, approach that would work for any contour.  The exact distance 
+		should be implemented in subclasses
+		"""
+		t = np.linspace(0,1,10001)
+		return np.min(np.abs(self(t) - root))
+
 	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', show=False):
 		""" Integrate around the contour, same arguments the integrate method for ComplexPath """
 		return sum([segment.integrate(f, absTol, relTol, rombergDivMax, method, show) for segment in self.segments])
