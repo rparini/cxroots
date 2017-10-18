@@ -156,6 +156,25 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		for i, box in enumerate(subBoxes):
 			box._numberOfRoots = numberOfRoots[i]
 
+	def remove_relations(C):
+		# remove itself
+		try:
+			boxes.remove((C, C._numberOfRoots))
+		except ValueError:
+			pass
+
+		# get all direct relations
+		# siblings:
+		relations = C._parentBox._childBoxes 
+		relations.remove(C)
+
+		# children:
+		if hasattr(C, '_childBoxes'):
+			relations.extend(C._childBoxes)
+
+		# interate over all relations
+		for relation in relations:
+			remove_relations(relation)
 
 	def addRoot(root, multiplicity=None, useGuessRootSymmetry=None):
 		# check that the root we have found is distinct from the ones we already have
@@ -177,7 +196,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
 					if root is not None:
 						addRoot(root)
-
 
 	# Add given roots 
 	for guess in guessRoots:
@@ -202,26 +220,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 	while boxes:
 		box, numberOfRoots = boxes.pop()
-
-		def remove_relations(C):
-			# remove itself
-			try:
-				boxes.remove((C, C._numberOfRoots))
-			except ValueError:
-				pass
-
-			# get all direct relations
-			# siblings:
-			relations = C._parentBox._childBoxes 
-			relations.remove(C)
-
-			# children:
-			if hasattr(C, '_childBoxes'):
-				relations.extend(C._childBoxes)
-
-			# interate over all relations
-			for relation in relations:
-				remove_relations(relation)
 
 		# if a known root is too near this box then reverse the subdivision that created it 
 		t = np.linspace(0,1,10001) 
