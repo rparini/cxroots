@@ -15,12 +15,16 @@ from .CxDerivative import multiplicity_correct
 
 from .Misc import doc_tab_to_space, docstrings
 
+class MultiplicityError(RuntimeError):
+	pass
+
 @docstrings.get_sectionsf('findRootsGen')
 @docstrings.dedent
 @doc_tab_to_space
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10, absTol=0, relTol=1e-12, 
-	integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=20):
+	integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=20,
+	verbose=False):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.  Based
@@ -62,8 +66,10 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		Relative error tolerance used by the contour integration.
 	integerTol : float, optional
 		A number is considered an integer if it is within 
-		integerTol of an integer.  Used when calculating the 
-		number of roots within a contour.
+		integerTol of an integer.  Used when determing if the
+		value for the number of roots within a contour and the
+		values of the computed multiplicities of roots are
+		acceptably close to integers.
 	NintAbsTol : float, optional
 		The absolute error tolerance used for the contour 
 		integration when determining the number of roots 
@@ -88,6 +94,9 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		If the Romberg integration method is used then divMax is the
 		maximum number of divisions before the Romberg integration
 		routine of a path exits.
+	verbose : bool, optional
+		If True certain messages concerning the rootfinding process
+		will be printed.
 
 	Yields
 	------
@@ -186,7 +195,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 					# XXX: Not the best way to determine multiplicity if this root is clustered close to others
 					from .Contours import Circle
 					C = Circle(root, 1e-3)
-					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol)[1]
+					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol, verbose)[1]
 
 				multiplicities.append(multiplicity.real)
 
@@ -222,22 +231,22 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		box, numberOfRoots = boxes.pop()
 
 		# if a known root is too near this box then reverse the subdivision that created it 
-		t = np.linspace(0,1,10001) 
-		if np.any([np.any(np.abs(box(t) - root) < 1e-3) for root in roots]):
-			# remove the box and any relations
-			remove_relations(box)
+		# t = np.linspace(0,1,10001) 
+		# if np.any([np.any(np.abs(box(t) - root) < 1e-3) for root in roots]):
+		# 	# remove the box and any relations
+		# 	remove_relations(box)
 
-			# put the parent box back into the list of boxes to subdivide again
-			parent = box._parentBox
-			boxes.append((parent, parent._numberOfRoots))
+		# 	# put the parent box back into the list of boxes to subdivide again
+		# 	parent = box._parentBox
+		# 	boxes.append((parent, parent._numberOfRoots))
 
-			# compute the root multiplicity directly
-			approxRootMultiplicity = None
+		# 	# compute the root multiplicity directly
+		# 	approxRootMultiplicity = None
 
-			# do not use this box again
-			failedBoxes.append(box)
+		# 	# do not use this box again
+		# 	failedBoxes.append(box)
 
-			continue
+		# 	continue
 
 		# print(numberOfRoots, box)
 
@@ -268,7 +277,12 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 		else:
 			# approximate the roots in this box
-			approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol)
+			try:
+				approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol, verbose)
+			except MultiplicityError:
+				subdivide(box)
+				continue
+
 			for approxRoot, approxRootMultiplicity in list(zip(approxRoots, approxRootMultiplicities)):
 				# XXX: if the approximate root is not in this box then desregard and redo the subdivision?
 
@@ -284,20 +298,20 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				if root is not None:
 					# if the root is very close to the contour then disregard this contour and compute the root multiplicity directly
 					# XXX: implement a distance function returning the shortest distance from a point to any point on a contour
-					t = np.linspace(0,1,10001) 
-					if np.any(np.abs(box(t) - root) < 1e-3):
-						# remove the box and any relations
-						remove_relations(box)
+					# t = np.linspace(0,1,10001) 
+					# if np.any(np.abs(box(t) - root) < 1e-3):
+					# 	# remove the box and any relations
+					# 	remove_relations(box)
 
-						# put the parent box back into the list of boxes to subdivide again
-						parent = box._parentBox
-						boxes.append((parent, parent._numberOfRoots))
+					# 	# put the parent box back into the list of boxes to subdivide again
+					# 	parent = box._parentBox
+					# 	boxes.append((parent, parent._numberOfRoots))
 
-						# compute the root multiplicity directly
-						approxRootMultiplicity = None
+					# 	# compute the root multiplicity directly
+					# 	approxRootMultiplicity = None
 
-						# do not use this box again
-						failedBoxes.append(box)
+					# 	# do not use this box again
+					# 	failedBoxes.append(box)
 					
 					# if we found a root add it to the list of known roots
 					addRoot(root, approxRootMultiplicity)

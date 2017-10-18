@@ -20,7 +20,7 @@ from scipy import pi, exp, sin, log
 import scipy
 
 from .CountRoots import count_enclosed_roots, prod
-from .RootFinder import findRoots
+from .RootFinder import findRoots, MultiplicityError
 from .DemoRootFinder import demo_findRoots
 from .Paths import ComplexLine, ComplexArc
 from .Misc import doc_tab_to_space, docstrings
@@ -246,8 +246,13 @@ class Contour(object):
 			print(multiplicities)
 
 		# round multiplicities
-		multiplicities = np.round(multiplicities)
-		multiplicities = np.array([int(m.real) for m in multiplicities])
+		rounded_multiplicities = np.round(multiplicities)
+		rounded_multiplicities = np.array([int(m.real) for m in rounded_multiplicities])
+		if np.all(np.abs(rounded_multiplicities - np.real(multiplicities)) < integerTol) and np.all(np.abs(np.imag(multiplicities)) < integerTol):
+			multiplicities = rounded_multiplicities
+		else:
+			# multiplicities are not sufficiently close to roots
+			raise MultiplicityError("Some multiplicities are not integers")
 
 		# remove any roots with multiplicity zero
 		zeroArgs = np.where(multiplicities == 0)
