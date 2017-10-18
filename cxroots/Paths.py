@@ -182,5 +182,5 @@ class ComplexArc(ComplexPath):
 	def distance(self, P):
 		""" Distance from the point P to the closest point on the arc .
 		XXX: Needs to be properly implemented. """
-		t = np.linspace(0,1,1e6)
+		t = np.linspace(0,1,100000)
 		return np.min(np.abs(self(t) - P))
