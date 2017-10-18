@@ -37,7 +37,7 @@ Guessing Root Symmetry
 ----------------------
 
 It may be that something is known about the structure of the roots.
-The rootfinder can be told this using the *guessRootSymmetry* argument which should be a function of a complex number, $z$, which returns a list of roots assuming that :math:`z` is a root. 
+The rootfinder can be told this using the *guessRootSymmetry* argument which should be a function of a complex number, :math:`z`, which returns a list of roots assuming that :math:`z` is a root. 
 
 For example, if :math:`z_i` is a root of 
 
@@ -53,7 +53,7 @@ then so is :math:`\overline{z_i}` and :math:`-z`.
 .. image:: ex_rootSymmetry.gif
 	:width: 400px
 
-Using guessRootSymmetry can same some time:
+Using guessRootSymmetry can save some time:
 
 .. literalinclude:: docex_guessRootSymmetry.py
 	:lines: 10-18
