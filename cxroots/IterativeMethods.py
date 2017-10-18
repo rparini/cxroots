@@ -16,6 +16,7 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
 		except (RuntimeError, OverflowError):
 			return None
 	else:
+		### For profiling number of function calls:
 		# fcalls = [0,0]
 		# def secant_f(z):
 		# 	fcalls[0] += 1
@@ -35,7 +36,10 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
 		# root, err = muller(x1, x2, x3, muller_f, steptol, 0, maxIter)
 		# print('Muller:', fcalls[1], root, err)
 		# print('-----')
+		############################################
 
+		# Muller's method:
+		x1, x2, x3 = x0, x0*(1 + 1e-8) + 1e-8, x0*(1 - 1e-8) - 1e-8
 		root, err = muller(x1, x2, x3, f, steptol, 0, maxIter)
 
 	if err < roottol:
