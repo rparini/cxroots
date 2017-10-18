@@ -45,7 +45,7 @@ For example, if :math:`z_i` is a root of
 	
 	f(z)=z^{26}-2z^{10}+\frac{1}{2}z^6-1
 
-then so is :math:`\overline{z_i}` and :math:`-z`.
+then so is :math:`\overline{z_i}` and :math:`-z_i`.
 
 .. literalinclude:: docex_guessRootSymmetry.py
 	:lines: -7
