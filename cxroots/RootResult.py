@@ -48,6 +48,7 @@ class RootResult(object):
 
 		if saveFile is not None:
 			plt.savefig(saveFile)
+			plt.close()
 		else:
 			plt.show()
 
