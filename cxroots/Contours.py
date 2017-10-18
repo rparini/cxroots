@@ -213,9 +213,6 @@ class Contour(object):
 		# remove any roots which are not distinct
 		removeList = []
 		for i, root in enumerate(roots):
-			# print(root, roots[i+1:], np.abs(root-roots[i+1:]))
-			# print(len(roots[i+1:]) > 0)
-			# print(np.any(np.abs(root-roots[i+1:]) < rootTol))
 			if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < rootTol):
 				removeList.append(i)
 
