@@ -213,5 +213,6 @@ class TestIntroduction(unittest.TestCase, TestRootfinding):
 					  0.64857808095387581293067569277 + 1.35662268398824203963215495605j]
 		self.multiplicities = [3,2,1,1,1,1,1]
 
+
 if __name__ == '__main__':
 	unittest.main(verbosity=3)

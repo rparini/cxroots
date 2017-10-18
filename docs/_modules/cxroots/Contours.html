@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cxroots.Contours &mdash; cxroots 1.0.4 documentation</title>
+  <title>cxroots.Contours &mdash; cxroots 1.0.6 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="cxroots 1.0.4 documentation" href="../../index.html"/>
+    <link rel="top" title="cxroots 1.0.6 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.0.4
+                1.0.6
               </div>
             
           
@@ -181,7 +181,7 @@
 <span class="kn">import</span> <span class="nn">scipy</span>
 
 <span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">count_enclosed_roots</span><span class="p">,</span> <span class="n">prod</span>
-<span class="kn">from</span> <span class="nn">.RootFinder</span> <span class="k">import</span> <span class="n">findRoots</span>
+<span class="kn">from</span> <span class="nn">.RootFinder</span> <span class="k">import</span> <span class="n">findRoots</span><span class="p">,</span> <span class="n">MultiplicityError</span>
 <span class="kn">from</span> <span class="nn">.DemoRootFinder</span> <span class="k">import</span> <span class="n">demo_findRoots</span>
 <span class="kn">from</span> <span class="nn">.Paths</span> <span class="k">import</span> <span class="n">ComplexLine</span><span class="p">,</span> <span class="n">ComplexArc</span>
 <span class="kn">from</span> <span class="nn">.Misc</span> <span class="k">import</span> <span class="n">doc_tab_to_space</span><span class="p">,</span> <span class="n">docstrings</span>
@@ -265,6 +265,12 @@
 		<span class="k">for</span> <span class="n">divisionFactor</span> <span class="ow">in</span> <span class="n">divisionFactorGen</span><span class="p">():</span>
 			<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">subdivide</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">divisionFactor</span><span class="p">)</span>
 
+	<span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">P</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Get the distance from the point P in the complex plane to the nearest point on the contour.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">P</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
+
 	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;quad&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot; Integrate around the contour, same arguments the integrate method for ComplexPath &quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">rombergDivMax</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">show</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
@@ -272,8 +278,8 @@
 	<span class="k">def</span> <span class="nf">count_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 		<span class="k">return</span> <span class="n">count_enclosed_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">approximate_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rootTol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
-		<span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">integerTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">approximate_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">NAbsTol</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">errStop</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rootTol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+		<span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">NAbsTol</span><span class="p">,</span> <span class="n">integerTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)</span>
 
 		<span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="k">return</span> <span class="p">(),</span> <span class="p">()</span>
@@ -287,14 +293,15 @@
 			<span class="k">else</span><span class="p">:</span>
 				<span class="n">coeff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 				<span class="k">return</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
-			
-		<span class="c1"># print(&#39;mu&#39;, mu)</span>
+		
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Approximating roots in: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
 
-		<span class="n">err_stop</span> <span class="o">=</span> <span class="mf">1e-8</span>
 
 		<span class="c1"># initialize G_{pq} = &lt;phi_p, phi_q&gt;</span>
 		<span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-		<span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">N</span> <span class="c1"># = &lt;phi0, phi0&gt;</span>
+		<span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">N</span> <span class="c1"># = &lt;phi0, phi0&gt; = &lt;1,1&gt;</span>
 
 		<span class="c1"># initialize G1_{pq} = &lt;phi_p, phi_1 phi_q&gt;</span>
 		<span class="n">G1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
@@ -318,22 +325,24 @@
 			<span class="n">G1</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">phiFunc</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">phi1</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">phiFunc</span><span class="p">(</span><span class="n">q</span><span class="p">)(</span><span class="n">z</span><span class="p">),</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
 			<span class="n">G1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">G1</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># G1 is symmetric</span>
 
-			<span class="c1"># print(&#39;G&#39;, G[:p+1,:p+1])</span>
-			<span class="c1"># print(&#39;G1&#39;, G1[:p+1,:p+1])</span>
+			<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="n">G</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G1&#39;</span><span class="p">,</span> <span class="n">G1</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
 
 			<span class="c1"># The regular FOP only exists if H is non-singular.</span>
 			<span class="c1"># An alternate citeration given by [KB] is to proceed as if it is regular and</span>
 			<span class="c1"># then compute its zeros.  If any are arbitary or infinite then this</span>
 			<span class="c1"># polynomial should instead be defined as an inner polynomial.</span>
-			<span class="c1"># Here, an inner polynomial instead if any of the computed</span>
+			<span class="c1"># Here, an inner polynomial is defined if any of the computed</span>
 			<span class="c1"># roots are outside of the interior of the contour.</span>
 			<span class="n">polyRoots</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">G1</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">G</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">mu</span>
-			<span class="c1"># print(&#39;polyRoots&#39;, polyRoots)</span>
 			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">polyRoots</span><span class="p">]):</span>
 				<span class="c1"># define a regular polynomial</span>
 				<span class="n">phiZeros</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">polyRoots</span><span class="p">)</span>
 				<span class="n">r</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
-				<span class="c1"># print(&#39;regular&#39;, r+t)</span>
+
+				<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+					<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Regular poly&#39;</span><span class="p">,</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;roots:&#39;</span><span class="p">,</span> <span class="n">phiZeros</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
 				<span class="c1"># if any of these elements are not small then continue</span>
 				<span class="n">allSmall</span> <span class="o">=</span> <span class="kc">True</span>
@@ -342,9 +351,10 @@
 					<span class="n">ip</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">phiFuncLast</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="n">j</span><span class="p">,</span> <span class="n">phiFuncLast</span><span class="p">,</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">)</span>
 
 					<span class="c1"># if not small then carry on</span>
-					<span class="c1"># print(j, &#39;of&#39;, N-r, &#39;stop?&#39;, ip)</span>
+					<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+						<span class="nb">print</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="s1">&#39;stop?&#39;</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span> <span class="o">+</span> <span class="n">err</span><span class="p">)</span>
 					<span class="c1">### XXX: Use the &#39;maxpsum&#39; estimate for precision loss in [KB]?</span>
-					<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span> <span class="o">+</span> <span class="n">err</span> <span class="o">&gt;</span> <span class="n">err_stop</span><span class="p">:</span>
+					<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span> <span class="o">+</span> <span class="n">err</span> <span class="o">&gt;</span> <span class="n">errStop</span><span class="p">:</span>
 						<span class="n">allSmall</span> <span class="o">=</span> <span class="kc">False</span>
 						<span class="k">break</span>
 
@@ -355,27 +365,29 @@
 			<span class="k">else</span><span class="p">:</span>
 				<span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
 
-				<span class="c1"># define an inner polynomial phi_{r+t+1} = (z-mu) phi_{r+t}</span>
-				<span class="c1"># phiZeros.append(np.append(phiZeros[-1],mu))</span>
-
 				<span class="c1"># define an inner polynomial phi_{r+t+1} = phi_{t+1} phi_{r}</span>
 				<span class="n">phiZeros</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">t</span><span class="p">],</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">r</span><span class="p">]))</span>
 
-				<span class="c1"># print(&#39;inner poly&#39;, r+t)</span>
-				<span class="c1"># print(&#39;phiZeros&#39;, phiZeros)</span>
+				<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+					<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Inner poly&#39;</span><span class="p">,</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;roots:&#39;</span><span class="p">,</span> <span class="n">phiZeros</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
 		<span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Roots:&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
 
 		<span class="c1"># remove any roots which are not distinct</span>
 		<span class="n">removeList</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">root</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">roots</span><span class="p">):</span>
-			<span class="c1"># print(root, roots[i+1:], np.abs(root-roots[i+1:]))</span>
-			<span class="c1"># print(len(roots[i+1:]) &gt; 0)</span>
-			<span class="c1"># print(np.any(np.abs(root-roots[i+1:]) &lt; rootTol))</span>
 			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">root</span><span class="o">-</span><span class="n">roots</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&lt;</span> <span class="n">rootTol</span><span class="p">):</span>
 				<span class="n">removeList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
 		<span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">removeList</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Post-removed roots:&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
 
 		<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="c1"># number of distinct roots</span>
 
@@ -383,12 +395,42 @@
 		<span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">roots</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
 		<span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">**</span><span class="n">p</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="n">divMax</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="c1"># ordinary moments</span>
 		<span class="n">multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">V</span><span class="p">))</span>
-		<span class="n">multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
+
+		<span class="c1">### The method used in the vandermonde module doesn&#39;t seem significantly</span>
+		<span class="c1">### better than np.dot(s, np.linalg.inv(V)).  Especially since we know</span>
+		<span class="c1">### the result must be an integer anyway.</span>
+		<span class="c1"># import vandermonde</span>
+		<span class="c1"># multiplicities = vandermonde.solve_transpose(np.array(roots), np.array(s))</span>
+
+		<span class="c1">### Note that n = rank(H_N) is not used since calculating the</span>
+		<span class="c1">### rank of a matrix of floats appears to be quite unstable</span>
+		<span class="c1"># s_func = lambda p: prod(self, f, df, lambda z: z**p)[0]</span>
+		<span class="c1"># HN = np.fromfunction(np.vectorize(lambda p,q: s_func(p+q)), shape=(N,N))</span>
+		<span class="c1"># print(&#39;n?&#39;, np.linalg.matrix_rank(HN, tol=1e-10))</span>
+
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computed multiplicities:&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
+
+		<span class="c1"># round multiplicities</span>
+		<span class="n">rounded_multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
+		<span class="n">rounded_multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">rounded_multiplicities</span><span class="p">])</span>
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rounded_multiplicities</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">integerTol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">integerTol</span><span class="p">):</span>
+			<span class="n">multiplicities</span> <span class="o">=</span> <span class="n">rounded_multiplicities</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># multiplicities are not sufficiently close to roots</span>
+			<span class="k">raise</span> <span class="n">MultiplicityError</span><span class="p">(</span><span class="s2">&quot;Some multiplicities are not integers&quot;</span><span class="p">)</span>
 
 		<span class="c1"># remove any roots with multiplicity zero</span>
 		<span class="n">zeroArgs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">multiplicities</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="n">multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">,</span> <span class="n">zeroArgs</span><span class="p">)</span>
 		<span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">zeroArgs</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final roots:&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final multiplicities:&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
 
 		<span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
 
@@ -883,7 +925,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.4',
+            VERSION:'1.0.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

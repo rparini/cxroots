@@ -20,7 +20,7 @@ from scipy import pi, exp, sin, log
 import scipy
 
 from .CountRoots import count_enclosed_roots, prod
-from .RootFinder import findRoots
+from .RootFinder import findRoots, MultiplicityError
 from .DemoRootFinder import demo_findRoots
 from .Paths import ComplexLine, ComplexArc
 from .Misc import doc_tab_to_space, docstrings
@@ -104,6 +104,12 @@ class Contour(object):
 		for divisionFactor in divisionFactorGen():
 			yield self.subdivide(axis, divisionFactor)
 
+	def distance(self, P):
+		"""
+		Get the distance from the point P in the complex plane to the nearest point on the contour.
+		"""
+		return min(segment.distance(P) for segment in self.segments)
+
 	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', show=False):
 		""" Integrate around the contour, same arguments the integrate method for ComplexPath """
 		return sum([segment.integrate(f, absTol, relTol, rombergDivMax, method, show) for segment in self.segments])
@@ -111,8 +117,8 @@ class Contour(object):
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.25, divMax=10, rootTol=1e-8):
-		N = self.count_roots(f, df, integerTol, divMax)
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, NAbsTol=0.07, integerTol=0.1, errStop=1e-8, divMax=10, rootTol=1e-8, verbose=False):
+		N = self.count_roots(f, df, NAbsTol, integerTol, divMax)
 
 		if N == 0:
 			return (), ()
@@ -126,14 +132,15 @@ class Contour(object):
 			else:
 				coeff = np.poly(phiZeros[i])
 				return lambda z: np.polyval(coeff, z)
-			
-		# print('mu', mu)
+		
+		if verbose:
+			print('Approximating roots in: ' + str(self))
+			print('mu', mu)
 
-		err_stop = 1e-8
 
 		# initialize G_{pq} = <phi_p, phi_q>
 		G = np.zeros((N,N), dtype=np.complex128)
-		G[0,0] = N # = <phi0, phi0>
+		G[0,0] = N # = <phi0, phi0> = <1,1>
 
 		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
 		G1 = np.zeros((N,N), dtype=np.complex128)
@@ -157,22 +164,24 @@ class Contour(object):
 			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMax)[0] for q in range(r+t+1)]
 			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
 
-			# print('G', G[:p+1,:p+1])
-			# print('G1', G1[:p+1,:p+1])
+			if verbose:
+				print('G', G[:p+1,:p+1])
+				print('G1', G1[:p+1,:p+1])
 
 			# The regular FOP only exists if H is non-singular.
 			# An alternate citeration given by [KB] is to proceed as if it is regular and
 			# then compute its zeros.  If any are arbitary or infinite then this
 			# polynomial should instead be defined as an inner polynomial.
-			# Here, an inner polynomial instead if any of the computed
+			# Here, an inner polynomial is defined if any of the computed
 			# roots are outside of the interior of the contour.
 			polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu
-			# print('polyRoots', polyRoots)
 			if np.all([self.contains(z) for z in polyRoots]):
 				# define a regular polynomial
 				phiZeros.append(polyRoots)
 				r, t = r+t+1, 0
-				# print('regular', r+t)
+
+				if verbose:
+					print('Regular poly', r+t, 'roots:', phiZeros[-1])
 
 				# if any of these elements are not small then continue
 				allSmall = True
@@ -181,9 +190,10 @@ class Contour(object):
 					ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMax)
 
 					# if not small then carry on
-					# print(j, 'of', N-r, 'stop?', ip)
+					if verbose:
+						print(j, 'of', N-r, 'stop?', abs(ip) + err)
 					### XXX: Use the 'maxpsum' estimate for precision loss in [KB]?
-					if abs(ip) + err > err_stop:
+					if abs(ip) + err > errStop:
 						allSmall = False
 						break
 
@@ -194,27 +204,29 @@ class Contour(object):
 			else:
 				t += 1
 
-				# define an inner polynomial phi_{r+t+1} = (z-mu) phi_{r+t}
-				# phiZeros.append(np.append(phiZeros[-1],mu))
-
 				# define an inner polynomial phi_{r+t+1} = phi_{t+1} phi_{r}
 				phiZeros.append(np.append(phiZeros[t],phiZeros[r]))
 
-				# print('inner poly', r+t)
-				# print('phiZeros', phiZeros)
+				if verbose:
+					print('Inner poly', r+t, 'roots:', phiZeros[-1])
 
 		roots = np.array(phiZeros[-1])
+
+		if verbose:
+			print('Roots:')
+			print(roots)
 
 		# remove any roots which are not distinct
 		removeList = []
 		for i, root in enumerate(roots):
-			# print(root, roots[i+1:], np.abs(root-roots[i+1:]))
-			# print(len(roots[i+1:]) > 0)
-			# print(np.any(np.abs(root-roots[i+1:]) < rootTol))
 			if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < rootTol):
 				removeList.append(i)
 
 		roots = np.delete(roots, removeList)
+
+		if verbose:
+			print('Post-removed roots:')
+			print(roots)
 
 		n = len(roots) # number of distinct roots
 
@@ -222,12 +234,42 @@ class Contour(object):
 		V = np.column_stack([roots**i for i in range(n)])
 		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMax=divMax)[0] for p in range(n)] # ordinary moments
 		multiplicities = np.dot(s, np.linalg.inv(V))
-		multiplicities = np.round(multiplicities)
+
+		### The method used in the vandermonde module doesn't seem significantly
+		### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
+		### the result must be an integer anyway.
+		# import vandermonde
+		# multiplicities = vandermonde.solve_transpose(np.array(roots), np.array(s))
+
+		### Note that n = rank(H_N) is not used since calculating the
+		### rank of a matrix of floats appears to be quite unstable
+		# s_func = lambda p: prod(self, f, df, lambda z: z**p)[0]
+		# HN = np.fromfunction(np.vectorize(lambda p,q: s_func(p+q)), shape=(N,N))
+		# print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
+
+		if verbose:
+			print('Computed multiplicities:')
+			print(multiplicities)
+
+		# round multiplicities
+		rounded_multiplicities = np.round(multiplicities)
+		rounded_multiplicities = np.array([int(m.real) for m in rounded_multiplicities])
+		if np.all(np.abs(rounded_multiplicities - np.real(multiplicities)) < integerTol) and np.all(np.abs(np.imag(multiplicities)) < integerTol):
+			multiplicities = rounded_multiplicities
+		else:
+			# multiplicities are not sufficiently close to roots
+			raise MultiplicityError("Some multiplicities are not integers")
 
 		# remove any roots with multiplicity zero
 		zeroArgs = np.where(multiplicities == 0)
 		multiplicities = np.delete(multiplicities, zeroArgs)
 		roots = np.delete(roots, zeroArgs)
+
+		if verbose:
+			print('Final roots:')
+			print(roots)
+			print('Final multiplicities:')
+			print(multiplicities)
 
 		return tuple(roots), tuple(multiplicities)
 
