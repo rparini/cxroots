@@ -213,24 +213,6 @@ class TestIntroduction(unittest.TestCase, TestRootfinding):
 					  0.64857808095387581293067569277 + 1.35662268398824203963215495605j]
 		self.multiplicities = [3,2,1,1,1,1,1]
 
-class TestCluster_1(unittest.TestCase, TestRootfinding):
-	def setUp(self):
-		self.roots = roots = [3, 3.00001, 3.00002, 8, 8.00002, 8+0.00001j]
-		self.multiplicities = [1,1,1,1,1,1]
-
-		self.C = Rectangle([2,9], [-1,1])
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
-
-class TestCluster_2(unittest.TestCase, TestRootfinding):
-	def setUp(self):
-		self.roots = roots = [3, 3.00001, 3.00002, 8, 8.00002, 8+0.00001j]
-		self.multiplicities = [1,1,1,1,1,1]
-
-		self.C = Circle(0, 8.5)
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
-
 
 if __name__ == '__main__':
 	unittest.main(verbosity=3)

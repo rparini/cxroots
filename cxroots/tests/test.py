@@ -83,7 +83,7 @@ def rootfinding_RingOscillator():
 	# plt.show()
 
 def simple_test(demo=False):
-	from cxroots import Rectangle, showRoots, demo_findRoots, findRoots
+	from cxroots import Rectangle
 	from numpy import pi, sin, cos
 	import numpy as np
 
@@ -94,13 +94,13 @@ def simple_test(demo=False):
 	f = lambda z: z**3 * (z-1.2)**2
 	df = lambda z: 3*(z)**2 * (z-1.2)**2 + 2*z**3 * (z-1.2)
 
-	roots, multiplicities = findRoots(rect, f, df)
-	print('----- Roots -----')
-	for root, multiplicity in zip(roots, multiplicities):
-		print(multiplicity, root)
+	# r = rect.roots(f, df)
+	# print(r)
 
-	if demo:
-		demo_findRoots(rect, f, df, absTol=1e-8, relTol=1e-8)
+	r = rect.approximate_roots(f, df, verbose=True)
+
+	# if demo:
+	# 	demo_findRoots(rect, f, df, absTol=1e-8, relTol=1e-8)
 	# showRoots(rect, f, df)
 
 def test_multiplicity():
@@ -113,4 +113,4 @@ def test_multiplicity():
 
 
 if __name__ == '__main__':
-	test_multiplicity()
+	simple_test()
