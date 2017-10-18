@@ -134,7 +134,7 @@ class Contour(object):
 
 		# initialize G_{pq} = <phi_p, phi_q>
 		G = np.zeros((N,N), dtype=np.complex128)
-		G[0,0] = N # = <phi0, phi0>
+		G[0,0] = N # = <phi0, phi0> = <1,1>
 
 		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
 		G1 = np.zeros((N,N), dtype=np.complex128)
@@ -166,7 +166,7 @@ class Contour(object):
 			# An alternate citeration given by [KB] is to proceed as if it is regular and
 			# then compute its zeros.  If any are arbitary or infinite then this
 			# polynomial should instead be defined as an inner polynomial.
-			# Here, an inner polynomial instead if any of the computed
+			# Here, an inner polynomial is defined if any of the computed
 			# roots are outside of the interior of the contour.
 			polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu
 			if np.all([self.contains(z) for z in polyRoots]):
@@ -197,9 +197,6 @@ class Contour(object):
 
 			else:
 				t += 1
-
-				# define an inner polynomial phi_{r+t+1} = (z-mu) phi_{r+t}
-				# phiZeros.append(np.append(phiZeros[-1],mu))
 
 				# define an inner polynomial phi_{r+t+1} = phi_{t+1} phi_{r}
 				phiZeros.append(np.append(phiZeros[t],phiZeros[r]))
@@ -240,6 +237,12 @@ class Contour(object):
 		### the result must be an integer anyway.
 		# import vandermonde
 		# multiplicities = vandermonde.solve_transpose(np.array(roots), np.array(s))
+
+		### Note that n = rank(H_N) is not used since calculating the
+		### rank of a matrix of floats appears to be quite unstable
+		# s_func = lambda p: prod(self, f, df, lambda z: z**p)[0]
+		# HN = np.fromfunction(np.vectorize(lambda p,q: s_func(p+q)), shape=(N,N))
+		# print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
 
 		if verbose:
 			print('Computed multiplicities:')

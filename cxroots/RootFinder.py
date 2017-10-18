@@ -164,6 +164,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			if originalContour.contains(root):
 				roots.append(root)
 				if multiplicity is None:
+					# XXX: Not the best way to determine multiplicity if this root is clustered close to others
 					from .Contours import Circle
 					C = Circle(root, 1e-3)
 					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol)[1]
