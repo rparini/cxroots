@@ -159,6 +159,12 @@ class ComplexLine(ComplexPath):
 		""" The parameterization of the line in the variable t, where 0 <= t <= 1 """
 		return self.a + t*(self.b-self.a)
 
+	def distance(self, P):
+		""" Distance from the point P to the closest point on the line. """
+		a, b = self.a, self.b
+		return abs((b.real-a.real)*(a.imag-P.imag)-(b.imag-a.imag)*(a.real-P.real))/abs(b-a)
+
+
 class ComplexArc(ComplexPath):
 	""" An arc with center z0, radius R, initial angle t0 and change of angle dt """
 	def __init__(self, z0, R, t0, dt):
@@ -172,3 +178,9 @@ class ComplexArc(ComplexPath):
 	def __call__(self, t):
 		""" The parameterization of the arc in the variable t, where 0 <= t <= 1 """
 		return self.R*exp(1j*(self.t0 + t*self.dt)) + self.z0
+
+	def distance(self, P):
+		""" Distance from the point P to the closest point on the arc .
+		XXX: Needs to be properly implemented. """
+		t = np.linspace(0,1,1e6)
+		return np.min(np.abs(self(t) - P))
