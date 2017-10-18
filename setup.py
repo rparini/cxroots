@@ -51,7 +51,7 @@ setup(
     license = 'BSD',
     packages = packages,
     platforms = ['all'],
-    install_requires = ['numpy', 'scipy', 'docrep'],
+    install_requires = ['numpy', 'scipy', 'docrep', 'mpmath'],
     keywords='roots zeros complex analytic functions',
     classifiers=[
 	    'Development Status :: 4 - Beta',
