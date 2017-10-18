@@ -328,11 +328,11 @@ The <em>guessRoots</em> argument should be a list of roots or, if the multiplici
 <div class="section" id="guessing-root-symmetry">
 <h2>Guessing Root Symmetry<a class="headerlink" href="#guessing-root-symmetry" title="Permalink to this headline">¶</a></h2>
 <p>It may be that something is known about the structure of the roots.
-The rootfinder can be told this using the <em>guessRootSymmetry</em> argument which should be a function of a complex number, $z$, which returns a list of roots assuming that <span class="math">\(z\)</span> is a root.</p>
+The rootfinder can be told this using the <em>guessRootSymmetry</em> argument which should be a function of a complex number, <span class="math">\(z\)</span>, which returns a list of roots assuming that <span class="math">\(z\)</span> is a root.</p>
 <p>For example, if <span class="math">\(z_i\)</span> is a root of</p>
 <div class="math">
 \[f(z)=z^{26}-2z^{10}+\frac{1}{2}z^6-1\]</div>
-<p>then so is <span class="math">\(\overline{z_i}\)</span> and <span class="math">\(-z\)</span>.</p>
+<p>then so is <span class="math">\(\overline{z_i}\)</span> and <span class="math">\(-z_i\)</span>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="k">import</span> <span class="n">Rectangle</span>
 <span class="n">C</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">])</span>
 <span class="n">f</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">**</span><span class="mi">26</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">10</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">6</span><span class="o">-</span><span class="mi">1</span>
@@ -343,7 +343,7 @@ The rootfinder can be told this using the <em>guessRootSymmetry</em> argument wh
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/ex_rootSymmetry.gif"><img alt="_images/ex_rootSymmetry.gif" src="_images/ex_rootSymmetry.gif" style="width: 400px;" /></a>
-<p>Using guessRootSymmetry can same some time:</p>
+<p>Using guessRootSymmetry can save some time:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
@@ -355,8 +355,8 @@ The rootfinder can be told this using the <em>guessRootSymmetry</em> argument wh
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time with symmetry:&#39;</span><span class="p">,</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 7.860443115234375
-Time with symmetry: 2.6706297397613525
+<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 7.823764801025391
+Time with symmetry: 2.6818642616271973
 </pre></div>
 </div>
 </div>

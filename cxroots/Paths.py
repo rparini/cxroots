@@ -47,7 +47,7 @@ class ComplexPath(object):
 			return vals
 
 
-	def plot(self, N=100, linecolor='b', linestyle='-'):
+	def plot(self, N=100, linecolor='C0', linestyle='-'):
 		"""
 		Use matplotlib to plot, but not show, the path as a 
 		2D plot in the Complex plane.  To show use pyplot.show()
