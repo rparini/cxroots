@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Root Finding &mdash; cxroots 1.0.4 documentation</title>
+  <title>Root Finding &mdash; cxroots 1.0.6 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cxroots 1.0.4 documentation" href="index.html"/>
+    <link rel="top" title="cxroots 1.0.6 documentation" href="index.html"/>
         <link rel="next" title="Root Viewing" href="rootresult.html"/>
         <link rel="prev" title="Contours" href="contours.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                1.0.4
+                1.0.6
               </div>
             
           
@@ -232,12 +232,11 @@ root will exit if the number of iterations exceeds newtonMaxIter.</li>
 <li><strong>rootErrTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A complex value z is considered a root if abs(f(z)) &lt; rootErrTol</li>
 <li><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance used by the contour integration.</li>
 <li><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance used by the contour integration.</li>
-<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
-maximum number of divisions before the Romberg integration
-routine of a path exits.</li>
 <li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A number is considered an integer if it is within
-integerTol of an integer.  Used when calculating the
-number of roots within a contour.</li>
+integerTol of an integer.  Used when determing if the
+value for the number of roots within a contour and the
+values of the computed multiplicities of roots are
+acceptably close to integers.</li>
 <li><strong>NintAbsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute error tolerance used for the contour
 integration when determining the number of roots
 within a contour.  Since the result of this integration
@@ -247,8 +246,18 @@ than usual.</li>
 contour is greater than M then the contour is subdivided
 further.  M must be greater than or equal to the largest
 multiplcity of any root.</li>
+<li><strong>errStop</strong> (<em>float</em><em>, </em><em>optional</em>) – The number of distinct roots within a contour, n, is
+determined by checking if all the elements of a list of
+contour integrals involving formal orthogonal polynomials
+are sufficently close to zero, ie. that the absolute
+value of each element is &lt; errStop.</li>
 <li><strong>intMethod</strong> (<em>str</em><em>, </em><em>optional</em>) – Either ‘quad’ to integrate using scipy.integrate.quad or
 ‘romb’ to integrate using Romberg’s method.</li>
+<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
+maximum number of divisions before the Romberg integration
+routine of a path exits.</li>
+<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True certain messages concerning the rootfinding process
+will be printed.</li>
 </ul>
 </td>
 </tr>
@@ -346,8 +355,8 @@ The rootfinder can be told this using the <em>guessRootSymmetry</em> argument wh
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time with symmetry:&#39;</span><span class="p">,</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 12.077033042907715
-Time with symmetry: 9.138684034347534
+<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 7.845876932144165
+Time with symmetry: 2.706327199935913
 </pre></div>
 </div>
 </div>
@@ -397,7 +406,7 @@ Time with symmetry: 9.138684034347534
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.4',
+            VERSION:'1.0.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
