@@ -8,7 +8,7 @@ from cxroots.tests.ApproxEqual import roots_approx_equal
 ### XXX: Need some way to distinguish clusters of roots
 class TestCluster(object):
 	def test_rootfinding_df_smallStop(self):
-		roots_approx_equal(self.C.roots(self.f, self.df, errStop=1e-18), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, self.df, errStop=0), (self.roots, self.multiplicities), decimal=12)
 
 	def test_rootfinding_df(self):
 		roots_approx_equal(self.C.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=12)
