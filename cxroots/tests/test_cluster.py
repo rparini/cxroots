@@ -6,8 +6,68 @@ from cxroots import Circle, Rectangle
 from cxroots.tests.ApproxEqual import roots_approx_equal
 
 ### XXX: Need some way to distinguish clusters of roots
+class TestCluster_1_rect(unittest.TestCase):
+	def setUp(self):
+		self.roots = roots = [3, 3.001, 3.002, 8, 8.002, 8+0.001j]
+		self.multiplicities = [1,1,1,1,1,1]
 
-class TestCluster_1(unittest.TestCase):
+		self.C = Rectangle([2,9], [-1,1])
+		self.f = lambda z: np.prod([z-r for r in roots])
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+
+	def test_rootfinding_df(self):
+		roots_approx_equal(self.C.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=12)
+
+	def test_rootfinding_f(self):
+		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=12)
+
+class TestCluster_1_circle(unittest.TestCase):
+	def setUp(self):
+		self.roots = roots = [3, 3.001, 3.002, 8, 8.002, 8+0.001j]
+		self.multiplicities = [1,1,1,1,1,1]
+
+		self.C = Circle(0, 8.5)
+		self.f = lambda z: np.prod([z-r for r in roots])
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+
+	def test_rootfinding_df(self):
+		roots_approx_equal(self.C.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=12)
+
+	def test_rootfinding_f(self):
+		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=12)
+
+class TestCluster_2_rect(unittest.TestCase):
+	def setUp(self):
+		self.roots = roots = [3, 3.0001, 3.0002, 8, 8.0002, 8+0.0001j]
+		self.multiplicities = [1,1,1,1,1,1]
+
+		self.C = Rectangle([2,9], [-1,1])
+		self.f = lambda z: np.prod([z-r for r in roots])
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+
+	def test_rootfinding_df(self):
+		roots_approx_equal(self.C.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=12)
+
+	def test_rootfinding_f(self):
+		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=12)
+
+class TestCluster_2_circle(unittest.TestCase):
+	def setUp(self):
+		self.roots = roots = [3, 3.0001, 3.0002, 8, 8.0002, 8+0.0001j]
+		self.multiplicities = [1,1,1,1,1,1]
+
+		self.C = Circle(0, 8.5)
+		self.f = lambda z: np.prod([z-r for r in roots])
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+
+	def test_rootfinding_df(self):
+		roots_approx_equal(self.C.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=12)
+
+	def test_rootfinding_f(self):
+		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=12)
+
+
+class TestCluster_3(unittest.TestCase):
 	def setUp(self):
 		self.roots = roots = [3, 3.00001, 3.00002, 8, 8.00002, 8+0.00001j]
 		self.multiplicities = [1,1,1,1,1,1]
