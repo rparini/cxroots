@@ -8,4 +8,4 @@ install:
   - python setup.py install
 
 script:
-  - python -m unittest discover -v cxroots/tests
+  - pytest -v -n 2 --durations=0

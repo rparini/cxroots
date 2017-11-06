@@ -9,20 +9,21 @@ References
 """
 
 import unittest
+import pytest
 import numpy as np
 from scipy import pi, sqrt, exp, sin, cos
 
 from cxroots import Circle, Rectangle
 from cxroots.tests.ApproxEqual import roots_approx_equal
 
-class TestRootfinding(object):
+class RootfindingTests(object):
 	def test_rootfinding_df(self):
 		roots_approx_equal(self.C.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=12)
 
 	def test_rootfinding_f(self):
 		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=12)
 
-class TestRootfinding_141(unittest.TestCase, TestRootfinding):
+class TestRootfinding_141(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.4.1 from [KB]
 		self.C = Circle(0,3)
@@ -33,7 +34,7 @@ class TestRootfinding_141(unittest.TestCase, TestRootfinding):
 		self.roots = [e, sqrt(3)+1j, sqrt(3)-1j]
 		self.multiplicities = [1,1,1]
 
-class TestRootfinding_142(unittest.TestCase, TestRootfinding):
+class TestRootfinding_142(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.4.2 from [KB]
 		self.C = Circle(0,2)
@@ -46,7 +47,7 @@ class TestRootfinding_142(unittest.TestCase, TestRootfinding):
 				 	  0.5308949302929305 - 1.33179187675112098j]
 		self.multiplicities = [1,1,1,1]
 
-class TestRootfinding_142b(unittest.TestCase, TestRootfinding):
+class TestRootfinding_142b(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.4.2 from [KB] with a rectangular initial contour
 		self.C = Rectangle([-2,2],[-2,2])
@@ -59,7 +60,7 @@ class TestRootfinding_142b(unittest.TestCase, TestRootfinding):
 				 0.5308949302929305 - 1.33179187675112098j]
 		self.multiplicities = [1,1,1,1]
 
-class TestRootfinding_143(unittest.TestCase, TestRootfinding):
+class TestRootfinding_143(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.4.3 from [KB]
 		self.C = Circle(0,5)
@@ -73,7 +74,7 @@ class TestRootfinding_143(unittest.TestCase, TestRootfinding):
 				 4.03038191606046844562845941]
 		self.multiplicities = [2,1,1,1,1]
 
-class TestRootfinding_144(unittest.TestCase, TestRootfinding):
+class TestRootfinding_144(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.4.4 from [KB]
 		self.C = Circle(0,3)
@@ -87,7 +88,7 @@ class TestRootfinding_144(unittest.TestCase, TestRootfinding):
 				 1.66468286974551654134568653]
 		self.multiplicities = [1,1,3,2,1]
 
-class TestRootfinding_145(unittest.TestCase, TestRootfinding):
+class TestRootfinding_145(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.4.5 from [KB]
 		self.C = Circle(0,11)
@@ -97,7 +98,7 @@ class TestRootfinding_145(unittest.TestCase, TestRootfinding):
 		self.roots = [1,2,3,4,5,6,7,8,9,10]
 		self.multiplicities = np.ones(10)
 
-class TestRootfinding_145b(unittest.TestCase, TestRootfinding):
+class TestRootfinding_145b(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.4.5 from [KB] with a rectangular initial contour
 		self.C = Rectangle([-1,11],[-1,1])
@@ -107,7 +108,7 @@ class TestRootfinding_145b(unittest.TestCase, TestRootfinding):
 		self.roots = [1,2,3,4,5,6,7,8,9,10]
 		self.multiplicities = np.ones(10)
 
-class TestRootfinding_151(unittest.TestCase, TestRootfinding):
+class TestRootfinding_151(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.5.1 from [KB]
 		self.C = Rectangle([-2,2], [-2,3])
@@ -126,7 +127,7 @@ class TestRootfinding_151(unittest.TestCase, TestRootfinding):
 	def test_rootfinding_b_f(self):
 		roots_approx_equal(self.C.roots(self.f, M=2), (self.roots, self.multiplicities), decimal=12)
 
-class TestRootfinding_152(unittest.TestCase, TestRootfinding):
+class TestRootfinding_152(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.5.2 from [KB]
 		self.C = Rectangle([-0.5,5.5], [-0.5,1.5])
@@ -140,7 +141,7 @@ class TestRootfinding_152(unittest.TestCase, TestRootfinding):
 				 4.03038191606046844562845941]
 		self.multiplicities = [2,1,1,1,1]
 
-class TestRootfinding_153(unittest.TestCase, TestRootfinding):
+class TestRootfinding_153(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.5.3 from [KB]
 		self.C = Rectangle([-1,3], [-1,1])
@@ -199,7 +200,7 @@ class TestConjugate(unittest.TestCase):
 		roots = self.C.roots(self.f, guessRootSymmetry = self.symmetry)
 		roots_approx_equal(roots, (self.roots, self.multiplicities), decimal=12)
 
-class TestIntroduction(unittest.TestCase, TestRootfinding):
+class TestIntroduction(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		self.C = Circle(0,3)
 		self.f = lambda z: (z*(z+2))**2 * (exp(2*z)*cos(z)-1-sin(z)+z**5)
