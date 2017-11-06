@@ -74,9 +74,15 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 
 		I, err = 0, 0
 		for segment in C.segments:
+			integrand_cache = {}
 			def integrand(t):
-				z = segment(t)
-				return (phi(z)*psi(z) * df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+				if t in integrand_cache.keys():
+					i = integrand_cache[t]
+				else:
+					z = segment(t)
+					i = (phi(z)*psi(z) * df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+					integrand_cache[t] = i
+				return i
 
 			# integrate real part
 			integrand_real = lambda t: np.real(integrand(t))
