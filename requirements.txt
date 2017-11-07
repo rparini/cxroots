@@ -4,3 +4,4 @@ matplotlib
 git+git://github.com/pbrod/numdifftools@master#egg=numdifftools
 docrep
 mpmath
+pytest-xdist

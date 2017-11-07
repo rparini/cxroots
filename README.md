@@ -1,12 +1,19 @@
 
 ![](https://travis-ci.org/rparini/cxroots.svg?branch=master)
 # cxroots
-A Python module to compute all the roots of a function <img src="https://rawgit.com/RParini/cxroots/master/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> of a single complex variable which lie within a given contour <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>.  The function <img src="https://rawgit.com/RParini/cxroots/master/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> must:
+A Python module to compute all the roots of a function <img src="https://rawgit.com/RParini/cxroots/dev/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> of a single complex variable which lie within a given contour <img src="https://rawgit.com/RParini/cxroots/dev/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>.  The function <img src="https://rawgit.com/RParini/cxroots/dev/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> must:
 
-* have no roots or poles on <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>
-* be analytic in the interior of <img src="https://rawgit.com/RParini/cxroots/master/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>
+* have no roots or poles on <img src="https://rawgit.com/RParini/cxroots/dev/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>
+* be analytic in the interior of <img src="https://rawgit.com/RParini/cxroots/dev/svgs/9b325b9e31e85137d1de765f43c0f8bc.svg?invert_in_darkmode" align=middle width=12.876435000000003pt height=22.381919999999983pt/>
 
-The implementation is based on the method in [1].
+The implementation uses the method in [1] to approximate the roots within a contour by evaluating integrals of the form,
+
+<p align="center"><img src="https://rawgit.com/RParini/cxroots/dev/svgs/961e481665f16a3c8067223dbb40f1d7.svg?invert_in_darkmode" align=middle width=138.70593pt height=38.824995pt/></p>
+
+for certain polynomials <img src="https://rawgit.com/RParini/cxroots/dev/svgs/919032a59e522724a0465e9dad600828.svg?invert_in_darkmode" align=middle width=30.834705000000003pt height=24.56552999999997pt/>.  If <img src="https://rawgit.com/RParini/cxroots/dev/svgs/fc05b2681daad9671bb48c269dcca2d6.svg?invert_in_darkmode" align=middle width=35.47599pt height=24.668490000000013pt/> is not provided by the user then it is approximated using a finite difference method.  The approximations to the roots are then refined using the Newton-Raphson or Muller's (if only <img src="https://rawgit.com/RParini/cxroots/dev/svgs/210d22201f1dd53994dc748e91210664.svg?invert_in_darkmode" align=middle width=30.864075pt height=24.56552999999997pt/> if given) method.
+
+### Documentation
+For more information and a tutorial on cxroots see the [documentation](https://rparini.github.io/cxroots/).
 
 
 ```python
@@ -46,9 +53,6 @@ The easiest way to install cxroots with the Python Package Index by entering on 
 ```bash
 pip install cxroots
 ```
-
-### Documentation
-For a tutorial on the use of this module and a description of how it works see the [documentation](https://rparini.github.io/cxroots/).
 
 ### See also
 The Fortran 90 package [ZEAL](http://cpc.cs.qub.ac.uk/summaries/ADKW_v1_0.html) is a direct implementation of [1].

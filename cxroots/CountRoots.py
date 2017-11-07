@@ -7,7 +7,7 @@ import warnings
 
 from .CxDerivative import CxDeriv
 
-def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10, method='quad', callback=None):
+def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10, method='quad', verbose=False):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -60,13 +60,17 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 			segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
 			I.append(sum(segment_integral))
 
-			# if k>1:
-			# 	print(k, 'I', I[-1], 'err', I[-2] - I[-1])
+			if verbose:
+				if k > 1:
+					print(k, 'I', I[-1], 'err', I[-2] - I[-1])
+				else:
+					print(k, 'I', I[-1])
 
 		return I[-1], abs(I[-2] - I[-1])
 
 	elif method == 'quad':
 		if approx_df:
+			# XXX: need to find a better way around this
 			dx = 1e-8
 			df = lambda z: scipy.misc.derivative(f, z, dx=dx, n=1, order=3)
 			
@@ -74,9 +78,15 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 
 		I, err = 0, 0
 		for segment in C.segments:
+			integrand_cache = {}
 			def integrand(t):
-				z = segment(t)
-				return (phi(z)*psi(z) * df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+				if t in integrand_cache.keys():
+					i = integrand_cache[t]
+				else:
+					z = segment(t)
+					i = (phi(z)*psi(z) * df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+					integrand_cache[t] = i
+				return i
 
 			# integrate real part
 			integrand_real = lambda t: np.real(integrand(t))
@@ -97,7 +107,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 class RootError(RuntimeError):
 	pass
 
-def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=20, method='quad'):
+def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=20, method='quad', verbose=False):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -149,10 +159,13 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=
 	[DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
 		L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
 	"""
+	if verbose:
+		print('Computing number of roots within', C)
+
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
-		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMax=divMax, method=method)
+		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMax=divMax, method=method, verbose=verbose)
 
 	if np.isnan(I):
 		raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")

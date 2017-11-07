@@ -117,13 +117,16 @@ class Contour(object):
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, NAbsTol=0.07, integerTol=0.1, errStop=1e-8, divMax=10, rootTol=1e-8, verbose=False):
-		N = self.count_roots(f, df, NAbsTol, integerTol, divMax)
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, NAbsTol=0.07, integerTol=0.1, errStop=1e-8, divMax=10, rootTol=1e-8, intMethod='quad', verbose=False):
+		if hasattr(self, '_numberOfRoots'):
+			N = self._numberOfRoots
+		else:
+			N = self.count_roots(f, df, NAbsTol, integerTol, divMax, intMethod, verbose)
 
 		if N == 0:
 			return (), ()
 
-		mu = prod(self, f, df, lambda z: z, lambda z: 1, absTol, relTol, divMax)[0]/N
+		mu = prod(self, f, df, lambda z: z, lambda z: 1, absTol, relTol, divMax, intMethod, verbose)[0]/N
 		phiZeros = [[],[mu]]
 
 		def phiFunc(i):
@@ -144,7 +147,7 @@ class Contour(object):
 
 		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
 		G1 = np.zeros((N,N), dtype=np.complex128)
-		ip, err = prod(self, f, df, phiFunc(0), lambda z: phiFunc(1)(z)*phiFunc(0)(z), absTol, relTol, divMax)
+		ip, err = prod(self, f, df, phiFunc(0), lambda z: phiFunc(1)(z)*phiFunc(0)(z), absTol, relTol, divMax, intMethod, verbose)
 		G1[0,0] = ip
 
 		take_regular = True
@@ -156,12 +159,12 @@ class Contour(object):
 
 			# Add new values to G
 			p = r+t
-			G[p, 0:p+1] = [prod(self, f, df, phiFunc(p), phiFunc(q), absTol, relTol, divMax)[0] for q in range(r+t+1)]
+			G[p, 0:p+1] = [prod(self, f, df, phiFunc(p), phiFunc(q), absTol, relTol, divMax, intMethod, verbose)[0] for q in range(r+t+1)]
 			G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
 
 			# Add new values to G1
 			phi1 = phiFunc(1)
-			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMax)[0] for q in range(r+t+1)]
+			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMax, intMethod, verbose)[0] for q in range(r+t+1)]
 			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
 
 			if verbose:
@@ -187,7 +190,7 @@ class Contour(object):
 				allSmall = True
 				phiFuncLast = phiFunc(-1)
 				for j in range(N-r):
-					ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMax)
+					ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMax, intMethod, verbose)
 
 					# if not small then carry on
 					if verbose:
@@ -232,7 +235,7 @@ class Contour(object):
 
 		# compute the multiplicities, eq. (1.19) in [KB]
 		V = np.column_stack([roots**i for i in range(n)])
-		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMax=divMax)[0] for p in range(n)] # ordinary moments
+		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMax=divMax, method=intMethod, verbose=verbose)[0] for p in range(n)] # ordinary moments
 		multiplicities = np.dot(s, np.linalg.inv(V))
 
 		### The method used in the vandermonde module doesn't seem significantly
@@ -334,7 +337,7 @@ class Circle(Contour):
 		super(Circle, self).__init__(segments)
 
 	def __str__(self):
-		return 'Circle: center=%.3f, radius=%.3f' % (self.center, self.radius)
+		return 'Circle: center={center.real:.3f}{center.imag:+.3f}i, radius={radius:.3f}'.format(center=self.center, radius=self.radius)
 	
 	def contains(self, z):
 		""" Returns True if the point z lies within the contour, False if otherwise """
@@ -403,7 +406,7 @@ class Annulus(Contour):
 		super(Annulus, self).__init__(segments)
 
 	def __str__(self):
-		return 'Annulus: center=%.3f, inner radius=%.3f, outer radius=%.3f' % (self.center, self.radii[0], self.radii[1])
+		return 'Annulus: center={center.real:.3f}{center.imag:+.3f}i, inner radius={radii[0]:.3f}, outer radius={radii[1]:.3f}'.format(center=self.center, radii=self.radii)
 	
 	@property
 	def centralPoint(self):
@@ -523,7 +526,7 @@ class AnnulusSector(Contour):
 		super(AnnulusSector, self).__init__(segments)
 
 	def __str__(self):
-		return 'Polar rectangle: center=%.3f, r0=%.3f, r1=%.3f, phi0=%.3f, phi1=%.3f' % (self.center, self.rRange[0], self.rRange[1], self.phiRange[0], self.phiRange[1])
+		return 'Annulus sector: center={center.real:.3f}{center.imag:+.3f}i, r0={rRange[0]:.3f}, r1={rRange[1]:.3f}, phi0={phiRange[0]:.3f}, phi1={phiRange[1]:.3f}'.format(center=self.center, rRange=self.rRange, phiRange=self.phiRange)
 	
 	@property
 	def centralPoint(self):
@@ -645,7 +648,7 @@ class Rectangle(Contour):
 		super(Rectangle, self).__init__(segments)
 
 	def __str__(self):
-		return "Rectangle: %.3f+i%.3f, %.3f+i%.3f, %.3f+i%.3f, %.3f+i%.3f"%(self.z1.real, self.z1.imag, self.z2.real, self.z2.imag, self.z3.real, self.z3.imag, self.z4.real, self.z4.imag)
+		return 'Rectangle: vertices = {z1.real:.3f}{z1.imag:+.3f}i, {z2.real:.3f}{z2.imag:+.3f}i, {z3.real:.3f}{z3.imag:+.3f}i, {z4.real:.3f}{z4.imag:+.3f}i'.format(z1=self.z1, z2=self.z2, z3=self.z3, z4=self.z4)
 
 	@property
 	def centralPoint(self):
