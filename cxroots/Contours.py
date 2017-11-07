@@ -337,7 +337,7 @@ class Circle(Contour):
 		super(Circle, self).__init__(segments)
 
 	def __str__(self):
-		return 'Circle: center=%.3f, radius=%.3f' % (self.center, self.radius)
+		return 'Circle: center={center.real:.3f}{center.imag:+.3f}i, radius={radius:.3f}'.format(center=self.center, radius=self.radius)
 	
 	def contains(self, z):
 		""" Returns True if the point z lies within the contour, False if otherwise """
@@ -406,7 +406,7 @@ class Annulus(Contour):
 		super(Annulus, self).__init__(segments)
 
 	def __str__(self):
-		return 'Annulus: center=%.3f, inner radius=%.3f, outer radius=%.3f' % (self.center, self.radii[0], self.radii[1])
+		return 'Annulus: center={center.real:.3f}{center.imag:+.3f}i, inner radius={radii[0]:.3f}, outer radius={radii[1]:.3f}'.format(center=self.center, radii=self.radii)
 	
 	@property
 	def centralPoint(self):
@@ -526,7 +526,7 @@ class AnnulusSector(Contour):
 		super(AnnulusSector, self).__init__(segments)
 
 	def __str__(self):
-		return 'Polar rectangle: center=%.3f, r0=%.3f, r1=%.3f, phi0=%.3f, phi1=%.3f' % (self.center, self.rRange[0], self.rRange[1], self.phiRange[0], self.phiRange[1])
+		return 'Annulus sector: center={center.real:.3f}{center.imag:+.3f}i, r0={rRange[0]:.3f}, r1={rRange[1]:.3f}, phi0={phiRange[0]:.3f}, phi1={phiRange[1]:.3f}'.format(center=self.center, rRange=self.rRange, phiRange=self.phiRange)
 	
 	@property
 	def centralPoint(self):
@@ -648,7 +648,7 @@ class Rectangle(Contour):
 		super(Rectangle, self).__init__(segments)
 
 	def __str__(self):
-		return "Rectangle: %.3f+i%.3f, %.3f+i%.3f, %.3f+i%.3f, %.3f+i%.3f"%(self.z1.real, self.z1.imag, self.z2.real, self.z2.imag, self.z3.real, self.z3.imag, self.z4.real, self.z4.imag)
+		return 'Rectangle: vertices = {z1.real:.3f}{z1.imag:+.3f}i, {z2.real:.3f}{z2.imag:+.3f}i, {z3.real:.3f}{z3.imag:+.3f}i, {z4.real:.3f}{z4.imag:+.3f}i'.format(z1=self.z1, z2=self.z2, z3=self.z3, z4=self.z4)
 
 	@property
 	def centralPoint(self):
