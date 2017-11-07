@@ -116,12 +116,15 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	"""
 	try:
 		# total number of zeros, including multiplicities
-		totNumberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMax)
+		totNumberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMax, intMethod, verbose)
 		originalContour._numberOfRoots = totNumberOfRoots
 	except RuntimeError:
 		raise RuntimeError("""
 			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
 			Try changing the initial contour, if possible.""")
+
+	if verbose:
+		print('Total number of roots (counting multiplicities) within original contour:', totNumberOfRoots)
 
 	smallBoxWarning = False
 	roots = []
@@ -144,7 +147,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			# XXX: if a root is near to a box then subdivide again?
 
 			try:
-				numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMax) for box in np.array(subBoxes)]
+				numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMax, intMethod, verbose) for box in np.array(subBoxes)]
 				if parentBox._numberOfRoots == sum(numberOfRoots):
 					break
 			except RootError:
@@ -195,7 +198,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 					# XXX: Not the best way to determine multiplicity if this root is clustered close to others
 					from .Contours import Circle
 					C = Circle(root, 1e-3)
-					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol, verbose)[1]
+					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol, intMethod, verbose)[1]
 
 				multiplicities.append(multiplicity.real)
 
@@ -229,6 +232,9 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 	while boxes:
 		box, numberOfRoots = boxes.pop()
+
+		if verbose:
+			print(numberOfRoots, 'roots in', box)
 
 		# if a known root is too near this box then reverse the subdivision that created it 
 		if np.any([box.distance(root) < newtonStepTol for root in roots]):
@@ -277,7 +283,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		else:
 			# approximate the roots in this box
 			try:
-				approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol, verbose)
+				approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol, intMethod, verbose)
 			except MultiplicityError:
 				subdivide(box)
 				continue
