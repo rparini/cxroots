@@ -39,8 +39,9 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
 		############################################
 
 		# Muller's method:
+		f_muller = lambda z: complex(f(z))
 		x1, x2, x3 = x0, x0*(1 + 1e-8) + 1e-8, x0*(1 - 1e-8) - 1e-8
-		root, err = muller(x1, x2, x3, f, steptol, 0, maxIter)
+		root, err = muller(x1, x2, x3, f_muller, steptol, 0, maxIter)
 
 	if err < roottol:
 		return root
