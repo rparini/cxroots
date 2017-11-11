@@ -328,6 +328,12 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
 		yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
 
+	# delete cache for original contour incase this contour is being reused
+	for segment in originalContour.segments:
+		segment._integralCache = {}
+		segment._contArgCache = {}
+		segment._trapValuesCache = {}
+
 	# yield one more time so that the animation shows the final frame
 	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
 
