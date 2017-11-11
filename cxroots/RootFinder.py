@@ -23,7 +23,7 @@ class MultiplicityError(RuntimeError):
 @doc_tab_to_space
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10, absTol=0, relTol=1e-12, 
-	integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=20,
+	integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=15,
 	verbose=False):
 	"""
 	A generator which at each step takes a contour and either finds 
