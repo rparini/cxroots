@@ -24,7 +24,7 @@ class MultiplicityError(RuntimeError):
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10, absTol=0, relTol=1e-12, 
 	integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=15,
-	verbose=False):
+	divMin=5, verbose=False):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.  Based
@@ -94,6 +94,10 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		If the Romberg integration method is used then divMax is the
 		maximum number of divisions before the Romberg integration
 		routine of a path exits.
+	divMin : int, optional
+		If the Romberg integration method is used then divMin is the
+		minimum number of divisions before the Romberg integration
+		routine of a path is allowed to exit.
 	verbose : bool, optional
 		If True certain messages concerning the rootfinding process
 		will be printed.
@@ -116,7 +120,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	"""
 	try:
 		# total number of zeros, including multiplicities
-		totNumberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMax, intMethod, verbose)
+		totNumberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, intMethod, verbose)
 		originalContour._numberOfRoots = totNumberOfRoots
 	except RuntimeError:
 		raise RuntimeError("""
@@ -147,7 +151,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			# XXX: if a root is near to a box then subdivide again?
 
 			try:
-				numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMax, intMethod, verbose) for box in np.array(subBoxes)]
+				numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, intMethod, verbose) for box in np.array(subBoxes)]
 				if parentBox._numberOfRoots == sum(numberOfRoots):
 					break
 			except RootError:
@@ -198,7 +202,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 					# XXX: Not the best way to determine multiplicity if this root is clustered close to others
 					from .Contours import Circle
 					C = Circle(root, 1e-3)
-					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol, intMethod, verbose)[1]
+					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMin, divMax, newtonStepTol, intMethod, verbose)[1]
 
 				multiplicities.append(multiplicity.real)
 
@@ -283,7 +287,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		else:
 			# approximate the roots in this box
 			try:
-				approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMax, newtonStepTol, intMethod, verbose)
+				approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMin, divMax, newtonStepTol, intMethod, verbose)
 			except MultiplicityError:
 				subdivide(box)
 				continue

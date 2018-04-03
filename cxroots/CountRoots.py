@@ -7,7 +7,7 @@ import warnings
 
 from .CxDerivative import CxDeriv
 
-def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10, method='quad', verbose=False):
+def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, method='quad', verbose=False):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -32,9 +32,8 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 
 	if method == 'romb':
 		import numdifftools.fornberg as ndf
-		# XXX: define err as the difference between successive iterations of the Romberg
-		# 	   method for the same number of points?
-		while (len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
+		# XXX: Better way to characterise err than abs(I[-2] - I[-1])?
+		while (len(I) < divMin or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
 			N = 2*N
 			t = np.linspace(0,1,N+1)
 			k = int(np.log2(len(t)-1))
@@ -107,7 +106,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 class RootError(RuntimeError):
 	pass
 
-def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=20, method='quad', verbose=False):
+def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=5, divMax=20, method='quad', verbose=False):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -165,7 +164,7 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
-		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMax=divMax, method=method, verbose=verbose)
+		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, divMax=divMax, method=method, verbose=verbose)
 
 	if np.isnan(I):
 		raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
