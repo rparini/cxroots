@@ -110,9 +110,9 @@ class Contour(object):
 		"""
 		return min(segment.distance(P) for segment in self.segments)
 
-	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMin=5, rombergDivMax=10, method='quad', show=False):
+	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', show=False):
 		""" Integrate around the contour, same arguments the integrate method for ComplexPath """
-		return sum([segment.integrate(f, absTol, relTol, rombergDivMin, rombergDivMax, method, show) for segment in self.segments])
+		return sum([segment.integrate(f, absTol, relTol, rombergDivMax, method, show) for segment in self.segments])
 
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
