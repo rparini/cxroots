@@ -1,7 +1,11 @@
 scipy
 numpy
 matplotlib
-git+git://github.com/pbrod/numdifftools@master#egg=numdifftools
 docrep
 mpmath
 pytest-xdist
+
+# for numdifftools:
+PyScaffold==2.5; python_version < '2.7'
+git+git://github.com/pbrod/numdifftools@master#egg=numdifftools
+
