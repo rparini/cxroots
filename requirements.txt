@@ -9,6 +9,5 @@ pytest-xdist
 # Due to a bug in setuptools, PyScaffold currently needs at least Python 3.4! 
 # Install PyScaffold 2.5 for Python 2.7 support.
 
-PyScaffold == 2.5
 git+git://github.com/pbrod/numdifftools@master#egg=numdifftools
 
