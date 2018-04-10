@@ -117,16 +117,16 @@ class Contour(object):
 	def count_roots(self, *args, **kwargs):
 		return count_enclosed_roots(self, *args, **kwargs)
 
-	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, NAbsTol=0.07, integerTol=0.1, errStop=1e-8, divMin=5, divMax=10, rootTol=1e-8, intMethod='quad', verbose=False):
+	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, NAbsTol=0.07, integerTol=0.1, errStop=1e-8, divMin=5, divMax=10, m=2, rootTol=1e-8, intMethod='quad', verbose=False):
 		if hasattr(self, '_numberOfRoots'):
 			N = self._numberOfRoots
 		else:
-			N = self.count_roots(f, df, NAbsTol, integerTol, divMin, divMax, intMethod, verbose)
+			N = self.count_roots(f, df, NAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
 
 		if N == 0:
 			return (), ()
 
-		mu = prod(self, f, df, lambda z: z, None, absTol, relTol, divMin, divMax, intMethod, verbose)[0]/N
+		mu = prod(self, f, df, lambda z: z, None, absTol, relTol, divMin, divMax, m, intMethod, verbose)[0]/N
 		phiZeros = [[],[mu]]
 
 		def phiFunc(i):
@@ -147,7 +147,7 @@ class Contour(object):
 
 		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
 		G1 = np.zeros((N,N), dtype=np.complex128)
-		ip, err = prod(self, f, df, phiFunc(0), lambda z: phiFunc(1)(z)*phiFunc(0)(z), absTol, relTol, divMin, divMax, intMethod, verbose)
+		ip, err = prod(self, f, df, phiFunc(0), lambda z: phiFunc(1)(z)*phiFunc(0)(z), absTol, relTol, divMin, divMax, m, intMethod, verbose)
 		G1[0,0] = ip
 
 		take_regular = True
@@ -159,12 +159,12 @@ class Contour(object):
 
 			# Add new values to G
 			p = r+t
-			G[p, 0:p+1] = [prod(self, f, df, phiFunc(p), phiFunc(q), absTol, relTol, divMin, divMax, intMethod, verbose)[0] for q in range(r+t+1)]
+			G[p, 0:p+1] = [prod(self, f, df, phiFunc(p), phiFunc(q), absTol, relTol, divMin, divMax, m, intMethod, verbose)[0] for q in range(r+t+1)]
 			G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
 
 			# Add new values to G1
 			phi1 = phiFunc(1)
-			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMin, divMax, intMethod, verbose)[0] for q in range(r+t+1)]
+			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMin, divMax, m, intMethod, verbose)[0] for q in range(r+t+1)]
 			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
 
 			if verbose:
@@ -190,7 +190,7 @@ class Contour(object):
 				allSmall = True
 				phiFuncLast = phiFunc(-1)
 				for j in range(N-r):
-					ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMin, divMax, intMethod, verbose)
+					ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMin, divMax, m, intMethod, verbose)
 
 					# if not small then carry on
 					if verbose:
@@ -235,7 +235,7 @@ class Contour(object):
 
 		# compute the multiplicities, eq. (1.19) in [KB]
 		V = np.column_stack([roots**i for i in range(n)])
-		s = [prod(self, f, df, lambda z: z**p, absTol=absTol, relTol=relTol, divMin=divMin, divMax=divMax, method=intMethod, verbose=verbose)[0] for p in range(n)] # ordinary moments
+		s = [prod(self, f, df, lambda z: z**p, None, absTol, relTol, divMin, divMax, m, intMethod, verbose)[0] for p in range(n)] # ordinary moments
 		multiplicities = np.dot(s, np.linalg.inv(V))
 
 		### The method used in the vandermonde module doesn't seem significantly

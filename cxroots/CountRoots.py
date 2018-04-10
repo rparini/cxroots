@@ -7,7 +7,7 @@ import warnings
 
 from .CxDerivative import CxDeriv
 
-def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, method='quad', verbose=False):
+def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, m=2, method='quad', verbose=False):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -15,7 +15,17 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 
 		<\phi,\psi> = \frac{1}{2i\pi} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
 	
-	If phi is None then it is assumed to be 1 
+    Parameters
+    ----------
+    m : int, optional
+        Defines the stencil size for the numerical differentiation of f,
+        passed to the numdifftools.fornberg.fd_derivative function.
+        The stencil size is of 2*m+1 points in the interior, and 2*m+2 
+        points for each of the 2*m boundary points.  Only used if df=None 
+        and method='romb'.
+
+
+	If phi is None then it is assumed to be 1
 	If psi is None then it is assumed to be 1
 
 	References
@@ -47,10 +57,13 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 
 				if approx_df:
 					### approximate df/dz with finite difference, see: numdifftools.fornberg
-					# interior stencil size = 2*m + 1
-					# boundary stencil size = 2*m + 2
-					m = 1
-					dfdt = ndf.fd_derivative(fVal, t, n=1, m=m)
+					used_m = m
+					if 2*m+1 > len(t):
+						# not enough points to accommodate stencil size
+						# temporarily reduce m
+						used_m = (len(t)-1)//2
+
+					dfdt = ndf.fd_derivative(fVal, t, n=1, m=used_m)
 					dfVal = dfdt/segment.dzdt(t)
 
 				else:
@@ -118,7 +131,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 class RootError(RuntimeError):
 	pass
 
-def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=5, divMax=20, method='quad', verbose=False):
+def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=5, divMax=20, m=2, method='quad', verbose=False):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -159,6 +172,12 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=
 	divMax : int, optional
 		The maximum number of divisions before the Romberg integration
 		routine of a path exits.
+    m : int, optional
+        Defines the stencil size for the numerical differentiation of f,
+        passed to the numdifftools.fornberg.fd_derivative function.
+        The stencil size is of 2*mm+1 points in the interior, and 2*mm+2 
+        points for each of the 2*mm boundary points where mm = n//2+m.  
+        Only used if df=None and method='romb'.
 
 	Returns
 	-------
@@ -176,7 +195,7 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
-		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, divMax=divMax, method=method, verbose=verbose)
+		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, divMax=divMax, m=m, method=method, verbose=verbose)
 
 	if np.isnan(I):
 		raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
