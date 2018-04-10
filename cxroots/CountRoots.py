@@ -7,7 +7,7 @@ import warnings
 
 from .CxDerivative import CxDeriv
 
-def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, method='quad', verbose=False):
+def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, method='quad', verbose=False):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -15,6 +15,9 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 
 		<\phi,\psi> = \frac{1}{2i\pi} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
 	
+	If phi is None then it is assumed to be 1 
+	If psi is None then it is assumed to be 1
+
 	References
 	----------
 	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
@@ -27,8 +30,6 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	approx_df = False
 	if df is None:
 		approx_df = True
-
-	# print('prod:', C)
 
 	if method == 'romb':
 		import numdifftools.fornberg as ndf
@@ -55,7 +56,12 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 				else:
 					dfVal = segment.trapValues(df,k)
 
-				segment_integrand = phi(segment(t))*psi(segment(t))*dfVal/fVal*segment.dzdt(t)
+				segment_integrand = dfVal/fVal*segment.dzdt(t)
+				if phi is not None:
+					segment_integrand = segment.trapValues(phi,k)*segment_integrand
+				if psi is not None:
+					segment_integrand = segment.trapValues(psi,k)*segment_integrand
+
 				segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
 				integrals.append(segment_integral)
 			

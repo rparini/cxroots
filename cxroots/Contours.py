@@ -126,7 +126,7 @@ class Contour(object):
 		if N == 0:
 			return (), ()
 
-		mu = prod(self, f, df, lambda z: z, lambda z: 1, absTol, relTol, divMin, divMax, intMethod, verbose)[0]/N
+		mu = prod(self, f, df, lambda z: z, None, absTol, relTol, divMin, divMax, intMethod, verbose)[0]/N
 		phiZeros = [[],[mu]]
 
 		def phiFunc(i):
