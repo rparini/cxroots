@@ -91,7 +91,11 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 					i = integrand_cache[t]
 				else:
 					z = segment(t)
-					i = (phi(z)*psi(z) * df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+					i = (df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+					if phi is not None:
+						i = phi(z)*i
+					if psi is not None:
+						i = psi(z)*i
 					integrand_cache[t] = i
 				return i
 
