@@ -234,7 +234,9 @@ class Contour(object):
 
 		# compute the multiplicities, eq. (1.19) in [KB]
 		V = np.column_stack([roots**i for i in range(n)])
-		s = [prod(self, f, df, lambda z: z**p, None, absTol, relTol, divMin, divMax, m, intMethod, verbose)[0] for p in range(n)] # ordinary moments
+		from time import time
+		s = [prod(self, f, df, None, None, absTol, relTol, divMin, divMax, m, intMethod, verbose)[0]] 	# = s0
+		s += [prod(self, f, df, lambda z: z**p, None, absTol, relTol, divMin, divMax, m, intMethod, verbose)[0] for p in range(1, n)] 	# ordinary moments
 		multiplicities = np.dot(s, np.linalg.inv(V))
 
 		### The method used in the vandermonde module doesn't seem significantly
