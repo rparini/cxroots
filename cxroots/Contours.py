@@ -140,14 +140,14 @@ class Contour(object):
 			print('Approximating roots in: ' + str(self))
 			print('mu', mu)
 
-
 		# initialize G_{pq} = <phi_p, phi_q>
 		G = np.zeros((N,N), dtype=np.complex128)
 		G[0,0] = N # = <phi0, phi0> = <1,1>
 
 		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
 		G1 = np.zeros((N,N), dtype=np.complex128)
-		ip, err = prod(self, f, df, phiFunc(0), lambda z: phiFunc(1)(z)*phiFunc(0)(z), absTol, relTol, divMin, divMax, m, intMethod, verbose)
+		phi1 = phiFunc(1)
+		ip, err = prod(self, f, df, phiFunc(0), lambda z: phi1(z)*phiFunc(0)(z), absTol, relTol, divMin, divMax, m, intMethod, verbose)
 		G1[0,0] = ip
 
 		take_regular = True
@@ -163,7 +163,6 @@ class Contour(object):
 			G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
 
 			# Add new values to G1
-			phi1 = phiFunc(1)
 			G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMin, divMax, m, intMethod, verbose)[0] for q in range(r+t+1)]
 			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
 
