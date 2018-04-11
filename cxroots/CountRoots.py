@@ -18,11 +18,12 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
     Parameters
     ----------
     m : int, optional
-        Defines the stencil size for the numerical differentiation of f,
-        passed to the numdifftools.fornberg.fd_derivative function.
-        The stencil size is of 2*m+1 points in the interior, and 2*m+2 
-        points for each of the 2*m boundary points.  Only used if df=None 
-        and method='romb'.
+    	Only used if df=None.  If method='romb' then m defines the stencil size for the 
+    	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
+    	The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
+    	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
+    	the error term in the Taylor approximation used which must be even.  The argument
+    	order=m is passed to numdifftools.Derivative.
 
 
 	If phi is None then it is assumed to be 1
@@ -90,10 +91,9 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 
 	elif method == 'quad':
 		if approx_df:
-			# XXX: need to find a better way around this
-			dx = 1e-8
-			df = lambda z: scipy.misc.derivative(f, z, dx=dx, n=1, order=3)
-			
+			import numdifftools
+			dx = numdifftools.Derivative(f, order=m)
+			# df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
 			# df = CxDeriv(f) # too slow
 
 		I, err = 0, 0
@@ -173,11 +173,12 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=
 		The maximum number of divisions before the Romberg integration
 		routine of a path exits.
     m : int, optional
-        Defines the stencil size for the numerical differentiation of f,
-        passed to the numdifftools.fornberg.fd_derivative function.
-        The stencil size is of 2*mm+1 points in the interior, and 2*mm+2 
-        points for each of the 2*mm boundary points where mm = n//2+m.  
-        Only used if df=None and method='romb'.
+    	Only used if df=None.  If method='romb' then m defines the stencil size for the 
+    	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
+    	The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
+    	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
+    	the error term in the Taylor approximation used which must be even.  The argument
+    	order=m is passed to numdifftools.Derivative.
 
 	Returns
 	-------

@@ -99,11 +99,12 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		minimum number of divisions before the Romberg integration
 		routine of a path is allowed to exit.
     m : int, optional
-        Defines the stencil size for the numerical differentiation of f,
-        passed to the numdifftools.fornberg.fd_derivative function.
-        The stencil size is of 2*mm+1 points in the interior, and 2*mm+2 
-        points for each of the 2*mm boundary points where mm = n//2+m.  
-        Only used if df=None and method='romb'.
+    	Only used if df=None.  If method='romb' then m defines the stencil size for the 
+    	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
+    	The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
+    	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
+    	the error term in the Taylor approximation used which must be even.  The argument
+    	order=m is passed to numdifftools.Derivative.
 	verbose : bool, optional
 		If True certain messages concerning the rootfinding process
 		will be printed.
