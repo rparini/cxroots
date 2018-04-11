@@ -131,7 +131,7 @@ class Contour(object):
 
 		def phiFunc(i):
 			if len(phiZeros[i]) == 0:
-				return lambda z: 1
+				return lambda z: np.ones_like(z)
 			else:
 				coeff = np.poly(phiZeros[i])
 				return lambda z: np.polyval(coeff, z)
