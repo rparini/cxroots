@@ -92,7 +92,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 	elif method == 'quad':
 		if approx_df:
 			import numdifftools
-			dx = numdifftools.Derivative(f, order=m)
+			df = numdifftools.Derivative(f, order=m)
 			# df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
 			# df = CxDeriv(f) # too slow
 
