@@ -36,5 +36,7 @@ def roots_approx_equal(a, b, decimal = 7):
 		b_roots[ai], b_roots[bi] = b_roots[bi], b_roots[ai]
 		b_multiplicities[ai], b_multiplicities[bi] = b_multiplicities[bi], b_multiplicities[ai]
 
+	np.set_printoptions(threshold=np.inf)
 	np.testing.assert_almost_equal(a_roots, b_roots, decimal)
 	np.testing.assert_almost_equal(a_multiplicities, b_multiplicities, decimal)
+	np.set_printoptions(threshold=None)
