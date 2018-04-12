@@ -104,6 +104,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 	iteration = 0
 	x0 = x3
 
+	x, err = x0, abs(f(x0))
 	err0, dx0 = np.inf, np.inf
 	try:
 		for x, dx in mull:
