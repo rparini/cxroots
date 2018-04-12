@@ -192,7 +192,10 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 		if callback is not None and callback(x, dx, y, iteration+1):
 			break
 
-		if not attemptBest and (abs(dx0) < steptol or abs(y0) < roottol) and abs(y) > abs(y0):
+		if not attemptBest and (abs(dx) < steptol or abs(y) < roottol):
+			break
+
+		if attemptBest and (abs(dx0) < steptol or abs(y0) < roottol) and abs(y) > abs(y0):
 			break
 
 		if attemptBest:
