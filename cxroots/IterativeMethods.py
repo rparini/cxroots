@@ -97,8 +97,8 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, verbose=Fals
 	x0 = x3
 
 	try:
-		for x, err in mull:
-			dx = x - x0
+		for x, dx in mull:
+			err = abs(f_mpmath(x))
 
 			if callback is not None and callback(x, dx, err, iteration+1):
 				break
