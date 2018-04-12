@@ -17,6 +17,28 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 	
     Parameters
     ----------
+	C : Contour
+		The enclosed_roots function returns the number of roots of f(z) within C
+	f : function
+		Function of a single variable f(x)
+	df : function, optional
+		Function of a single variable, df(x), providing the derivative of the function f(x) 
+		at the point x.  If not provided then df is approximated using a finite difference
+		method.
+	phi : function, optional
+		Function of a single variable phi(x).  If not provided then phi=1.
+	psi : function, optional
+		Function of a single variable psi(x).  If not provided then psi=1.
+	absTol : float, optional
+		Absolute error tolerance.
+	relTol : float, optional
+		Relative error tolerance.
+ 	divMin : int, optional
+ 		Minimum number of divisions before the Romberg integration routine is allowed 
+ 		to exit.  Only used if method='romb'.
+	divMax : int, optional
+		The maximum number of divisions before the Romberg integration routine of a 
+		path exits.  Only used if method='romb'.
     m : int, optional
     	Only used if df=None.  If method='romb' then m defines the stencil size for the 
     	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
@@ -24,10 +46,9 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
     	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
     	the error term in the Taylor approximation used which must be even.  The argument
     	order=m is passed to numdifftools.Derivative.
-
-
-	If phi is None then it is assumed to be 1
-	If psi is None then it is assumed to be 1
+	method : {'quad', 'romb'}, optional
+		If 'quad' then scipy.integrate.quad is used to perform the integral.  If 'romb'
+		then Romberg integraion, using scipy.integrate.romb, is performed instead.
 
 	References
 	----------
@@ -145,11 +166,6 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=
 	Otherwise the derivative is approximated using a finite difference approximation implemented
 	in Numdifftools <https://pypi.python.org/pypi/Numdifftools>`_.
 
-	The number of points on each segment of the contour C at which f(z) and df(z) are sampled 
-	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration 
-	the above integral is calculated using `SciPy's implementation of the Romberg method <https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html>`_.
-	The routine exits if the difference between successive iterations is < integerTol.
-
 	The number of roots is then the closest integer to the final value of the integral
 	and the result is only accepted if the final value of the integral is within integerTol
 	of the closest integer.
@@ -163,15 +179,20 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=
 	df : function, optional
 		Function of a single variable, df(x), providing the derivative of the function f(x) 
 		at the point x.
+	NintAbsTol : float, optional
+		Required absolute error for the integration.
 	integerTol : float, optional
 		The evaluation of the Cauchy integral will be accepted if the difference between successive
 		iterations is < integerTol and the value of the integral is within integerTol of the 
 		closest integer.  Since the Cauchy integral must be an integer it is only necessary to
 		distinguish which integer the integral is converging towards.  For this
 		reason the integerTol can be set fairly large.
+ 	divMin : int, optional
+ 		Minimum number of divisions before the Romberg integration routine is allowed 
+ 		to exit.  Only used if method='romb'.
 	divMax : int, optional
-		The maximum number of divisions before the Romberg integration
-		routine of a path exits.
+		The maximum number of divisions before the Romberg integration routine of a 
+		path exits.  Only used if method='romb'.
     m : int, optional
     	Only used if df=None.  If method='romb' then m defines the stencil size for the 
     	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
@@ -179,6 +200,9 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=
     	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
     	the error term in the Taylor approximation used which must be even.  The argument
     	order=m is passed to numdifftools.Derivative.
+	method : {'quad', 'romb'}, optional
+		If 'quad' then scipy.integrate.quad is used to perform the integral.  If 'romb'
+		then Romberg integraion, using scipy.integrate.romb, is performed instead.
 
 	Returns
 	-------
