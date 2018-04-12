@@ -132,8 +132,6 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 		# ZeroDivisionError comes up if the error is evaluated to be zero
 		pass
 
-	print('Final x', x, 'final err', err)
-
 	# cast mpc and mpf back to regular complex and float
 	return complex(x), float(err)
 
