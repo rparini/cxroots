@@ -109,8 +109,6 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 		for x, dx in mull:
 			err = abs(f_mpmath(x))
 
-			print('i', iteration, 'x', x, 'f(x)', f_mpmath(x), 'err', err, '|dx|', abs(dx))
-
 			if callback is not None and callback(x, dx, err, iteration+1):
 				break
 
@@ -195,8 +193,6 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 
 		if callback is not None and callback(x, dx, y, iteration+1):
 			break
-
-		# print(iteration, y, abs(y))
 
 		if not attemptBest and (abs(dx0) < steptol or abs(y0) < roottol) and abs(y) > abs(y0):
 			break
