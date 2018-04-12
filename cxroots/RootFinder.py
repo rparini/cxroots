@@ -22,9 +22,9 @@ class MultiplicityError(RuntimeError):
 @docstrings.dedent
 @doc_tab_to_space
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
-	newtonStepTol=1e-14, newtonMaxIter=50, rootErrTol=1e-10, absTol=0, relTol=1e-12, 
-	integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, intMethod='quad', divMax=15,
-	divMin=5, m=2, verbose=False):
+	newtonStepTol=1e-14, attemptIterBest=True, newtonMaxIter=50, rootErrTol=1e-10, 
+	absTol=0, relTol=1e-12, integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, 
+	intMethod='quad', divMax=15, divMin=5, m=2, verbose=False):
 	"""
 	A generator which at each step takes a contour and either finds 
 	all the zeros of f within it or subdivides it further.  Based
@@ -54,7 +54,14 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		The required accuracy of the root.
 		The iterative method used to give a final value for each
 		root will exit if the step size, dx, between sucessive 
-		iterations satisfies abs(dx) < newtonStepTol
+		iterations satisfies abs(dx) < newtonStepTol and iterBestAttempt
+		is False.
+	attemptIterBest : bool, optional
+		If True then the iterative method used to refine the roots will exit 
+		when error of the previous iteration, x0, was at least as good as the 
+		current iteration, x, in the sense that abs(f(x)) >= abs(f(x0)) and 
+		the previous iteration satisfied abs(dx0) < newtonStepTol.In this 
+		case the preivous iteration is returned as the approximation of the root.
 	newtonMaxIter : int, optional
 		The iterative method used to give a final value for each
 		root will exit if the number of iterations exceeds newtonMaxIter.
@@ -216,7 +223,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			# check to see if there are any other roots implied by the given symmetry
 			if guessRootSymmetry is not None:
 				for x0 in guessRootSymmetry(root):
-					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
 					if root is not None:
 						addRoot(root)
 
@@ -303,7 +310,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				# XXX: if the approximate root is not in this box then desregard and redo the subdivision?
 
 				# attempt to refine the root
-				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter)
+				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
 
 				# print('approx', approxRoot, 'refined root', root)
 

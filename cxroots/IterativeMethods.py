@@ -1,6 +1,7 @@
 from __future__ import division
+import numpy as np
 
-def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
+def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False):
 	# iterate to a root using initial point x0
 	if df is not None:
 		try:
@@ -41,12 +42,12 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20):
 		# Muller's method:
 		f_muller = lambda z: complex(f(z))
 		x1, x2, x3 = x0, x0*(1 + 1e-8) + 1e-8, x0*(1 - 1e-8) - 1e-8
-		root, err = muller(x1, x2, x3, f_muller, steptol, 0, maxIter)
+		root, err = muller(x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest)
 
 	if err < roottol:
 		return root
 
-def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, verbose=False, callback=None):
+def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, verbose=False, callback=None):
 	"""
 	Wrapper for mpmath's implementation of Muller's method.  
 
@@ -65,11 +66,19 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, verbose=Fals
 		Function of a single variable f(x)
 	steptol: float, optional
 		Routine will end if the step size, dx, between sucessive
-		iterations of x satisfies abs(dx) < steptol
+		iterations of x satisfies abs(dx) < steptol and attemptBest is False
 	roottol: float, optional
-		The routine will end if abs(f(x)) < roottol
+		The routine will end if abs(f(x)) < roottol and attemptBest is False
 	maxIter : int, optional
-		Routine ends after maxIter iterations
+		Routine ends after maxIter iterations.
+	attemptBest : bool, optional
+		If True then routine will exit if error of the previous iteration, x0, was 
+		at least as good as the current iteration, x, in the sense that 
+		abs(f(x)) >= abs(f(x0)) and the previous iteration satisfied either
+		abs(dx0) < steptol or abs(f(x0)) < roottol.  In this case the preivous
+		iteration is returned as the approximation of the root.
+	verbose : bool, optional
+		Passed to mpmath's Muller function.
 	callback : function, optional
 		After each iteration the supplied function 
 		callback(x, dx, f(x), iteration) will be called where 'x' is the current iteration 
@@ -83,41 +92,55 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, verbose=Fals
 		The approximation to a root of f
 	rooterr : float
 		The error of the original function at xf, abs(f(xf))
-
 	"""
 	from mpmath import mp, mpmathify
 	from mpmath.calculus.optimization import Muller
 
 
 	# mpmath insists on functions accepting mpc
-	f_mpmath = lambda z: mpmathify(f(complex(z))) 
+	f_mpmath = lambda z: mpmathify(f(complex(z)))
 
 	mull = Muller(mp, f_mpmath, (x1, x2, x3), verbose=verbose)
 	iteration = 0
 	x0 = x3
 
+	err0, dx0 = np.inf, np.inf
 	try:
 		for x, dx in mull:
 			err = abs(f_mpmath(x))
 
+			print('i', iteration, 'x', x, 'f(x)', f_mpmath(x), 'err', err, '|dx|', abs(dx))
+
 			if callback is not None and callback(x, dx, err, iteration+1):
 				break
 
-			if abs(dx) < steptol or err < roottol or iteration > maxIter:
+			if not attemptBest and (abs(dx) < steptol or err < roottol) or iteration > maxIter:
+				break
+
+			if attemptBest and (abs(dx0) < steptol or err0 < roottol) and err >= err0:
+				# The previous iteration was a better appproximation the current one so  
+				# assume that that was as close to the root as we are going to get.
+				x, err = x0, err0
 				break
 
 			iteration += 1
 			x0 = x
 
+			if attemptBest:
+				# record previous error for comparison
+				dx0, err0 = dx0, err
+
 	except ZeroDivisionError:
 		# ZeroDivisionError comes up if the error is evaluated to be zero
 		pass
+
+	print('Final x', x, 'final err', err)
 
 	# cast mpc and mpf back to regular complex and float
 	return complex(x), float(err)
 
 
-def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, callback=None):
+def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
 	scalar function f using Newton-Raphson iteration starting at 
@@ -140,6 +163,12 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, callback=None):
 		The routine will end if abs(f(x)) < roottol
 	maxIter : int, optional
 		Routine ends after maxIter iterations
+	attemptBest : bool, optional
+		If True then routine will exit if error of the previous iteration, x0, was 
+		at least as good as the current iteration, x, in the sense that 
+		abs(f(x)) >= abs(f(x0)) and the previous iteration satisfied either
+		abs(dx0) < steptol or abs(f(x0)) < roottol.  In this case the preivous
+		iteration is returned as the approximation of the root.
 	callback : function, optional
 		After each iteration the supplied function 
 		callback(x, dx, f(x), iteration) will be called where 'x' is the current iteration 
@@ -157,9 +186,8 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, callback=None):
 
 	# XXX: Could use deflated polynomials to ensure that known roots are not found again?
 	
-	# print('--newton--')
-
 	x, y = x0, f(x0)
+	dx0, y0 = np.inf, y
 	for iteration in range(maxIter):
 		dx = -y/df(x)
 		x += dx
@@ -170,8 +198,12 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, callback=None):
 
 		# print(iteration, y, abs(y))
 
-		if abs(dx) < steptol or abs(y) < roottol:
+		if not attemptBest and (abs(dx0) < steptol or abs(y0) < roottol) and abs(y) > abs(y0):
 			break
+
+		if attemptBest:
+			# store previous dx and y
+			dx0, y0 = dx, y
 
 	return x, abs(y)
 
