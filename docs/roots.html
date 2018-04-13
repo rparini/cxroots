@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Root Finding &mdash; cxroots 1.0.8 documentation</title>
+  <title>Root Finding &mdash; cxroots 1.0.9 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cxroots 1.0.8 documentation" href="index.html"/>
+    <link rel="top" title="cxroots 1.0.9 documentation" href="index.html"/>
         <link rel="next" title="Root Viewing" href="rootresult.html"/>
         <link rel="prev" title="Contours" href="contours.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                1.0.8
+                1.0.9
               </div>
             
           
@@ -226,7 +226,13 @@ roots of f, given that z is a root of f.</li>
 <li><strong>newtonStepTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The required accuracy of the root.
 The iterative method used to give a final value for each
 root will exit if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; newtonStepTol</li>
+iterations satisfies abs(dx) &lt; newtonStepTol and iterBestAttempt
+is False.</li>
+<li><strong>attemptIterBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then the iterative method used to refine the roots will exit
+when error of the previous iteration, x0, was at least as good as the
+current iteration, x, in the sense that abs(f(x)) &gt;= abs(f(x0)) and
+the previous iteration satisfied abs(dx0) &lt; newtonStepTol.In this
+case the preivous iteration is returned as the approximation of the root.</li>
 <li><strong>newtonMaxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The iterative method used to give a final value for each
 root will exit if the number of iterations exceeds newtonMaxIter.</li>
 <li><strong>rootErrTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A complex value z is considered a root if abs(f(z)) &lt; rootErrTol</li>
@@ -256,6 +262,15 @@ value of each element is &lt; errStop.</li>
 <li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
 maximum number of divisions before the Romberg integration
 routine of a path exits.</li>
+<li><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMin is the
+minimum number of divisions before the Romberg integration
+routine of a path is allowed to exit.</li>
+<li><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None.  If method=’romb’ then m defines the stencil size for the
+numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
+The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each
+of the 2*m boundary points.  If instead method=’quad’ then m must is the order of
+the error term in the Taylor approximation used which must be even.  The argument
+order=m is passed to numdifftools.Derivative.</li>
 <li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True certain messages concerning the rootfinding process
 will be printed.</li>
 </ul>
@@ -313,8 +328,8 @@ The <em>guessRoots</em> argument should be a list of roots or, if the multiplici
 <div class="highlight-text"><div class="highlight"><pre><span></span> Multiplicity |               Root              
 ------------------------------------------------
       1       | -1.200000000000 +0.000000000000i
-      1       | -0.974651035111 +1.381047768247i
       1       | -0.974651035111 -1.381047768247i
+      1       | -0.974651035111 +1.381047768247i
       1       |  1.440251130167 +0.000000000000i
       2       |  2.500000000000 +0.000000000000i
 </pre></div>
@@ -355,8 +370,8 @@ The rootfinder can be told this using the <em>guessRootSymmetry</em> argument wh
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time with symmetry:&#39;</span><span class="p">,</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 4.5947630405426025
-Time with symmetry: 1.7352800369262695
+<div class="highlight-text"><div class="highlight"><pre><span></span>Time without symmetry: 4.539753198623657
+Time with symmetry: 1.3779950141906738
 </pre></div>
 </div>
 </div>
@@ -406,7 +421,7 @@ Time with symmetry: 1.7352800369262695
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.8',
+            VERSION:'1.0.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

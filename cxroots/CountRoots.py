@@ -7,7 +7,7 @@ import warnings
 
 from .CxDerivative import CxDeriv
 
-def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-12, divMax=10, method='quad', verbose=False):
+def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, m=2, method='quad', verbose=False):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -15,6 +15,41 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 
 		<\phi,\psi> = \frac{1}{2i\pi} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
 	
+    Parameters
+    ----------
+	C : Contour
+		The enclosed_roots function returns the number of roots of f(z) within C
+	f : function
+		Function of a single variable f(x)
+	df : function, optional
+		Function of a single variable, df(x), providing the derivative of the function f(x) 
+		at the point x.  If not provided then df is approximated using a finite difference
+		method.
+	phi : function, optional
+		Function of a single variable phi(x).  If not provided then phi=1.
+	psi : function, optional
+		Function of a single variable psi(x).  If not provided then psi=1.
+	absTol : float, optional
+		Absolute error tolerance.
+	relTol : float, optional
+		Relative error tolerance.
+ 	divMin : int, optional
+ 		Minimum number of divisions before the Romberg integration routine is allowed 
+ 		to exit.  Only used if method='romb'.
+	divMax : int, optional
+		The maximum number of divisions before the Romberg integration routine of a 
+		path exits.  Only used if method='romb'.
+    m : int, optional
+    	Only used if df=None.  If method='romb' then m defines the stencil size for the 
+    	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
+    	The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
+    	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
+    	the error term in the Taylor approximation used which must be even.  The argument
+    	order=m is passed to numdifftools.Derivative.
+	method : {'quad', 'romb'}, optional
+		If 'quad' then scipy.integrate.quad is used to perform the integral.  If 'romb'
+		then Romberg integraion, using scipy.integrate.romb, is performed instead.
+
 	References
 	----------
 	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
@@ -28,37 +63,44 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 	if df is None:
 		approx_df = True
 
-	# print('prod:', C)
-
 	if method == 'romb':
 		import numdifftools.fornberg as ndf
-		# XXX: define err as the difference between successive iterations of the Romberg
-		# 	   method for the same number of points?
-		while (len(I) < 2 or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
+		# XXX: Better way to characterise err than abs(I[-2] - I[-1])?
+		while (len(I) < divMin or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
 			N = 2*N
 			t = np.linspace(0,1,N+1)
 			k = int(np.log2(len(t)-1))
 			dt = t[1]-t[0]
 
-			# compute/retrieve function evaluations
-			fVal = np.array([segment.trapValues(f,k) for segment in C.segments])
-			phiVal = np.array([phi(segment(t)) for segment in C.segments])
-			psiVal = np.array([psi(segment(t)) for segment in C.segments])
+			integrals = []
+			for segment in C.segments:
+				# compute/retrieve function evaluations
+				fVal = segment.trapValues(f,k)
 
-			if approx_df:
-				### approximate df/dz with finite difference, see: numdifftools.fornberg
-				# interior stencil size = 2*m + 1
-				# boundary stencil size = 2*m + 2
-				m = 1
-				dfdt = [ndf.fd_derivative(fx, t, n=1, m=m) for fx in fVal]
-				dfVal = [dfdt[i]/segment.dzdt(t) for i, segment in enumerate(C.segments)]
+				if approx_df:
+					### approximate df/dz with finite difference, see: numdifftools.fornberg
+					used_m = m
+					if 2*m+1 > len(t):
+						# not enough points to accommodate stencil size
+						# temporarily reduce m
+						used_m = (len(t)-1)//2
 
-			else:
-				dfVal = np.array([segment.trapValues(df,k) for segment in C.segments])
+					dfdt = ndf.fd_derivative(fVal, t, n=1, m=used_m)
+					dfVal = dfdt/segment.dzdt(t)
 
-			segment_integrand = [phiVal[i]*psiVal[i]*dfVal[i]/fVal[i]*segment.dzdt(t) for i, segment in enumerate(C.segments)]
-			segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
-			I.append(sum(segment_integral))
+				else:
+					dfVal = segment.trapValues(df,k)
+
+				segment_integrand = dfVal/fVal*segment.dzdt(t)
+				if phi is not None:
+					segment_integrand = segment.trapValues(phi,k)*segment_integrand
+				if psi is not None:
+					segment_integrand = segment.trapValues(psi,k)*segment_integrand
+
+				segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
+				integrals.append(segment_integral)
+			
+			I.append(sum(integrals))
 
 			if verbose:
 				if k > 1:
@@ -70,10 +112,9 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 
 	elif method == 'quad':
 		if approx_df:
-			# XXX: need to find a better way around this
-			dx = 1e-8
-			df = lambda z: scipy.misc.derivative(f, z, dx=dx, n=1, order=3)
-			
+			import numdifftools
+			df = numdifftools.Derivative(f, order=m)
+			# df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
 			# df = CxDeriv(f) # too slow
 
 		I, err = 0, 0
@@ -84,7 +125,11 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 					i = integrand_cache[t]
 				else:
 					z = segment(t)
-					i = (phi(z)*psi(z) * df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+					i = (df(z)/f(z))/(2j*pi) * segment.dzdt(t)
+					if phi is not None:
+						i = phi(z)*i
+					if psi is not None:
+						i = psi(z)*i
 					integrand_cache[t] = i
 				return i
 
@@ -107,7 +152,7 @@ def prod(C, f, df=None, phi=lambda z:1, psi=lambda z:1, absTol=1e-12, relTol=1e-
 class RootError(RuntimeError):
 	pass
 
-def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=20, method='quad', verbose=False):
+def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=5, divMax=20, m=2, method='quad', verbose=False):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
@@ -120,11 +165,6 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=
 	If df(z), the derivative of f(z), is provided then the above integral is computed directly.
 	Otherwise the derivative is approximated using a finite difference approximation implemented
 	in Numdifftools <https://pypi.python.org/pypi/Numdifftools>`_.
-
-	The number of points on each segment of the contour C at which f(z) and df(z) are sampled 
-	starts at 2+1 and at the k-th iteration the number of points is 2**k+1.  At each iteration 
-	the above integral is calculated using `SciPy's implementation of the Romberg method <https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html>`_.
-	The routine exits if the difference between successive iterations is < integerTol.
 
 	The number of roots is then the closest integer to the final value of the integral
 	and the result is only accepted if the final value of the integral is within integerTol
@@ -139,15 +179,30 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=
 	df : function, optional
 		Function of a single variable, df(x), providing the derivative of the function f(x) 
 		at the point x.
+	NintAbsTol : float, optional
+		Required absolute error for the integration.
 	integerTol : float, optional
 		The evaluation of the Cauchy integral will be accepted if the difference between successive
 		iterations is < integerTol and the value of the integral is within integerTol of the 
 		closest integer.  Since the Cauchy integral must be an integer it is only necessary to
 		distinguish which integer the integral is converging towards.  For this
 		reason the integerTol can be set fairly large.
+ 	divMin : int, optional
+ 		Minimum number of divisions before the Romberg integration routine is allowed 
+ 		to exit.  Only used if method='romb'.
 	divMax : int, optional
-		The maximum number of divisions before the Romberg integration
-		routine of a path exits.
+		The maximum number of divisions before the Romberg integration routine of a 
+		path exits.  Only used if method='romb'.
+    m : int, optional
+    	Only used if df=None.  If method='romb' then m defines the stencil size for the 
+    	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
+    	The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
+    	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
+    	the error term in the Taylor approximation used which must be even.  The argument
+    	order=m is passed to numdifftools.Derivative.
+	method : {'quad', 'romb'}, optional
+		If 'quad' then scipy.integrate.quad is used to perform the integral.  If 'romb'
+		then Romberg integraion, using scipy.integrate.romb, is performed instead.
 
 	Returns
 	-------
@@ -165,7 +220,7 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMax=
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
-		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMax=divMax, method=method, verbose=verbose)
+		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, divMax=divMax, m=m, method=method, verbose=verbose)
 
 	if np.isnan(I):
 		raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")

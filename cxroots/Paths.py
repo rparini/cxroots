@@ -12,16 +12,15 @@ class ComplexPath(object):
 	def __init__(self):
 		self._integralCache = {}
 		self._contArgCache = {}
-
 		self._trapValuesCache = {}
 
-	def trapValues(self, f, k):
+	def trapValues(self, f, k, useCache=True):
 		"""
 		2**k+1 is the number of required points for the function f to
 		be evaluated at.
 		"""
 
-		if f in self._trapValuesCache.keys():
+		if f in self._trapValuesCache.keys() and useCache:
 			vals = self._trapValuesCache[f]
 			vals_k = int(np.log2(len(vals)-1))
 			
@@ -43,7 +42,8 @@ class ComplexPath(object):
 		else:
 			t = np.linspace(0, 1, 2**k+1)
 			vals = f(self(t))
-			self._trapValuesCache[f] = vals
+			if useCache:
+				self._trapValuesCache[f] = vals
 			return vals
 
 

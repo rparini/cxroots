@@ -40,14 +40,14 @@ print(roots)
           2       | -2.000000000000 -0.000000000000i
           1       | -0.651114070264 -0.390425719088i
           1       | -0.651114070264 +0.390425719088i
-          3       |  0.000000000000 +0.000000000000i
+          3       | -0.000000000000 +0.000000000000i
           1       |  0.648578080954 -1.356622683988i
           1       |  0.648578080954 +1.356622683988i
           1       |  2.237557782467 +0.000000000000i
 
 
 ### Installation
-cxroots requires [Python](https://www.python.org/downloads/).  Python 2 and 3 are both compatible.
+cxroots requires [Python](https://www.python.org/downloads/).  Python 2 and 3 are both compatible with cxroots.
 
 The easiest way to install cxroots with the Python Package Index by entering on the command line:
 ```bash
