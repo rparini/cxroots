@@ -223,7 +223,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			# check to see if there are any other roots implied by the given symmetry
 			if guessRootSymmetry is not None:
 				for x0 in guessRootSymmetry(root):
-					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
+					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 					if root is not None:
 						addRoot(root)
 
@@ -310,7 +310,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				# XXX: if the approximate root is not in this box then desregard and redo the subdivision?
 
 				# attempt to refine the root
-				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
+				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 
 				# print('approx', approxRoot, 'refined root', root)
 
