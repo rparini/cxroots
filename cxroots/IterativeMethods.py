@@ -103,7 +103,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 	# mpmath insists on functions accepting mpc
 	f_mpmath = lambda z: mpmathify(f(complex(z)))
 
-	mull = Muller(mp, f_mpmath, (x1, x2, x3))
+	mull = Muller(mp, f_mpmath, (x1, x2, x3), verbose=False)
 	iteration = 0
 	x0 = x3
 
