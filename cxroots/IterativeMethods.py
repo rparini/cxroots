@@ -133,7 +133,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 
 			if attemptBest:
 				# record previous error for comparison
-				dx0, err0 = dx0, err
+				dx0, err0 = dx, err
 
 	except ZeroDivisionError:
 		# ZeroDivisionError comes up if the error is evaluated to be zero
