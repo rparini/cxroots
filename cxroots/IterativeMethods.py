@@ -114,7 +114,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 			err = abs(f_mpmath(x))
 
 			if verbose:
-				print('z', x, 'f(z)', err, 'dz', dx)
+				print('z', x, '|f(z)|', err, 'dz', dx)
 
 			if callback is not None and callback(x, dx, err, iteration+1):
 				break
