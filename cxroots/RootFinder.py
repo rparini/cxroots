@@ -223,9 +223,11 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			# check to see if there are any other roots implied by the given symmetry
 			if guessRootSymmetry is not None:
 				for x0 in guessRootSymmetry(root):
-					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
-					if root is not None:
-						addRoot(root)
+					# first check that x0 is distinct from the roots we already have
+					if np.all(abs(np.array(roots) - x0) > newtonStepTol):
+						root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
+						if root is not None:
+							addRoot(root)
 
 	# Add given roots 
 	for guess in guessRoots:
