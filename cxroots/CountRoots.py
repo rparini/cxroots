@@ -62,9 +62,10 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 	approx_df = False
 	if df is None:
 		approx_df = True
+		import numdifftools.fornberg as ndf
+		import numdifftools
 
 	if method == 'romb':
-		import numdifftools.fornberg as ndf
 		# XXX: Better way to characterise err than abs(I[-2] - I[-1])?
 		while (len(I) < divMin or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
 			N = 2*N
@@ -112,7 +113,6 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 
 	elif method == 'quad':
 		if approx_df:
-			import numdifftools
 			df = numdifftools.Derivative(f, order=m)
 			# df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
 			# df = CxDeriv(f) # too slow
