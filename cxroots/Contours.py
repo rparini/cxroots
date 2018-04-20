@@ -291,6 +291,173 @@ class Contour(object):
 			multiplicities = np.delete(multiplicities, zeroArgs)
 			roots = np.delete(roots, zeroArgs)
 
+		if not hasattr(self, '_numberOfRoots'):
+			self._numberOfRoots = self.count_roots(f, df, NAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
+		N = self._numberOfRoots
+
+		if N == 0:
+			return (), ()
+
+		vals = self.segments[0]._trapValuesCache[f]
+		self._numberOfDivisionsForN = int(np.log2(len(vals)-1))
+
+		def callback(I):
+			if len(I) > self._numberOfDivisionsForN:
+				print('--- Checking N using the newly sampled values of f ---')
+				new_N = self.count_roots(f, df, NAbsTol, integerTol, len(I), divMax, m, intMethod, verbose)
+				print('------------------------------------------------------')
+				if new_N != N:
+					print('N has been recalculated using more samples of f')
+					self._numberOfRoots = new_N
+
+					# update numberOfDivisionsForN
+					vals = self.segments[0]._trapValuesCache[f]
+					self._numberOfDivisionsForN = int(np.log2(len(vals)-1))
+
+					raise NumberOfRootsChanged
+
+		try:
+			mu = prod(self, f, df, lambda z: z, None, absTol, relTol, divMin, divMax, m, intMethod, verbose, callback)[0]/N
+			phiZeros = [[],[mu]]
+
+			def phiFunc(i):
+				if len(phiZeros[i]) == 0:
+					return lambda z: np.ones_like(z)
+				else:
+					coeff = np.poly(phiZeros[i])
+					return lambda z: np.polyval(coeff, z)
+			
+			# initialize G_{pq} = <phi_p, phi_q>
+			G = np.zeros((N,N), dtype=np.complex128)
+			G[0,0] = N # = <phi0, phi0> = <1,1>
+
+			# initialize G1_{pq} = <phi_p, phi_1 phi_q>
+			G1 = np.zeros((N,N), dtype=np.complex128)
+			phi1 = phiFunc(1)
+			ip, err = prod(self, f, df, phiFunc(0), lambda z: phi1(z)*phiFunc(0)(z), absTol, relTol, divMin, divMax, m, intMethod, verbose, callback)
+			G1[0,0] = ip
+
+			take_regular = True
+
+			r, t = 1, 0
+			while r+t<N:
+				# define the next FOP of degree r+t+1
+				k = r+t+1
+
+				# Add new values to G
+				p = r+t
+				G[p, 0:p+1] = [prod(self, f, df, phiFunc(p), phiFunc(q), absTol, relTol, divMin, divMax, m, intMethod, verbose, callback)[0] for q in range(r+t+1)]
+				G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
+
+				# Add new values to G1
+				G1[p, 0:p+1] = [prod(self, f, df, phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z), absTol, relTol, divMin, divMax, m, intMethod, verbose, callback)[0] for q in range(r+t+1)]
+				G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
+
+				if verbose:
+					print('G', G[:p+1,:p+1])
+					print('G1', G1[:p+1,:p+1])
+
+				# The regular FOP only exists if H is non-singular.
+				# An alternate citeration given by [KB] is to proceed as if it is regular and
+				# then compute its zeros.  If any are arbitary or infinite then this
+				# polynomial should instead be defined as an inner polynomial.
+				# Here, an inner polynomial is defined if any of the computed
+				# roots are outside of the interior of the contour.
+				polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu
+				if np.all([self.contains(z) for z in polyRoots]):
+					# define a regular polynomial
+					phiZeros.append(polyRoots)
+					r, t = r+t+1, 0
+
+					if verbose:
+						print('Regular poly', r+t, 'roots:', phiZeros[-1])
+
+					# if any of these elements are not small then continue
+					allSmall = True
+					phiFuncLast = phiFunc(-1)
+					for j in range(N-r):
+						ip, err = prod(self, f, df, lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast, absTol, relTol, divMin, divMax, m, intMethod, verbose, callback)
+
+						# if not small then carry on
+						if verbose:
+							print(j, 'of', N-r, 'stop?', abs(ip) + err)
+						### XXX: Use the 'maxpsum' estimate for precision loss in [KB]?
+						if abs(ip) + err > errStop:
+							allSmall = False
+							break
+
+					if allSmall:
+						# all the roots have been found
+						break
+
+				else:
+					t += 1
+
+					# define an inner polynomial phi_{r+t+1} = phi_{t+1} phi_{r}
+					phiZeros.append(np.append(phiZeros[t],phiZeros[r]))
+
+					if verbose:
+						print('Inner poly', r+t, 'roots:', phiZeros[-1])
+
+			roots = np.array(phiZeros[-1])
+
+			if verbose:
+				print('Roots:')
+				print(roots)
+
+			# remove any roots which are not distinct
+			removeList = []
+			for i, root in enumerate(roots):
+				if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < rootTol):
+					removeList.append(i)
+
+			roots = np.delete(roots, removeList)
+
+			if verbose:
+				print('Post-removed roots:')
+				print(roots)
+
+			n = len(roots) # number of distinct roots
+
+			# compute the multiplicities, eq. (1.19) in [KB]
+			V = np.column_stack([roots**i for i in range(n)])
+			from time import time
+			if verbose:
+				print('Computing ordinary moments')
+			s = [N] 	# = s0
+			s += [prod(self, f, df, lambda z: z**p, None, absTol, relTol, divMin, divMax, m, intMethod, verbose, callback)[0] for p in range(1, n)] 	# ordinary moments
+			multiplicities = np.dot(s, np.linalg.inv(V))
+
+			### The method used in the vandermonde module doesn't seem significantly
+			### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
+			### the result must be an integer anyway.
+			# import vandermonde
+			# multiplicities = vandermonde.solve_transpose(np.array(roots), np.array(s))
+
+			### Note that n = rank(H_N) is not used since calculating the
+			### rank of a matrix of floats appears to be quite unstable
+			# s_func = lambda p: prod(self, f, df, lambda z: z**p)[0]
+			# HN = np.fromfunction(np.vectorize(lambda p,q: s_func(p+q)), shape=(N,N))
+			# print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
+
+			if verbose:
+				print('Computed multiplicities:')
+				print(multiplicities)
+
+			# round multiplicities
+			rounded_multiplicities = np.round(multiplicities)
+			rounded_multiplicities = np.array([int(m.real) for m in rounded_multiplicities])
+			if np.all(np.abs(rounded_multiplicities - np.real(multiplicities)) < integerTol) and np.all(np.abs(np.imag(multiplicities)) < integerTol):
+				multiplicities = rounded_multiplicities
+			else:
+				# multiplicities are not sufficiently close to roots
+				raise MultiplicityError("Some multiplicities are not integers")
+
+			# remove any roots with multiplicity zero
+			zeroArgs = np.where(multiplicities == 0)
+			multiplicities = np.delete(multiplicities, zeroArgs)
+			roots = np.delete(roots, zeroArgs)
+
 			if verbose:
 				print('Computed roots:')
 				print(roots)
@@ -299,18 +466,9 @@ class Contour(object):
 
 			return tuple(roots), tuple(multiplicities)
 
-<<<<<<< Updated upstream
-		if verbose:
-			print('Final roots:')
-			print(roots)
-			print('Final multiplicities:')
-			print(multiplicities)
-=======
 		except NumberOfRootsChanged:
 			# The total number of roots changed so repeat the rootfinding approximation
 			return self.approximate_roots(f, df, absTol, relTol, NAbsTol, integerTol, errStop, divMin, divMax, m, rootTol, intMethod, verbose)
->>>>>>> Stashed changes
-
 
 	def roots(self, f, df=None, **kwargs):
 		return findRoots(self, f, df, **kwargs)
