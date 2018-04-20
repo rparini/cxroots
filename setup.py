@@ -49,6 +49,7 @@ setup(
     author_email = 'rp910@york.ac.uk',
     url = 'https://rparini.github.io/cxroots/',
     license = 'BSD',
+    data_files = [("", ["LICENSE"])],
     packages = packages,
     platforms = ['all'],
     install_requires = ['numpy', 'scipy', 'docrep', 'mpmath'],
