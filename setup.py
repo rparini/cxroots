@@ -49,9 +49,11 @@ setup(
     author_email = 'rp910@york.ac.uk',
     url = 'https://rparini.github.io/cxroots/',
     license = 'BSD',
+    data_files = [("", ["LICENSE"])],
     packages = packages,
     platforms = ['all'],
-    install_requires = ['numpy', 'scipy', 'docrep', 'mpmath'],
+    install_requires = ['numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
+    dependency_links=['git+git://github.com/pbrod/numdifftools@406a79877e0dd45aefe210b08e73cdd58ff4cb15#egg=numdifftools'],
     keywords='roots zeros complex analytic functions',
     classifiers=[
 	    'Development Status :: 4 - Beta',

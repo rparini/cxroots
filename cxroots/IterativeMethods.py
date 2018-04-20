@@ -1,8 +1,11 @@
 from __future__ import division
 import numpy as np
 
-def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False):
+def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, verbose=False):
 	# iterate to a root using initial point x0
+	if verbose:
+		print('Refining root:', x0)
+
 	if df is not None:
 		try:
 			# uses Newton-Raphson method if f and df are given.
@@ -42,7 +45,7 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20, atte
 		# Muller's method:
 		f_muller = lambda z: complex(f(z))
 		x1, x2, x3 = x0, x0*(1 + 1e-8) + 1e-8, x0*(1 - 1e-8) - 1e-8
-		root, err = muller(x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest)
+		root, err = muller(x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, verbose)
 
 	if err < roottol:
 		return root
@@ -78,7 +81,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 		abs(dx0) < steptol or abs(f(x0)) < roottol.  In this case the preivous
 		iteration is returned as the approximation of the root.
 	verbose : bool, optional
-		Passed to mpmath's Muller function.
+		Print x, dx and f(x) at each setp of the iteration.
 	callback : function, optional
 		After each iteration the supplied function 
 		callback(x, dx, f(x), iteration) will be called where 'x' is the current iteration 
@@ -100,7 +103,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 	# mpmath insists on functions accepting mpc
 	f_mpmath = lambda z: mpmathify(f(complex(z)))
 
-	mull = Muller(mp, f_mpmath, (x1, x2, x3), verbose=verbose)
+	mull = Muller(mp, f_mpmath, (x1, x2, x3), verbose=False)
 	iteration = 0
 	x0 = x3
 
@@ -109,6 +112,9 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 	try:
 		for x, dx in mull:
 			err = abs(f_mpmath(x))
+
+			if verbose:
+				print('z', x, '|f(z)|', err, 'dz', dx)
 
 			if callback is not None and callback(x, dx, err, iteration+1):
 				break
@@ -127,17 +133,20 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 
 			if attemptBest:
 				# record previous error for comparison
-				dx0, err0 = dx0, err
+				dx0, err0 = dx, err
 
 	except ZeroDivisionError:
 		# ZeroDivisionError comes up if the error is evaluated to be zero
 		pass
 
+	if verbose:
+		print('Final approximation: z=', complex(x), 'f(z)=', float(err))
+
 	# cast mpc and mpf back to regular complex and float
 	return complex(x), float(err)
 
 
-def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, callback=None):
+def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, verbose=False, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
 	scalar function f using Newton-Raphson iteration starting at 
@@ -166,6 +175,8 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 		abs(f(x)) >= abs(f(x0)) and the previous iteration satisfied either
 		abs(dx0) < steptol or abs(f(x0)) < roottol.  In this case the preivous
 		iteration is returned as the approximation of the root.
+	verbose : bool, optional
+		Print x, dx and f(x) at each setp of the iteration.
 	callback : function, optional
 		After each iteration the supplied function 
 		callback(x, dx, f(x), iteration) will be called where 'x' is the current iteration 
@@ -190,6 +201,9 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 		x += dx
 		y  = f(x)
 
+		if verbose:
+			print('z', x, 'f(z)', err, 'dz', dx)
+
 		if callback is not None and callback(x, dx, y, iteration+1):
 			break
 
@@ -202,6 +216,9 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 		if attemptBest:
 			# store previous dx and y
 			dx0, y0 = dx, y
+
+	if verbose:
+		print('Final approximation: z=', complex(x), 'f(z)=', float(err))
 
 	return x, abs(y)
 

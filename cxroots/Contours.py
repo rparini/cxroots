@@ -270,7 +270,7 @@ class Contour(object):
 		roots = np.delete(roots, zeroArgs)
 
 		if verbose:
-			print('Final roots:')
+			print('Computed roots:')
 			print(roots)
 			print('Final multiplicities:')
 			print(multiplicities)

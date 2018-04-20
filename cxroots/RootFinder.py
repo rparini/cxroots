@@ -223,9 +223,11 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			# check to see if there are any other roots implied by the given symmetry
 			if guessRootSymmetry is not None:
 				for x0 in guessRootSymmetry(root):
-					root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
-					if root is not None:
-						addRoot(root)
+					# first check that x0 is distinct from the roots we already have
+					if np.all(abs(np.array(roots) - x0) > newtonStepTol):
+						root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
+						if root is not None:
+							addRoot(root)
 
 	# Add given roots 
 	for guess in guessRoots:
@@ -245,8 +247,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	# yield so that the animation shows the first frame
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
 	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
-
-	# print('Tot number of Roots', totNumberOfRoots)
 
 	while boxes:
 		box, numberOfRoots = boxes.pop()
@@ -271,8 +271,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 			continue
 
-		# print(numberOfRoots, box)
-
 		# if box is smaller than the newtonStepTol then just assume that the root is
 		# at the center of the box, print a warning and move on
 		if box.area < newtonStepTol:
@@ -288,7 +286,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 		# if all the roots within the box have been located then coninue to the next box
 		numberOfKnownRootsInBox = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)])
-		# print('box', box, 'N', numberOfRoots, 'knownN', numberOfKnownRootsInBox)
 		
 		if numberOfRoots == numberOfKnownRootsInBox:
 			continue
@@ -310,7 +307,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				# XXX: if the approximate root is not in this box then desregard and redo the subdivision?
 
 				# attempt to refine the root
-				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
+				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 
 				# print('approx', approxRoot, 'refined root', root)
 
