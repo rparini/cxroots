@@ -7,7 +7,7 @@ import warnings
 
 from .CxDerivative import CxDeriv
 
-def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, m=2, method='quad', verbose=False):
+def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, m=2, method='quad', verbose=False, callback=None):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -108,6 +108,10 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 					print(k, 'I', I[-1], 'err', I[-2] - I[-1])
 				else:
 					print(k, 'I', I[-1])
+
+			if callback is not None:
+				if callback(I):
+					break
 
 		return I[-1], abs(I[-2] - I[-1])
 
