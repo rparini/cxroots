@@ -7,7 +7,7 @@ import warnings
 
 from .CxDerivative import CxDeriv
 
-def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, m=2, method='quad', verbose=False, callback=None):
+def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, m=2, method='quad', verbose=False, callback=None, integerTol=np.inf):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -67,7 +67,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 
 	if method == 'romb':
 		# XXX: Better way to characterise err than abs(I[-2] - I[-1])?
-		while (len(I) < divMin or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))) and k < divMax:
+		while (len(I) < divMin or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1])) or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol) and k < divMax:
 			N = 2*N
 			t = np.linspace(0,1,N+1)
 			k = int(np.log2(len(t)-1))
@@ -224,7 +224,7 @@ def count_enclosed_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
-		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, divMax=divMax, m=m, method=method, verbose=verbose)
+		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, divMax=divMax, m=m, method=method, verbose=verbose, integerTol=integerTol)
 
 	if np.isnan(I):
 		raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
