@@ -131,23 +131,27 @@ class Contour(object):
 		if N == 0:
 			return (), ()
 
-		vals = self.segments[0]._trapValuesCache[f]
-		self._numberOfDivisionsForN = int(np.log2(len(vals)-1))
+		if intMethod == 'romb':
+			# Check to see if the number of roots has changed after new values of f have been sampled
+			vals = self.segments[0]._trapValuesCache[f]
+			self._numberOfDivisionsForN = int(np.log2(len(vals)-1))
 
-		def callback(I):
-			if len(I) > self._numberOfDivisionsForN:
-				print('--- Checking N using the newly sampled values of f ---')
-				new_N = self.count_roots(f, df, NAbsTol, integerTol, len(I), divMax, m, intMethod, verbose)
-				print('------------------------------------------------------')
+			def callback(I):
+				if len(I) > self._numberOfDivisionsForN:
+					print('--- Checking N using the newly sampled values of f ---')
+					new_N = self.count_roots(f, df, NAbsTol, integerTol, len(I), divMax, m, intMethod, verbose)
+					print('------------------------------------------------------')
 
-				# update numberOfDivisionsForN
-				vals = self.segments[0]._trapValuesCache[f]
-				self._numberOfDivisionsForN = int(np.log2(len(vals)-1))
+					# update numberOfDivisionsForN
+					vals = self.segments[0]._trapValuesCache[f]
+					self._numberOfDivisionsForN = int(np.log2(len(vals)-1))
 
-				if new_N != N:
-					print('N has been recalculated using more samples of f')
-					self._numberOfRoots = new_N
-					raise NumberOfRootsChanged
+					if new_N != N:
+						print('N has been recalculated using more samples of f')
+						self._numberOfRoots = new_N
+						raise NumberOfRootsChanged
+		else:
+			callback = None
 
 		try:
 			mu = prod(self, f, df, lambda z: z, None, absTol, relTol, divMin, divMax, m, intMethod, verbose, callback)[0]/N
