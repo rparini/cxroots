@@ -752,6 +752,8 @@ class Rectangle(Contour):
 
 def divisionFactorGen():
 	"""A generator for divisionFactors"""
+	yield 1/3	# being off-center is a better first choice for certain problems
+	
 	x = 0.5
 	yield x
 	for power in [1e1, 1e2, 1e3]:
