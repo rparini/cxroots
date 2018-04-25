@@ -129,7 +129,7 @@ class Contour(object):
 		N = self._numberOfRoots
 
 		if verbose:
-			print(N + 'Roots in' + str(self))
+			print(N, 'Roots in', str(self))
 
 		if N == 0:
 			return (), ()
