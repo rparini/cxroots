@@ -128,6 +128,9 @@ class Contour(object):
 			self._numberOfRoots = self.count_roots(f, df, NAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
 		N = self._numberOfRoots
 
+		if verbose:
+			print(N + 'Roots in' + str(self))
+
 		if N == 0:
 			return (), ()
 
@@ -191,7 +194,7 @@ class Contour(object):
 				G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
 
 				if verbose:
-					print('G', G[:p+1,:p+1])
+					print('G ', G[:p+1,:p+1])
 					print('G1', G1[:p+1,:p+1])
 
 				# The regular FOP only exists if H is non-singular.
