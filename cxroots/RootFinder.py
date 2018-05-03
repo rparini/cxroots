@@ -18,6 +18,23 @@ from .Misc import doc_tab_to_space, docstrings
 class MultiplicityError(RuntimeError):
 	pass
 
+class countCalls:
+	"""
+	Count how many times a given function is called.
+	"""
+	def __init__(self, func):
+		self.func = func
+		self.calls = 0
+		self.points = 0
+
+	def __call__(self, z):
+		self.calls += 1
+		if hasattr(z, '__len__'):
+			self.points += len(z)
+		else:
+			self.points
+		return self.func(z)
+
 @docstrings.get_sectionsf('findRootsGen')
 @docstrings.dedent
 @doc_tab_to_space
@@ -105,13 +122,13 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		If the Romberg integration method is used then divMin is the
 		minimum number of divisions before the Romberg integration
 		routine of a path is allowed to exit.
-    m : int, optional
-    	Only used if df=None.  If method='romb' then m defines the stencil size for the 
-    	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
-    	The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
-    	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
-    	the error term in the Taylor approximation used which must be even.  The argument
-    	order=m is passed to numdifftools.Derivative.
+	m : int, optional
+		Only used if df=None.  If method='romb' then m defines the stencil size for the 
+		numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
+		The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
+		of the 2*m boundary points.  If instead method='quad' then m must is the order of 
+		the error term in the Taylor approximation used which must be even.  The argument
+		order=m is passed to numdifftools.Derivative.
 	verbose : bool, optional
 		If True certain messages concerning the rootfinding process
 		will be printed.
@@ -131,7 +148,10 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	----------
 	[KB] Peter Kravanja, Marc Van Barel, "Computing the Zeros of 
 	Anayltic Functions", Springer (2000)
-	"""
+	"""	
+	# wrap f to record the number of function calls
+	f = countCalls(f)
+
 	try:
 		# total number of zeros, including multiplicities
 		totNumberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
