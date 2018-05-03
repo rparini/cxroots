@@ -18,10 +18,10 @@ from cxroots.tests.ApproxEqual import roots_approx_equal
 
 class RootfindingTests(object):
 	def test_rootfinding_df(self):
-		roots_approx_equal(self.C.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, self.df, verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 	def test_rootfinding_f(self):
-		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 class TestRootfinding_141(unittest.TestCase, RootfindingTests):
 	def setUp(self):
@@ -122,10 +122,10 @@ class TestRootfinding_151(unittest.TestCase, RootfindingTests):
 		self.multiplicities = [1,1,1,1]
 
 	def test_rootfinding_b_df(self):
-		roots_approx_equal(self.C.roots(self.f, self.df, M=2), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, self.df, verbose=True, M=2), (self.roots, self.multiplicities), decimal=12)
 
 	def test_rootfinding_b_f(self):
-		roots_approx_equal(self.C.roots(self.f, M=2), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, verbose=True, M=2), (self.roots, self.multiplicities), decimal=12)
 
 class TestRootfinding_152(unittest.TestCase, RootfindingTests):
 	def setUp(self):
@@ -193,11 +193,11 @@ class TestConjugate(unittest.TestCase):
 		self.multiplicities = np.ones_like(self.roots)
 
 	def test_conjugate_realPoly_df(self):
-		roots = self.C.roots(self.f, self.df, guessRootSymmetry = self.symmetry)
+		roots = self.C.roots(self.f, self.df, verbose=True, guessRootSymmetry = self.symmetry)
 		roots_approx_equal(roots, (self.roots, self.multiplicities), decimal=12)
 
 	def test_conjugate_realPoly_f(self):
-		roots = self.C.roots(self.f, guessRootSymmetry = self.symmetry)
+		roots = self.C.roots(self.f, verbose=True, guessRootSymmetry = self.symmetry)
 		roots_approx_equal(roots, (self.roots, self.multiplicities), decimal=12)
 
 class TestIntroduction(unittest.TestCase, RootfindingTests):

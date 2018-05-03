@@ -15,12 +15,12 @@ class TestGuessRootSymmetry(unittest.TestCase):
 
 	def test_guessRootSymmetry_1(self):
 		symmetry = lambda z: [z.conjugate()]
-		roots_approx_equal(self.C.roots(self.f, guessRootSymmetry=symmetry), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, verbose=True, guessRootSymmetry=symmetry), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRootSymmetry_2(self):
 		# wrong symmetry
 		symmetry = lambda z: [z+1]
-		roots_approx_equal(self.C.roots(self.f, guessRootSymmetry=symmetry), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, verbose=True, guessRootSymmetry=symmetry), (self.roots, self.multiplicities), decimal=12)
 
 
 if __name__ == '__main__':

@@ -17,10 +17,10 @@ class TestCountRoots(unittest.TestCase):
 		self.df = lambda z: 50*z**49 + 12*z**11 + 60*sin(12*z)*sin(20*z) - 100*cos(12*z)*cos(20*z)
 
 	def test_countRoots_fdf(self):
-		self.assertEqual(self.C.count_roots(self.f, self.df), 424)
+		self.assertEqual(self.C.count_roots(self.f, self.df, verbose=True), 424)
 
 	def test_countRoots_f(self):
-		self.assertEqual(self.C.count_roots(self.f), 424)
+		self.assertEqual(self.C.count_roots(self.f, verbose=True), 424)
 
 if __name__ == '__main__':
 	unittest.main()

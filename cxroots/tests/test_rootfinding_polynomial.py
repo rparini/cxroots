@@ -17,22 +17,22 @@ class TestRootfindingPolynomial(unittest.TestCase):
 		self.halfAnnulus = AnnulusSector(0, [0.5,3], [-pi/2, pi/2])
 
 	def test_rootfinding_polynomial_circle_fdf(self):
-		roots_approx_equal(self.Circle.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=7)
+		roots_approx_equal(self.Circle.roots(self.f, self.df, verbose=True), (self.roots, self.multiplicities), decimal=7)
 
 	def test_rootfinding_polynomial_circle_f(self):
-		roots_approx_equal(self.Circle.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=7)
+		roots_approx_equal(self.Circle.roots(self.f, self.df, verbose=True), (self.roots, self.multiplicities), decimal=7)
 
 	def test_rootfinding_polynomial_rectangle_fdf(self):
-		roots_approx_equal(self.Rectangle.roots(self.f, self.df), (self.roots[:-1], self.multiplicities[:-1]), decimal=7)
+		roots_approx_equal(self.Rectangle.roots(self.f, self.df, verbose=True), (self.roots[:-1], self.multiplicities[:-1]), decimal=7)
 
 	def test_rootfinding_polynomial_rectangle_f(self):
-		roots_approx_equal(self.Rectangle.roots(self.f, self.df), (self.roots[:-1], self.multiplicities[:-1]), decimal=7)
+		roots_approx_equal(self.Rectangle.roots(self.f, self.df, verbose=True), (self.roots[:-1], self.multiplicities[:-1]), decimal=7)
 
 	def test_rootfinding_polynomial_halfAnnulus_fdf(self):
-		roots_approx_equal(self.halfAnnulus.roots(self.f, self.df), (self.roots[2:], self.multiplicities[2:]), decimal=7)
+		roots_approx_equal(self.halfAnnulus.roots(self.f, self.df, verbose=True), (self.roots[2:], self.multiplicities[2:]), decimal=7)
 
 	def test_rootfinding_polynomial_halfAnnulus_f(self):
-		roots_approx_equal(self.halfAnnulus.roots(self.f, self.df), (self.roots[2:], self.multiplicities[2:]), decimal=7)
+		roots_approx_equal(self.halfAnnulus.roots(self.f, self.df, verbose=True), (self.roots[2:], self.multiplicities[2:]), decimal=7)
 
 if __name__ == '__main__':
 	unittest.main(verbosity=3)

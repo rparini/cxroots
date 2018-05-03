@@ -18,23 +18,23 @@ class TestGuessRoots(unittest.TestCase):
 
 	def test_guessRoots_1(self):
 		# root and multiplicity given
-		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,2)]), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,2)], verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRoots_2(self):
 		# just root
-		roots_approx_equal(self.C.roots(self.f, guessRoots=[2.5]), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, guessRoots=[2.5], verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRoots_3(self):
 		# wrong roots
-		roots_approx_equal(self.C.roots(self.f, guessRoots=[3,1]), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, guessRoots=[3,1], verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRoots_4(self):
 		# wrong multiplicity
-		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,1)]), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,1)], verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRoots_5(self):
 		# wrong multiplicity
-		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,3)]), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,3)], verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 
 if __name__ == '__main__':
