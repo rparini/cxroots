@@ -225,6 +225,8 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				for x0 in guessRootSymmetry(root):
 					# first check that x0 is distinct from the roots we already have
 					if np.all(abs(np.array(roots) - x0) > newtonStepTol):
+						if verbose:
+							print(root, 'is a root so guessRootSymmetry suggests that', x0, 'might also be a root.')
 						root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 						if root is not None:
 							addRoot(root)
@@ -349,6 +351,9 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		segment._integralCache = {}
 		segment._contArgCache = {}
 		segment._trapValuesCache = {}
+
+	if verbose:
+		print('Completed rootfinding with', f.calls, 'evaluations of f at', f.points, 'points')
 
 	# yield one more time so that the animation shows the final frame
 	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots

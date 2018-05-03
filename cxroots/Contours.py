@@ -141,16 +141,19 @@ class Contour(object):
 
 			def callback(I):
 				if len(I) > self._numberOfDivisionsForN:
-					print('--- Checking N using the newly sampled values of f ---')
+					if verbose:
+						print('--- Checking N using the newly sampled values of f ---')
 					new_N = self.count_roots(f, df, NAbsTol, integerTol, len(I), divMax, m, intMethod, verbose)
-					print('------------------------------------------------------')
+					if verbose:
+						print('------------------------------------------------------')
 
 					# update numberOfDivisionsForN
 					vals = self.segments[0]._trapValuesCache[f]
 					self._numberOfDivisionsForN = int(np.log2(len(vals)-1))
 
 					if new_N != N:
-						print('N has been recalculated using more samples of f')
+						if verbose:			
+							print('N has been recalculated using more samples of f')
 						self._numberOfRoots = new_N
 						raise NumberOfRootsChanged
 		else:
