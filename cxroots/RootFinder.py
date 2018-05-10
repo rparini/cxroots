@@ -321,7 +321,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			try:
 				approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMin, divMax, m, newtonStepTol, intMethod, verbose)
 				numberOfRoots = box._numberOfRoots
-			except MultiplicityError:
+			except (MultiplicityError, NumberOfRootsChanged):
 				subdivide(box)
 				continue
 
