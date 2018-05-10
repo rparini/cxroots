@@ -7,3 +7,6 @@ def doc_tab_to_space(func):
 	"""
 	func.__doc__ = func.__doc__.replace('\t', '    ')
 	return func
+
+class NumberOfRootsChanged(Exception):
+    pass

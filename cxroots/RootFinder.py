@@ -12,8 +12,7 @@ from .IterativeMethods import iterateToRoot
 from .CountRoots import prod, RootError
 from .RootResult import RootResult
 from .CxDerivative import multiplicity_correct
-
-from .Misc import doc_tab_to_space, docstrings
+from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
 
 class MultiplicityError(RuntimeError):
 	pass

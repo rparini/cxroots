@@ -23,10 +23,7 @@ from .CountRoots import count_enclosed_roots, prod
 from .RootFinder import findRoots, MultiplicityError
 from .DemoRootFinder import demo_findRoots
 from .Paths import ComplexLine, ComplexArc
-from .Misc import doc_tab_to_space, docstrings
-
-class NumberOfRootsChanged(Exception):
-    pass
+from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
 
 class Contour(object):
 	def __init__(self, segments):
