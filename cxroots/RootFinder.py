@@ -234,7 +234,8 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 					# XXX: Not the best way to determine multiplicity if this root is clustered close to others
 					from .Contours import Circle
 					C = Circle(root, 1e-3)
-					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMin, divMax, m, newtonStepTol, intMethod, verbose)[1]
+					multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, 
+						divMin, divMax, m, newtonStepTol, intMethod, verbose, M)[1]
 
 				multiplicities.append(multiplicity.real)
 
@@ -316,7 +317,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			subdivide(box)
 
 		else:
-			# approximate the roots in this box
+			# Approximate the roots in this contour
 			try:
 				approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, divMin, divMax, m, newtonStepTol, intMethod, verbose)
 				numberOfRoots = box._numberOfRoots
@@ -329,8 +330,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 				# attempt to refine the root
 				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
-
-				# print('approx', approxRoot, 'refined root', root)
 
 				if abs(f(approxRoot)) < rootErrTol and (root is None or abs(f(approxRoot)) < abs(f(root))):
 					# stick with the original approximation
