@@ -308,6 +308,9 @@ class Contour(object):
 
 		except NumberOfRootsChanged:
 			# The total number of roots changed so repeat the rootfinding approximation
+			if M is not None and self._numberOfRoots > M:
+				# The number of roots in this contour is bigger than the allowed value
+				raise NumberOfRootsChanged
 			return self.approximate_roots(f, df, absTol, relTol, NAbsTol, integerTol, errStop, divMin, divMax, m, rootTol, intMethod, verbose)
 
 	def roots(self, f, df=None, **kwargs):
