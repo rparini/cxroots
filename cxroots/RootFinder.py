@@ -153,22 +153,21 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 	try:
 		# total number of zeros, including multiplicities
-		totNumberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
-		originalContour._numberOfRoots = totNumberOfRoots
+		originalContour._numberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
 	except RuntimeError:
 		raise RuntimeError("""
 			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
 			Try changing the initial contour, if possible.""")
 
 	if verbose:
-		print('Total number of roots (counting multiplicities) within original contour:', totNumberOfRoots)
+		print('Total number of roots (counting multiplicities) within original contour:', originalContour._numberOfRoots)
 
 	smallBoxWarning = False
 	roots = []
 	multiplicities = []
 	failedBoxes = []
 	boxes = deque()
-	boxes.append((originalContour,totNumberOfRoots))
+	boxes.append((originalContour,originalContour._numberOfRoots))
 
 	def subdivide(parentBox):
 		"""
@@ -267,7 +266,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 	# yield so that the animation shows the first frame
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
-	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
+	yield roots, multiplicities, boxes, originalContour._numberOfRoots - totFoundRoots
 
 	while boxes:
 		box, numberOfRoots = boxes.pop()
@@ -363,7 +362,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				subdivide(box)
 
 		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
-		yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
+		yield roots, multiplicities, boxes, originalContour._numberOfRoots - totFoundRoots
 
 	# delete cache for original contour incase this contour is being reused
 	for segment in originalContour.segments:
@@ -375,9 +374,9 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		print('Completed rootfinding with', f.calls, 'evaluations of f at', f.points, 'points')
 
 	# yield one more time so that the animation shows the final frame
-	yield roots, multiplicities, boxes, totNumberOfRoots - totFoundRoots
+	yield roots, multiplicities, boxes, originalContour._numberOfRoots - totFoundRoots
 
-	if totNumberOfRoots == 0:
+	if originalContour._numberOfRoots == 0:
 		yield [], [], deque(), 0
 
 @docstrings.dedent
