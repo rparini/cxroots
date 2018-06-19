@@ -5,6 +5,6 @@ docrep
 mpmath
 pytest-xdist
 
-### For numdifftools:
-# More recent commits are unable to install on Python 2.7
-git+git://github.com/pbrod/numdifftools@406a79877e0dd45aefe210b08e73cdd58ff4cb15#egg=numdifftools
+### numdifftools
+pip install git+https://github.com/pbrod/numdifftools
+
