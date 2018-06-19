@@ -6,5 +6,4 @@ mpmath
 pytest-xdist
 
 ### numdifftools
-pip install git+https://github.com/pbrod/numdifftools
-
+git+https://github.com/pbrod/numdifftools
