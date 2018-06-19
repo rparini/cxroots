@@ -30,7 +30,7 @@ setup(
     data_files = [("", ["LICENSE"])],
     packages = packages,
     platforms = ['all'],
-    dependency_links=['git+git://github.com/pbrod/numdifftools@406a79877e0dd45aefe210b08e73cdd58ff4cb15#egg=numdifftools'],
+    dependency_links=['git+git://github.com/pbrod/numdifftools'],
     install_requires = ['pytest-runner', 'numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
     tests_require=['pytest'],
     keywords='roots zeros complex analytic functions',
