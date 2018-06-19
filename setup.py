@@ -24,7 +24,7 @@ setup(
     description = 'Find all the roots (zeros) of a complex analytic function within a given contour in the complex plane.',
     long_description = long_description,
     author = 'Robert Parini',
-    author_email = 'rp910@york.ac.uk',
+    author_email = 'robert.parini@gmail.com',
     url = 'https://rparini.github.io/cxroots/',
     license = 'BSD',
     data_files = [("", ["LICENSE"])],
