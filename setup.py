@@ -18,28 +18,6 @@ try:
 except:
     long_description = None
 
-# create test commmand
-class TestCommand(Command):
-    # See: https://justin.abrah.ms/python/setuppy_distutils_testing.html by Justin Abrahms
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        import sys, subprocess
-
-        raise SystemExit(
-            subprocess.call([sys.executable,
-                             '-m',
-                             'unittest',
-                             'discover',
-                             '-v',
-                             'cxroots/tests']))
-
 setup(
     name = 'cxroots',
     version = __version__,
@@ -52,8 +30,9 @@ setup(
     data_files = [("", ["LICENSE"])],
     packages = packages,
     platforms = ['all'],
-    install_requires = ['numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
     dependency_links=['git+git://github.com/pbrod/numdifftools@406a79877e0dd45aefe210b08e73cdd58ff4cb15#egg=numdifftools'],
+    install_requires = ['pytest-runner', 'numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
+    tests_require=['pytest'],
     keywords='roots zeros complex analytic functions',
     classifiers=[
 	    'Development Status :: 4 - Beta',
@@ -63,7 +42,4 @@ setup(
 	    'Programming Language :: Python :: 2.7',
 	    'Programming Language :: Python :: 3',
 	],
-    cmdclass={
-        'test': TestCommand,
-    }
 )
