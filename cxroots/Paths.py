@@ -1,11 +1,8 @@
 from __future__ import division
-import random
 import warnings
 import numpy as np
 import scipy.integrate
-import scipy.linalg
-from scipy import pi, exp, sin, log
-import scipy
+from scipy import exp
 
 class ComplexPath(object):
 	""" A base class for paths in the complex plane """

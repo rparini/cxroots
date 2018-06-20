@@ -1,10 +1,5 @@
 from __future__ import division
 import numpy as np
-import cmath
-from scipy import pi, exp, sin
-import scipy
-from numpy.random import uniform
-import itertools
 from collections import deque
 import warnings
 

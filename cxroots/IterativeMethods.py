@@ -1,5 +1,5 @@
 from __future__ import division
-import numpy as np
+from numpy import inf
 
 def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, verbose=False):
 	# iterate to a root using initial point x0
@@ -108,7 +108,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 	x0 = x3
 
 	x, err = x0, abs(f(x0))
-	err0, dx0 = np.inf, np.inf
+	err0, dx0 = inf, inf
 	try:
 		for x, dx in mull:
 			err = abs(f_mpmath(x))
@@ -195,7 +195,7 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 	# XXX: Could use deflated polynomials to ensure that known roots are not found again?
 	
 	x, y = x0, f(x0)
-	dx0, y0 = np.inf, y
+	dx0, y0 = inf, y
 	for iteration in range(maxIter):
 		dx = -y/df(x)
 		x += dx
