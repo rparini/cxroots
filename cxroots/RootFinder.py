@@ -249,7 +249,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				roots.append(root)
 				if multiplicity is None:
 					# XXX: Not the best way to determine multiplicity if this root is clustered close to others
-					from .Contours import Circle
+					from .Contours.Circle import Circle
 					boundingRadius = 1e-3
 					while True:
 						try:
