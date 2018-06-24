@@ -236,7 +236,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		for relation in relations:
 			remove_relations(relation)
 
-	def addRoot(root, multiplicity=None, useGuessRootSymmetry=None):
+	def addRoot(root, multiplicity=None):
 		# check that the root we have found is distinct from the ones we already have
 		if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
 			# add the root to the list if it is within the original box
