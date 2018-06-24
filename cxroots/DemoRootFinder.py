@@ -37,12 +37,12 @@ def demo_findRoots(originalContour, f, df=None, automaticAnim=False, saveFile=No
 		plt.cla() # clear axis
 		originalContour.plot(linecolor='k', linestyle='--')
 		originalContour.sizePlot()
-		for box, numberOfEnclosedRoots in boxes:
+		for box in boxes:
 			if not hasattr(box, '_color'):
 				cmap = plt.get_cmap('jet')
 				box._color = cmap(np.random.random())
 			
-			plt.text(box.centralPoint.real, box.centralPoint.imag, numberOfEnclosedRoots)
+			plt.text(box.centralPoint.real, box.centralPoint.imag, box._numberOfRoots)
 			box.plot(linecolor=box._color)
 
 		plt.scatter(np.real(roots), np.imag(roots))
