@@ -185,9 +185,9 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				while parentBox._numberOfRoots != sum(numberOfRoots):
 					if verbose:
 						print('Number of roots in sub contours not adding up to parent contour.')
-						print('Recomputing number of roots in parent and sub contours with half NintAbsTol.')
+						print('Recomputing number of roots in parent and child contours with NintAbsTol = ', .5*NintAbsTol)
 
-					NintAbsTol = NintAbsTol/2.
+					NintAbsTol = .5*NintAbsTol
 					parentBox._numberOfRoots = parentBox.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
 					numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose) for box in np.array(subBoxes)]
 
