@@ -147,7 +147,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	f = countCalls(f)
 
 	try:
-		# total number of zeros, including multiplicities
+		# compute the total number of zeros, including multiplicities, within the originally given contour
 		originalContour._numberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
 	except RuntimeError:
 		raise RuntimeError("""
@@ -155,7 +155,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			Try changing the initial contour, if possible.""")
 
 	if verbose:
-		print('Total number of roots (counting multiplicities) within original contour:', originalContour._numberOfRoots)
+		print('Total number of roots (counting multiplicities) within the original contour =', originalContour._numberOfRoots)
 
 	smallBoxWarning = False
 	roots = []
