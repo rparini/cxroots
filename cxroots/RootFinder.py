@@ -156,86 +156,86 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	if verbose:
 		print('Total number of roots (counting multiplicities) within the original contour =', originalContour._numberOfRoots)
 
-	smallBoxWarning = False
+	smallContourWarning = False
 	roots = []
 	multiplicities = []
-	failedBoxes = []
-	boxes = deque()
-	boxes.append(originalContour)
+	failedContours = []
+	contours = deque()
+	contours.append(originalContour)
 
-	def subdivide(parentBox, NintAbsTol):
+	def subdivide(parentContour, NintAbsTol):
 		"""
-		Given a contour, parentBox, subdivide it into multiple contours.
+		Given a contour, parentContour, subdivide it into multiple contours.
 		"""
 		if verbose:
-			print('Subdividing', parentBox)
+			print('Subdividing', parentContour)
 
 		numberOfRoots = None
-		for subBoxes in parentBox.subdivisions():
-			# if a box has already been used and caused an error then skip it
-			failedBoxDesc = list(map(str, failedBoxes))
-			if np.any([boxDesc in failedBoxDesc for boxDesc in list(map(str, subBoxes))]):
+		for subcontours in parentContour.subdivisions():
+			# if a contour has already been used and caused an error then skip it
+			failedContourDesc = list(map(str, failedContours))
+			if np.any([contourDesc in failedContourDesc for contourDesc in list(map(str, subcontours))]):
 				continue
 
-			# if a box is near to a known root then skip it
+			# if a contour is near to a known root then skip it
 			for root in roots:
-				if np.any(np.abs([box.distance(root) for box in subBoxes]) < 0.01):
+				if np.any(np.abs([contour.distance(root) for contour in subcontours]) < 0.01):
 					continue
 
 			try:
-				numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose) for box in np.array(subBoxes)]
-				while parentBox._numberOfRoots != sum(numberOfRoots):
+				numberOfRoots = [contour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose) for contour in np.array(subcontours)]
+				while parentContour._numberOfRoots != sum(numberOfRoots):
 					if verbose:
 						print('Number of roots in sub contours not adding up to parent contour.')
 						print('Recomputing number of roots in parent and child contours with NintAbsTol = ', .5*NintAbsTol)
 
 					NintAbsTol = .5*NintAbsTol
-					parentBox._numberOfRoots = parentBox.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
-					numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose) for box in np.array(subBoxes)]
+					parentContour._numberOfRoots = parentContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
+					numberOfRoots = [contour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose) for contour in np.array(subcontours)]
 
-				if parentBox._numberOfRoots == sum(numberOfRoots):
+				if parentContour._numberOfRoots == sum(numberOfRoots):
 					break
 
 			except RootError:
 				# If the number of zeros within either of the new contours is not an integer then it is
-				# likely that the introduced line which subdivides 'parentBox' lies on a zero.
+				# likely that the introduced line which subdivides 'parentContour' lies on a zero.
 				# To avoid this we will try to place the subdividing line at a different point along 
 				# the division axis
 				if verbose:
-					print('RootError encountered when subdivding', parentBox, 'into:')
-					print(subBoxes[0])
-					print(subBoxes[1])
+					print('RootError encountered when subdivding', parentContour, 'into:')
+					print(subcontours[0])
+					print(subcontours[1])
 				continue
 
-		if numberOfRoots is None or parentBox._numberOfRoots != sum(numberOfRoots):
+		if numberOfRoots is None or parentContour._numberOfRoots != sum(numberOfRoots):
 			# The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up 
-			raise RuntimeError("""Unable to subdivide box:
+			raise RuntimeError("""Unable to subdivide contour:
 				\t%s
-				""" % parentBox)
+				""" % parentContour)
 
 		# record number of roots within each sub-contour
-		for i, box in enumerate(subBoxes):
-			box._numberOfRoots = numberOfRoots[i]
+		for i, contour in enumerate(subcontours):
+			contour._numberOfRoots = numberOfRoots[i]
 
 		# add these sub-contours to the list of contours to find the roots in
-		boxes.extend([box for i, box in enumerate(subBoxes) if numberOfRoots[i] != 0])
+		contours.extend([contour for i, contour in enumerate(subcontours) if numberOfRoots[i] != 0])
 
 
 	def remove_relations(C):
 		# remove itself
 		try:
-			boxes.remove(C)
+			contours.remove(C)
 		except ValueError:
 			pass
 
 		# get all direct relations
 		# siblings:
-		relations = C._parentBox._childBoxes 
+		relations = C._parentContour._childcontours 
 		relations.remove(C)
 
 		# children:
-		if hasattr(C, '_childBoxes'):
-			relations.extend(C._childBoxes)
+		if hasattr(C, '_childcontours'):
+			relations.extend(C._childcontours)
 
 		# interate over all relations
 		for relation in relations:
@@ -244,7 +244,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	def addRoot(root, multiplicity=None):
 		# check that the root we have found is distinct from the ones we already have
 		if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
-			# add the root to the list if it is within the original box
+			# add the root to the list if it is within the original contour
 			if originalContour.contains(root):
 				roots.append(root)
 				if multiplicity is None:
@@ -296,66 +296,66 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 	# yield so that the animation shows the first frame
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
-	yield roots, multiplicities, boxes, originalContour._numberOfRoots - totFoundRoots
+	yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
-	while boxes:
-		box = boxes.pop()
+	while contours:
+		contour = contours.pop()
 
 		if verbose:
-			print(box._numberOfRoots, 'roots in', box)
+			print(contour._numberOfRoots, 'roots in', contour)
 
-		# if a known root is too near this box then reverse the subdivision that created it 
-		if np.any([box.distance(root) < newtonStepTol for root in roots]):
-			# remove the box and any relations
-			remove_relations(box)
+		# if a known root is too near this contour then reverse the subdivision that created it 
+		if np.any([contour.distance(root) < newtonStepTol for root in roots]):
+			# remove the contour and any relations
+			remove_relations(contour)
 
-			# put the parent box back into the list of boxes to subdivide again
-			parent = box._parentBox
-			boxes.append(parent)
+			# put the parent contour back into the list of contours to subdivide again
+			parent = contour._parentContour
+			contours.append(parent)
 
 			# compute the root multiplicity directly
 			approxRootMultiplicity = None
 
-			# do not use this box again
-			failedBoxes.append(box)
+			# do not use this contour again
+			failedContours.append(contour)
 
 			continue
 
-		# if box is smaller than the newtonStepTol then just assume that the root is
-		# at the center of the box, print a warning and move on
-		if box.area < newtonStepTol:
-			smallBoxWarning = True
-			if smallBoxWarning is False:
+		# if contour is smaller than the newtonStepTol then just assume that the root is
+		# at the center of the contour, print a warning and move on
+		if contour.area < newtonStepTol:
+			smallContourWarning = True
+			if smallContourWarning is False:
 				warnings.warn('The area of the interior of a contour containing %i is smaller than newtonStepTol!  \
-					\nThe center of the box has been recored as a root of multiplicity %i but this could not be verified.  \
+					\nThe center of the contour has been recored as a root of multiplicity %i but this could not be verified.  \
 					\nThe same assumption will be made for future contours this small without an additional warning.  \
 					\nrootErrTol may be too small.'%(numberOfRoots, numberOfRoots))
-			root = box.centralPoint
+			root = contour.centralPoint
 			addRoot(root,  multiplicity=numberOfRoots)
 			continue
 
-		# if all the roots within the box have been located then coninue to the next box
-		numberOfKnownRootsInBox = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)])
+		# if all the roots within the contour have been located then coninue to the next contour
+		numberOfKnownRootsInContour = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if contour.contains(root)])
 		
-		if box._numberOfRoots == numberOfKnownRootsInBox:
+		if contour._numberOfRoots == numberOfKnownRootsInContour:
 			continue
 
 		# if there are too many roots within the contour then subdivide
 		# if there are any known roots within the contour then subdivide (so as not to waste resources re-approximating them)
-		if numberOfKnownRootsInBox > 0 or box._numberOfRoots > M:
-			subdivide(box, NintAbsTol)
+		if numberOfKnownRootsInContour > 0 or contour._numberOfRoots > M:
+			subdivide(contour, NintAbsTol)
 
 		else:
 			# Approximate the roots in this contour
 			try:
-				approxRoots, approxRootMultiplicities = box.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, 
+				approxRoots, approxRootMultiplicities = contour.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, 
 					errStop, divMin, divMax, m, newtonStepTol, intMethod, verbose, M)
 			except (MultiplicityError, NumberOfRootsChanged):
-				subdivide(box, NintAbsTol)
+				subdivide(contour, NintAbsTol)
 				continue
 
 			for approxRoot, approxRootMultiplicity in list(zip(approxRoots, approxRootMultiplicities)):
-				# XXX: if the approximate root is not in this box then desregard and redo the subdivision?
+				# XXX: if the approximate root is not in this contour then desregard and redo the subdivision?
 
 				# attempt to refine the root
 				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
@@ -367,30 +367,30 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				if root is not None:
 					# if the root is very close to the contour then disregard this contour and compute the root multiplicity directly
 					# XXX: implement a distance function returning the shortest distance from a point to any point on a contour
-					if box.distance(root) < newtonStepTol:
-						# remove the box and any relations
-						remove_relations(box)
+					if contour.distance(root) < newtonStepTol:
+						# remove the contour and any relations
+						remove_relations(contour)
 
-						# put the parent box back into the list of boxes to subdivide again
-						parent = box._parentBox
-						boxes.append(parent)
+						# put the parent contour back into the list of contours to subdivide again
+						parent = contour._parentContour
+						contours.append(parent)
 
 						# compute the root multiplicity directly
 						approxRootMultiplicity = None
 
-						# do not use this box again
-						failedBoxes.append(box)
+						# do not use this contour again
+						failedContours.append(contour)
 					
 					# if we found a root add it to the list of known roots
 					addRoot(root, approxRootMultiplicity)
 
 			# if we haven't found all the roots then subdivide further
-			numberOfKnownRootsInBox = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if box.contains(root)])
-			if box._numberOfRoots != numberOfKnownRootsInBox and box not in failedBoxes:
-				subdivide(box, NintAbsTol)
+			numberOfKnownRootsInContour = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if contour.contains(root)])
+			if contour._numberOfRoots != numberOfKnownRootsInContour and contour not in failedContours:
+				subdivide(contour, NintAbsTol)
 
 		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
-		yield roots, multiplicities, boxes, originalContour._numberOfRoots - totFoundRoots
+		yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
 	# delete cache for original contour incase this contour is being reused
 	for segment in originalContour.segments:
@@ -402,7 +402,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		print('Completed rootfinding with', f.calls, 'evaluations of f at', f.points, 'points')
 
 	# yield one more time so that the animation shows the final frame
-	yield roots, multiplicities, boxes, originalContour._numberOfRoots - totFoundRoots
+	yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
 	if originalContour._numberOfRoots == 0:
 		yield [], [], deque(), 0
@@ -424,7 +424,7 @@ def findRoots(originalContour, f, df=None, **kwargs):
 		A container for the roots and their multiplicities
 	"""
 	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
-	for roots, multiplicities, boxes, numberOfRemainingRoots in rootFinder:
+	for roots, multiplicities, contours, numberOfRemainingRoots in rootFinder:
 		pass
 	return RootResult(roots, multiplicities, originalContour)
 
