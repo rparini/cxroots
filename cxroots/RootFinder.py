@@ -177,7 +177,10 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			if np.any([boxDesc in failedBoxDesc for boxDesc in list(map(str, subBoxes))]):
 				continue
 
-			# XXX: if a root is near to a box then subdivide again?
+			# if a box is near to a known root then skip it
+			for root in roots:
+				if np.any(np.abs([box.distance(root) for box in subBoxes]) < 0.01):
+					continue
 
 			try:
 				numberOfRoots = [box.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose) for box in np.array(subBoxes)]
