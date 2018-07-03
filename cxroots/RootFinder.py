@@ -37,45 +37,44 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	absTol=0, relTol=1e-12, integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, 
 	intMethod='quad', divMax=15, divMin=5, m=2, verbose=False):
 	"""
-	A generator which at each step takes a contour and either finds 
-	all the zeros of f within it or subdivides it further.  Based
-	on the algorithm in [KB]
+	A generator which at each step takes a contour and either finds all 
+	the zeros of f within it or subdivides it further.  Based on the 
+	algorithm in [KB]
 
 	Parameters
 	----------
 	originalContour : Contour
-		The contour C which bounds the region in which all the 
-		roots of f(z) are sought.
+		The contour C which bounds the region in which all the roots of 
+		f(z) are sought.
 	f : function
-		A function of a single complex variable, z, which is 
-		analytic within C and has no poles or roots on C.
+		A function of a single complex variable, z, which is analytic 
+		within C and has no poles or roots on C.
 	df : function, optional
-		A function of a single complex variable which is the 
-		derivative of the function f(z). If df is not given 
-		then it will be approximated with a finite difference 
-		formula.
+		A function of a single complex variable which is the derivative 
+		of the function f(z). If df is not given then it will be 
+		approximated with a finite difference formula.
 	guessRoots : list, optional
-		A list of known roots or, if the multiplicity is known, 
-		a list of (root, multiplicity) tuples.
+		A list of known roots or, if the multiplicity is known, a list 
+		of (root, multiplicity) tuples.
 	guessRootSymmetry : function, optional
-		A function of a single complex variable, z, which 
-		returns a list of all points which are expected to be 
-		roots of f, given that z is a root of f.
+		A function of a single complex variable, z, which returns a list
+		of all points which are expected to be roots of f, given that z 
+		is a root of f.
 	newtonStepTol : float, optional
-		The required accuracy of the root.
-		The iterative method used to give a final value for each
-		root will exit if the step size, dx, between sucessive 
-		iterations satisfies abs(dx) < newtonStepTol and iterBestAttempt
-		is False.
+		The required accuracy of the root.  The iterative method used to
+		give a final value for each root will exit if the step size, dx,
+		between sucessive iterations satisfies abs(dx) < newtonStepTol 
+		and iterBestAttempt is False.
 	attemptIterBest : bool, optional
-		If True then the iterative method used to refine the roots will exit 
-		when error of the previous iteration, x0, was at least as good as the 
-		current iteration, x, in the sense that abs(f(x)) >= abs(f(x0)) and 
-		the previous iteration satisfied abs(dx0) < newtonStepTol.In this 
-		case the preivous iteration is returned as the approximation of the root.
+		If True then the iterative method used to refine the roots will 
+		exit when error of the previous iteration, x0, was at least as 
+		good as the current iteration, x, in the sense that 
+		abs(f(x)) >= abs(f(x0)) and the previous iteration satisfied 
+		abs(dx0) < newtonStepTol.  In this case the preivous iteration 
+		is returned as the approximation of the root.
 	newtonMaxIter : int, optional
-		The iterative method used to give a final value for each
-		root will exit if the number of iterations exceeds newtonMaxIter.
+		The iterative method used to give a final value for each root 
+		will exit if the number of iterations exceeds newtonMaxIter.
 	rootErrTol : float, optional
 		A complex value z is considered a root if abs(f(z)) < rootErrTol
 	absTol : float, optional
@@ -83,31 +82,28 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	relTol : float, optional
 		Relative error tolerance used by the contour integration.
 	integerTol : float, optional
-		A number is considered an integer if it is within 
-		integerTol of an integer.  Used when determing if the
-		value for the number of roots within a contour and the
-		values of the computed multiplicities of roots are
-		acceptably close to integers.
+		A number is considered an integer if it is within integerTol of 
+		an integer.  Used when determing if the value for the number of 
+		roots within a contour and the values of the computed 
+		multiplicities of roots are acceptably close to integers.
 	NintAbsTol : float, optional
-		The absolute error tolerance used for the contour 
-		integration when determining the number of roots 
-		within a contour.  Since the result of this integration
-		must be an integer it can be much less accurate
-		than usual.
+		The absolute error tolerance used for the contour integration 
+		when determining the number of roots within a contour.  Since 
+		the result of this integration must be an integer it can be much
+		less accurate than usual.
 	M : int, optional
-		If the number of roots (including multiplicites) within a
+		If the number of roots (including multiplicites) within a 
 		contour is greater than M then the contour is subdivided
 		further.  M must be greater than or equal to the largest 
 		multiplcity of any root.  
 	errStop : float, optional
-		The number of distinct roots within a contour, n, is 
-		determined by checking if all the elements of a list of 
-		contour integrals involving formal orthogonal polynomials 
-		are sufficently close to zero, ie. that the absolute 
-		value of each element is < errStop.
+		The number of distinct roots within a contour, n, is determined 
+		by checking if all the elements of a list of contour integrals 
+		involving formal orthogonal polynomials are sufficently close to
+		zero, ie. that the absolute value of each element is < errStop.
 	intMethod : str, optional
-		Either 'quad' to integrate using scipy.integrate.quad or
-		'romb' to integrate using Romberg's method.
+		Either 'quad' to integrate using scipy.integrate.quad or 'romb' 
+		to integrate using Romberg's method.
 	divMax : int, optional
 		If the Romberg integration method is used then divMax is the
 		maximum number of divisions before the Romberg integration
@@ -117,15 +113,17 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		minimum number of divisions before the Romberg integration
 		routine of a path is allowed to exit.
 	m : int, optional
-		Only used if df=None.  If method='romb' then m defines the stencil size for the 
-		numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
-		The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
-		of the 2*m boundary points.  If instead method='quad' then m must is the order of 
-		the error term in the Taylor approximation used which must be even.  The argument
-		order=m is passed to numdifftools.Derivative.
+		Only used if df=None.  If method='romb' then m defines the 
+		stencil size for the numerical differentiation of f, passed to 
+		numdifftools.fornberg.fd_derivative.  The stencil size is of 
+		2*m+1 points in the interior, and 2*m+2 points for each of the 
+		2*m boundary points.  If instead method='quad' then m must is 
+		the order of the error term in the Taylor approximation used 
+		which must be even.  The argument order=m is passed to 
+		numdifftools.Derivative.
 	verbose : bool, optional
-		If True certain messages concerning the rootfinding process
-		will be printed.
+		If True certain messages concerning the rootfinding process will
+		be printed.
 
 	Yields
 	------
@@ -151,7 +149,8 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		originalContour._numberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
 	except RuntimeError:
 		raise RuntimeError("""
-			Integration along the initial contour has failed.  There is likely a root on or close to the initial contour
+			Integration along the initial contour has failed.  
+			There is likely a root on or close to the initial contour.
 			Try changing the initial contour, if possible.""")
 
 	if verbose:
