@@ -408,7 +408,8 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 @doc_tab_to_space
 def findRoots(originalContour, f, df=None, **kwargs):
 	"""
-	Find all the roots of the complex analytic function f within the given contour.
+	Find all the roots of the complex analytic function f within the 
+	given contour.
 
 	Parameters
 	----------
