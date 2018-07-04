@@ -17,25 +17,20 @@ class TestGuessRoots(unittest.TestCase):
 		self.multiplicities = [2,1,1,1]
 
 	def test_guessRoots_1(self):
-		# root and multiplicity given
+		# A root and multiplicity is given as a guess
 		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,2)], verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRoots_2(self):
-		# just root
+		# Only a root is given as a guess
 		roots_approx_equal(self.C.roots(self.f, guessRoots=[2.5], verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRoots_3(self):
-		# wrong roots
+		# An incorrect root is given as a guess
 		roots_approx_equal(self.C.roots(self.f, guessRoots=[3,1], verbose=True), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRoots_4(self):
-		# wrong multiplicity
+		# A correct root but with the wrong multiplicity is given as a guess
 		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,1)], verbose=True), (self.roots, self.multiplicities), decimal=12)
-
-	def test_guessRoots_5(self):
-		# wrong multiplicity
-		roots_approx_equal(self.C.roots(self.f, guessRoots=[(2.5,3)], verbose=True), (self.roots, self.multiplicities), decimal=12)
-
 
 if __name__ == '__main__':
 	unittest.main()
