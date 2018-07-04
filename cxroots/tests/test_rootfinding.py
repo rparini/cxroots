@@ -23,6 +23,16 @@ class RootfindingTests(object):
 	def test_rootfinding_f(self):
 		roots_approx_equal(self.C.roots(self.f, verbose=True), (self.roots, self.multiplicities), decimal=12)
 
+
+class TestRootfinding_poly(unittest.TestCase, RootfindingTests):
+	def setup(self):
+		self.C = Rectangle([-2,2],[-2,2])
+		self.f = lambda z: z**3 * (z-1.2)**2
+		self.df = lambda z: 3*(z)**2 * (z-1.2)**2 + 2*z**3 * (z-1.2)
+
+		self.roots = [0, 1.2]
+		self.multiplicities = [3,2]
+
 class TestRootfinding_141(unittest.TestCase, RootfindingTests):
 	def setUp(self):
 		# Ex 1.4.1 from [KB]
