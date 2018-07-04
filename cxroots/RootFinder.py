@@ -248,23 +248,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			if originalContour.contains(root):
 				roots.append(root)
 				if multiplicity is None:
-					# XXX: Not the best way to determine multiplicity if this root is clustered close to others
-					from .Contours.Circle import Circle
-					boundingRadius = 1e-3
-					while True:
-						try:
-							C = Circle(root, boundingRadius)
-							C._numberOfRoots = C.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
-							if C._numberOfRoots > 1:
-								# Want to isolate root to ensure multiplcitity is accurate
-								boundingRadius = 0.1*boundingRadius
-
-							multiplicity, = C.approximate_roots(f, df, absTol, relTol, NintAbsTol, integerTol, errStop, 
-																divMin, divMax, m, newtonStepTol, intMethod, verbose, M)[1]
-							break
-
-						except (MultiplicityError, NumberOfRootsChanged):
-							boundingRadius = 0.1*boundingRadius					
+					multiplicity = get_multiplicity(f, root, contour, df, rootErrTol)
 
 				multiplicities.append(multiplicity.real)
 
