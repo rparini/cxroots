@@ -16,7 +16,7 @@ class TestGuessRootSymmetry(unittest.TestCase):
 		roots_approx_equal(self.C.roots(self.f, verbose=True, guessRootSymmetry=symmetry), (self.roots, self.multiplicities), decimal=12)
 
 	def test_guessRootSymmetry_2(self):
-		# wrong symmetry
+		# Provide incorrect symmetry
 		symmetry = lambda z: [z+1]
 		roots_approx_equal(self.C.roots(self.f, verbose=True, guessRootSymmetry=symmetry), (self.roots, self.multiplicities), decimal=12)
 
