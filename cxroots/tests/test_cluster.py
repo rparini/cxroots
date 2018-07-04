@@ -6,9 +6,6 @@ from cxroots import Circle, Rectangle
 from cxroots.tests.ApproxEqual import roots_approx_equal
 
 class ClusterTest(object):
-	def test_rootfinding_df_smallStop(self):
-		roots_approx_equal(self.C.roots(self.f, self.df, verbose=True, errStop=0), (self.roots, self.multiplicities), decimal=12)
-
 	def test_rootfinding_df(self):
 		roots_approx_equal(self.C.roots(self.f, self.df, verbose=True), (self.roots, self.multiplicities), decimal=12)
 
