@@ -6,7 +6,7 @@ import warnings
 from .IterativeMethods import iterateToRoot
 from .CountRoots import prod, RootError
 from .RootResult import RootResult
-from .CxDerivative import multiplicity_correct
+from .Derivative import get_multiplicity
 from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
 
 class MultiplicityError(RuntimeError):
@@ -279,20 +279,18 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 						if root is not None:
 							addRoot(root)
 
-	# Add given roots 
+	# Add given roots and multiplicies
 	for guess in guessRoots:
 		if hasattr(guess, '__iter__'):
 			root, multiplicity = guess
-			if not multiplicity_correct(f, df, root, multiplicity):
-				continue
-
 		else:
 			root, multiplicity = guess, None
 
-		# XXX: refine root with Newton-Raphson?
-		
 		if abs(f(root)) < rootErrTol:
-			addRoot(root, multiplicity)
+			if multiplicity is not None and get_multiplicity(f, root, originalContour, df, rootErrTol) == multiplicity:
+				addRoot(root, multiplicity)
+			else:
+				addRoot(root)
 
 	# yield so that the animation shows the first frame
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))

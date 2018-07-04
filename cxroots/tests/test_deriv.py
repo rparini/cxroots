@@ -3,7 +3,7 @@ import numpy as np
 from scipy import cos, sin
 
 from cxroots import Circle, Rectangle
-from cxroots import CxDeriv
+from cxroots import CxDerivative
 
 class TestDerivative1(unittest.TestCase):
 	def setUp(self):
@@ -14,21 +14,21 @@ class TestDerivative1(unittest.TestCase):
 		C = Circle(0, 2)
 		z = np.array([-1.234, 0.3+1j, 0.1j, -0.9-0.5j])
 
-		df_approx = CxDeriv(self.f, C)
-		np.testing.assert_almost_equal(df_approx(z, 1), self.df(z), decimal=1e-12)
+		df_approx = CxDerivative(self.f, n=1, contour=C)
+		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
 
 	def test_rect(self):
 		C = Rectangle([-1.5,1.5],[-2,2])
 		z = np.array([-1.234, 0.3+1j, 0.1j, -0.9-0.5j])
 
-		df_approx = CxDeriv(self.f, C)
-		np.testing.assert_almost_equal(df_approx(z, 1), self.df(z), decimal=1e-12)
+		df_approx = CxDerivative(self.f, n=1, contour=C)
+		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
 
-	def test_smallCircle(self):
+	def test_defaultCircle(self):
 		z = 0.3+1j
 
-		df_approx = CxDeriv(self.f)
-		np.testing.assert_almost_equal(df_approx(z, 1), self.df(z), decimal=1e-12)
+		df_approx = CxDerivative(self.f, n=1)
+		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
 
 if __name__ == '__main__':
 	unittest.main()
