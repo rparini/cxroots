@@ -9,4 +9,4 @@ install:
   - python setup.py install
 
 script:
-  - travis_wait 30 pytest -v -n 2 --durations=0
+  - travis_wait 40 pytest -v -n 2 --durations=0
