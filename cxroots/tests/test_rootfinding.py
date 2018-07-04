@@ -25,6 +25,8 @@ class RootfindingTests(object):
 
 
 class TestRootfinding_poly(unittest.TestCase, RootfindingTests):
+
+class TestRootfinding_poly1(unittest.TestCase, RootfindingTests):
 	def setup(self):
 		self.C = Rectangle([-2,2],[-2,2])
 		self.f = lambda z: z**3 * (z-1.2)**2
@@ -32,6 +34,15 @@ class TestRootfinding_poly(unittest.TestCase, RootfindingTests):
 
 		self.roots = [0, 1.2]
 		self.multiplicities = [3,2]
+
+class TestRootfinding_poly2(unittest.TestCase, RootfindingTests):
+	def setUp(self):
+		self.C = Annulus(0, [0.5, 2.5])
+		self.f = lambda z: (z-2)**2*(z-1)**5 
+		self.df = lambda z: 2*(z-2)*(z-1)**5 + 5*(z-2)**2*(z-1)**4
+
+		self.roots = [1, 2]
+		self.multiplicities = [5,2]
 
 class TestRootfinding_141(unittest.TestCase, RootfindingTests):
 	def setUp(self):
