@@ -1,5 +1,4 @@
 import unittest
-from numpy import exp, sin, cos
 
 from cxroots import Circle
 from cxroots.tests.ApproxEqual import roots_approx_equal
