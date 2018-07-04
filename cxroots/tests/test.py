@@ -16,31 +16,6 @@ from numpy import sin, cos, exp, pi, cosh, sinh, sqrt
 
 np.set_printoptions(linewidth=1e20)
 
-def rootfinding_AnnularCombustionChamber():
-	# problem in section 4.2 of [DSZ]
-	from cxroots import Rectangle, findRoots
-
-	A = -0.19435
-	B = 1000.41
-	C = 522463
-	T = 0.005
-
-	f = lambda z: z**2 + A*z + B*exp(-T*z) + C
-	df = lambda z: 2*z + A - B*T*exp(-T*z)
-
-	rectangle = Rectangle([-15000,5000], [-15000,15000])
-	# roots_fdf = rectangle.roots(f, df, integrandUpperBound=np.inf, rootErrTol=1e-8)
-	# roots_fdf = rectangle.demo_findRoots(f, df, automaticAnimation=True, integrandUpperBound=np.inf, rootErrTol=1e-8)
-	roots_fdf = rectangle.demo_roots(f, df, automaticAnimation=True)
-	# roots_f   = rectangle.roots(f)
-	# roots_f = rectangle.demo_findRoots(f, automaticAnimation=True, integrandUpperBound=np.inf, rootErrTol=1e-8, M=1)
-
-	# compare with fig 3 of [DSZ]
-	import matplotlib.pyplot as plt
-	# plt.scatter(np.real(roots_fdf), np.imag(roots_fdf), marker='+')
-	plt.scatter(np.real(roots_f), np.imag(roots_f), marker='x')
-	plt.show()
-
 def rootfinding_RingOscillator():
 	# XXX: Not working, function values too close to zero everywhere?
 	# problem in section 4.3 of [DSZ]
