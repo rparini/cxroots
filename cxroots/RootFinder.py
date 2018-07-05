@@ -308,12 +308,12 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		if contour.area < newtonStepTol:
 			smallContourWarning = True
 			if smallContourWarning is False:
-				warnings.warn('The area of the interior of a contour containing %i is smaller than newtonStepTol!  \
-					\nThe center of the contour has been recored as a root of multiplicity %i but this could not be verified.  \
-					\nThe same assumption will be made for future contours this small without an additional warning.  \
-					\nrootErrTol may be too small.'%(numberOfRoots, numberOfRoots))
+				warnings.warn("""The area of the interior of a contour containing %i is smaller than newtonStepTol!
+					The center of the contour has been recored as a root of multiplicity %i but this could not be verified.
+					The same assumption will be made for future contours this small without an additional warning.
+					rootErrTol may be too small."""%(contour._numberOfRoots, contour._numberOfRoots))
 			root = contour.centralPoint
-			addRoot(root,  multiplicity=numberOfRoots)
+			addRoot(root,  multiplicity=contour._numberOfRoots)
 			continue
 
 		# if all the roots within the contour have been located then coninue to the next contour
