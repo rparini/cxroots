@@ -29,12 +29,12 @@ class MultiplicityTests(object):
 	def test_multiplicity_f(self):
 		# Check that if only the root is given then the multiplcity could be computed
 		for i, root in enumerate(self.roots):
-			assert get_multiplicity(self.f, root, contour=self.C, df=None, rootErrTol=1e-12) == self.multiplicities[i]
+			assert get_multiplicity(self.f, root, contour=self.C, df=None, verbose=True) == self.multiplicities[i]
 
 	def test_multiplicity_df(self):
 		# Check that if only the root is given then the multiplcity could be computed
 		for i, root in enumerate(self.roots):
-			assert get_multiplicity(self.f, root, contour=self.C, df=self.df, rootErrTol=1e-12) == self.multiplicities[i]
+			assert get_multiplicity(self.f, root, contour=self.C, df=self.df, verbose=True) == self.multiplicities[i]
 
 
 class TestRootfinding_poly1(unittest.TestCase, RootfindingTests, MultiplicityTests):
