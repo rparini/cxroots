@@ -36,10 +36,10 @@ class TestRootfindingContours(unittest.TestCase):
 		roots_approx_equal(self.halfAnnulus.roots(self.f, self.df, verbose=True), (self.roots[2:], self.multiplicities[2:]), decimal=7)
 
 	def test_rootfinding_Annulus_fdf(self):
-		roots_approx_equal(self.Annulus.roots(self.f, self.df, verbose=True), (self.roots[2:], self.multiplicities[2:]), decimal=7)
+		roots_approx_equal(self.Annulus.roots(self.f, self.df, verbose=True), (self.roots[1:-1], self.multiplicities[1:-1]), decimal=7)
 
 	def test_rootfinding_Annulus_f(self):
-		roots_approx_equal(self.Annulus.roots(self.f, self.df, verbose=True), (self.roots[2:], self.multiplicities[2:]), decimal=7)
+		roots_approx_equal(self.Annulus.roots(self.f, self.df, verbose=True), (self.roots[1:-1], self.multiplicities[1:-1]), decimal=7)
 
 if __name__ == '__main__':
 	unittest.main(verbosity=3)
