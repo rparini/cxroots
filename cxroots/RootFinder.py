@@ -249,7 +249,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			if originalContour.contains(root):
 				roots.append(root)
 				if multiplicity is None:
-					multiplicity = get_multiplicity(f, root, contour, df, rootErrTol)
+					multiplicity = get_multiplicity(f, root, df=df, rootErrTol=rootErrTol)
 
 				multiplicities.append(multiplicity.real)
 
@@ -272,7 +272,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			root, multiplicity = guess, None
 
 		if abs(f(root)) < rootErrTol:
-			if multiplicity is not None and get_multiplicity(f, root, originalContour, df, rootErrTol) == multiplicity:
+			if multiplicity is not None and get_multiplicity(f, root, df=df, rootErrTol=rootErrTol) == multiplicity:
 				addRoot(root, multiplicity)
 			else:
 				addRoot(root)
