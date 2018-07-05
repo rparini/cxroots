@@ -30,5 +30,22 @@ class TestDerivative1(unittest.TestCase):
 		df_approx = CxDerivative(self.f, n=1)
 		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
 
+class TestDerivativeCluster(unittest.TestCase):
+	# What if there are roots on the default integration contour?
+	def setUp(self):
+		self.f  = lambda z: z*(z-1e-3)*(z-1e-3j)
+		self.df = lambda z: (z-1e-3)*(z-1e-3j) + z*(z-1e-3j) + z*(z-1e-3)
+
+	def test_derivative_cluster1(self):
+		z = 0
+		df_approx = CxDerivative(self.f, n=1)
+		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
+
+	def test_derivative_cluster2(self):
+		z = 1e-3j
+		df_approx = CxDerivative(self.f, n=1)
+		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
+
+
 if __name__ == '__main__':
 	unittest.main()
