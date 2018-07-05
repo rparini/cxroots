@@ -88,7 +88,7 @@ class ComplexPath(object):
 		self.plot(*args, **kwargs)
 		plt.show()
 
-	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', show=False):
+	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', verbose=False):
 		"""
 		Integrate the function f along the path using SciPy's Romberg
 		algorithm.  The value of the integral is cached and will be
@@ -124,7 +124,7 @@ class ComplexPath(object):
 				integrand = lambda t: f(self(t))*self.dzdt(t)
 
 				if method == 'romb':
-					integral = scipy.integrate.romberg(integrand, 0, 1, tol=absTol, rtol=relTol, divmax=rombergDivMax, show=show)
+					integral = scipy.integrate.romberg(integrand, 0, 1, tol=absTol, rtol=relTol, divmax=rombergDivMax, show=verbose)
 				elif method == 'quad':
 					integrand_real = lambda t: np.real(integrand(t))
 					integrand_imag = lambda t: np.imag(integrand(t))

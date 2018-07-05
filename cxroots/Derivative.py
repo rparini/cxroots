@@ -13,13 +13,13 @@ def CxDerivative(f, n=1, contour=None):
 	else:
 		C = lambda z0: contour
 
-	def df(z0, absIntegrationTol=1e-10):
+	def df(z0, absIntegrationTol=1e-10, verbose=False):
 		integrand = lambda z: f(z)/(z-z0)**(n+1)
-		return C(z0).integrate(integrand, absTol=absIntegrationTol) * math.factorial(n)/(2j*pi)
+		return C(z0).integrate(integrand, absTol=absIntegrationTol, verbose=verbose) * math.factorial(n)/(2j*pi)
 
 	return np.vectorize(df)
 
-def get_multiplicity(f, root, contour=None, df=None, rootErrTol=1e-10):
+def get_multiplicity(f, root, contour=None, df=None, rootErrTol=1e-10, verbose=False):
 	"""
 	Find the multiplicity of a given root of f.
 	
@@ -51,13 +51,20 @@ def get_multiplicity(f, root, contour=None, df=None, rootErrTol=1e-10):
 	n = 1
 	while True:
 		if df is not None:
-			if n==1 and abs(df(root)) > rootErrTol:
-				break
-			elif abs(CxDerivative(df,n-1,contour)(root, rootErrTol)) > rootErrTol:
-				break
+			if n==1:
+				err = abs(df(root))
+			else:
+				err = abs(CxDerivative(df,n-1,contour)(root, rootErrTol, verbose))
+		else:
+			err = abs(CxDerivative(f,n,contour)(root, rootErrTol, verbose))
 
-		if abs(CxDerivative(f,n,contour)(root, rootErrTol)) > rootErrTol:
+		if verbose:
+			print('n', n, '|df^(n)|', err)
+
+		if err > rootErrTol:
 			break
+
+		n += 1
 
 	return n
 
