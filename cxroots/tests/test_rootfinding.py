@@ -87,9 +87,9 @@ class TestRootfinding_142b(unittest.TestCase, RootfindingTests):
 		self.df = lambda z: 3*exp(3*z) + 2*cos(z) - 2*z*sin(z)
 
 		self.roots = [0,
-				 -1.844233953262213, 
-				 0.5308949302929305 + 1.33179187675112098j,
-				 0.5308949302929305 - 1.33179187675112098j]
+					  -1.844233953262213, 
+					  0.5308949302929305 + 1.33179187675112098j,
+					  0.5308949302929305 - 1.33179187675112098j]
 		self.multiplicities = [1,1,1,1]
 
 class TestRootfinding_143(unittest.TestCase, RootfindingTests):
@@ -100,10 +100,10 @@ class TestRootfinding_143(unittest.TestCase, RootfindingTests):
 		self.df = lambda z: 2*z*(3*z**4-25*z**3+70*z**2-75*z+24)+sin(z)+z*cos(z)
 
 		self.roots = [0,
-				 1.18906588973011365517521756, 
-				 1.72843498616506284043592924,
-				 3.01990732809571222812005354,
-				 4.03038191606046844562845941]
+				 	  1.18906588973011365517521756, 
+				 	  1.72843498616506284043592924,
+				 	  3.01990732809571222812005354,
+				 	  4.03038191606046844562845941]
 		self.multiplicities = [2,1,1,1,1]
 
 class TestRootfinding_144(unittest.TestCase, RootfindingTests):
