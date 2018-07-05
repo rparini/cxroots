@@ -48,6 +48,7 @@ class TestCluster_2_circle(unittest.TestCase, ClusterTest):
 		self.f = lambda z: np.prod([z-r for r in roots])
 		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
 
+@pytest.mark.slow
 class TestCluster_3_rect(unittest.TestCase, ClusterTest):
 	def setUp(self):
 		self.roots = roots = [3, 3.0001, 3.0002, 8, 8.0002, 8+0.0001j]
@@ -57,6 +58,7 @@ class TestCluster_3_rect(unittest.TestCase, ClusterTest):
 		self.f = lambda z: np.prod([z-r for r in roots])
 		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
 
+@pytest.mark.slow
 class TestCluster_3_circle(unittest.TestCase, ClusterTest):
 	def setUp(self):
 		self.roots = roots = [3, 3.0001, 3.0002, 8, 8.0002, 8+0.0001j]
