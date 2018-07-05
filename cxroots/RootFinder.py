@@ -162,6 +162,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	failedContours = []
 	contours = deque()
 	contours.append(originalContour)
+	contour = originalContour
 
 	def subdivide(parentContour, NintAbsTol):
 		"""
