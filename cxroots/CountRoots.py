@@ -5,7 +5,8 @@ import scipy.integrate
 import scipy.misc
 import warnings
 
-def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, divMax=10, m=2, method='quad', verbose=False, callback=None, integerTol=inf):
+def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, 
+	divMax=10, m=2, method='quad', integerTol=inf, verbose=False, callback=None):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -16,13 +17,14 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
     Parameters
     ----------
 	C : Contour
-		The enclosed_roots function returns the number of roots of f(z) within C
+		The enclosed_roots function returns the number of roots of f(z) 
+		within C.
 	f : function
 		Function of a single variable f(x)
 	df : function, optional
-		Function of a single variable, df(x), providing the derivative of the function f(x) 
-		at the point x.  If not provided then df is approximated using a finite difference
-		method.
+		Function of a single variable, df(x), providing the derivative 
+		of the function f(x) at the point x.  If not provided then df is 
+		approximated using a finite difference method.
 	phi : function, optional
 		Function of a single variable phi(x).  If not provided then phi=1.
 	psi : function, optional
@@ -32,25 +34,41 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 	relTol : float, optional
 		Relative error tolerance.
  	divMin : int, optional
- 		Minimum number of divisions before the Romberg integration routine is allowed 
- 		to exit.  Only used if method='romb'.
+ 		Minimum number of divisions before the Romberg integration 
+ 		routine is allowed to exit.  Only used if method='romb'.
 	divMax : int, optional
-		The maximum number of divisions before the Romberg integration routine of a 
-		path exits.  Only used if method='romb'.
+		The maximum number of divisions before the Romberg integration 
+		routine of a path exits.  Only used if method='romb'.
     m : int, optional
-    	Only used if df=None.  If method='romb' then m defines the stencil size for the 
-    	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
-    	The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
-    	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
-    	the error term in the Taylor approximation used which must be even.  The argument
-    	order=m is passed to numdifftools.Derivative.
+    	Only used if df=None.  If method='romb' then m defines the 
+    	stencil size for the numerical differentiation of f, passed to 
+    	numdifftools.fornberg.fd_derivative.  The stencil size is of 
+    	2*m+1 points in the interior, and 2*m+2 points for each of the 
+    	2*m boundary points.  If instead method='quad' then m must is 
+    	the order of the error term in the Taylor approximation used 
+    	which must be even.  The argument order=m is passed to 
+    	numdifftools.Derivative.
 	method : {'quad', 'romb'}, optional
-		If 'quad' then scipy.integrate.quad is used to perform the integral.  If 'romb'
-		then Romberg integraion, using scipy.integrate.romb, is performed instead.
+		If 'quad' then scipy.integrate.quad is used to perform the 
+		integral.  If 'romb' then Romberg integraion, using 
+		scipy.integrate.romb, is performed instead.
+	integerTol : float, optional
+		Only used when method is 'romb'.  The integration routine will 
+		not exit unless the result is within integerTol of an integer.  
+		This is useful when computing the number of roots in a contour,
+		which must be an integer.  By default integerTol is inf.
+	verbose : bool, optional
+		If True runtime information will be printed.  False be default.
+	callback : function, optional
+		Only used when method is 'romb'.  A function of one complex 
+		variable that at each step in the iteration is passed the 
+		current approximation for the integral.  If callback returns
+		an object evaluating to True then the integration will end. 
 
 	References
 	----------
-	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, 
+	Marc Van Barel, Springer 2000
 	"""
 	N = 1
 	k = 0
@@ -65,7 +83,10 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 
 	if method == 'romb':
 		# XXX: Better way to characterise err than abs(I[-2] - I[-1])?
-		while (len(I) < divMin or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1])) or abs(int(round(I[-1].real)) - I[-1].real) > integerTol or abs(I[-1].imag) > integerTol) and k < divMax:
+		while k < divMax and (len(I) < divMin
+			or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))
+			or abs(int(round(I[-1].real)) - I[-1].real) > integerTol 
+			or abs(I[-1].imag) > integerTol):
 			N = 2*N
 			t = np.linspace(0,1,N+1)
 			k = int(np.log2(len(t)-1))
@@ -108,7 +129,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 					print(k, 'I', I[-1])
 
 			if callback is not None:
-				if callback(I):
+				if callback(I[-1]):
 					break
 
 		return I[-1], abs(I[-2] - I[-1])
