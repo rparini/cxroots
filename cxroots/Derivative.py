@@ -3,7 +3,7 @@ from numpy import inf, pi
 import math
 
 @np.vectorize
-def CxDerivative(f, z0, n=1, absIntegrationTol=1e-10, contour=None, verbose=False):
+def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=False):
 	"""
 	Compute the derivaive of an analytic function using Cauchy's 
 	Integral Formula for Derivatives.
@@ -79,9 +79,9 @@ def get_multiplicity(f, root, contour=None, df=None, rootErrTol=1e-10, verbose=F
 			if n==1:
 				err = abs(df(root))
 			else:
-				err = abs(CxDerivative(df, root, n-1, rootErrTol, contour, verbose))
+				err = abs(CxDerivative(df, root, n-1, contour, rootErrTol, verbose))
 		else:
-			err = abs(CxDerivative(df, root, n, rootErrTol, contour, verbose))
+			err = abs(CxDerivative(df, root, n, contour, rootErrTol, verbose))
 
 		if verbose:
 			print('n', n, '|df^(n)|', err)
