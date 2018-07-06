@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import inf, pi
 import math
+import numdifftools.fornberg as ndf
 
 @np.vectorize
 def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=False):
@@ -43,14 +44,15 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
 	integral = C(z0).integrate(integrand, absTol=absIntegrationTol, verbose=verbose)
 	return integral * math.factorial(n)/(2j*pi)
 
+
 def get_multiplicity(f, root, df=None, contour=None, rootErrTol=1e-10, verbose=False):
 	"""
 	Find the multiplicity of a given root of f by computing the 
 	derivatives of f, f^{(1)}, f^{(2)}, ... until 
 	|f^{(n)}(root)|>rootErrTol.  The multiplicity of the root is then 
-	equal to n.  The derivative is calculated using Cauchy's Integral 
-	Formula for Derivatives, see :func:`~cxroots.Derivative.CxDerivative`.
-	
+	equal to n.  The derivative is calculated with `numdifftools <http://numdifftools.readthedocs.io/en/latest/api/numdifftools.html#numdifftools.fornberg.derivative>`_
+	which employs a method due to Fornberg.
+
 	Parameters
 	----------
 	f : function
@@ -64,8 +66,6 @@ def get_multiplicity(f, root, df=None, contour=None, rootErrTol=1e-10, verbose=F
 		The integration contour used to evaluate the derivatives. 
 	rootErrTol : float, optional
 		It will be assumed that f(z)=0 if numerically |f(z)|<rootErrTol.
-		rootErrTol is used for the absIntegrationTol argument for 
-		:func:`~cxroots.Derivative.CxDerivative`.
 	verbose : bool, optional
 		If True runtime information will be printed.  False be default.
 		
@@ -86,9 +86,9 @@ def get_multiplicity(f, root, df=None, contour=None, rootErrTol=1e-10, verbose=F
 			if n==1:
 				err = abs(df(root))
 			else:
-				err = abs(CxDerivative(df, root, n-1, contour, rootErrTol, verbose))
+				err = abs(ndf.derivative(df, root, n-1))
 		else:
-			err = abs(CxDerivative(f, root, n, contour, rootErrTol, verbose))
+			err = abs(ndf.derivative(f, root, n))
 
 		if verbose:
 			print('n', n, '|df^(n)|', err)
