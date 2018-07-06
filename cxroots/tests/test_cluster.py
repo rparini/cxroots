@@ -7,10 +7,10 @@ from cxroots.tests.ApproxEqual import roots_approx_equal
 
 class ClusterTest(object):
 	def test_rootfinding_df(self):
-		roots_approx_equal(self.C.roots(self.f, self.df, verbose=True), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, self.df, verbose=True), (self.roots, self.multiplicities), decimal=10)
 
 	def test_rootfinding_f(self):
-		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=10)
 
 class TestCluster_1_rect(unittest.TestCase, ClusterTest):
 	def setUp(self):
@@ -18,8 +18,8 @@ class TestCluster_1_rect(unittest.TestCase, ClusterTest):
 		self.multiplicities = [1,1,1,1,1,1]
 
 		self.C = Rectangle([2,9], [-1,1])
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+		self.f = lambda z: np.prod([z-r for r in roots], axis=0)
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
 
 class TestCluster_1_circle(unittest.TestCase, ClusterTest):
 	def setUp(self):
@@ -27,8 +27,8 @@ class TestCluster_1_circle(unittest.TestCase, ClusterTest):
 		self.multiplicities = [1,1,1,1,1,1]
 
 		self.C = Circle(0, 8.5)
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+		self.f = lambda z: np.prod([z-r for r in roots], axis=0)
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
 
 class TestCluster_2_rect(unittest.TestCase, ClusterTest):
 	def setUp(self):
@@ -36,8 +36,8 @@ class TestCluster_2_rect(unittest.TestCase, ClusterTest):
 		self.multiplicities = [1,1,1,1,1,1]
 
 		self.C = Rectangle([2,9], [-1,1])
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+		self.f = lambda z: np.prod([z-r for r in roots], axis=0)
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
 
 class TestCluster_2_circle(unittest.TestCase, ClusterTest):
 	def setUp(self):
@@ -45,8 +45,8 @@ class TestCluster_2_circle(unittest.TestCase, ClusterTest):
 		self.multiplicities = [1,1,1,1,1,1]
 
 		self.C = Circle(0, 8.5)
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+		self.f = lambda z: np.prod([z-r for r in roots], axis=0)
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
 
 @pytest.mark.slow
 class TestCluster_3_rect(unittest.TestCase, ClusterTest):
@@ -55,8 +55,8 @@ class TestCluster_3_rect(unittest.TestCase, ClusterTest):
 		self.multiplicities = [1,1,1,1,1,1]
 
 		self.C = Rectangle([2,9], [-1,1])
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+		self.f = lambda z: np.prod([z-r for r in roots], axis=0)
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
 
 @pytest.mark.slow
 class TestCluster_3_circle(unittest.TestCase, ClusterTest):
@@ -65,8 +65,8 @@ class TestCluster_3_circle(unittest.TestCase, ClusterTest):
 		self.multiplicities = [1,1,1,1,1,1]
 
 		self.C = Circle(0, 8.5)
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+		self.f = lambda z: np.prod([z-r for r in roots], axis=0)
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
 
 @pytest.mark.xfail(reason='Cluster of roots too tight')
 class TestCluster_4_rect(unittest.TestCase, ClusterTest):
@@ -75,8 +75,8 @@ class TestCluster_4_rect(unittest.TestCase, ClusterTest):
 		self.multiplicities = [1,1,1,1,1,1]
 
 		self.C = Rectangle([2,9], [-1,1])
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+		self.f = lambda z: np.prod([z-r for r in roots], axis=0)
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
 
 @pytest.mark.xfail(reason='Cluster of roots too tight')
 class TestCluster_4_circle(unittest.TestCase, ClusterTest):
@@ -85,8 +85,8 @@ class TestCluster_4_circle(unittest.TestCase, ClusterTest):
 		self.multiplicities = [1,1,1,1,1,1]
 
 		self.C = Circle(0, 8.5)
-		self.f = lambda z: np.prod([z-r for r in roots])
-		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)]) for i in range(len(roots))])
+		self.f = lambda z: np.prod([z-r for r in roots], axis=0)
+		self.df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
 
 
 if __name__ == '__main__':
