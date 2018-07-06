@@ -81,7 +81,7 @@ def get_multiplicity(f, root, contour=None, df=None, rootErrTol=1e-10, verbose=F
 			else:
 				err = abs(CxDerivative(df, root, n-1, contour, rootErrTol, verbose))
 		else:
-			err = abs(CxDerivative(df, root, n, contour, rootErrTol, verbose))
+			err = abs(CxDerivative(f, root, n, contour, rootErrTol, verbose))
 
 		if verbose:
 			print('n', n, '|df^(n)|', err)
