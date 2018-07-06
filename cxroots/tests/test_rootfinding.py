@@ -18,11 +18,17 @@ from cxroots.tests.ApproxEqual import roots_approx_equal
 from cxroots.Derivative import get_multiplicity
 
 class RootfindingTests(object):
-	def test_rootfinding_df(self):
-		roots_approx_equal(self.C.roots(self.f, self.df, verbose=True), (self.roots, self.multiplicities), decimal=12)
+	def test_rootfinding_romb_df(self):
+		roots_approx_equal(self.C.roots(self.f, self.df, intMethod='romb', verbose=True), (self.roots, self.multiplicities), decimal=12)
 
-	def test_rootfinding_f(self):
-		roots_approx_equal(self.C.roots(self.f, verbose=True), (self.roots, self.multiplicities), decimal=12)
+	def test_rootfinding_romb_f(self):
+		roots_approx_equal(self.C.roots(self.f, intMethod='romb', verbose=True), (self.roots, self.multiplicities), decimal=12)
+
+	def test_rootfinding_quad_df(self):
+		roots_approx_equal(self.C.roots(self.f, self.df, intMethod='quad', verbose=True, ), (self.roots, self.multiplicities), decimal=12)
+
+	def test_rootfinding_quad_f(self):
+		roots_approx_equal(self.C.roots(self.f, intMethod='quad', verbose=True,), (self.roots, self.multiplicities), decimal=12)
 
 
 class MultiplicityTests(object):
