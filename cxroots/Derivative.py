@@ -20,14 +20,13 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
 		Point to evaluate the derivative at.
 	n : int
 		The order of the derivative to evaluate.
-	absIntegrationTol : float, optional
-		The absolute tolerance required of the integration routine.
 	contour : Contour, optional
 		The contour, C, in the complex plane which encloses the point z0.
 		By default the contour is the circle |z-z_0|=1e-3.
-	verbose : Bool, optional
-		If True information about the progress of the contour 
-		integration will be printed.  False by default.
+	absIntegrationTol : float, optional
+		The absolute tolerance required of the integration routine.
+	verbose : bool, optional
+		If True runtime information will be printed.  False be default.
 
 	Returns
 	-------
@@ -46,7 +45,11 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
 
 def get_multiplicity(f, root, df=None, contour=None, rootErrTol=1e-10, verbose=False):
 	"""
-	Find the multiplicity of a given root of f.
+	Find the multiplicity of a given root of f by computing the 
+	derivatives of f, f^{(1)}, f^{(2)}, ... until 
+	|f^{(n)}(root)|>rootErrTol.  The multiplicity of the root is then 
+	equal to n.  The derivative is calculated using Cauchy's Integral 
+	Formula for Derivatives, see :func:`~cxroots.Derivative.CxDerivative`.
 	
 	Parameters
 	----------
@@ -56,12 +59,16 @@ def get_multiplicity(f, root, df=None, contour=None, rootErrTol=1e-10, verbose=F
 	root : complex
 		A root of f, f(root)=0.
 	df : function, optional
-		The first derivative of f.  If not known then df=None
-	contour : 
-
-	rootErrTol : float
+		The first derivative of f.  If not known then df=None.
+	contour : Contour, optional
+		The integration contour used to evaluate the derivatives. 
+	rootErrTol : float, optional
 		It will be assumed that f(z)=0 if numerically |f(z)|<rootErrTol.
-
+		rootErrTol is used for the absIntegrationTol argument for 
+		:func:`~cxroots.Derivative.CxDerivative`.
+	verbose : bool, optional
+		If True runtime information will be printed.  False be default.
+		
 	Returns
 	-------
 	multiplicity : int
