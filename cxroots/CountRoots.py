@@ -5,8 +5,8 @@ import scipy.integrate
 import scipy.misc
 import warnings
 
-def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5, 
-	divMax=10, m=2, method='quad', integerTol=inf, verbose=False, callback=None):
+def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3, 
+	divMax=15, m=2, method='quad', integerTol=inf, verbose=False, callback=None):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
