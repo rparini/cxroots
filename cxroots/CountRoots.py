@@ -39,15 +39,10 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	divMax : int, optional
 		The maximum number of divisions before the Romberg integration 
 		routine of a path exits.  Only used if method='romb'.
-    m : int, optional
-    	Only used if df=None.  If method='romb' then m defines the 
-    	stencil size for the numerical differentiation of f, passed to 
-    	numdifftools.fornberg.fd_derivative.  The stencil size is of 
-    	2*m+1 points in the interior, and 2*m+2 points for each of the 
-    	2*m boundary points.  If instead method='quad' then m must is 
-    	the order of the error term in the Taylor approximation used 
-    	which must be even.  The argument order=m is passed to 
-    	numdifftools.Derivative.
+	m : int, optional
+		Only used if df=None and method='quad'.  The argument order=m is 
+		passed to numdifftools.Derivative and is the order of the error 
+		term in the Taylor approximation.  m must be even.
 	method : {'quad', 'romb'}, optional
 		If 'quad' then scipy.integrate.quad is used to perform the 
 		integral.  If 'romb' then Romberg integraion, using 
@@ -96,16 +91,9 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 				fVal = segment.trapValues(f,k)
 
 				if df is None:
-					### approximate df/dz with finite difference, see: numdifftools.fornberg
-					used_m = m
-					if 2*m+1 > len(t):
-						# not enough points to accommodate stencil size
-						# temporarily reduce m
-						used_m = (len(t)-1)//2
-
-					dfdt = ndf.fd_derivative(fVal, t, n=1, m=used_m)
+					# approximate df/dz with finite difference
+					dfdt = np.gradient(fVal, dt)
 					dfVal = dfdt/segment.dzdt(t)
-
 				else:
 					dfVal = segment.trapValues(df,k)
 
