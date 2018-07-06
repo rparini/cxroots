@@ -1,11 +1,38 @@
-from __future__ import division
 import numpy as np
 from numpy import inf, pi
 import math
 
-def CxDerivative(f, n=1, contour=None):
+@np.vectorize
+def CxDerivative(f, z0, n=1, absIntegrationTol=1e-10, contour=None, verbose=False):
 	"""
-	Compute the derivaive of an analytic function using Cauchy's Integral Formula for Derivatives
+	Compute the derivaive of an analytic function using Cauchy's 
+	Integral Formula for Derivatives.
+
+	.. math::
+
+		f^{(n)}(z_0) = \frac{n!}{2\pi i} \oint_C \frac{f(z)}{(z-z_0)^{n+1}} dz
+
+	Parameters
+	----------
+	f : function
+		Function of a single variable f(x).
+	z0 : complex
+		Point to evaluate the derivative at.
+	n : int
+		The order of the derivative to evaluate.
+	absIntegrationTol : float, optional
+		The absolute tolerance required of the integration routine.
+	contour : Contour, optional
+		The contour, C, in the complex plane which encloses the point z0.
+		By default the contour is the circle |z-z_0|=1e-3.
+	verbose : Bool, optional
+		If True information about the progress of the contour 
+		integration will be printed.  False by default.
+
+	Returns
+	-------
+	f^{(n)}(z0) : complex
+		The nth derivative of f evaluated at z0
 	"""
 	if contour is None:
 		from .Contours.Circle import Circle
@@ -13,11 +40,9 @@ def CxDerivative(f, n=1, contour=None):
 	else:
 		C = lambda z0: contour
 
-	def df(z0, absIntegrationTol=1e-10, verbose=False):
-		integrand = lambda z: f(z)/(z-z0)**(n+1)
-		return C(z0).integrate(integrand, absTol=absIntegrationTol, verbose=verbose) * math.factorial(n)/(2j*pi)
-
-	return np.vectorize(df)
+	integrand = lambda z: f(z)/(z-z0)**(n+1)
+	integral = C(z0).integrate(integrand, absTol=absIntegrationTol, verbose=verbose)
+	return integral * math.factorial(n)/(2j*pi)
 
 def get_multiplicity(f, root, contour=None, df=None, rootErrTol=1e-10, verbose=False):
 	"""
@@ -54,9 +79,9 @@ def get_multiplicity(f, root, contour=None, df=None, rootErrTol=1e-10, verbose=F
 			if n==1:
 				err = abs(df(root))
 			else:
-				err = abs(CxDerivative(df,n-1,contour)(root, rootErrTol, verbose))
+				err = abs(CxDerivative(df, root, n-1, rootErrTol, contour, verbose))
 		else:
-			err = abs(CxDerivative(f,n,contour)(root, rootErrTol, verbose))
+			err = abs(CxDerivative(df, root, n, rootErrTol, contour, verbose))
 
 		if verbose:
 			print('n', n, '|df^(n)|', err)

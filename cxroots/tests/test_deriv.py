@@ -14,21 +14,21 @@ class TestDerivative1(unittest.TestCase):
 		C = Circle(0, 2)
 		z = np.array([-1.234, 0.3+1j, 0.1j, -0.9-0.5j])
 
-		df_approx = CxDerivative(self.f, n=1, contour=C)
-		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
+		df_approx = CxDerivative(self.f, z, n=1, contour=C)
+		np.testing.assert_almost_equal(df_approx, self.df(z), decimal=1e-12)
 
 	def test_rect(self):
 		C = Rectangle([-1.5,1.5],[-2,2])
 		z = np.array([-1.234, 0.3+1j, 0.1j, -0.9-0.5j])
 
-		df_approx = CxDerivative(self.f, n=1, contour=C)
-		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
+		df_approx = CxDerivative(self.f, z, n=1, contour=C)
+		np.testing.assert_almost_equal(df_approx, self.df(z), decimal=1e-12)
 
 	def test_defaultCircle(self):
 		z = 0.3+1j
 
-		df_approx = CxDerivative(self.f, n=1)
-		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
+		df_approx = CxDerivative(self.f, z, n=1)
+		np.testing.assert_almost_equal(df_approx, self.df(z), decimal=1e-12)
 
 class TestDerivativeCluster(unittest.TestCase):
 	# What if there are roots on the default integration contour?
@@ -38,13 +38,13 @@ class TestDerivativeCluster(unittest.TestCase):
 
 	def test_derivative_cluster1(self):
 		z = 0
-		df_approx = CxDerivative(self.f, n=1)
-		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
+		df_approx = CxDerivative(self.f, z, n=1)
+		np.testing.assert_almost_equal(df_approx, self.df(z), decimal=1e-12)
 
 	def test_derivative_cluster2(self):
 		z = 1e-3j
-		df_approx = CxDerivative(self.f, n=1)
-		np.testing.assert_almost_equal(df_approx(z), self.df(z), decimal=1e-12)
+		df_approx = CxDerivative(self.f, z, n=1)
+		np.testing.assert_almost_equal(df_approx, self.df(z), decimal=1e-12)
 
 
 if __name__ == '__main__':
