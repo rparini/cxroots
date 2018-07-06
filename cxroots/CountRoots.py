@@ -80,9 +80,9 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 		import numdifftools
 
 	if method == 'romb':
-		# XXX: Better way to characterise err than abs(I[-2] - I[-1])?
 		while k < divMax and (len(I) < divMin
 			or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))
+			or (abs(I[-3] - I[-2]) > absTol and abs(I[-3] - I[-2]) > relTol*abs(I[-2]))
 			or abs(int(round(I[-1].real)) - I[-1].real) > integerTol 
 			or abs(I[-1].imag) > integerTol):
 			N = 2*N
