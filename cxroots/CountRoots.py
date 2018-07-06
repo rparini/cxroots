@@ -4,6 +4,8 @@ from numpy import inf, pi
 import scipy.integrate
 import scipy.misc
 import warnings
+import numdifftools.fornberg as ndf
+import numdifftools
 
 def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3, 
 	divMax=15, m=2, method='quad', integerTol=inf, verbose=False, callback=None):
@@ -69,10 +71,6 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	k = 0
 	I = []
 	integrandMax = []
-
-	if df is None:
-		import numdifftools.fornberg as ndf
-		import numdifftools
 
 	if method == 'romb':
 		while k < divMax and (len(I) < divMin
