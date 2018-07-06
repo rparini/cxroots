@@ -86,10 +86,10 @@ def get_multiplicity(f, root, df=None, rootErrTol=1e-10, verbose=False):
 			if n==1:
 				err = abs(df(root))
 			else:
-				# ndf.derivative returns (df, status)
-				err = abs(ndf.derivative(df, root, n-1)[0])
+				# ndf.derivative returns an array [f, f', f'', ...]
+				err = abs(ndf.derivative(df, root, n-1)[n-1])
 		else:
-			err = abs(ndf.derivative(f, root, n)[0])
+			err = abs(ndf.derivative(f, root, n)[n])
 
 		if verbose:
 			print('n', n, '|df^(n)|', err)
