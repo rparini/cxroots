@@ -75,9 +75,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 	I = []
 	integrandMax = []
 
-	approx_df = False
 	if df is None:
-		approx_df = True
 		import numdifftools.fornberg as ndf
 		import numdifftools
 
@@ -97,7 +95,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 				# compute/retrieve function evaluations
 				fVal = segment.trapValues(f,k)
 
-				if approx_df:
+				if df is None:
 					### approximate df/dz with finite difference, see: numdifftools.fornberg
 					used_m = m
 					if 2*m+1 > len(t):
@@ -135,7 +133,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=5
 		return I[-1], abs(I[-2] - I[-1])
 
 	elif method == 'quad':
-		if approx_df:
+		if df is None:
 			df = numdifftools.Derivative(f, order=m)
 			# df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
 
