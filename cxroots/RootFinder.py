@@ -26,7 +26,7 @@ class countCalls:
 		if hasattr(z, '__len__'):
 			self.points += len(z)
 		else:
-			self.points
+			self.points += 1
 		return self.func(z)
 
 @docstrings.get_sectionsf('findRootsGen')
