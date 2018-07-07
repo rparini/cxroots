@@ -35,7 +35,7 @@ class countCalls:
 def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, attemptIterBest=True, newtonMaxIter=50, rootErrTol=1e-10, 
 	absTol=0, relTol=1e-12, integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, 
-	intMethod='quad', divMax=15, divMin=5, m=2, verbose=False):
+	intMethod='quad', divMax=15, divMin=3, m=2, verbose=False):
 	"""
 	A generator which at each step takes a contour and either finds all 
 	the zeros of f within it or subdivides it further.  Based on the 

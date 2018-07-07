@@ -162,7 +162,8 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 class RootError(RuntimeError):
 	pass
 
-def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.2, divMin=5, divMax=20, m=2, method='quad', verbose=False):
+def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3, 
+	divMax=15, m=2, method='quad', verbose=False):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in and within the contour C,
 	return the number of zeros (counting multiplicities) within the contour calculated, using 
