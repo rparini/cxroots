@@ -312,7 +312,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		if verbose:
 			print(contour._numberOfRoots, 'roots in', contour)
 
-		# if a known root is too near this contour then reverse the subdivision that created it 
+		# if a known root is too near to this contour then reverse the subdivision that created it 
 		if np.any([contour.distance(root) < newtonStepTol for root in roots]):
 			# remove the contour together with its children and siblings
 			remove_siblings_children(contour)
@@ -369,7 +369,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 				if root is not None:
 					# if the root is very close to the contour then disregard this contour and compute the root multiplicity directly
-					# XXX: implement a distance function returning the shortest distance from a point to any point on a contour
 					if contour.distance(root) < newtonStepTol:
 						# remove the contour and any relations
 						remove_siblings_children(contour)
