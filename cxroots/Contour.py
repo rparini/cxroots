@@ -15,7 +15,7 @@ import numpy as np
 import scipy.integrate
 import scipy.linalg
 
-from .CountRoots import count_enclosed_roots, prod
+from .CountRoots import count_roots, prod
 from .RootFinder import findRoots, MultiplicityError
 from .DemoRootFinder import demo_findRoots
 from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
