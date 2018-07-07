@@ -110,7 +110,7 @@ class Contour(object):
 		return sum([segment.integrate(f, absTol, relTol, rombergDivMax, method, verbose) for segment in self.segments])
 
 	def count_roots(self, *args, **kwargs):
-		return count_enclosed_roots(self, *args, **kwargs)
+		return count_roots(self, *args, **kwargs)
 
 	def approximate_roots(self, f, df=None, absTol=1e-12, relTol=1e-12, NAbsTol=0.07, integerTol=0.1, errStop=1e-8, 
 		divMin=5, divMax=10, m=2, rootTol=1e-8, intMethod='quad', verbose=False, M=None):
