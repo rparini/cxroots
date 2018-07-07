@@ -301,11 +301,11 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		elif verbose:
 			print("The given root", root, "is not a root of f(z) since |f(givenRoot)| =", err, "> rootErrTol =", rootErrTol)
 
-	# yield the initial state here so that the animation shows the first frame
-	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
-	yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
-
 	while contours:
+		# yield the initial state here so that the animation in demo_findRoots shows the first frame
+		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
+		yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
+
 		contour = contours.pop()
 
 		if verbose:
@@ -386,8 +386,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			if contour._numberOfRoots != numberOfKnownRootsInContour and contour not in failedContours:
 				subdivide(contour, NintAbsTol)
 
-		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
-		yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
 	# delete cache for original contour incase this contour is being reused
 	for segment in originalContour.segments:
