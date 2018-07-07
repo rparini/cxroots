@@ -228,13 +228,18 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 
 	def remove_relations(C):
+		"""
+		Remove the contour C and all its siblings and children from the 
+		list of contours to be examined/subdivided.
+		"""
+
 		# remove itself
 		try:
 			contours.remove(C)
 		except ValueError:
 			pass
 
-		# get all direct relations
+		# get sibling and child contours
 		# siblings:
 		relations = C._parentContour._childcontours 
 		relations.remove(C)
@@ -246,6 +251,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		# interate over all relations
 		for relation in relations:
 			remove_relations(relation)
+
 
 	def addRoot(root, multiplicity=None):
 		# check that the root we have found is distinct from the ones we already have
@@ -268,6 +274,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 						root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 						if root is not None:
 							addRoot(root)
+
 
 	# Add given roots and multiplicies
 	for guess in guessRoots:
