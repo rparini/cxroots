@@ -394,7 +394,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	if verbose:
 		print('Completed rootfinding with', f.calls, 'evaluations of f at', f.points, 'points')
 
-	# yield one more time so that the animation shows the final frame
+	# yield one last time so that the animation shows the final frame
 	yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
 @docstrings.dedent
