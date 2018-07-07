@@ -302,7 +302,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		elif verbose:
 			print("The given root", root, "is not a root of f(z) since |f(givenRoot)| =", err, "> rootErrTol =", rootErrTol)
 
-	# yield so that the animation shows the first frame
+	# yield the initial state here so that the animation shows the first frame
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
 	yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
