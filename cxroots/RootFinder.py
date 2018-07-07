@@ -332,14 +332,14 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			addRoot(root=contour.centralPoint,  multiplicity=contour._numberOfRoots)
 			continue
 
-		# if all the roots within the contour have been located then coninue to the next contour
+		# if all the roots within the contour have been located then continue to the next contour
 		numberOfKnownRootsInContour = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if contour.contains(root)])
-		
 		if contour._numberOfRoots == numberOfKnownRootsInContour:
 			continue
 
-		# if there are too many roots within the contour then subdivide
-		# if there are any known roots within the contour then subdivide (so as not to waste resources re-approximating them)
+		# if there are too many roots within the contour then subdivide or
+		# if there are any known roots within the contour then also subdivide 
+		# (so as not to waste time re-approximating these roots)
 		if numberOfKnownRootsInContour > 0 or contour._numberOfRoots > M:
 			subdivide(contour, NintAbsTol)
 
@@ -353,8 +353,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 				continue
 
 			for approxRoot, approxRootMultiplicity in list(zip(approxRoots, approxRootMultiplicities)):
-				# XXX: if the approximate root is not in this contour then desregard and redo the subdivision?
-
 				# attempt to refine the root
 				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 
