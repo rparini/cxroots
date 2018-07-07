@@ -397,9 +397,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 	# yield one more time so that the animation shows the final frame
 	yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
-	if originalContour._numberOfRoots == 0:
-		yield [], [], deque(), 0
-
 @docstrings.dedent
 @doc_tab_to_space
 def findRoots(originalContour, f, df=None, **kwargs):
