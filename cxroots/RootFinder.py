@@ -317,14 +317,11 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			# remove the contour together with its children and siblings
 			remove_siblings_children(contour)
 
-			# put the parent contour back into the list of contours to subdivide again
-			parent = contour._parentContour
-			contours.append(parent)
-
+			# put the parent contour back into the list of contours to be subdivided again
+			contours.append(contour._parentContour)
 
 			# do not use this contour again
 			failedContours.append(contour)
-
 			continue
 
 		# if contour is smaller than the newtonStepTol then just assume that the root is
