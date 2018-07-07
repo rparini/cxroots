@@ -283,11 +283,24 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		else:
 			root, multiplicity = guess, None
 
-		if abs(f(root)) < rootErrTol:
-			if multiplicity is not None and get_multiplicity(f, root, df=df, rootErrTol=rootErrTol) == multiplicity:
+		# check given root
+		err = abs(f(root))
+		if err < rootErrTol:
+			if multiplicity is not None:
+				# check given multiplicity
+				computed_multiplicity = get_multiplicity(f, root, df=df, rootErrTol=rootErrTol)
+				if computed_multiplicity != multiplicity:
+					if verbose:
+						print("The multiplicity of the root", root, "has been given as", multiplicity,
+							  "but computed as", computed_multiplicity, "The value", computed_multiplicity,
+							  "will be used.")
+					multiplicity = computed_multiplicity
+
 				addRoot(root, multiplicity)
 			else:
 				addRoot(root)
+		elif verbose:
+			print("The given root", root, "is not a root of f(z) since |f(givenRoot)| =", err, "> rootErrTol =", rootErrTol)
 
 	# yield so that the animation shows the first frame
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
