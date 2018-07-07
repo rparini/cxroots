@@ -4,7 +4,7 @@ from collections import deque
 import warnings
 
 from .IterativeMethods import iterateToRoot
-from .CountRoots import prod, RootError
+from .CountRoots import RootError
 from .RootResult import RootResult
 from .Derivative import get_multiplicity
 from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
