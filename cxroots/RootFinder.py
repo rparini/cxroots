@@ -101,18 +101,19 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		by checking if all the elements of a list of contour integrals 
 		involving formal orthogonal polynomials are sufficently close to
 		zero, ie. that the absolute value of each element is < errStop.
-	intMethod : str, 'quad' or 'romb', optional
-		Either 'quad' to integrate using scipy.integrate.quad or 'romb' 
-		to integrate using Romberg's method.  Typically, quad is the 
-		better choice but it requires that the real and imaginary parts 
-		of each integral are calculated sepeartely, in addition, if df 
-		is not provided, 'quad' will require more function evaluations 
-		to approximate df at each point that f is evaluated at.  
-		If evaluating f is expensive then 'romb' may be more efficient
-		since it computes the real and imaginary parts simultaniously 
-		and if df is not provided it will approximate it using only the
-		values of f that would be required by the integration routine
-		in any case.
+	intMethod : {'quad', 'romb'}, optional
+		If 'quad' then scipy.integrate.quad is used to perform the 
+		integral.  If 'romb' then Romberg integraion, using 
+		scipy.integrate.romb, is performed instead.  Typically, quad is 
+		the better choice but it requires that the real and imaginary 
+		parts of each integral are calculated sepeartely, in addition, 
+		if df is not provided, 'quad' will require more function 
+		evaluations to approximate df at each point that f is evaluated 
+		at.  If evaluating f is expensive then 'romb' may be more 
+		efficient since it computes the real and imaginary parts 
+		simultaniously and if df is not provided it will approximate it 
+		using only the values of f that would be required by the 
+		integration routine in any case.
 	divMax : int, optional
 		If the Romberg integration method is used then divMax is the
 		maximum number of divisions before the Romberg integration

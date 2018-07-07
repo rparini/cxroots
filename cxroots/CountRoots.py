@@ -36,11 +36,11 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	relTol : float, optional
 		Relative error tolerance.
  	divMin : int, optional
- 		Minimum number of divisions before the Romberg integration 
- 		routine is allowed to exit.  Only used if method='romb'.
+ 		Only used if method='romb'. Minimum number of divisions before 
+ 		the Romberg integration routine is allowed to exit.  
 	divMax : int, optional
-		The maximum number of divisions before the Romberg integration 
-		routine of a path exits.  Only used if method='romb'.
+		Only used if method='romb'.  The maximum number of divisions 
+		before the Romberg integration routine of a path exits.  
 	m : int, optional
 		Only used if df=None and method='quad'.  The argument order=m is 
 		passed to numdifftools.Derivative and is the order of the error 
@@ -65,7 +65,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	References
 	----------
 	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, 
-	Marc Van Barel, Springer 2000
+		Marc Van Barel, Springer 2000
 	"""
 	N = 1
 	k = 0
@@ -165,65 +165,68 @@ class RootError(RuntimeError):
 def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3, 
 	divMax=15, m=2, method='quad', verbose=False):
 	r"""
-	For a function of one complex variable, f(z), which is analytic in and within the contour C,
-	return the number of zeros (counting multiplicities) within the contour calculated, using 
-	Cauchy's argument principle, as
+	For a function of one complex variable, f(z), which is analytic in 
+	and within the contour C, return the number of zeros (counting 
+	multiplicities) within the contour, N, using Cauchy's argument 
+	principle,
 	
 	.. math::
 
-		\frac{1}{2i\pi} \oint_C \frac{f'(z)}{f(z)} dz.
+		N = \frac{1}{2i\pi} \oint_C \frac{f'(z)}{f(z)} dz.
 
-	If df(z), the derivative of f(z), is provided then the above integral is computed directly.
-	Otherwise the derivative is approximated using a finite difference approximation implemented
-	in Numdifftools <https://pypi.python.org/pypi/Numdifftools>`_.
+	If df(z), the derivative of f(z), is provided then the above 
+	integral is computed directly.  Otherwise the derivative is 
+	approximated using a finite difference method.
 
-	The number of roots is then the closest integer to the final value of the integral
-	and the result is only accepted if the final value of the integral is within integerTol
-	of the closest integer.
+	The number of roots is taken to be the closest integer to the 
+	computed value of the integral and the result is only accepted 
+	if the integral is within integerTol of the closest integer.
 	
 	Parameters
 	----------
 	C : Contour
-		The enclosed_roots function returns the number of roots of f(z) within C
+		The contour which encloses the roots of f(z) that are to be 
+		counted. 
 	f : function
-		Function of a single variable f(x)
+		Function of a single variable f(z).
 	df : function, optional
-		Function of a single variable, df(x), providing the derivative of the function f(x) 
-		at the point x.
+		Function of a single variable, df(z), providing the derivative 
+		of the function f(z) at the point z.  If not provided, df will
+		be approximated using a finite difference method.
 	NintAbsTol : float, optional
-		Required absolute error for the integration.
+		Required absolute error tolerance for the contour integration.
+		Since the Cauchy integral must be an integer it is only 
+		necessary to distinguish which integer the integral is 
+		converging towards.  Therefore, NintAbsTol can be fairly large.
 	integerTol : float, optional
-		The evaluation of the Cauchy integral will be accepted if the difference between successive
-		iterations is < integerTol and the value of the integral is within integerTol of the 
-		closest integer.  Since the Cauchy integral must be an integer it is only necessary to
-		distinguish which integer the integral is converging towards.  For this
-		reason the integerTol can be set fairly large.
+		The evaluation of the Cauchy integral will be accepted if its 
+		value is within integerTol of the closest integer.  
  	divMin : int, optional
- 		Minimum number of divisions before the Romberg integration routine is allowed 
- 		to exit.  Only used if method='romb'.
+ 		Only used if method='romb'. Minimum number of divisions before 
+ 		the Romberg integration routine is allowed to exit.  
 	divMax : int, optional
-		The maximum number of divisions before the Romberg integration routine of a 
-		path exits.  Only used if method='romb'.
-    m : int, optional
-    	Only used if df=None.  If method='romb' then m defines the stencil size for the 
-    	numerical differentiation of f, passed to numdifftools.fornberg.fd_derivative.
-    	The stencil size is of 2*m+1 points in the interior, and 2*m+2 points for each 
-    	of the 2*m boundary points.  If instead method='quad' then m must is the order of 
-    	the error term in the Taylor approximation used which must be even.  The argument
-    	order=m is passed to numdifftools.Derivative.
+		Only used if method='romb'.  The maximum number of divisions 
+		before the Romberg integration routine of a path exits.  
+	m : int, optional
+		Only used if df=None and method='quad'.  The argument order=m is 
+		passed to numdifftools.Derivative and is the order of the error 
+		term in the Taylor approximation.  m must be even.
 	method : {'quad', 'romb'}, optional
-		If 'quad' then scipy.integrate.quad is used to perform the integral.  If 'romb'
-		then Romberg integraion, using scipy.integrate.romb, is performed instead.
+		If 'quad' then scipy.integrate.quad is used to perform the 
+		integral.  If 'romb' then Romberg integraion, using 
+		scipy.integrate.romb, is performed instead.
 
 	Returns
 	-------
 	int
-		The number of zeros of f (counting multiplicities) which lie within the contour
+		The number of zeros of f (counting multiplicities) which lie 
+		within the contour C.
 	
 	References
 	----------
-	[DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
-		L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
+	[DL] "A Numerical Method for Locating the Zeros of an Analytic 
+		function", L.M.Delves, J.N.Lyness, Mathematics of Computation 
+		(1967), Vol.21, Issue 100
 	"""
 	if verbose:
 		print('Computing number of roots within', C)
@@ -231,10 +234,12 @@ def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3,
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
-		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, divMax=divMax, m=m, method=method, verbose=verbose, integerTol=integerTol)
+		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, 
+			divMax=divMax, m=m, method=method, verbose=verbose, integerTol=integerTol)
 
 	if np.isnan(I):
-		raise RootError("Result of integral is an invalid value.  Most likely because of a divide by zero error.")
+		raise RootError("""Result of integral is an invalid value.  
+						   Most likely because of a divide by zero error.""")
 
 	elif abs(int(round(I.real)) - I.real) < integerTol and abs(I.imag) < integerTol:
 		# integral is sufficiently close to an integer
