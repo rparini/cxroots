@@ -361,7 +361,9 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 					root = approxRoot
 
 				if root is not None:
-					# if the root is very close to the contour then disregard this contour and compute the root multiplicity directly
+					# if the root turns out to be very close to the contour then this may have
+					# introduced an error.  Therefore, compute the multiplicity of this root
+					# directly and disregard this contour (repeat its  parent's subdivision).
 					if contour.distance(root) < newtonStepTol:
 						# remove the contour and any relations
 						remove_siblings_children(contour)
