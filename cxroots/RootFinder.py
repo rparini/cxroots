@@ -227,7 +227,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		contours.extend([contour for i, contour in enumerate(subcontours) if numberOfRoots[i] != 0])
 
 
-	def remove_relations(C):
+	def remove_siblings_children(C):
 		"""
 		Remove the contour C and all its siblings and children from the 
 		list of contours to be examined/subdivided.
@@ -314,8 +314,8 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 		# if a known root is too near this contour then reverse the subdivision that created it 
 		if np.any([contour.distance(root) < newtonStepTol for root in roots]):
-			# remove the contour and any relations
-			remove_relations(contour)
+			# remove the contour together with its children and siblings
+			remove_siblings_children(contour)
 
 			# put the parent contour back into the list of contours to subdivide again
 			parent = contour._parentContour
@@ -377,7 +377,7 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 					# XXX: implement a distance function returning the shortest distance from a point to any point on a contour
 					if contour.distance(root) < newtonStepTol:
 						# remove the contour and any relations
-						remove_relations(contour)
+						remove_siblings_children(contour)
 
 						# put the parent contour back into the list of contours to subdivide again
 						parent = contour._parentContour
