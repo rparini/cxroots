@@ -412,8 +412,12 @@ def findRoots(originalContour, f, df=None, **kwargs):
 
 	Returns
 	-------
-	result : rootResult
-		A container for the roots and their multiplicities
+	result : RootResult
+		A container for the roots and their multiplicities.
+
+	See Also
+	--------
+	RootResult
 	"""
 	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
 	for roots, multiplicities, contours, numberOfRemainingRoots in rootFinder:
