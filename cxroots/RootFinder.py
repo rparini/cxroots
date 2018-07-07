@@ -321,8 +321,6 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 			parent = contour._parentContour
 			contours.append(parent)
 
-			# compute the root multiplicity directly
-			approxRootMultiplicity = None
 
 			# do not use this contour again
 			failedContours.append(contour)
