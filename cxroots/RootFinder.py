@@ -110,7 +110,9 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 		to approximate df at each point that f is evaluated at.  
 		If evaluating f is expensive then 'romb' may be more efficient
 		since it computes the real and imaginary parts simultaniously 
-		and if df is not provided it will 
+		and if df is not provided it will approximate it using only the
+		values of f that would be required by the integration routine
+		in any case.
 	divMax : int, optional
 		If the Romberg integration method is used then divMax is the
 		maximum number of divisions before the Romberg integration
