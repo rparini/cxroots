@@ -43,6 +43,15 @@ class MultiplicityTests(object):
 			assert get_multiplicity(self.f, root, df=self.df, verbose=True) == self.multiplicities[i]
 
 
+class TestRootfinding_noRoots(unittest.TestCase, RootfindingTests):
+	def setUp(self):
+		self.C = Annulus(1, [1,2])
+		self.f = lambda z: (z-1)**3
+		self.df = lambda z: 3*(z-1)**2
+
+		self.roots = []
+		self.multiplicities = []
+
 class TestRootfinding_poly1(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		self.C = Rectangle([-2,2],[-2,2])
