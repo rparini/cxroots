@@ -9,7 +9,7 @@ from numpy.distutils.misc_util import get_numpy_include_dirs
 
 packages = ['cxroots', 'cxroots.tests', 'cxroots.contours']
 
-# get the version
+# get the version, this will assign __version__
 exec(open('cxroots/version.py').read())
 
 # read the README_pip.rst
