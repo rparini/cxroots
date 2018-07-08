@@ -1,12 +1,12 @@
 from __future__ import division
 import numpy as np
 
-from .RootFinder import findRootsGen
+from .RootFinder import find_roots_gen
 
-def demo_findRoots(originalContour, f, df=None, automaticAnim=False, saveFile=None, returnAnim=False, writer=None, **kwargs):
+def demo_find_roots(originalContour, f, df=None, automaticAnim=False, saveFile=None, returnAnim=False, writer=None, **kwargs):
 	"""
 	An animated demonstration of the root finding process using matplotlib.
-	Takes all the parameters of :func:`cxroots.RootFinder.findRoots` as well as:
+	Takes all the parameters of :func:`cxroots.RootFinder.find_roots` as well as:
 
 	Parameters
 	----------
@@ -26,7 +26,7 @@ def demo_findRoots(originalContour, f, df=None, automaticAnim=False, saveFile=No
 	fig = plt.gcf()
 	ax = plt.gca()
 
-	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
+	rootFinder = find_roots_gen(originalContour, f, df, **kwargs)
 	originalContour.plot(linecolor='k', linestyle='--')
 	originalContour.sizePlot()
 

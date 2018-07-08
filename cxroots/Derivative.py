@@ -36,7 +36,7 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
 		The nth derivative of f evaluated at z0
 	"""
 	if contour is None:
-		from .Contours.Circle import Circle
+		from .contours.Circle import Circle
 		C = lambda z0: Circle(z0, 1e-3)
 	else:
 		C = lambda z0: contour

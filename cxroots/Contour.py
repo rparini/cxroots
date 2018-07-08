@@ -16,8 +16,8 @@ import scipy.integrate
 import scipy.linalg
 
 from .CountRoots import count_roots, prod
-from .RootFinder import findRoots, MultiplicityError
-from .DemoRootFinder import demo_findRoots
+from .RootFinder import find_roots, MultiplicityError
+from .DemoRootFinder import demo_find_roots
 from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
 
 class Contour(object):
@@ -310,7 +310,7 @@ class Contour(object):
 			return self.approximate_roots(f, df, absTol, relTol, NAbsTol, integerTol, errStop, divMin, divMax, m, rootTol, intMethod, verbose)
 
 	def roots(self, f, df=None, **kwargs):
-		return findRoots(self, f, df, **kwargs)
+		return find_roots(self, f, df, **kwargs)
 
 	def demo_roots(self, *args, **kwargs):
 		"""
@@ -330,7 +330,7 @@ class Contour(object):
 			If True then the matplotlib animation object will be returned 
 			instead of being shown.  Defaults to False.
 		"""
-		return demo_findRoots(self, *args, **kwargs)
+		return demo_find_roots(self, *args, **kwargs)
 
 	def show_roots(self, *args, **kwargs):
 		roots = self.roots(*args, **kwargs)
@@ -342,10 +342,10 @@ class Contour(object):
 
 # Reuse docs for roots
 try:
-	Contour.roots.__doc__ = docstrings.delete_params_s(findRoots.__doc__, ['originalContour'])
+	Contour.roots.__doc__ = docstrings.delete_params_s(find_roots.__doc__, ['originalContour'])
 except AttributeError:
 	# for Python 2.7
-	Contour.roots.__func__.__doc__ = docstrings.delete_params_s(findRoots.__doc__, ['originalContour'])
+	Contour.roots.__func__.__doc__ = docstrings.delete_params_s(find_roots.__doc__, ['originalContour'])
 
 
 def divisionFactorGen():

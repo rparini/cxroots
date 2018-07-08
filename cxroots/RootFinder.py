@@ -29,10 +29,10 @@ class countCalls:
 			self.points += 1
 		return self.func(z)
 
-@docstrings.get_sectionsf('findRootsGen')
+@docstrings.get_sectionsf('find_roots_gen')
 @docstrings.dedent
 @doc_tab_to_space
-def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
+def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, attemptIterBest=True, newtonMaxIter=50, rootErrTol=1e-10, 
 	absTol=0, relTol=1e-12, integerTol=0.1, NintAbsTol=0.07, M=5, errStop=1e-8, 
 	intMethod='quad', divMax=15, divMin=3, m=2, verbose=False):
@@ -401,14 +401,14 @@ def findRootsGen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=N
 
 @docstrings.dedent
 @doc_tab_to_space
-def findRoots(originalContour, f, df=None, **kwargs):
+def find_roots(originalContour, f, df=None, **kwargs):
 	"""
 	Find all the roots of the complex analytic function f within the 
 	given contour.
 
 	Parameters
 	----------
-	%(findRootsGen.parameters)s
+	%(find_roots_gen.parameters)s
 
 	Returns
 	-------
@@ -419,7 +419,7 @@ def findRoots(originalContour, f, df=None, **kwargs):
 	--------
 	RootResult
 	"""
-	rootFinder = findRootsGen(originalContour, f, df, **kwargs)
+	rootFinder = find_roots_gen(originalContour, f, df, **kwargs)
 	for roots, multiplicities, contours, numberOfRemainingRoots in rootFinder:
 		pass
 	return RootResult(roots, multiplicities, originalContour)
