@@ -80,7 +80,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 			or abs(I[-1].imag) > integerTol):
 			N = 2*N
 			t = np.linspace(0,1,N+1)
-			k = int(np.log2(len(t)-1))
+			k += 1
 			dt = t[1]-t[0]
 
 			integrals = []
