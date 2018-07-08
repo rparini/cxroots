@@ -3,9 +3,9 @@ import os
 import sys
 import shutil
 import unittest
-from distutils.core import setup, Command
-from numpy.distutils.misc_util import get_numpy_include_dirs
+from setuptools import setup
 from setuptools.command.test import test as TestCommand # Need for 'test' command to be recognised
+from numpy.distutils.misc_util import get_numpy_include_dirs
 
 packages = ['cxroots', 'cxroots.tests']
 
