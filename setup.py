@@ -30,6 +30,7 @@ setup(
     license = 'BSD',
     data_files = [("", ["LICENSE"])],
     packages = packages,
+    zip_safe = False,   # prevent cxroots from installing as a .egg zip file
     platforms = ['all'],
     dependency_links=['git+git://github.com/pbrod/numdifftools'],
     install_requires = ['pytest-runner', 'numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
