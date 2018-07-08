@@ -157,6 +157,8 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 
 		return I, abs(err)
 
+	else:
+		raise ValueError("intMethod must be either 'romb' or 'quad'")
 
 class RootError(RuntimeError):
 	pass
