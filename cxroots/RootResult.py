@@ -10,11 +10,10 @@ class RootResult(object):
 	roots : list
 		List of roots
 	multiplicities : list
-		List of multiplicities where the ith element of the list
-		is the multiplicity of the ith element of roots.
+		List of multiplicities where the ith element of the list is the 
+		multiplicity of the ith element of roots.
 	originalContour : Contour
-		The contour bounding the region in which the roots
-		were found.
+		The contour bounding the region in which the roots were found.
 	"""
 	def __init__(self, roots, multiplicities, originalContour):
 		self.roots = roots
@@ -23,7 +22,8 @@ class RootResult(object):
 
 	def show(self, saveFile=None):
 		"""
-		Plot the roots on the complex plane.
+		Plot the roots and the initial integration contour in the 
+		complex plane.
 
 		Parameters
 		----------
