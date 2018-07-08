@@ -70,7 +70,6 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	N = 1
 	k = 0
 	I = []
-	integrandMax = []
 
 	if method == 'romb':
 		while k < divMax and (len(I) < divMin
