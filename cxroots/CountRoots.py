@@ -8,7 +8,7 @@ import numdifftools.fornberg as ndf
 import numdifftools
 
 def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3, 
-	divMax=15, m=2, method='quad', integerTol=inf, verbose=False, callback=None):
+	divMax=15, m=2, intMethod='quad', integerTol=inf, verbose=False, callback=None):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]
 
@@ -36,28 +36,28 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	relTol : float, optional
 		Relative error tolerance.
  	divMin : int, optional
- 		Only used if method='romb'. Minimum number of divisions before 
+ 		Only used if intMethod='romb'. Minimum number of divisions before 
  		the Romberg integration routine is allowed to exit.  
 	divMax : int, optional
-		Only used if method='romb'.  The maximum number of divisions 
+		Only used if intMethod='romb'.  The maximum number of divisions 
 		before the Romberg integration routine of a path exits.  
 	m : int, optional
-		Only used if df=None and method='quad'.  The argument order=m is 
-		passed to numdifftools.Derivative and is the order of the error 
-		term in the Taylor approximation.  m must be even.
-	method : {'quad', 'romb'}, optional
+		Only used if df=None and intMethod='quad'.  Must be even.  The 
+		argument order=m is passed to numdifftools.Derivative and is the 
+		order of the error term in the Taylor approximation.
+	intMethod : {'quad', 'romb'}, optional
 		If 'quad' then scipy.integrate.quad is used to perform the 
 		integral.  If 'romb' then Romberg integraion, using 
 		scipy.integrate.romb, is performed instead.
 	integerTol : float, optional
-		Only used when method is 'romb'.  The integration routine will 
+		Only used when intMethod is 'romb'.  The integration routine will 
 		not exit unless the result is within integerTol of an integer.  
 		This is useful when computing the number of roots in a contour,
 		which must be an integer.  By default integerTol is inf.
 	verbose : bool, optional
 		If True runtime information will be printed.  False be default.
 	callback : function, optional
-		Only used when method is 'romb'.  A function of one complex 
+		Only used when intMethod is 'romb'.  A function of one complex 
 		variable that at each step in the iteration is passed the 
 		current approximation for the integral.  If callback returns
 		an object evaluating to True then the integration will end. 
@@ -71,7 +71,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	k = 0
 	I = []
 
-	if method == 'romb':
+	if intMethod == 'romb':
 		while k < divMax and (len(I) < divMin
 			or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))
 			or (abs(I[-3] - I[-2]) > absTol and abs(I[-3] - I[-2]) > relTol*abs(I[-2]))
@@ -117,7 +117,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 
 		return I[-1], abs(I[-2] - I[-1])
 
-	elif method == 'quad':
+	elif intMethod == 'quad':
 		if df is None:
 			df = numdifftools.Derivative(f, order=m)
 			# df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
@@ -162,7 +162,7 @@ class RootError(RuntimeError):
 	pass
 
 def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3, 
-	divMax=15, m=2, method='quad', verbose=False):
+	divMax=15, m=2, intMethod='quad', verbose=False):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in 
 	and within the contour C, return the number of zeros (counting 
@@ -201,16 +201,16 @@ def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3,
 		The evaluation of the Cauchy integral will be accepted if its 
 		value is within integerTol of the closest integer.  
  	divMin : int, optional
- 		Only used if method='romb'. Minimum number of divisions before 
- 		the Romberg integration routine is allowed to exit.  
+ 		Only used if intMethod='romb'. Minimum number of divisions 
+ 		before the Romberg integration routine is allowed to exit.  
 	divMax : int, optional
-		Only used if method='romb'.  The maximum number of divisions 
+		Only used if intMethod='romb'.  The maximum number of divisions 
 		before the Romberg integration routine of a path exits.  
 	m : int, optional
-		Only used if df=None and method='quad'.  The argument order=m is 
-		passed to numdifftools.Derivative and is the order of the error 
-		term in the Taylor approximation.  m must be even.
-	method : {'quad', 'romb'}, optional
+		Only used if df=None and intMethod='quad'.  The argument order=m 
+		is passed to numdifftools.Derivative and is the order of the 
+		error term in the Taylor approximation.  m must be even.
+	intMethod : {'quad', 'romb'}, optional
 		If 'quad' then scipy.integrate.quad is used to perform the 
 		integral.  If 'romb' then Romberg integraion, using 
 		scipy.integrate.romb, is performed instead.
@@ -234,7 +234,7 @@ def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3,
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
 		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, 
-			divMax=divMax, m=m, method=method, verbose=verbose, integerTol=integerTol)
+			divMax=divMax, m=m, intMethod=intMethod, verbose=verbose, integerTol=integerTol)
 
 	if np.isnan(I):
 		raise RootError("""Result of integral is an invalid value.  
