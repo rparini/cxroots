@@ -39,7 +39,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	"""
 	A generator which at each step takes a contour and either finds all 
 	the zeros of f within it or subdivides it further.  Based on the 
-	algorithm in [KB]
+	algorithm in [KB].
 
 	Parameters
 	----------
