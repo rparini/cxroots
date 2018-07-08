@@ -7,5 +7,5 @@ from .RootFinder import find_roots
 from .DemoRootFinder import demo_find_roots
 from .CountRoots import count_roots
 from .Derivative import CxDerivative
-from .Derivative import get_multiplicity
+from .Derivative import find_multiplicity
 

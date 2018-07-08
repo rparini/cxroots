@@ -46,7 +46,7 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
 	return integral * math.factorial(n)/(2j*pi)
 
 
-def get_multiplicity(f, root, df=None, rootErrTol=1e-10, verbose=False):
+def find_multiplicity(f, root, df=None, rootErrTol=1e-10, verbose=False):
 	"""
 	Find the multiplicity of a given root of f by computing the 
 	derivatives of f, f^{(1)}, f^{(2)}, ... until 

@@ -15,7 +15,7 @@ from scipy import pi, sqrt, exp, sin, cos
 
 from cxroots import Circle, Rectangle, Annulus
 from cxroots.tests.ApproxEqual import roots_approx_equal
-from cxroots.Derivative import get_multiplicity
+from cxroots.Derivative import find_multiplicity
 
 class RootfindingTests(object):
 	def test_rootfinding_romb_df(self):
@@ -35,12 +35,12 @@ class MultiplicityTests(object):
 	def test_multiplicity_f(self):
 		# Check that if only the root is given then the multiplcity could be computed
 		for i, root in enumerate(self.roots):
-			assert get_multiplicity(self.f, root, df=None, verbose=True) == self.multiplicities[i]
+			assert find_multiplicity(self.f, root, df=None, verbose=True) == self.multiplicities[i]
 
 	def test_multiplicity_df(self):
 		# Check that if only the root is given then the multiplcity could be computed
 		for i, root in enumerate(self.roots):
-			assert get_multiplicity(self.f, root, df=self.df, verbose=True) == self.multiplicities[i]
+			assert find_multiplicity(self.f, root, df=self.df, verbose=True) == self.multiplicities[i]
 
 
 class TestRootfinding_noRoots(unittest.TestCase, RootfindingTests):

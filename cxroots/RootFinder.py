@@ -6,7 +6,7 @@ import warnings
 from .IterativeMethods import iterateToRoot
 from .CountRoots import RootError
 from .RootResult import RootResult
-from .Derivative import get_multiplicity
+from .Derivative import find_multiplicity
 from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
 
 class MultiplicityError(RuntimeError):
@@ -259,7 +259,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			if originalContour.contains(root):
 				roots.append(root)
 				if multiplicity is None:
-					multiplicity = get_multiplicity(f, root, df=df, rootErrTol=rootErrTol)
+					multiplicity = find_multiplicity(f, root, df=df, rootErrTol=rootErrTol)
 
 				multiplicities.append(multiplicity.real)
 
@@ -287,7 +287,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		if err < rootErrTol:
 			if multiplicity is not None:
 				# check given multiplicity
-				computed_multiplicity = get_multiplicity(f, root, df=df, rootErrTol=rootErrTol)
+				computed_multiplicity = find_multiplicity(f, root, df=df, rootErrTol=rootErrTol)
 				if computed_multiplicity != multiplicity:
 					if verbose:
 						print("The multiplicity of the root", root, "has been given as", multiplicity,
