@@ -1,7 +1,7 @@
-from .Contours.Circle import Circle
-from .Contours.Annulus import Annulus
-from .Contours.AnnulusSector import AnnulusSector
-from .Contours.Rectangle import Rectangle
+from .contours.Circle import Circle
+from .contours.Annulus import Annulus
+from .contours.AnnulusSector import AnnulusSector
+from .contours.Rectangle import Rectangle
 
 from .RootFinder import findRoots
 from .DemoRootFinder import demo_findRoots
