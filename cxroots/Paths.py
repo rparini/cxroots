@@ -8,7 +8,6 @@ class ComplexPath(object):
 	""" A base class for paths in the complex plane """
 	def __init__(self):
 		self._integralCache = {}
-		self._contArgCache = {}
 		self._trapValuesCache = {}
 
 	def trap_values(self, f, k, useCache=True):

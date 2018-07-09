@@ -390,7 +390,6 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	# delete cache for original contour incase this contour is being reused
 	for segment in originalContour.segments:
 		segment._integralCache = {}
-		segment._contArgCache = {}
 		segment._trapValuesCache = {}
 
 	if verbose:
