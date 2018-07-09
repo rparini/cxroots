@@ -11,7 +11,7 @@ class ComplexPath(object):
 		self._contArgCache = {}
 		self._trapValuesCache = {}
 
-	def trapValues(self, f, k, useCache=True):
+	def trap_values(self, f, k, useCache=True):
 		"""
 		2**k+1 is the number of required points for the function f to
 		be evaluated at.

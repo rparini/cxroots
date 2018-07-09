@@ -85,20 +85,20 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 			integrals = []
 			for segment in C.segments:
 				# compute/retrieve function evaluations
-				fVal = segment.trapValues(f,k)
+				fVal = segment.trap_values(f,k)
 
 				if df is None:
 					# approximate df/dz with finite difference
 					dfdt = np.gradient(fVal, dt)
 					dfVal = dfdt/segment.dzdt(t)
 				else:
-					dfVal = segment.trapValues(df,k)
+					dfVal = segment.trap_values(df,k)
 
 				segment_integrand = dfVal/fVal*segment.dzdt(t)
 				if phi is not None:
-					segment_integrand = segment.trapValues(phi,k)*segment_integrand
+					segment_integrand = segment.trap_values(phi,k)*segment_integrand
 				if psi is not None:
-					segment_integrand = segment.trapValues(psi,k)*segment_integrand
+					segment_integrand = segment.trap_values(psi,k)*segment_integrand
 
 				segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
 				integrals.append(segment_integral)
