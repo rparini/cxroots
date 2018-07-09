@@ -87,7 +87,7 @@ class ComplexPath(object):
 		self.plot(*args, **kwargs)
 		plt.show()
 
-	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', verbose=False):
+	def integrate(self, f, absTol=0, relTol=1e-12, divMax=15, intMethod='quad', verbose=False):
 		"""
 		Integrate the function f along the path using SciPy's Romberg
 		algorithm.  The value of the integral is cached and will be
@@ -108,7 +108,7 @@ class ComplexPath(object):
 			The integral of the function f along the path.
 		"""
 
-		args = (f, absTol, relTol, rombergDivMax, method)
+		args = (f, absTol, relTol, divMax, intMethod)
 		if args in self._integralCache.keys():
 			integral = self._integralCache[args]
 
@@ -117,20 +117,19 @@ class ComplexPath(object):
 			integral = -self._reversePath._integralCache[args]
 
 		else:			
-			# suppress accuracy warnings
-			with warnings.catch_warnings():
-				warnings.simplefilter("ignore")
-				integrand = lambda t: f(self(t))*self.dzdt(t)
+			integrand = lambda t: f(self(t))*self.dzdt(t)
 
-				if method == 'romb':
-					integral = scipy.integrate.romberg(integrand, 0, 1, tol=absTol, rtol=relTol, divmax=rombergDivMax, show=verbose)
-				elif method == 'quad':
-					integrand_real = lambda t: np.real(integrand(t))
-					integrand_imag = lambda t: np.imag(integrand(t))
+			if intMethod == 'romb':
+				integral = scipy.integrate.romberg(integrand, 0, 1, tol=absTol, rtol=relTol, divmax=divMax, show=verbose)
+			elif intMethod == 'quad':
+				integrand_real = lambda t: np.real(integrand(t))
+				integrand_imag = lambda t: np.imag(integrand(t))
 
-					integral_real, abserr_real = scipy.integrate.quad(integrand_real, 0, 1, epsabs=absTol, epsrel=relTol)
-					integral_imag, abserr_imag = scipy.integrate.quad(integrand_imag, 0, 1, epsabs=absTol, epsrel=relTol)
-					integral = integral_real + 1j*integral_imag
+				integral_real, abserr_real = scipy.integrate.quad(integrand_real, 0, 1, epsabs=absTol, epsrel=relTol)
+				integral_imag, abserr_imag = scipy.integrate.quad(integrand_imag, 0, 1, epsabs=absTol, epsrel=relTol)
+				integral = integral_real + 1j*integral_imag
+			else:
+				raise ValueError("intMethod must be either 'romb' or 'quad'")
 
 			if np.isnan(integral):
 				raise RuntimeError('The integral along the segment %s is NaN.\
