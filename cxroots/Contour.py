@@ -68,7 +68,7 @@ class Contour(object):
 		self.plot(*args, **kwargs)
 
 		if saveFile is not None:
-			plt.savefig(saveFile)
+			plt.savefig(saveFile, bbox_inches='tight')
 			plt.close()
 		else:
 			plt.show()
