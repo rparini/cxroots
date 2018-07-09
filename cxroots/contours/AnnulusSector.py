@@ -9,17 +9,17 @@ class AnnulusSector(Contour):
 	A sector of an annulus in the complex plane.
 	
 	Parameters
-	==========
+	----------
 	center : complex
 		The center of the annulus sector.
-	rRange : list
+	radii : list
 		List of length two of the form [inner_radius, outer_radius]
 	phiRange : list
 		List of length two of the form [phi0, phi1].
 		The segment of the contour containing inner and outer circular arcs 
 		will be joined, counter clockwise from phi0 to phi1.
 	"""
-	def __init__(self, center, rRange, phiRange):
+	def __init__(self, center, radii, phiRange):
 		self.center = center
 		self.axisName = ['r', 'phi']
 
@@ -29,7 +29,7 @@ class AnnulusSector(Contour):
 		phi0, phi1 = self.phiRange = phiRange
 
 		# r > 0
-		r0, r1 = self.rRange = rRange
+		r0, r1 = self.radii = radii
 		if r0 < 0 or r1 <= 0:
 			raise ValueError('Radius > 0')
 
@@ -47,23 +47,23 @@ class AnnulusSector(Contour):
 		super(AnnulusSector, self).__init__(segments)
 
 	def __str__(self):
-		return 'Annulus sector: center={center.real:.3f}{center.imag:+.3f}i, r0={rRange[0]:.3f}, r1={rRange[1]:.3f}, phi0={phiRange[0]:.3f}, phi1={phiRange[1]:.3f}'.format(center=self.center, rRange=self.rRange, phiRange=self.phiRange)
+		return 'Annulus sector: center={center.real:.3f}{center.imag:+.3f}i, r0={radii[0]:.3f}, r1={radii[1]:.3f}, phi0={phiRange[0]:.3f}, phi1={phiRange[1]:.3f}'.format(center=self.center, radii=self.radii, phiRange=self.phiRange)
 	
 	@property
 	def centralPoint(self):
 		# get the central point within the contour
-		r = (self.rRange[0] + self.rRange[1])/2
+		r = (self.radii[0] + self.radii[1])/2
 		phi = (self.phiRange[0] + self.phiRange[1])/2
 		return r*exp(1j*phi)
 
 	@property
 	def area(self):
-		return (self.rRange[1]**2 - self.rRange[0]**2)*abs(self.phiRange[1] - self.phiRange[0])%(2*pi)/2
+		return (self.radii[1]**2 - self.radii[0]**2)*abs(self.phiRange[1] - self.phiRange[0])%(2*pi)/2
 
 	def contains(self, z):
 		""" Returns True if the point z lies within the contour, False if otherwise """
 		angle = np.angle(z - self.center)%(2*pi) # np.angle maps to [-pi,pi]
-		radiusCorrect = self.rRange[0] < abs(z - self.center) < self.rRange[1]
+		radiusCorrect = self.radii[0] < abs(z - self.center) < self.radii[1]
 		
 		phi = np.mod(self.phiRange, 2*pi)
 		if phi[0] > phi[1]:
@@ -89,15 +89,15 @@ class AnnulusSector(Contour):
 		box1 : AnnulusSector
 			If axis is 'r' then phiRange and the inner radius is the same as original AnnulusSector
 			with the outer radius determined by the divisionFactor.
-			If axis is 'phi' then the rRange and phiRange[0] is the same as the original AnnulusSector
+			If axis is 'phi' then the radii and phiRange[0] is the same as the original AnnulusSector
 			with phiRange[1] determined by the divisionFactor.
 		box2 : AnnulusSector
 			If axis is 'r' then phiRange and the outer radius is the same as original AnnulusSector
 			with the inner radius determined equal to the outer radius of box1.
-			If axis is 'phi' then the rRange and phiRange[1] is the same as the original AnnulusSector
+			If axis is 'phi' then the radii and phiRange[1] is the same as the original AnnulusSector
 			with phiRange[0] equal to phiRange[1] of box1.
 		"""
-		r0, r1 = self.rRange
+		r0, r1 = self.radii
 		phi0, phi1 = self.phiRange
 		if axis == 0 or axis == self.axisName[0]:
 			divisionPoint = r0 + divisionFactor*(r1-r0)
@@ -113,8 +113,8 @@ class AnnulusSector(Contour):
 
 		elif axis == 1 or axis == self.axisName[1]:
 			divisionPoint = phi0 + divisionFactor*(phi1-phi0)
-			box1 = AnnulusSector(self.center, self.rRange, [phi0, divisionPoint])
-			box2 = AnnulusSector(self.center, self.rRange, [divisionPoint, phi1])
+			box1 = AnnulusSector(self.center, self.radii, [phi0, divisionPoint])
+			box2 = AnnulusSector(self.center, self.radii, [divisionPoint, phi1])
 
 			box1.segments[0] = self.segments[0]
 			box2.segments[2] = self.segments[2]
@@ -130,7 +130,7 @@ class AnnulusSector(Contour):
 
 	def randomPoint(self):
 		"""Returns a random point inside the contour of the AnnulusSector."""
-		r = np.random.uniform(*self.rRange)
+		r = np.random.uniform(*self.radii)
 		phiRange = np.mod(self.phiRange, 2*pi)
 		if phiRange[0] > phiRange[1]:
 			phi = random.choice([np.random.uniform(phiRange[0], 2*pi),
