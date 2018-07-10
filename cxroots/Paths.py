@@ -154,11 +154,37 @@ class ComplexLine(ComplexPath):
 		""" The parameterization of the line in the variable t, where 0 <= t <= 1 """
 		return self.a + t*(self.b-self.a)
 
-	def distance(self, P):
-		""" Distance from the point P to the closest point on the line. """
-		a, b = self.a, self.b
-		return abs((b.real-a.real)*(a.imag-P.imag)-(b.imag-a.imag)*(a.real-P.real))/abs(b-a)
+	def distance(self, z):
+		""" 
+		Distance from the point z to the closest point on the line. 
 
+		Parameters
+		----------
+		z : complex
+
+		Returns
+		-------
+		float
+			The distance from z to the point on the line which is 
+			closest to z.
+		"""
+		a, b = self.a, self.b
+
+		# convert complex numbers to vectors
+		A = np.array([a.real, a.imag])
+		B = np.array([b.real, b.imag])
+		Z = np.array([z.real, z.imag])
+
+		# the projection of the point z onto the line a -> b is where
+		# the parameter t is 
+		t = (Z-A).dot(B-A)/abs((B-A).dot(B-A))
+
+		# but the line segment only has 0 <= t <= 1
+		t = t.clip(0,1)
+
+		# so the point on the line segment closest to z is
+		c = self(t)
+		return abs(c-z)
 
 class ComplexArc(ComplexPath):
 	""" An arc with center z0, radius R, initial angle t0 and change of angle dt """
