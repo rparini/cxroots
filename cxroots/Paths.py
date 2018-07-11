@@ -200,8 +200,28 @@ class ComplexArc(ComplexPath):
 		""" The parameterization of the arc in the variable t, where 0 <= t <= 1 """
 		return self.R*exp(1j*(self.t0 + t*self.dt)) + self.z0
 
-	def distance(self, P):
-		""" Distance from the point P to the closest point on the arc .
-		XXX: Needs to be properly implemented. """
-		t = np.linspace(0,1,100000)
-		return np.min(np.abs(self(t) - P))
+	def distance(self, z):
+		""" 
+		Distance from the point z to the closest point on the arc. 
+
+		Parameters
+		----------
+		z : complex
+
+		Returns
+		-------
+		float
+			The distance from z to the point on the arc which is 
+			closest to z.
+		"""
+		theta = np.angle(z-self.z0) 				# np.angle maps to (-pi,pi]
+		theta = (theta-self.t0)%(2*pi) + self.t0 	# put theta in [t0,t0+2pi)
+
+		if ((self.dt > 0 and self.t0 < theta < self.t0+self.dt)
+			or (self.dt < 0 and self.t0+self.dt < theta - 2*pi < self.t0)):
+			# the closest point to z lies on the arc
+			return abs(self.R*exp(1j*theta) + self.z0 - z)
+		else:
+			# the closest point to z is one of the endpoints
+			return min(abs(self(0)-z), abs(self(1)-z))
+
