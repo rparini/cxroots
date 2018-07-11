@@ -15,12 +15,12 @@ def test_distance_line(a, b, P):
 	assert C.distance(P) == pytest.approx(np.min(np.abs(C(t) - P)), 1e-6)
 
 
-# @pytest.mark.parametrize('z0', uniform(-10, 10, size=5) + 1j*uniform(-10, 10, size=5))
+@pytest.mark.parametrize('z0', uniform(-10, 10, size=5) + 1j*uniform(-10, 10, size=5))
 @pytest.mark.parametrize('R', uniform(0, 10, size=5))
 @pytest.mark.parametrize('t0', uniform(0, 2*pi, size=5))
 @pytest.mark.parametrize('dt', uniform(-2*pi, 2*pi, size=5))
 @pytest.mark.parametrize('P', uniform(-10, 10, size=5) + 1j*uniform(-10, 10, size=5))
-def test_distance_arc(R, t0, dt, P):
+def test_distance_arc(z0, R, t0, dt, P):
 	z0 = 0
 	t = np.linspace(0,1,100001)
 	C = ComplexArc(z0, R, t0, dt)
