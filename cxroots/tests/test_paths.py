@@ -6,6 +6,11 @@ from numpy.random import uniform
 
 from cxroots.Paths import ComplexArc, ComplexLine
 
+# have a common seed for each testing process
+from datetime import date
+today = date.today()
+np.random.seed(today.year*today.month*today.day)
+
 @pytest.mark.parametrize('a', uniform(-10, 10, size=5) + 1j*uniform(-10, 10, size=5))
 @pytest.mark.parametrize('b', uniform(-10, 10, size=5) + 1j*uniform(-10, 10, size=5))
 @pytest.mark.parametrize('P', uniform(-10, 10, size=5) + 1j*uniform(-10, 10, size=5))
