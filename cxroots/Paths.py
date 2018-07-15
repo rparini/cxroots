@@ -168,11 +168,9 @@ class ComplexLine(ComplexPath):
 			The distance from z to the point on the line which is 
 			closest to z.
 		"""
-		a, b = self.a, self.b
-
 		# convert complex numbers to vectors
-		A = np.array([a.real, a.imag])
-		B = np.array([b.real, b.imag])
+		A = np.array([self.a.real, self.a.imag])
+		B = np.array([self.b.real, self.b.imag])
 		Z = np.array([z.real, z.imag])
 
 		# the projection of the point z onto the line a -> b is where
