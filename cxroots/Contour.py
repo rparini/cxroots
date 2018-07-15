@@ -36,11 +36,21 @@ class Contour(object):
 		else:
 			return self.segments[segmentIndex](N*t%1)
 
-	def plot(self, *args, **kwargs):
-		for segment in self.segments:
-			segment.plot(*args, **kwargs)
+	def plot(self, **plotKwargs):
+		"""
+		Uses matplotlib to plot, but not show, the contour as a 2D plot 
+		in the Complex plane.
 
-	def sizePlot(self):
+		Parameters
+		----------
+		**plotKwargs 
+			Key word arguments are as in :meth:`~cxroots.Paths.ComplexPath.plot`.
+		"""
+		for segment in self.segments:
+			segment.plot(**plotKwargs)
+		self._sizePlot()
+
+	def _sizePlot(self):
 		import matplotlib.pyplot as plt
 		t = np.linspace(0,1,1000)
 		z = self(t)
@@ -54,18 +64,21 @@ class Contour(object):
 		plt.xlim([xmin, xmax])
 		plt.ylim([ymin, ymax])
 
-	def show(self, saveFile=None, *args, **kwargs):
+	def show(self, saveFile=None, **plotKwargs):
 		""" 
-		Shows the contour as a 2D plot in the complex plane.
+		Shows the path as a 2D plot in the complex plane.  Requires
+		Matplotlib.
 
 		Parameters
-		==========
+		----------
 		saveFile : str (optional)
-			If given then the plot will be saved to disk with name 'saveFile' instead of being shown.
+			If given then the plot will be saved to disk with name 
+			'saveFile'.  By default the plot is shown on-screen.
+		**plotKwargs
+			Key word arguments are as in :meth:`~cxroots.Paths.ComplexPath.plot`.
 		"""
 		import matplotlib.pyplot as plt
-		self.sizePlot()
-		self.plot(*args, **kwargs)
+		self.plot(*args, **plotKwargs)
 
 		if saveFile is not None:
 			plt.savefig(saveFile, bbox_inches='tight')
