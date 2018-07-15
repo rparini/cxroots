@@ -358,14 +358,6 @@ class Contour(object):
 		"""
 		return demo_find_roots(self, *args, **kwargs)
 
-	def show_roots(self, *args, **kwargs):
-		roots = self.roots(*args, **kwargs)
-		roots.show()
-
-	def print_roots(self, *args, **kwargs):
-		roots = self.roots(*args, **kwargs)
-		print(roots)
-
 # Reuse docs for roots
 try:
 	Contour.roots.__doc__ = docstrings.delete_params_s(find_roots.__doc__, ['originalContour'])
