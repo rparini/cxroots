@@ -112,11 +112,22 @@ class Contour(object):
 		for divisionFactor in divisionFactorGen():
 			yield self.subdivide(axis, divisionFactor)
 
-	def distance(self, P):
+	def distance(self, z):
 		"""
-		Get the distance from the point P in the complex plane to the nearest point on the contour.
+		Get the distance from the point z in the complex plane to the 
+		nearest point on the contour.
+
+		Parameters
+		----------
+		z : complex
+
+		Returns
+		-------
+		float
+			The distance from z to the point on the contour which is 
+			closest to z.
 		"""
-		return min(segment.distance(P) for segment in self.segments)
+		return min(segment.distance(z) for segment in self.segments)
 
 	def integrate(self, f, absTol=0, relTol=1e-12, rombergDivMax=10, method='quad', verbose=False):
 		""" Integrate around the contour, same arguments the integrate method for ComplexPath """
