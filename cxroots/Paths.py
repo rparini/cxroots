@@ -80,12 +80,29 @@ class ComplexPath(object):
 				  head_width=head_length*2/3., head_length=head_length, 
 				  fc=linecolor, ec=linecolor)
 
-	def show(self, *args, **kwargs):
-		""" Shows the path as a 2D plot in the complex plane using 
-		the same arguments as the plot method """
+
+	def show(self, saveFile=None, **plotKwargs):
+		""" 
+		Shows the path as a 2D plot in the complex plane.  Requires
+		Matplotlib.
+
+		Parameters
+		----------
+		saveFile : str (optional)
+			If given then the plot will be saved to disk with name 
+			'saveFile'.  By default the plot is shown on-screen.
+		**plotKwargs 
+			Other key word arguments are passed to :meth:`~cxroots.Paths.ComplexPath.plot`.
+		"""
 		import matplotlib.pyplot as plt
-		self.plot(*args, **kwargs)
-		plt.show()
+		self.plot(**plotKwargs)
+
+		if saveFile is not None:
+			plt.savefig(saveFile, bbox_inches='tight')
+			plt.close()
+		else:
+			plt.show()
+
 
 	def integrate(self, f, absTol=0, relTol=1e-12, divMax=15, intMethod='quad', verbose=False):
 		"""
