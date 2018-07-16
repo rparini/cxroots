@@ -22,7 +22,7 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
 		Point to evaluate the derivative at.
 	n : int
 		The order of the derivative to evaluate.
-	contour : Contour, optional
+	contour : :class:`Contour <cxroots.Contour.Contour>`, optional
 		The contour, C, in the complex plane which encloses the point z0.
 		By default the contour is the circle |z-z_0|=1e-3.
 	absIntegrationTol : float, optional

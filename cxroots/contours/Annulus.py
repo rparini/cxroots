@@ -15,7 +15,7 @@ class Annulus(Contour):
 	center : complex
 		The center of the annulus in the complex plane.
 	radii : list
-		A list of length two of the form [inner_radius, outer_radius]
+		A list of length two of the form [inner_radius, outer_radius].
 	"""
 	def __init__(self, center, radii):
 		self.center = center

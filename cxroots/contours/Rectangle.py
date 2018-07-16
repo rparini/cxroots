@@ -9,11 +9,22 @@ class Rectangle(Contour):
 	A positively oriented rectangle in the complex plane.
 	
 	Parameters
-	==========
+	----------
 	xRange : list
-		List of length 2 giving the range of the rectangle along the real axis.
+		List of length two giving the range of the rectangle along the 
+		real axis.
 	yRange : list
-		List of length 2 giving the range of the rectangle along the imaginary axis.
+		List of length two giving the range of the rectangle along the 
+		imaginary axis.
+
+	Examples
+	--------
+	.. plot::
+		:include-source:
+	
+		from cxroots import Rectangle
+		rect = Rectangle(xRange=[-2, 2], yRange=[-1, 1])
+		rect.show()
 	"""
 	def __init__(self, xRange, yRange):
 		self.xRange = xRange
@@ -56,9 +67,11 @@ class Rectangle(Contour):
 		Parameters
 		----------
 		axis : str, can be either 'x' or 'y'
-			The axis along which the line subdividing the contour is a constant.
+			The axis along which the line subdividing the contour is a 
+			constant.
 		divisionFactor : float in range (0,1), optional
-			Determines the point along 'axis' at which the line dividing the box is placed
+			Determines the point along 'axis' at which the line dividing 
+			the contour is placed.
 
 		Returns
 		-------

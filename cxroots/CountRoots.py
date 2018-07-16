@@ -18,7 +18,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	
     Parameters
     ----------
-	C : Contour
+	C : :class:`Contour <cxroots.Contour.Contour>`
 		The enclosed_roots function returns the number of roots of f(z) 
 		within C.
 	f : function
@@ -185,15 +185,16 @@ def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3,
 	
 	Parameters
 	----------
-	C : Contour
+	C : :class:`Contour <cxroots.Contour.Contour>`
 		The contour which encloses the roots of f(z) that are to be 
 		counted. 
 	f : function
 		Function of a single variable f(z).
 	df : function, optional
-		Function of a single variable, df(z), providing the derivative 
-		of the function f(z) at the point z.  If not provided, df will
-		be approximated using a finite difference method.
+		Function of a single complex variable, df(z), providing the 
+		derivative of the function f(z) at the point z.  If not 
+		provided, df will be approximated using a finite difference 
+		method.
 	NintAbsTol : float, optional
 		Required absolute error tolerance for the contour integration.
 		Since the Cauchy integral must be an integer it is only 

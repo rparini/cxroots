@@ -3,7 +3,8 @@ import numpy as np
 
 class RootResult(object):
 	"""
-	A container to hold roots and multiplicities.
+	A class which stores the roots and their multiplicites as attributes 
+	and provides convienent methods for displaying them.
 
 	Attributes
 	----------

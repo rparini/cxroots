@@ -43,12 +43,12 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 
 	Parameters
 	----------
-	originalContour : Contour
-		The contour C which bounds the region in which all the roots of 
+	originalContour : :class:`Contour <cxroots.Contour.Contour>`
+		The contour which bounds the region in which all the roots of 
 		f(z) are sought.
 	f : function
 		A function of a single complex variable, z, which is analytic 
-		within C and has no poles or roots on C.
+		within the contour and has no poles or roots on the contour.
 	df : function, optional
 		A function of a single complex variable which is the derivative 
 		of the function f(z). If df is not given then it will be 
@@ -102,9 +102,9 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		involving formal orthogonal polynomials are sufficently close to
 		zero, ie. that the absolute value of each element is < errStop.
 	intMethod : {'quad', 'romb'}, optional
-		If 'quad' then scipy.integrate.quad is used to perform the 
+		If 'quad' then :func:`scipy.integrate.quad` is used to perform the 
 		integral.  If 'romb' then Romberg integraion, using 
-		scipy.integrate.romb, is performed instead.  Typically, quad is 
+		:func:`scipy.integrate.romb`, is performed instead.  Typically, quad is 
 		the better choice but it requires that the real and imaginary 
 		parts of each integral are calculated sepeartely, in addition, 
 		if df is not provided, 'quad' will require more function 
@@ -117,11 +117,11 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	divMax : int, optional
 		If the Romberg integration method is used then divMax is the
 		maximum number of divisions before the Romberg integration
-		routine of a path exits.
+		routine exits.
 	divMin : int, optional
 		If the Romberg integration method is used then divMin is the
 		minimum number of divisions before the Romberg integration
-		routine of a path is allowed to exit.
+		routine is allowed to exit.
 	m : int, optional
 		Only used if df=None and method='quad'.  The argument order=m is 
 		passed to numdifftools.Derivative and is the order of the error 
@@ -133,7 +133,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	Yields
 	------
 	list
-		Roots of f(z) within the contour C
+		Roots of f(z) within the contour originalContour
 	list
 		Multiplicites of roots
 	deque
@@ -302,7 +302,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			print("The given root", root, "is not a root of f(z) since |f(givenRoot)| =", err, "> rootErrTol =", rootErrTol)
 
 	while contours:
-		# yield the initial state here so that the animation in demo_findRoots shows the first frame
+		# yield the initial state here so that the animation in demo_find_roots shows the first frame
 		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
 		yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
@@ -411,12 +411,8 @@ def find_roots(originalContour, f, df=None, **kwargs):
 
 	Returns
 	-------
-	result : RootResult
+	result : :class:`RootResult <cxroots.RootResult.RootResult>`
 		A container for the roots and their multiplicities.
-
-	See Also
-	--------
-	RootResult
 	"""
 	rootFinder = find_roots_gen(originalContour, f, df, **kwargs)
 	for roots, multiplicities, contours, numberOfRemainingRoots in rootFinder:

@@ -21,10 +21,25 @@ from .DemoRootFinder import demo_find_roots
 from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
 
 class Contour(object):
+	"""A base class for contours in the complex plane."""
 	def __init__(self, segments):
 		self.segments = np.array(segments, dtype=object)
 
 	def __call__(self, t):
+		"""
+		Evaluate the contour parametricly.
+
+		Parameters
+		----------
+		t : float
+			A real number :math:`0\leq t \leq 1` which parameterises
+			the contour.
+
+		Returns
+		-------
+		complex
+			A point on the contour.
+		"""
 		t = np.array(t)
 		N = len(self.segments)
 		segmentIndex = np.array(N*t, dtype=int)
@@ -66,16 +81,16 @@ class Contour(object):
 
 	def show(self, saveFile=None, **plotKwargs):
 		""" 
-		Shows the path as a 2D plot in the complex plane.  Requires
+		Shows the contour as a 2D plot in the complex plane.  Requires
 		Matplotlib.
 
 		Parameters
 		----------
 		saveFile : str (optional)
 			If given then the plot will be saved to disk with name 
-			'saveFile'.  By default the plot is shown on-screen.
+			'saveFile'.  If saveFile=None the plot is shown on-screen.
 		**plotKwargs
-			Key word arguments are as in :meth:`~cxroots.Paths.ComplexPath.plot`.
+			Key word arguments are as in :meth:`~cxroots.Contour.Contour.plot`.
 		"""
 		import matplotlib.pyplot as plt
 		self.plot(*args, **plotKwargs)
@@ -88,22 +103,25 @@ class Contour(object):
 
 	def subdivisions(self, axis='alternating'):
 		""" 
-		A generator of possible subdivisions of the contour, starting with an equal subdivision. 
+		A generator for possible subdivisions of the contour. 
 		
 		Parameters
 		----------
-		axis : str, 'alternating' or any element of self.axisName which is defined in a Contour subclass
-			The axis along which the line subdividing the contour is a constant (eg. subdividing a circle
-			along the radial axis will give an outer annulus and an inner circle).  If alternating then
-			the dividing axis will always be different to the dividing axis used to create the contour
-			which is now being divided.
+		axis : str, 'alternating' or any element of self.axisName.
+			The axis along which the line subdividing the contour is a 
+			constant (eg. subdividing a circle along the radial axis 
+			will give an outer annulus and an inner circle).  If 
+			alternating then the dividing axis will always be different
+			to the dividing axis used to create the contour which is now 
+			being divided.
 
-		Returns
-		-------
-		Generator of possible subdivisions
+		Yields
+		------
+		tuple
+			A tuple with two contours which subdivide the original
+			contour.
 		"""
 		if axis == 'alternating':
-			# if the box to be subdivided was itself created by subdivision then alternate the axis of subdivision
 			if hasattr(self,'_createdBySubdivisionAxis'):
 				axis = (self._createdBySubdivisionAxis + 1)%len(self.axisName)
 			else:
