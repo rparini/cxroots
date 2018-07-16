@@ -103,7 +103,6 @@ class ComplexPath(object):
 				  head_width=head_length*2/3., head_length=head_length, 
 				  fc=linecolor, ec=linecolor)
 
-
 	def show(self, saveFile=None, **plotKwargs):
 		""" 
 		Shows the path as a 2D plot in the complex plane.  Requires
@@ -113,7 +112,7 @@ class ComplexPath(object):
 		----------
 		saveFile : str (optional)
 			If given then the plot will be saved to disk with name 
-			'saveFile'.  By default the plot is shown on-screen.
+			'saveFile'.  If saveFile=None the plot is shown on-screen.
 		**plotKwargs 
 			Other key word arguments are passed to :meth:`~cxroots.Paths.ComplexPath.plot`.
 		"""
@@ -126,13 +125,11 @@ class ComplexPath(object):
 		else:
 			plt.show()
 
-
 	def integrate(self, f, absTol=0, relTol=1e-12, divMax=15, intMethod='quad', verbose=False):
 		"""
-		Integrate the function f along the path using SciPy's Romberg
-		algorithm.  The value of the integral is cached and will be
-		reused if the method is called with same arguments (ignoring 
-		verbose).
+		Integrate the function f along the path.  The value of the 
+		integral is cached and will be reused if the method is called 
+		with same arguments (ignoring verbose).
 
 		Parameters
 		----------
