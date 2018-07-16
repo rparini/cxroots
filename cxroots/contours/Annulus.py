@@ -16,6 +16,15 @@ class Annulus(Contour):
 		The center of the annulus in the complex plane.
 	radii : list
 		A list of length two of the form [inner_radius, outer_radius].
+
+	Examples
+	--------
+	.. plot::
+		:include-source:
+	
+		from cxroots import Annulus
+		annulus = Annulus(center=0, radii=[0.5,0.75])
+		annulus.show()
 	"""
 	def __init__(self, center, radii):
 		self.center = center

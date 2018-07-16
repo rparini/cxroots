@@ -18,6 +18,24 @@ class AnnulusSector(Contour):
 		List of length two of the form [phi0, phi1].
 		The segment of the contour containing inner and outer circular arcs 
 		will be joined, counter clockwise from phi0 to phi1.
+
+	Examples
+	--------
+	.. plot::
+		:include-source:
+
+		from numpy import pi
+		from cxroots import AnnulusSector
+		annulusSector = AnnulusSector(center=0.2, radii=[0.5, 1.25], phiRange=[-pi/4, pi/4])
+		annulusSector.show()
+
+	.. plot::
+		:include-source:
+
+		from numpy import pi
+		from cxroots import AnnulusSector
+		annulusSector = AnnulusSector(center=0.2, radii=[0.5, 1.25], phiRange=[pi/4, -pi/4])
+		annulusSector.show()	
 	"""
 	def __init__(self, center, radii, phiRange):
 		self.center = center

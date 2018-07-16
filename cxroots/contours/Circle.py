@@ -15,6 +15,15 @@ class Circle(Contour):
 		The center of the circle.
 	radius : float
 		The radius of the circle.
+
+	Examples
+	--------
+	.. plot::
+		:include-source:
+
+		from cxroots import Circle
+		circle = Circle(center=1, radius=0.5)
+		circle.show()
 	"""
 	def __init__(self, center, radius):
 		self.center = center
