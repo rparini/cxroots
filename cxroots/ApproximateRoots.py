@@ -8,22 +8,75 @@ from .Misc import NumberOfRootsChanged
 from .RootFinder import MultiplicityError
 
 
-def approximate_roots(C, f, df=None, absTol=1e-12, relTol=1e-12, NAbsTol=0.07, integerTol=0.1, errStop=1e-8, 
-	divMin=5, divMax=10, m=2, rootTol=1e-8, intMethod='quad', verbose=False, M=None):
+def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.1, errStop=1e-8, 
+	divMin=5, divMax=10, m=2, rootTol=1e-8, intMethod='quad', verbose=False):
 	"""
-	Approximate the roots and multiplcities of the function f within the contour C.
-	"""
+	Approximate the roots and multiplcities of the function f within the 
+	contour C.
 
+	Parameters
+	----------
+	C : :class:`Contour <cxroots.Contour.Contour>`
+		The contour which encloses the roots of f the user wishes to find.
+	N : int
+		The number of roots (counting multiplicties) of f within C.  
+		This is the result of calling :meth:`C.count_roots() <cxroots.Contours.Contour.count_roots>`.
+	f : function
+		The function for which the roots are sought.  Must be a function 
+		of a single complex variable, z, which is analytic within C and 
+		has no poles or roots on the C.
+	df : function, optional
+		A function of a single complex variable which is the derivative 
+		of the function f(z). If df is not given then it will be 
+		approximated with a finite difference formula.
+	absTol : float, optional
+		Absolute error tolerance for integration.
+	relTol : float, optional
+		Relative error tolerance for integration.
+	integerTol : float, optional
+		If any computed multiplicities are not within integerTol of an
+		integer then a MultiplicityError will be raised.
+	errStop : float, optional
+		The number of distinct roots within a contour, n, is determined 
+		by checking if all the elements of a list of contour integrals 
+		involving formal orthogonal polynomials are sufficently close to
+		zero, ie. that the absolute value of each element is < errStop.
+		If errStop is too large/small then n may be smaller/larger than 
+		it actually is.
+	divMin : int, optional
+		If the Romberg integration method is used then divMin is the
+		minimum number of divisions before the Romberg integration
+		routine is allowed to exit.
+	divMax : int, optional
+		If the Romberg integration method is used then divMax is the
+		maximum number of divisions before the Romberg integration
+		routine exits.
+	m : int, optional
+		Only used if df=None and method='quad'.  The argument order=m is 
+		passed to numdifftools.Derivative and is the order of the error 
+		term in the Taylor approximation.  m must be even.
+	rootTol : float, optional
+		If any roots are within rootTol of one another then they will be
+		treated as duplicates and removed.  This helps to alleviate the 
+		problem of errStop being too small.
+	intMethod : {'quad', 'romb'}, optional
+		If 'quad' then :func:`scipy.integrate.quad` is used to perform 
+		integration.  If 'romb' then Romberg integraion is performed 
+		instead.
+	verbose : bool, optional
+		If True certain information regarding the rootfinding process
+		will be printed.
+
+	Returns
+	-------
+	tuple
+		The distinct roots of f within the contour C.
+	tuple
+		The corresponding multiplicites of the roots within C.
+	"""
 	if verbose:
 		print('Approximating roots in: ' + str(C))
-
-	if not hasattr(C, '_numberOfRoots'):
-		C._numberOfRoots = C.count_roots(f, df, NintAbsTol=NAbsTol, integerTol=integerTol, 
-			divMin=divMin, divMax=divMax, m=m, intMethod=intMethod, verbose=verbose)
-	N = C._numberOfRoots
-
-	if verbose:
-		print(N, 'Roots in', str(C))
+		print('The number of roots, counting multiplcities, within this contour is', N)
 
 	if N == 0:
 		return (), ()
