@@ -82,33 +82,34 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 	if N == 0:
 		return (), ()
 
-	if intMethod == 'romb':
-		# Check to see if the number of roots has changed after new values of f have been sampled
-		vals = C.segments[0]._trapValuesCache[f]
-		C._numberOfDivisionsForN = int(np.log2(len(vals)-1))
+	callback = None
+	# if intMethod == 'romb':
+	# 	# Check to see if the number of roots has changed after new values of f have been sampled
+	# 	vals = C.segments[0]._trapValuesCache[f]
+	# 	C._numberOfDivisionsForN = int(np.log2(len(vals)-1))
 
-		def callback(I):
-			vals = C.segments[0]._trapValuesCache[f]
-			numberOfDiv = int(np.log2(len(vals)-1))
-			if numberOfDiv > C._numberOfDivisionsForN:
-				if verbose:
-					print('--- Checking N using the newly sampled values of f ---')
-				new_N = C.count_roots(f, df, NintAbsTol=NAbsTol, integerTol=integerTol, 
-					divMin=numberOfDiv, divMax=divMax, m=m, intMethod=intMethod, verbose=verbose)
-				if verbose:
-					print('------------------------------------------------------')
+	# 	def callback(I):
+	# 		vals = C.segments[0]._trapValuesCache[f]
+	# 		numberOfDiv = int(np.log2(len(vals)-1))
+	# 		if numberOfDiv > C._numberOfDivisionsForN:
+	# 			if verbose:
+	# 				print('--- Checking N using the newly sampled values of f ---')
+	# 			new_N = C.count_roots(f, df, NintAbsTol=NAbsTol, integerTol=integerTol, 
+	# 				divMin=numberOfDiv, divMax=divMax, m=m, intMethod=intMethod, verbose=verbose)
+	# 			if verbose:
+	# 				print('------------------------------------------------------')
 
-				# update numberOfDivisionsForN
-				vals = C.segments[0]._trapValuesCache[f]
-				C._numberOfDivisionsForN = int(np.log2(len(vals)-1))
+	# 			# update numberOfDivisionsForN
+	# 			vals = C.segments[0]._trapValuesCache[f]
+	# 			C._numberOfDivisionsForN = int(np.log2(len(vals)-1))
 
-				if new_N != N:
-					if verbose:			
-						print('N has been recalculated using more samples of f')
-					C._numberOfRoots = new_N
-					raise NumberOfRootsChanged
-	else:
-		callback = None
+	# 			if new_N != N:
+	# 				if verbose:			
+	# 					print('N has been recalculated using more samples of f')
+	# 				C._numberOfRoots = new_N
+	# 				raise NumberOfRootsChanged
+	# else:
+	# 	callback = None
 
 	product = functools.partial(prod, C, f, df, 
 		absTol=absTol, relTol=relTol, divMin=divMin, divMax=divMax,
