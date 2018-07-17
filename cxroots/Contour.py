@@ -151,7 +151,7 @@ class Contour(object):
 
 	@functools.wraps(ComplexPath.integrate)
 	def integrate(self, f, **integrationKwargs):
-		return sum([segment.integrate(f, absTol, relTol, rombergDivMax, method, verbose) for segment in self.segments])
+		return sum([segment.integrate(f, **integrationKwargs) for segment in self.segments])
 
 	@remove_para('C')
 	@functools.wraps(count_roots)
