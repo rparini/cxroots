@@ -149,9 +149,12 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	# wrap f to record the number of function calls
 	f = countCalls(f)
 
+	countKwargs = {'f':f, 'df':df, 'NintAbsTol':NintAbsTol, 'integerTol':integerTol, 
+		'divMin':divMin, 'divMax':divMax, 'm':m, 'intMethod':intMethod, 'verbose':verbose}
+
 	try:
 		# compute the total number of zeros, including multiplicities, within the originally given contour
-		originalContour._numberOfRoots = originalContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
+		originalContour._numberOfRoots = originalContour.count_roots(**countKwargs)
 	except RuntimeError:
 		raise RuntimeError("""
 			Integration along the initial contour has failed.  
@@ -188,15 +191,16 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 					continue
 
 			try:
-				numberOfRoots = [contour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose) for contour in np.array(subcontours)]
+				numberOfRoots = [contour.count_roots(**countKwargs) for contour in np.array(subcontours)]
 				while parentContour._numberOfRoots != sum(numberOfRoots):
 					if verbose:
 						print('Number of roots in sub contours not adding up to parent contour.')
 						print('Recomputing number of roots in parent and child contours with NintAbsTol = ', .5*NintAbsTol)
 
-					NintAbsTol = .5*NintAbsTol
-					parentContour._numberOfRoots = parentContour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose)
-					numberOfRoots = [contour.count_roots(f, df, NintAbsTol, integerTol, divMin, divMax, m, intMethod, verbose) for contour in np.array(subcontours)]
+					tempCountKwargs = countKwargs.copy()
+					tempCountKwargs['NintAbsTol'] *= 0.5
+					parentContour._numberOfRoots = parentContour.count_roots(**tempCountKwargs)
+					numberOfRoots = [contour.count_roots(**tempCountKwargs) for contour in np.array(subcontours)]
 
 				if parentContour._numberOfRoots == sum(numberOfRoots):
 					break
