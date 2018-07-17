@@ -62,18 +62,10 @@ class Contour(object):
 		else:
 			return self.segments[segmentIndex](N*t%1)
 
-	def plot(self, **plotKwargs):
-		"""
-		Uses matplotlib to plot, but not show, the contour as a 2D plot 
-		in the Complex plane.
-
-		Parameters
-		----------
-		**plotKwargs 
-			Key word arguments are as in :meth:`~cxroots.Paths.ComplexPath.plot`.
-		"""
+	@functools.wraps(ComplexPath.plot)
+	def plot(self, *args, **kwargs):
 		for segment in self.segments:
-			segment.plot(**plotKwargs)
+			segment.plot(*args, **kwargs)
 		self._sizePlot()
 
 	def _sizePlot(self):
@@ -104,7 +96,7 @@ class Contour(object):
 			Key word arguments are as in :meth:`~cxroots.Contour.Contour.plot`.
 		"""
 		import matplotlib.pyplot as plt
-		self.plot(*args, **plotKwargs)
+		self.plot(**plotKwargs)
 
 		if saveFile is not None:
 			plt.savefig(saveFile, bbox_inches='tight')
@@ -169,8 +161,8 @@ class Contour(object):
 
 	@remove_para('C')
 	@functools.wraps(approximate_roots)
-	def approximate_roots(self, *args, **kwargs):
-		return approximate_roots(self, *args, **kwargs)
+	def approximate_roots(self, N, f, df=None, **kwargs):
+		return approximate_roots(self, N, f, df, **kwargs)
 
 	def roots(self, f, df=None, **kwargs):
 		return find_roots(self, f, df, **kwargs)
