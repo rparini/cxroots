@@ -67,11 +67,11 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, 
 		Marc Van Barel, Springer 2000
 	"""
-	N = 1
-	k = 0
-	I = []
-
 	if intMethod == 'romb':
+		N = 1
+		k = 0
+		I = []
+
 		while k < divMax and (len(I) < divMin
 			or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))
 			or (abs(I[-3] - I[-2]) > absTol and abs(I[-3] - I[-2]) > relTol*abs(I[-2]))
