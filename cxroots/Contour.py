@@ -29,7 +29,8 @@ class Contour(object):
 
 	def __call__(self, t):
 		"""
-		Evaluate the contour parametricly.
+		The point on the contour corresponding the value of the 
+		parameter t.
 
 		Parameters
 		----------
@@ -41,6 +42,14 @@ class Contour(object):
 		-------
 		complex
 			A point on the contour.
+
+		Example
+		-------
+
+		>>> from cxroots.Paths import ComplexLine
+		>>> c = ComplexLine(0,1j)	# line from 0 -> i
+		>>> c(0.2)
+		0.5j
 		"""
 		t = np.array(t)
 		N = len(self.segments)
