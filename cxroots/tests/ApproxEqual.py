@@ -24,7 +24,7 @@ def sets_approx_equal(a, b, decimal=7):
 	return np.testing.assert_almost_equal(a, b, decimal)
 
 
-def roots_approx_equal(a, b, decimal = 7):
+def roots_approx_equal(a, b, decimal=7):
 	a_roots, a_multiplicities = a.roots, a.multiplicities
 	b_roots, b_multiplicities = b
 

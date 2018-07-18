@@ -25,10 +25,10 @@ class RootfindingTests(object):
 		roots_approx_equal(self.C.roots(self.f, intMethod='romb', verbose=True), (self.roots, self.multiplicities), decimal=10)
 
 	def test_rootfinding_quad_df(self):
-		roots_approx_equal(self.C.roots(self.f, self.df, intMethod='quad', verbose=True, ), (self.roots, self.multiplicities), decimal=10)
+		roots_approx_equal(self.C.roots(self.f, self.df, intMethod='quad', verbose=True), (self.roots, self.multiplicities), decimal=10)
 
 	def test_rootfinding_quad_f(self):
-		roots_approx_equal(self.C.roots(self.f, intMethod='quad', verbose=True,), (self.roots, self.multiplicities), decimal=10)
+		roots_approx_equal(self.C.roots(self.f, intMethod='quad', verbose=True), (self.roots, self.multiplicities), decimal=10)
 
 
 class MultiplicityTests(object):
