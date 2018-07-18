@@ -383,6 +383,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 
 	if verbose:
 		print('Completed rootfinding with', f.calls, 'evaluations of f at', f.points, 'points')
+		print(RootResult(roots, multiplicities, originalContour))
 
 	yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
