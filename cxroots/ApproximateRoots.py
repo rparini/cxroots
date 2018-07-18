@@ -116,8 +116,8 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 		m=m, intMethod=intMethod, verbose=verbose, callback=callback)
 
 	try:
-		s1 = product(lambda z: z)[0]
-		mu = s1/N
+		s = [N, product(lambda z: z)[0]]	# ordinary moments
+		mu = s[1]/N
 		phiZeros = [[],[mu]]
 
 		def phiFunc(i):
@@ -222,7 +222,6 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 		V = np.column_stack([roots**i for i in range(n)])
 		if verbose:
 			print('Computing ordinary moments')
-		s = [N, s1]
 		s += [product(lambda z: z**p)[0] for p in range(2, n)]
 		multiplicities = np.dot(s[:n], np.linalg.inv(V))
 
