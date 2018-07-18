@@ -9,11 +9,11 @@ from .Misc import NumberOfRootsChanged
 from .RootFinder import MultiplicityError
 
 
-def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0.1, errStop=1e-8, 
+def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-8, 
 	divMin=5, divMax=10, m=2, rootTol=1e-8, intMethod='quad', verbose=False):
 	"""
 	Approximate the roots and multiplcities of the function f within the 
-	contour C.
+	contour C using the method of [KB].
 
 	Parameters
 	----------
@@ -34,9 +34,6 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 		Absolute error tolerance for integration.
 	relTol : float, optional
 		Relative error tolerance for integration.
-	integerTol : float, optional
-		If any computed multiplicities are not within integerTol of an
-		integer then a MultiplicityError will be raised.
 	errStop : float, optional
 		The number of distinct roots within a contour, n, is determined 
 		by checking if all the elements of a list of contour integrals 
@@ -70,10 +67,16 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 
 	Returns
 	-------
-	tuple
+	tuple of complex
 		The distinct roots of f within the contour C.
-	tuple
-		The corresponding multiplicites of the roots within C.
+	tuple of float
+		The corresponding multiplicites of the roots within C.  Should 
+		be integers but will not be automatically rounded here.
+
+	References
+	----------
+	.. [KB] "Computing the Zeros of Anayltic Functions", Peter Kravanja, 
+		Marc Van Barel, Springer (2000)
 	"""
 	if verbose:
 		print('Approximating roots in: ' + str(C))
@@ -140,15 +143,12 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 
 		r, t = 1, 0
 		while r+t<N:
-			# define the next FOP of degree r+t+1
-			k = r+t+1
+			k = r+t+1	# define FOP of degree r+t+1
 
-			# Add new values to G
 			p = r+t
 			G[p, 0:p+1] = [product(phiFunc(p), phiFunc(q))[0] for q in range(r+t+1)]
 			G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
 
-			# Add new values to G1
 			G1[p, 0:p+1] = [product(phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z))[0] for q in range(r+t+1)]
 			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
 
@@ -205,18 +205,13 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 			print(roots)
 
 		# remove any roots which are not distinct
-		removeList = []
+		rootsToRemove = []
 		for i, root in enumerate(roots):
 			if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < rootTol):
-				removeList.append(i)
+				rootsToRemove.append(i)
 
-		roots = np.delete(roots, removeList)
-
-		if verbose:
-			print('Post-removed roots:')
-			print(roots)
-
-		n = len(roots) # number of distinct roots
+		roots = np.delete(roots, rootsToRemove)
+		n = len(roots)
 
 		# compute the multiplicities, eq. (1.19) in [KB]
 		V = np.column_stack([roots**i for i in range(n)])
@@ -238,27 +233,9 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 		# print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
 
 		if verbose:
-			print('Computed multiplicities:')
-			print(multiplicities)
-
-		# round multiplicities
-		rounded_multiplicities = np.round(multiplicities)
-		rounded_multiplicities = np.array([int(m.real) for m in rounded_multiplicities])
-		if np.all(np.abs(rounded_multiplicities - np.real(multiplicities)) < integerTol) and np.all(np.abs(np.imag(multiplicities)) < integerTol):
-			multiplicities = rounded_multiplicities
-		else:
-			# multiplicities are not sufficiently close to integers
-			raise MultiplicityError("Some multiplicities are not integers:", multiplicities)
-
-		# remove any roots with multiplicity zero
-		zeroArgs = np.where(multiplicities == 0)
-		multiplicities = np.delete(multiplicities, zeroArgs)
-		roots = np.delete(roots, zeroArgs)
-
-		if verbose:
-			print('Computed roots:')
+			print('Approximations for roots:')
 			print(roots)
-			print('Final multiplicities:')
+			print('Approximations for multiplicities:')
 			print(multiplicities)
 
 		return tuple(roots), tuple(multiplicities)

@@ -349,32 +349,28 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 					# stick with the original approximation
 					root = approxRoot
 
-				if root is not None:
-					# if the root turns out to be very close to the contour then this may have
-					# introduced an error.  Therefore, compute the multiplicity of this root
-					# directly and disregard this contour (repeat its  parent's subdivision).
-					if contour.distance(root) < newtonStepTol:
-						# remove the contour and any relations
-						remove_siblings_children(contour)
+			if abs(f(root)) < rootErrTol:
+				addRoot(root, multiplicity)
 
-						# put the parent contour back into the list of contours to subdivide again
-						parent = contour._parentContour
-						contours.append(parent)
+			# if the root turns out to be very close to the contour then this may have
+			# introduced an error.  Therefore, compute the multiplicity of this root
+			# directly and disregard this contour (repeat its parent's subdivision).
+			if contour.distance(root) < newtonStepTol:
+				# remove the contour and any relations
+				remove_siblings_children(contour)
 
-						# compute the root multiplicity directly
-						approxRootMultiplicity = None
+				# put the parent contour back into the list of contours to subdivide again
+				parent = contour._parentContour
+				contours.append(parent)
 
-						# do not use this contour again
-						failedContours.append(contour)
-					
-					# if we found a root add it to the list of known roots
-					addRoot(root, approxRootMultiplicity)
+				# do not use this contour again
+				failedContours.append(contour)
 
-			# if we haven't found all the roots then subdivide further
-			numberOfKnownRootsInContour = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if contour.contains(root)])
-			if contour._numberOfRoots != numberOfKnownRootsInContour and contour not in failedContours:
-				subdivide(contour, NintAbsTol)
 
+		# if we haven't found all the roots then subdivide further
+		numberOfKnownRootsInContour = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if contour.contains(root)])
+		if contour._numberOfRoots != numberOfKnownRootsInContour and contour not in failedContours:
+			subdivide(contour, NintAbsTol)
 
 	# delete cache for original contour incase this contour is being reused
 	for segment in originalContour.segments:
