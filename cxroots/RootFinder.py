@@ -147,6 +147,8 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	[KB] Peter Kravanja, Marc Van Barel, "Computing the Zeros of 
 	Anayltic Functions", Springer (2000)
 	"""	
+	from .contours.Circle import Circle
+
 	# wrap f to record the number of function calls
 	f = countCalls(f)
 
