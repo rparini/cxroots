@@ -54,8 +54,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		of the function f(z). If df is not given then it will be 
 		approximated with a finite difference formula.
 	guessRoots : list, optional
-		A list of known roots or, if the multiplicity is known, a list 
-		of (root, multiplicity) tuples.
+		A list of known roots.
 	guessRootSymmetry : function, optional
 		A function of a single complex variable, z, which returns a list
 		of all points which are expected to be roots of f, given that z 
