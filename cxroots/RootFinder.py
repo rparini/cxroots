@@ -6,7 +6,6 @@ import warnings
 from .IterativeMethods import iterateToRoot
 from .CountRoots import RootError
 from .RootResult import RootResult
-from .Derivative import find_multiplicity
 from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
 
 class MultiplicityError(RuntimeError):
@@ -259,16 +258,17 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			remove_relations(relation)
 
 
-	def addRoot(root, multiplicity=None):
+	def addRoot(root, multiplicity):
 		# check that the root we have found is distinct from the ones we already have
 		if not roots or np.all(abs(np.array(roots) - root) > newtonStepTol):
 			# add the root to the list if it is within the original contour
 			if originalContour.contains(root):
 				roots.append(root)
-				if multiplicity is None:
-					multiplicity = find_multiplicity(f, root, df=df, rootErrTol=rootErrTol)
-
-				multiplicities.append(multiplicity.real)
+				multiplicities.append(multiplicity)
+				if verbose:
+					print('Recorded root', root)
+			elif verbose:
+				print('Root', root, 'ignored as not within original contour.')
 
 			# check to see if there are any other roots implied by the given symmetry
 			if guessRootSymmetry is not None:
@@ -333,24 +333,25 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		# (so as not to waste time re-approximating these roots)
 		if numberOfKnownRootsInContour > 0 or contour._numberOfRoots > M:
 			subdivide(contour, NintAbsTol)
+			continue
 
-		else:
-			# Approximate the roots in this contour
-			try:
-				approxRoots, approxRootMultiplicities = contour.approximate_roots(contour._numberOfRoots, f, df, 
-					absTol=absTol, relTol=relTol, integerTol=integerTol, errStop=errStop, divMin=divMin, divMax=divMax, 
-					m=m, rootTol=newtonStepTol, intMethod=intMethod, verbose=verbose)
-			except (MultiplicityError, NumberOfRootsChanged):
-				subdivide(contour, NintAbsTol)
+		# Approximate the roots in this contour
+		approxRoots, approxMultiplicities = contour.approximate_roots(contour._numberOfRoots, f, df, 
+			absTol=absTol, relTol=relTol, errStop=errStop, divMin=divMin, divMax=divMax, 
+			m=m, rootTol=newtonStepTol, intMethod=intMethod, verbose=verbose)
+
+		for approxRoot, approxMultiplicity in list(zip(approxRoots, approxMultiplicities)):
+			# check that the multiplicity is close to an integer
+			multiplicity = round(approxMultiplicity.real)
+			if abs(multiplicity - approxMultiplicity.real) > integerTol or abs(approxMultiplicity.imag) > integerTol or multiplicity == 0:
 				continue
 
-			for approxRoot, approxRootMultiplicity in list(zip(approxRoots, approxRootMultiplicities)):
-				# attempt to refine the root
-				root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
+			# attempt to refine the root
+			root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 
-				if abs(f(approxRoot)) < rootErrTol and (root is None or abs(f(approxRoot)) < abs(f(root))):
-					# stick with the original approximation
-					root = approxRoot
+			if root is None or abs(f(approxRoot)) < abs(f(root)):
+				# stick with the original approximation
+				root = approxRoot
 
 			if abs(f(root)) < rootErrTol:
 				addRoot(root, multiplicity)
