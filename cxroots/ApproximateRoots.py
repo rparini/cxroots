@@ -224,7 +224,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 			print('Computing ordinary moments')
 		s = [N, s1]
 		s += [product(lambda z: z**p)[0] for p in range(2, n)]
-		multiplicities = np.dot(s, np.linalg.inv(V))
+		multiplicities = np.dot(s[:n], np.linalg.inv(V))
 
 		### The method used in the vandermonde module doesn't seem significantly
 		### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
