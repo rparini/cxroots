@@ -215,7 +215,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-8
 
 		# compute the multiplicities, eq. (1.19) in [KB]
 		V = np.column_stack([roots**i for i in range(n)])
-		if verbose:
+		if verbose and n > 2:
 			print('Computing ordinary moments')
 		s += [product(lambda z: z**p)[0] for p in range(2, n)]
 		multiplicities = np.dot(s[:n], np.linalg.inv(V))
