@@ -276,34 +276,14 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 							print(root, 'is a root so guessRootSymmetry suggests that', x0, 'might also be a root.')
 						root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 						if root is not None:
-							addRoot(root)
+							contours.append(Circle(root, 1e-3))
 
-
-	# Add given roots and multiplicies
-	for guess in guessRoots:
-		if hasattr(guess, '__iter__'):
-			root, multiplicity = guess
-		else:
-			root, multiplicity = guess, None
-
-		# check given root
-		err = abs(f(root))
-		if err < rootErrTol:
-			if multiplicity is not None:
-				# check given multiplicity
-				computed_multiplicity = find_multiplicity(f, root, df=df, rootErrTol=rootErrTol)
-				if computed_multiplicity != multiplicity:
-					if verbose:
-						print("The multiplicity of the root", root, "has been given as", multiplicity,
-							  "but computed as", computed_multiplicity, "The value", computed_multiplicity,
-							  "will be used.")
-					multiplicity = computed_multiplicity
-
-				addRoot(root, multiplicity)
-			else:
-				addRoot(root)
 		elif verbose:
-			print("The given root", root, "is not a root of f(z) since |f(givenRoot)| =", err, "> rootErrTol =", rootErrTol)
+			print('Already recorded root', root)
+
+	# Add contours surrounding known roots so that they will be checked
+	for root in guessRoots:
+		contours.append(Circle(root, 1e-3))
 
 	while contours:
 		# yield the initial state here so that the animation in demo_find_roots shows the first frame
@@ -311,6 +291,10 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
 		contour = contours.pop()
+
+		if not hasattr(contour, '_numberOfRoots'):
+			# occours when testing a guess using a circle centered around the guess root
+			contour._numberOfRoots = contour.count_roots(**countKwargs)
 
 		if verbose:
 			print(contour._numberOfRoots, 'roots in', contour)
