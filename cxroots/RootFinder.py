@@ -101,6 +101,8 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		by checking if all the elements of a list of contour integrals 
 		involving formal orthogonal polynomials are sufficently close to
 		zero, ie. that the absolute value of each element is < errStop.
+		If errStop is too large/small then n may be smaller/larger than 
+		it actually is.
 	intMethod : {'quad', 'romb'}, optional
 		If 'quad' then :func:`scipy.integrate.quad` is used to perform the 
 		integral.  If 'romb' then Romberg integraion, using 
