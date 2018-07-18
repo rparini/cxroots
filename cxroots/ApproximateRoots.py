@@ -129,7 +129,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 		
 		# initialize G_{pq} = <phi_p, phi_q>
 		G = np.zeros((N,N), dtype=np.complex128)
-		G[0,0] = N # = <phi0, phi0> = <1,1>
+		G[0,0] = N # = <phi_0, phi_0> = <1,1>
 
 		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
 		G1 = np.zeros((N,N), dtype=np.complex128)
