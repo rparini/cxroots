@@ -116,7 +116,8 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 		m=m, intMethod=intMethod, verbose=verbose, callback=callback)
 
 	try:
-		mu = product(lambda z: z)[0]/N
+		s1 = product(lambda z: z)[0]
+		mu = s1/N
 		phiZeros = [[],[mu]]
 
 		def phiFunc(i):
@@ -133,8 +134,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, integerTol=0
 		# initialize G1_{pq} = <phi_p, phi_1 phi_q>
 		G1 = np.zeros((N,N), dtype=np.complex128)
 		phi1 = phiFunc(1)
-		ip, err = product(phiFunc(0), lambda z: phi1(z)*phiFunc(0)(z))
-		G1[0,0] = ip
+		G1[0,0] = 0 # = <phi_0, phi_1 phi_0> = <1, z-mu> = s1-mu*N = 0
 
 		take_regular = True
 
