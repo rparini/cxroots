@@ -212,7 +212,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-1
 		# multiplicities_vandermonde = vandermonde.solve_transpose(np.array(roots), np.array(s))
 
 		### Note that n = rank(H_N) is not used since calculating the
-		### rank of a matrix of floats appears to be quite unstable
+		### rank of a matrix of floats can be quite unstable
 		# s_func = lambda p: prod(C, f, df, lambda z: z**p)[0]
 		# HN = np.fromfunction(np.vectorize(lambda p,q: s_func(p+q)), shape=(N,N))
 		# print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
