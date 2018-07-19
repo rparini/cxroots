@@ -9,7 +9,7 @@ from .Misc import NumberOfRootsChanged
 from .RootFinder import MultiplicityError
 
 
-def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-8, 
+def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-12, 
 	divMin=5, divMax=10, m=2, rootTol=1e-8, intMethod='quad', verbose=False):
 	"""
 	Approximate the roots and multiplcities of the function f within the 
@@ -176,11 +176,12 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-8
 					if verbose: print(j, 'of', N-r, 'stop?', abs(ip))
 					if abs(ip) > errStop:
 						# n != r so carry on
+						print('n !=', r)
 						break
 				else:
 					# the for loop did not break
-					continue
-				break
+					print('n =', r)
+					break
 
 			else:
 				# define an inner polynomial as phi_{r+t+1} = phi_{t+1} phi_{r}
