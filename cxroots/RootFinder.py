@@ -107,7 +107,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		:func:`scipy.integrate.romb`, is performed instead.  Typically, quad is 
 		the better choice but it requires that the real and imaginary 
 		parts of each integral are calculated sepeartely, in addition, 
-		if df is not provided, 'quad' will require more function 
+		if df is not provided, 'quad' will require additional function 
 		evaluations to approximate df at each point that f is evaluated 
 		at.  If evaluating f is expensive then 'romb' may be more 
 		efficient since it computes the real and imaginary parts 
@@ -236,8 +236,6 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		Remove the contour C and all its siblings and children from the 
 		list of contours to be examined/subdivided.
 		"""
-
-		# remove itself
 		try:
 			contours.remove(C)
 		except ValueError:
@@ -264,10 +262,8 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			if originalContour.contains(root):
 				roots.append(root)
 				multiplicities.append(multiplicity)
-				if verbose:
-					print('Recorded root', root)
-			elif verbose:
-				print('Root', root, 'ignored as not within original contour.')
+				if verbose: print('Recorded root', root)
+			elif verbose: print('Root', root, 'ignored as not within original contour.')
 
 			# check to see if there are any other roots implied by the given symmetry
 			if guessRootSymmetry is not None:
@@ -298,8 +294,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			# occours when testing a guess using a circle centered around the guess root
 			contour._numberOfRoots = contour.count_roots(**countKwargs)
 
-		if verbose:
-			print(contour._numberOfRoots, 'roots in', contour)
+		if verbose: print(contour._numberOfRoots, 'roots in', contour)
 
 		# if a known root is too near to this contour then reverse the subdivision that created it 
 		if np.any([contour.distance(root) < newtonStepTol for root in roots]):
@@ -368,7 +363,6 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 
 				# do not use this contour again
 				failedContours.append(contour)
-
 
 		# if we haven't found all the roots then subdivide further
 		numberOfKnownRootsInContour = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if contour.contains(root)])
