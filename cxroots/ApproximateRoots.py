@@ -148,17 +148,15 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-1
 			p = r+t
 			G[p, 0:p+1] = [product(phiFunc(p), phiFunc(q))[0] for q in range(r+t+1)]
 			G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
+			if verbose: print('G ', G[:p+1,:p+1])
 
 			G1[p, 0:p+1] = [product(phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z))[0] for q in range(r+t+1)]
 			G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
-
-			if verbose:
-				print('G ', G[:p+1,:p+1])
-				print('G1', G1[:p+1,:p+1])
+			if verbose: print('G1', G1[:p+1,:p+1])
 
 			"""
-			If any of the zeros of the FOP are outside of the interior of 
-			the contour then we assume that they are 'arbitary' and 
+			If any of the zeros of the FOP are outside of the interior 
+			of the contour then we assume that they are 'arbitary' and 
 			instead define the FOP as an inner polynomial. [KB]
 			"""
 			polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu
@@ -173,7 +171,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-1
 				for j in range(N-r):
 					ip, err = product(lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast)
 
-					if verbose: print(j, 'of', N-r, 'stop?', abs(ip))
+					if verbose: print(j, 'of', N-r, 'err', err, 'abs(ip)', abs(ip))
 					if abs(ip) > errStop:
 						# n != r so carry on
 						print('n !=', r)
@@ -214,8 +212,6 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-1
 		### the result must be an integer anyway.
 		# import vandermonde
 		# multiplicities_vandermonde = vandermonde.solve_transpose(np.array(roots), np.array(s))
-		# print('multi  ', multiplicities)
-		# print('multi V', multiplicities_vandermonde)
 
 		### Note that n = rank(H_N) is not used since calculating the
 		### rank of a matrix of floats appears to be quite unstable
@@ -224,10 +220,8 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-1
 		# print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
 
 		if verbose:
-			print('Approximations for roots:')
-			print(roots)
-			print('Approximations for multiplicities:')
-			print(multiplicities)
+			print('Approximations for roots:\n', roots)
+			print('Approximations for multiplicities:\n', multiplicities)
 
 		return tuple(roots), tuple(multiplicities)
 
