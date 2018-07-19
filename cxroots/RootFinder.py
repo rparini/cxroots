@@ -343,7 +343,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		for approxRoot, approxMultiplicity in list(zip(approxRoots, approxMultiplicities)):
 			# check that the multiplicity is close to an integer
 			multiplicity = round(approxMultiplicity.real)
-			if abs(multiplicity - approxMultiplicity.real) > integerTol or abs(approxMultiplicity.imag) > integerTol or multiplicity == 0:
+			if abs(multiplicity - approxMultiplicity.real) > integerTol or abs(approxMultiplicity.imag) > integerTol or multiplicity < 1:
 				continue
 
 			# attempt to refine the root
