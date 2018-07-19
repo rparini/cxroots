@@ -139,8 +139,6 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, errStop=1e-1
 		phi1 = phiFunc(1)
 		G1[0,0] = 0 # = <phi_0, phi_1 phi_0> = <1, z-mu> = s1-mu*N = 0
 
-		take_regular = True
-
 		r, t = 1, 0
 		while r+t<N:
 			k = r+t+1	# define FOP of degree r+t+1
