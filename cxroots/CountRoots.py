@@ -62,6 +62,13 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 		current approximation for the integral.  If callback returns
 		an object evaluating to True then the integration will end. 
 
+	Returns
+	-------
+	complex
+		The value of the integral :math:`<\phi,\psi>`.
+	float
+		An estimate of the error for the integration.
+
 	References
 	----------
 	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, 
