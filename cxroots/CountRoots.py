@@ -32,9 +32,9 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	psi : function, optional
 		Function of a single variable psi(x).  If not provided then psi=1.
 	absTol : float, optional
-		Absolute error tolerance.
+		Absolute error tolerance for integration.
 	relTol : float, optional
-		Relative error tolerance.
+		Relative error tolerance for integration.
  	divMin : int, optional
  		Only used if intMethod='romb'. Minimum number of divisions before 
  		the Romberg integration routine is allowed to exit.  
