@@ -164,39 +164,19 @@ class Contour(object):
 	def approximate_roots(self, N, f, df=None, **kwargs):
 		return approximate_roots(self, N, f, df, **kwargs)
 
+	@remove_para('originalContour')
+	@functools.wraps(find_roots)
 	def roots(self, f, df=None, **kwargs):
 		return find_roots(self, f, df, **kwargs)
 
+	@remove_para('C')
+	@functools.wraps(demo_find_roots)
 	def demo_roots(self, *args, **kwargs):
-		"""
-		An animated demonstration of the root finding process using matplotlib.
-		Takes all the parameters of :func:`Contour.roots <cxroots.Contours.Contour.roots>` as well as:
-
-		Parameters
-		----------
-		automaticAnim : bool, optional
-			If False (default) then press SPACE to step the animation forward
-			If True then the animation will play automatically until all the 
-			roots have been found.
-		saveFile : str, optional
-			If given then the animation will be saved to disk with filename 
-			equal to saveFile instead of being shown.
-		returnAnim : bool, optional
-			If True then the matplotlib animation object will be returned 
-			instead of being shown.  Defaults to False.
-		"""
 		return demo_find_roots(self, *args, **kwargs)
-
-# Reuse docs for roots
-try:
-	Contour.roots.__doc__ = docstrings.delete_params_s(find_roots.__doc__, ['originalContour'])
-except AttributeError:
-	# for Python 2.7
-	Contour.roots.__func__.__doc__ = docstrings.delete_params_s(find_roots.__doc__, ['originalContour'])
 
 
 def divisionFactorGen():
-	"""A generator for divisionFactors"""
+	"""A generator for divisionFactors."""
 	yield 0.3	# being off-center is a better first choice for certain problems
 	
 	x = 0.5
