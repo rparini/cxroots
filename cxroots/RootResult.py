@@ -1,7 +1,8 @@
 from __future__ import division
 import numpy as np
+from collections import namedtuple
 
-class RootResult(object):
+class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
 	"""
 	A class which stores the roots and their multiplicites as attributes 
 	and provides convienent methods for displaying them.
@@ -16,10 +17,10 @@ class RootResult(object):
 	originalContour : Contour
 		The contour bounding the region in which the roots were found.
 	"""
-	def __init__(self, roots, multiplicities, originalContour):
-		self.roots = roots
-		self.multiplicities = multiplicities
-		self.originalContour = originalContour
+	def __new__(cls, roots, multiplicities, originalContour):
+		obj = super().__new__(cls, roots, multiplicities)
+		obj.originalContour = originalContour
+		return obj
 
 	def show(self, saveFile=None):
 		"""
