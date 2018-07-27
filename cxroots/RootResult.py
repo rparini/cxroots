@@ -18,7 +18,7 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
 		The contour bounding the region in which the roots were found.
 	"""
 	def __new__(cls, roots, multiplicities, originalContour):
-		obj = super(cls).__new__(cls, roots, multiplicities)
+		obj = super(RootResult, cls).__new__(cls, roots, multiplicities)
 		obj.originalContour = originalContour
 		return obj
 
