@@ -21,11 +21,11 @@ contours = [
 def test_rootfinding_df(C, roots, multiplicities):
 	f  = lambda z: np.prod([z-r for r in roots], axis=0)
 	df = lambda z: np.sum([np.prod([z-r for r in np.delete(roots,i)], axis=0) for i in range(len(roots))], axis=0)
-	roots_approx_equal(C.roots(f, df, verbose=True), (roots, multiplicities), decimal=10)
+	roots_approx_equal(C.roots(f, df, verbose=True), (roots, multiplicities))
 
 @pytest.mark.parametrize('C', contours)
 @pytest.mark.parametrize('roots,multiplicities', funcs)
 def test_rootfinding_f(C, roots, multiplicities):
 	f  = lambda z: np.prod([z-r for r in roots], axis=0)
-	roots_approx_equal(C.roots(f), (roots, multiplicities), decimal=10)
+	roots_approx_equal(C.roots(f), (roots, multiplicities))
 
