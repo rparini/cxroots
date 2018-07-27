@@ -1,5 +1,4 @@
 import pytest
-import numpy as np
 
 from cxroots.IterativeMethods import muller
 from scipy import pi, cos
