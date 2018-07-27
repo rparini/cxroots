@@ -4,7 +4,6 @@ python:
   - "3.6"
 
 install:
-  - pip install setuptools==38.7   # Later versions require numdifftools to use PyScaffold==2.5.10
   - pip install -U -r requirements.txt --upgrade-strategy=eager
   - python setup.py install
 
