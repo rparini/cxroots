@@ -8,7 +8,7 @@ funcs = [
 	pytest.param([3, 3.01, 3.02, 8, 8.02, 8+0.01j], 			[1,1,1,1,1,1], id='cluster_10^-2'),
 	pytest.param([3, 3.001, 3.002, 8, 8.002, 8+0.001j], 		[1,1,1,1,1,1], id='cluster_10^-3'),
 	pytest.param([3, 3.0001, 3.0002, 8, 8.0002, 8+0.0001j], 	[1,1,1,1,1,1], id='cluster_10^-4', marks=pytest.mark.slow),
-	pytest.param([3, 3.00001, 3.00002, 8, 8.00002, 8+0.00001j], [1,1,1,1,1,1], id='cluster_10^-5', marks=pytest.mark.xfail(reason='Cluster of roots too tight'))
+	pytest.param([3, 3.00001, 3.00002, 8, 8.00002, 8+0.00001j], [1,1,1,1,1,1], id='cluster_10^-5', marks=[pytest.mark.slow, pytest.mark.xfail(reason='Cluster of roots too tight')])
 ]
 
 contours = [
