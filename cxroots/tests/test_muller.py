@@ -6,7 +6,6 @@ from scipy import pi, cos, sin
 
 class TestSecant(unittest.TestCase):
 	def test_secant(self):
-		# example from Table 2.5 of "Numerical Analysis" by Richard L. Burden, J. Douglas Faires
 		f  = lambda x: cos(x)-x**2 + x**3 * 1j
 
 		iterations = []
