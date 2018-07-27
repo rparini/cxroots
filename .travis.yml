@@ -5,7 +5,7 @@ python:
 
 install:
   - pip install setuptools==38.7   # Later versions require numdifftools to use PyScaffold==2.5.10
-  - pip install -r requirements.txt
+  - pip install -r requirements.txt --upgrade-strategy=eager
   - python setup.py install
 
 script:
