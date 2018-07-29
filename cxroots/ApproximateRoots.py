@@ -14,7 +14,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	intMethod='quad', callback=None, verbose=False):
 	"""
 	Approximate the roots and multiplcities of the function f within the 
-	contour C using the method of [KB].
+	contour C using the method of [KB]_.
 
 	Parameters
 	----------
