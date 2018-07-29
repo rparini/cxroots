@@ -57,10 +57,11 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	verbose : bool, optional
 		If True runtime information will be printed.  False be default.
 	callback : function, optional
-		Only used when intMethod is 'romb'.  A function of one complex 
-		variable that at each step in the iteration is passed the 
-		current approximation for the integral.  If callback returns
-		an object evaluating to True then the integration will end. 
+		Only used when intMethod is 'romb'.  A function that at each 
+		step in the iteration is passed the current approximation for 
+		the integral, the estimated error of that approximation and the
+		number of iterations.  If the return of callback evaluates to 
+		True then the integration will end. 
 
 	Returns
 	-------
@@ -119,7 +120,8 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 					print(k, 'I', I[-1])
 
 			if callback is not None:
-				if callback(I[-1]):
+				err = abs(I[-2] - I[-1]) if k > 1 else None
+				if callback(I[-1], err, k):
 					break
 
 		return I[-1], abs(I[-2] - I[-1])
@@ -170,7 +172,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 class RootError(RuntimeError):
 	pass
 
-def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3, 
+def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3, 
 	divMax=15, m=2, intMethod='quad', verbose=False):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in 
@@ -202,11 +204,11 @@ def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3,
 		derivative of the function f(z) at the point z.  If not 
 		provided, df will be approximated using a finite difference 
 		method.
-	NintAbsTol : float, optional
+	NIntAbsTol : float, optional
 		Required absolute error tolerance for the contour integration.
 		Since the Cauchy integral must be an integer it is only 
 		necessary to distinguish which integer the integral is 
-		converging towards.  Therefore, NintAbsTol can be fairly large.
+		converging towards.  Therefore, NIntAbsTol can be fairly large.
 	integerTol : float, optional
 		The evaluation of the Cauchy integral will be accepted if its 
 		value is within integerTol of the closest integer.  
@@ -243,8 +245,11 @@ def count_roots(C, f, df=None, NintAbsTol=0.07, integerTol=0.1, divMin=3,
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
-		I, err = prod(C, f, df, absTol=NintAbsTol, relTol=0, divMin=divMin, 
+		I, err = prod(C, f, df, absTol=NIntAbsTol, relTol=0, divMin=divMin, 
 			divMax=divMax, m=m, intMethod=intMethod, verbose=verbose, integerTol=integerTol)
+
+	if intMethod == 'romb':
+		C._numberOfDivisionsForN = int(np.log2(len(C.segments[0]._trapValuesCache[f])-1))
 
 	if np.isnan(I):
 		raise RootError("""Result of integral is an invalid value.  
