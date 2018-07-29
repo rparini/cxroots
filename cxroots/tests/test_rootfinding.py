@@ -246,6 +246,16 @@ class TestConjugate(unittest.TestCase):
 		roots = self.C.roots(self.f, verbose=True, guessRootSymmetry = self.symmetry)
 		roots_approx_equal(roots, (self.roots, self.multiplicities), decimal=12)
 
+def test_reevaluation_of_N():
+	from cxroots import Circle
+	C = Circle(0,2)
+	f = lambda z: (z-1)*(z-0.2)**2
+
+	roots 		   = [1, 0.2]
+	multiplicities = [1, 2]
+	roots_approx_equal(C.roots(f, NIntAbsTol=10, intMethod='romb', verbose=True), (roots, multiplicities))
+	
+
 class TestIntroduction(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		self.C = Circle(0,3)
