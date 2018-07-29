@@ -232,12 +232,6 @@ def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3,
 	int
 		The number of zeros of f (counting multiplicities) which lie 
 		within the contour C.
-	
-	References
-	----------
-	[DL] "A Numerical Method for Locating the Zeros of an Analytic 
-		function", L.M.Delves, J.N.Lyness, Mathematics of Computation 
-		(1967), Vol.21, Issue 100
 	"""
 	if verbose:
 		print('Computing number of roots within', C)
