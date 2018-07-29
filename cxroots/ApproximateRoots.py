@@ -22,7 +22,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 		The contour which encloses the roots of f the user wishes to find.
 	N : int
 		The number of roots (counting multiplicties) of f within C.  
-		This is the result of calling :meth:`C.count_roots() <cxroots.Contours.Contour.count_roots>`.
+		This is the result of calling :meth:`C.count_roots <cxroots.Contours.Contour.count_roots>`.
 	f : function
 		The function for which the roots are sought.  Must be a function 
 		of a single complex variable, z, which is analytic within C and 
