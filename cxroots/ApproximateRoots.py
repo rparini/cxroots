@@ -145,11 +145,11 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 				if verbose: print(j, 'of', N-r, 'err', err, 'abs(ip)', abs(ip))
 				if abs(ip) > errStop:
 					# n != r so carry on
-					print('n !=', r)
+					if verbose: print('n !=', r)
 					break
 			else:
 				# the for loop did not break
-				print('n =', r)
+				if verbose: print('n =', r)
 				break
 
 		else:
