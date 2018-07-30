@@ -1,5 +1,6 @@
 import pytest
 from numpy import exp, sin, cos
+import numpy as np
 
 from cxroots import Circle
 from cxroots.tests.ApproxEqual import roots_approx_equal
