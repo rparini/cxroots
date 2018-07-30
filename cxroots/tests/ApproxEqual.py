@@ -25,7 +25,7 @@ def sets_approx_equal(a, b, decimal=10):
 
 
 def roots_approx_equal(a, b, decimal=10):
-	a_roots, a_multiplicities = a.roots, a.multiplicities
+	a_roots, a_multiplicities = a
 	b_roots, b_multiplicities = b
 
 	a_roots, b_roots = np.array(a_roots), np.array(b_roots)
