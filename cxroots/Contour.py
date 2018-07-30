@@ -11,7 +11,16 @@ from .Misc import doc_tab_to_space, docstrings, remove_para
 from .Paths import ComplexPath
 
 class Contour(object):
-	"""A base class for contours in the complex plane."""
+	"""
+	A base class for contours in the complex plane.
+
+	Attributes
+	----------
+	centralPoint : complex
+		The point at the center of the contour.
+	area : float
+		The surface area of the contour.
+	"""
 	def __init__(self, segments):
 		self.segments = np.array(segments, dtype=object)
 
@@ -51,6 +60,29 @@ class Contour(object):
 			return np.array([self.segments[i](N*t[ti]%1) for ti, i in enumerate(segmentIndex)])
 		else:
 			return self.segments[segmentIndex](N*t%1)
+
+	@property
+	def centralPoint(self):
+		raise NotImplemented('centralPoint needs to be implemented in the subclass.')
+
+	@property
+	def area(self):
+		raise NotImplemented('area needs to be implemented in the subclass.')
+
+	def contains(self, z):
+		"""
+		Tests whether the point z is within the contour.
+
+		Parameters
+		----------
+		z : complex
+
+		Returns
+		-------
+		bool
+			True if z lies within the contour and false otherwise.
+		"""
+		raise NotImplemented('contains() needs to be implemented in the subclass.')
 
 	@functools.wraps(ComplexPath.plot)
 	def plot(self, *args, **kwargs):
@@ -165,7 +197,6 @@ class Contour(object):
 	@functools.wraps(demo_find_roots)
 	def demo_roots(self, *args, **kwargs):
 		return demo_find_roots(self, *args, **kwargs)
-
 
 def divisionFactorGen():
 	"""A generator for divisionFactors."""

@@ -29,17 +29,20 @@ class Circle(Contour):
 		self.center = center
 		self.radius = radius
 		self.axisName = ('r')
-		self.centralPoint = center
 
 		segments = [ComplexArc(center, radius, 0, 2*pi)]
 		super(Circle, self).__init__(segments)
 
 	def __str__(self):
 		return 'Circle: center={center.real:.3f}{center.imag:+.3f}i, radius={radius:.3f}'.format(center=self.center, radius=self.radius)
-	
+
 	def contains(self, z):
 		""" Returns True if the point z lies within the contour, False if otherwise """
 		return abs(z - self.center) < self.radius
+
+	@property
+	def centralPoint(self):
+		return self.center
 
 	@property
 	def area(self):
