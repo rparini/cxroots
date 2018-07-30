@@ -1,15 +1,3 @@
-"""
-References
-----------
-[DSZ] "Locating all the Zeros of an Analytic Function in one Complex Variable"
-	M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
-[BVP] Gakhov, F. D. "Boundary value problems", section 12 (2014), Elsevier.
-[DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
-	L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
-[KB] "Computing the Zeros of Anayltic Functions", Peter Kravanja, Marc Van Barel,
-	Springer (2000)
-"""
-
 from __future__ import division
 import numpy as np
 import functools
