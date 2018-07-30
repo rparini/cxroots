@@ -12,12 +12,12 @@ class AnnulusSector(Contour):
 	----------
 	center : complex
 		The center of the annulus sector.
-	radii : list
-		List of length two of the form [inner_radius, outer_radius]
-	phiRange : list
-		List of length two of the form [phi0, phi1].
-		The segment of the contour containing inner and outer circular arcs 
-		will be joined, counter clockwise from phi0 to phi1.
+	radii : tuple
+		Tuple of length two of the form (inner_radius, outer_radius)
+	phiRange : tuple
+		Tuple of length two of the form (phi0, phi1).
+		The segment of the contour containing inner and outer circular 
+		arcs will be joined, counter clockwise from phi0 to phi1.
 
 	Examples
 	--------
@@ -26,7 +26,7 @@ class AnnulusSector(Contour):
 
 		from numpy import pi
 		from cxroots import AnnulusSector
-		annulusSector = AnnulusSector(center=0.2, radii=[0.5, 1.25], phiRange=[-pi/4, pi/4])
+		annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(-pi/4, pi/4))
 		annulusSector.show()
 
 	.. plot::
@@ -34,12 +34,12 @@ class AnnulusSector(Contour):
 
 		from numpy import pi
 		from cxroots import AnnulusSector
-		annulusSector = AnnulusSector(center=0.2, radii=[0.5, 1.25], phiRange=[pi/4, -pi/4])
+		annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(pi/4, -pi/4))
 		annulusSector.show()	
 	"""
 	def __init__(self, center, radii, phiRange):
 		self.center = center
-		self.axisName = ['r', 'phi']
+		self.axisName = ('r', 'phi')
 
 		if phiRange[0] > phiRange[1]:
 			phiRange[1] += 2*pi

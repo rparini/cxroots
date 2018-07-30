@@ -10,11 +10,11 @@ class Rectangle(Contour):
 	
 	Parameters
 	----------
-	xRange : list
-		List of length two giving the range of the rectangle along the 
+	xRange : tuple
+		Tuple of length two giving the range of the rectangle along the 
 		real axis.
-	yRange : list
-		List of length two giving the range of the rectangle along the 
+	yRange : tuple
+		Tuple of length two giving the range of the rectangle along the 
 		imaginary axis.
 
 	Examples
@@ -23,13 +23,13 @@ class Rectangle(Contour):
 		:include-source:
 	
 		from cxroots import Rectangle
-		rect = Rectangle(xRange=[-2, 2], yRange=[-1, 1])
+		rect = Rectangle(xRange=(-2, 2), yRange=(-1, 1))
 		rect.show()
 	"""
 	def __init__(self, xRange, yRange):
 		self.xRange = xRange
 		self.yRange = yRange
-		self.axisName = ['x', 'y']
+		self.axisName = ('x', 'y')
 
 		self.z1 = z1 = self.xRange[0] + 1j*self.yRange[0]
 		self.z2 = z2 = self.xRange[1] + 1j*self.yRange[0]

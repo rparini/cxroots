@@ -28,7 +28,7 @@ class Circle(Contour):
 	def __init__(self, center, radius):
 		self.center = center
 		self.radius = radius
-		self.axisName = ['r']
+		self.axisName = ('r')
 		self.centralPoint = center
 
 		segments = [ComplexArc(center, radius, 0, 2*pi)]

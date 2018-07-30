@@ -14,8 +14,8 @@ class Annulus(Contour):
 	----------
 	center : complex
 		The center of the annulus in the complex plane.
-	radii : list
-		A list of length two of the form [inner_radius, outer_radius].
+	radii : tuple
+		A tuple of length two of the form (inner_radius, outer_radius).
 
 	Examples
 	--------
@@ -23,13 +23,13 @@ class Annulus(Contour):
 		:include-source:
 	
 		from cxroots import Annulus
-		annulus = Annulus(center=0, radii=[0.5,0.75])
+		annulus = Annulus(center=0, radii=(0.5,0.75))
 		annulus.show()
 	"""
 	def __init__(self, center, radii):
 		self.center = center
 		self.radii = radii
-		self.axisName = ['r', 'phi']
+		self.axisName = ('r', 'phi')
 
 		segments = [ComplexArc(center, radii[1], 0, 2*pi), ComplexArc(center, radii[0], 0, -2*pi)]
 		super(Annulus, self).__init__(segments)
