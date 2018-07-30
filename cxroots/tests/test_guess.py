@@ -74,7 +74,7 @@ def test_guess_symmetry_2(usedf):
 		  	 0.963018623787179 - 0.427294816877434j, 
 		  	 0.963018623787179 + 0.427294816877434j]
 	
-	multiplicities = np.ones_like(self.roots)
+	multiplicities = np.ones_like(roots)
 
 	roots_approx_equal(C.roots(f, df, verbose=True, guessRootSymmetry=symmetry), (roots, multiplicities))
 
