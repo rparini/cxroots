@@ -6,8 +6,6 @@ import functools
 
 from .CountRoots import count_roots, prod
 from .Misc import NumberOfRootsChanged
-from .RootFinder import MultiplicityError
-
 
 def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, 
 	errStop=1e-10, divMin=5, divMax=10, m=2, rootTol=1e-8, 
