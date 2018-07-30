@@ -172,10 +172,8 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	contours = deque()
 	contours.append(originalContour)
 
-	def subdivide(parentContour, NIntAbsTol):
-		"""
-		Given a contour, parentContour, subdivide it into multiple contours.
-		"""
+	def subdivide(parentContour):
+		"""Given a contour, parentContour, subdivide it into multiple contours."""
 		if verbose:
 			print('Subdividing', parentContour)
 
@@ -326,7 +324,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		# if there are any known roots within the contour then also subdivide 
 		# (so as not to waste time re-approximating these roots)
 		if numberOfKnownRootsInContour > 0 or contour._numberOfRoots > M:
-			subdivide(contour, NIntAbsTol)
+			subdivide(contour)
 			continue
 
 		### Approximate the roots in this contour
@@ -356,7 +354,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		except NumberOfRootsChanged:
 			if verbose: print('The number of roots within the contour have been reevaluated.')
 			if contour._numberOfRoots > M:
-				subdivide(contour, NIntAbsTol)
+				subdivide(contour)
 			else:
 				contours.append(contour)
 			continue
@@ -394,7 +392,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		# if we haven't found all the roots then subdivide further
 		numberOfKnownRootsInContour = sum([int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities) if contour.contains(root)])
 		if contour._numberOfRoots != numberOfKnownRootsInContour and contour not in failedContours:
-			subdivide(contour, NIntAbsTol)
+			subdivide(contour)
 
 	# delete cache for original contour incase this contour is being reused
 	for segment in originalContour.segments:
