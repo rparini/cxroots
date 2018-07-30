@@ -8,7 +8,7 @@ from .CountRoots import count_roots, prod
 from .Misc import NumberOfRootsChanged
 
 def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, 
-	errStop=1e-10, divMin=5, divMax=10, m=2, rootTol=1e-8, 
+	errStop=1e-10, divMin=3, divMax=15, m=2, rootTol=1e-8, 
 	intMethod='quad', callback=None, verbose=False):
 	"""
 	Approximate the roots and multiplcities of the function f within the 
