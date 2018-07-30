@@ -211,13 +211,13 @@ def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3,
 		converging towards.  Therefore, NIntAbsTol can be fairly large.
 	integerTol : float, optional
 		The evaluation of the Cauchy integral will be accepted if its 
-		value is within integerTol of the closest integer.  
- 	divMin : int, optional
- 		Only used if intMethod='romb'. Minimum number of divisions 
- 		before the Romberg integration routine is allowed to exit.  
+		value is within integerTol of the closest integer.
+	divMin : int, optional
+		Only used if intMethod='romb'. Minimum number of divisions 
+		before the Romberg integration routine is allowed to exit.
 	divMax : int, optional
 		Only used if intMethod='romb'.  The maximum number of divisions 
-		before the Romberg integration routine of a path exits.  
+		before the Romberg integration routine of a path exits.
 	m : int, optional
 		Only used if df=None and intMethod='quad'.  The argument order=m 
 		is passed to numdifftools.Derivative and is the order of the 
@@ -226,6 +226,9 @@ def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3,
 		If 'quad' then scipy.integrate.quad is used to perform the 
 		integral.  If 'romb' then Romberg integraion, using 
 		scipy.integrate.romb, is performed instead.
+	verbose : bool, optional
+		If True certain messages regarding the integration will be 
+		printed.
 
 	Returns
 	-------

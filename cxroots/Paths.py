@@ -80,7 +80,7 @@ class ComplexPath(object):
 			The line style of the plotted path, passed to the 
 			:func:`matplotlib.pyplot.plot` function as the keyword 
 			argument of 'linestyle'.  The default corresponds to a solid 
-			line.  See :func:`matplotlib.lines.Line2D.set_linestyle` for
+			line.  See :meth:`matplotlib.lines.Line2D.set_linestyle` for
 			other acceptable arguments.
 		"""
 		import matplotlib.pyplot as plt
@@ -289,7 +289,7 @@ class ComplexArc(ComplexPath):
 
 	def __call__(self, t):
 		"""
-		The function :math:`z(t) = R e^{i(t0 + t dt)} + z0`.
+		The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.
 	
 		Parameters
 		----------

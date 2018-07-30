@@ -39,7 +39,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	"""
 	A generator which at each step takes a contour and either finds all 
 	the zeros of f within it or subdivides it further.  Based on the 
-	algorithm in [KB].
+	algorithm in [KB]_.
 
 	Parameters
 	----------
@@ -125,7 +125,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		routine exits.
 	m : int, optional
 		Only used if df=None and method='quad'.  The argument order=m is 
-		passed to numdifftools.Derivative and is the order of the error 
+		passed to :func:`numdifftools.Derivative` and is the order of the error 
 		term in the Taylor approximation.  m must be even.
 	verbose : bool, optional
 		If True certain messages concerning the rootfinding process will
@@ -144,8 +144,8 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 
 	References
 	----------
-	[KB] Peter Kravanja, Marc Van Barel, "Computing the Zeros of 
-	Anayltic Functions", Springer (2000)
+	.. [KB] Peter Kravanja, Marc Van Barel, "Computing the Zeros of 
+		Anayltic Functions", Springer (2000)
 	"""	
 	from .contours.Circle import Circle
 

@@ -34,10 +34,12 @@ class Contour(object):
 		Example
 		-------
 
-		>>> from cxroots.Paths import ComplexLine
-		>>> c = ComplexLine(0,1j)	# line from 0 -> i
-		>>> c(0.2)
-		0.5j
+		>>> from cxroots.Paths import Circle
+		>>> c = Circle(0,1)	# Circle |z|=1 parameterised by e^{it}
+		>>> c(0.25)
+		(6.123233995736766e-17+1j)
+		>>> c(0) == c(1)
+		True
 		"""
 		t = np.array(t)
 		N = len(self.segments)
@@ -129,6 +131,8 @@ class Contour(object):
 		Parameters
 		----------
 		z : complex
+			The point from which to measure the distance to the closest
+			point on the contour to z.
 
 		Returns
 		-------
