@@ -1,27 +1,25 @@
 import pytest
-import unittest
 import numpy as np
 from scipy import cos, sin
 
 from cxroots import Rectangle
 
-class TestCountRoots(unittest.TestCase):
-	def setUp(self):
-		"""
-		Example from "Locating all the Zeros of an Analytic Function in one Complex Variable"
-		M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
+@pytest.mark.parametrize('useDerivative', [True, False])
+def test_count_roots(useDerivative):
+	"""
+	Example from "Locating all the Zeros of an Analytic Function in one Complex Variable"
+	M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
 
-		There should be 424 roots inside this contour
-		"""
-		self.C  = Rectangle([-20.3,20.7], [-20.3,20.7])
-		self.f  = lambda z: z**50 + z**12 - 5*sin(20*z)*cos(12*z) - 1
-		self.df = lambda z: 50*z**49 + 12*z**11 + 60*sin(12*z)*sin(20*z) - 100*cos(12*z)*cos(20*z)
+	There should be 424 roots inside this contour
+	"""
+	C  = Rectangle([-20.3,20.7], [-20.3,20.7])
+	f  = lambda z: z**50 + z**12 - 5*sin(20*z)*cos(12*z) - 1
+	df = lambda z: 50*z**49 + 12*z**11 + 60*sin(12*z)*sin(20*z) - 100*cos(12*z)*cos(20*z)
 
-	def test_countRoots_fdf(self):
-		self.assertEqual(self.C.count_roots(self.f, self.df, verbose=True), 424)
+	if not useDerivative: df = None
 
-	def test_countRoots_f(self):
-		self.assertEqual(self.C.count_roots(self.f, verbose=True), 424)
+	assert C.count_roots(f, df, verbose=True) == 424
+
 
 @pytest.mark.xfail(reason='Possibly lack of high precision arithmetic')
 def test_RingOscillator():
@@ -60,7 +58,3 @@ def test_RingOscillator():
 
 	# compare with fig 4 of [DSZ]
 	# roots_fdf.show()
-
-
-if __name__ == '__main__':
-	unittest.main()
