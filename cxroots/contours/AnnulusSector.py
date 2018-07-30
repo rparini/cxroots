@@ -42,7 +42,7 @@ class AnnulusSector(Contour):
 		self.axisName = ('r', 'phi')
 
 		if phiRange[0] > phiRange[1]:
-			phiRange[1] += 2*pi
+			phiRange = (phiRange[0], phiRange[1]+2*pi)
 
 		phi0, phi1 = self.phiRange = phiRange
 
