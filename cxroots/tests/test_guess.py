@@ -42,7 +42,7 @@ def test_guess_root(guesses):
 def test_guess_symmetry_2(usedf):
 	C = Circle(0, 1.5)
 	f = lambda z: z**27-2*z**11+0.5*z**6-1
-	df = lambda z: 27*z**26-22*z**10+3*z**5 if usedf else None
+	df = (lambda z: 27*z**26-22*z**10+3*z**5) if usedf else None
 
 	symmetry = lambda z: [z.conjugate()]
 
