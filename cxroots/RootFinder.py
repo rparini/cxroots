@@ -34,7 +34,7 @@ class countCalls:
 def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None, 
 	newtonStepTol=1e-14, attemptIterBest=True, newtonMaxIter=50, rootErrTol=1e-10, 
 	absTol=0, relTol=1e-12, integerTol=0.1, NIntAbsTol=0.07, M=5, errStop=1e-10, 
-	intMethod='quad', divMax=15, divMin=3, m=2, verbose=False):
+	intMethod='quad', divMin=3, divMax=15, m=2, verbose=False):
 	"""
 	A generator which at each step takes a contour and either finds all 
 	the zeros of f within it or subdivides it further.  Based on the 
@@ -114,14 +114,14 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		simultaniously and if df is not provided it will approximate it 
 		using only the values of f that would be required by the 
 		integration routine in any case.
-	divMax : int, optional
-		If the Romberg integration method is used then divMax is the
-		maximum number of divisions before the Romberg integration
-		routine exits.
 	divMin : int, optional
 		If the Romberg integration method is used then divMin is the
 		minimum number of divisions before the Romberg integration
 		routine is allowed to exit.
+	divMax : int, optional
+		If the Romberg integration method is used then divMax is the
+		maximum number of divisions before the Romberg integration
+		routine exits.
 	m : int, optional
 		Only used if df=None and method='quad'.  The argument order=m is 
 		passed to numdifftools.Derivative and is the order of the error 
