@@ -54,7 +54,8 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		of the function f(z). If df is not given then it will be 
 		approximated with a finite difference formula.
 	guessRoots : list, optional
-		A list of known roots.
+		A list of known roots or guesses for roots (they are checked 
+		before being accepted).
 	guessRootSymmetry : function, optional
 		A function of a single complex variable, z, which returns a list
 		of all points which are expected to be roots of f, given that z 
@@ -274,6 +275,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 						root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
 						if root is not None:
 							contours.append(Circle(root, 1e-3))
+							contours[-1]._numberOfRoots = contours[-1].count_roots(**countKwargs)
 
 		elif verbose:
 			print('Already recorded root', root)
@@ -281,6 +283,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	# Add contours surrounding known roots so that they will be checked
 	for root in guessRoots:
 		contours.append(Circle(root, 1e-3))
+		contours[-1]._numberOfRoots = contours[-1].count_roots(**countKwargs)
 
 	while contours:
 		# yield the initial state here so that the animation in demo_find_roots shows the first frame
@@ -288,10 +291,6 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
 		contour = contours.pop()
-
-		if not hasattr(contour, '_numberOfRoots'):
-			# occours when testing a guess using a circle centered around the guess root
-			contour._numberOfRoots = contour.count_roots(**countKwargs)
 
 		if verbose: print(contour._numberOfRoots, 'roots in', contour)
 
