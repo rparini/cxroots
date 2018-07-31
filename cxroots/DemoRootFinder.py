@@ -3,40 +3,46 @@ import numpy as np
 
 from .RootFinder import find_roots_gen
 
-def demo_find_roots(originalContour, f, df=None, automaticAnim=False, saveFile=None, returnAnim=False, writer=None, **kwargs):
+def demo_find_roots(originalContour, f, df=None, saveFile=None, automaticAnim=False, 
+	returnAnim=False, writer=None, **rootsKwargs):
 	"""
 	An animated demonstration of the root finding process using matplotlib.
-	Takes all the parameters of :func:`cxroots.RootFinder.find_roots` as well as:
 
 	Parameters
 	----------
+	saveFile : str, optional
+		If given then the animation will be saved to disk with filename 
+		equal to saveFile instead of being shown.
 	automaticAnim : bool, optional
 		If False (default) then press SPACE to step the animation forward
 		If True then the animation will play automatically until all the 
 		roots have been found.
-	saveFile : str, optional
-		If given then the animation will be saved to disk with filename 
-		equal to saveFile instead of being shown.
 	returnAnim : bool, optional
 		If True then the matplotlib animation object will be returned 
 		instead of being shown.  Defaults to False.
+	writer : str, optional
+		Passed to :meth:`matplotlib.animation.FuncAnimation.save`.
+	**rootsKwargs
+		Additional key word arguments passed to :meth:`~cxroots.Contour.Contour.roots`.
 	"""
 	import matplotlib.pyplot as plt
 	from matplotlib import animation
 	fig = plt.gcf()
 	ax = plt.gca()
 
-	rootFinder = find_roots_gen(originalContour, f, df, **kwargs)
-	originalContour.plot(linecolor='k', linestyle='--')
-	originalContour.sizePlot()
+	rootFinder = find_roots_gen(originalContour, f, df, **rootsKwargs)
+
+	def init():
+		originalContour.plot(linecolor='k', linestyle='--')
+		originalContour._sizePlot()
 
 	def update_frame(args):
 		roots, multiplicities, boxes, numberOfRemainingRoots = args
-		# print(args)
+
+		print(args)
 
 		plt.cla() # clear axis
 		originalContour.plot(linecolor='k', linestyle='--')
-		originalContour.sizePlot()
 		for box in boxes:
 			if not hasattr(box, '_color'):
 				cmap = plt.get_cmap('jet')
@@ -45,20 +51,16 @@ def demo_find_roots(originalContour, f, df=None, automaticAnim=False, saveFile=N
 			plt.text(box.centralPoint.real, box.centralPoint.imag, box._numberOfRoots)
 			box.plot(linecolor=box._color)
 
-		plt.scatter(np.real(roots), np.imag(roots))
-
+		plt.scatter(np.real(roots), np.imag(roots), color='k', marker='x')
 		rootsLabel = ax.text(0.02, 0.95, 'Zeros remaining: %i'%numberOfRemainingRoots, transform=ax.transAxes)
-
-		fig.canvas.draw()
+		originalContour._sizePlot()
 
 	if saveFile:
 		automaticAnim = True
 
 	if automaticAnim or returnAnim:
-		anim = animation.FuncAnimation(fig, update_frame, frames=rootFinder, interval=500)
-
-		if returnAnim:
-			return anim
+		anim = animation.FuncAnimation(fig, update_frame, init_func=init, frames=rootFinder)
+		if returnAnim: return anim
 
 	else:
 		def draw_next(event):

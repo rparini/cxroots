@@ -86,9 +86,9 @@ class Contour(object):
 
 	@functools.wraps(ComplexPath.plot)
 	def plot(self, *args, **kwargs):
+		self._sizePlot()
 		for segment in self.segments:
 			segment.plot(*args, **kwargs)
-		self._sizePlot()
 
 	def _sizePlot(self):
 		import matplotlib.pyplot as plt
