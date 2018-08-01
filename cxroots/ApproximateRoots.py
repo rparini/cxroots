@@ -183,7 +183,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 
 	### compute the multiplicities, eq. (21) in [SLV]
 	V = np.array([[phiFunc(j)(root) for root in roots] for j in range(n)])
-	multiplicities = np.dot(G[:n,0], np.linalg.inv(V))
+	multiplicities = np.dot(np.linalg.inv(V), G[:n,0])
 
 	### The method used in the vandermonde module doesn't seem significantly
 	### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
