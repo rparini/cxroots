@@ -407,7 +407,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 
 @docstrings.dedent
 @doc_tab_to_space
-@functools.wraps(find_roots_gen, assigned=('__module__', '__name__', '__annotations__'))
+@functools.wraps(find_roots_gen, assigned=('__module__', '__name__'))
 def find_roots(originalContour, f, df=None, **kwargs):
 	"""
 	Find all the roots of the complex analytic function f within the 
