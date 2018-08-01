@@ -12,7 +12,8 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	intMethod='quad', callback=None, verbose=False):
 	"""
 	Approximate the roots and multiplcities of the function f within the 
-	contour C using the method of [KB]_.
+	contour C using the method of [KB]_.  The multiplicites are computed
+	using eq. (21) in [SLV]_.
 
 	Parameters
 	----------
@@ -76,8 +77,12 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 
 	References
 	----------
-	.. [KB] "Computing the Zeros of Anayltic Functions", Peter Kravanja, 
-		Marc Van Barel, Springer (2000)
+	.. [KB] P. Kravanja and M. Van Barel. "Computing the Zeros of 
+		Anayltic Functions". Springer (2000)
+	.. [SLV] E. Strakova, D. Lukas, P. Vodstrcil. "Finding Zeros of 
+		Analytic Functions and Local Eigenvalue Analysis Using Contour 
+		Integral Method in Examples". Mathematical Analysis and Numerical
+		Mathematics, Vol. 15, 2, (2017)
 	"""
 	if verbose:
 		print('Approximating roots in: ' + str(C))
@@ -170,11 +175,15 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	roots = np.delete(roots, rootsToRemove)
 	n = len(roots)
 
-	# compute the multiplicities, eq. (1.19) in [KB]
-	V = np.column_stack([roots**i for i in range(n)])
-	if verbose and n > 2: print('Computing ordinary moments')
-	s += [product(lambda z: z**p)[0] for p in range(2, n)]
-	multiplicities = np.dot(s[:n], np.linalg.inv(V))
+	### compute the multiplicities, eq. (1.19) in [KB]
+	# V = np.column_stack([roots**i for i in range(n)])
+	# if verbose and n > 2: print('Computing ordinary moments')
+	# s += [product(lambda z: z**p)[0] for p in range(2, n)]
+	# multiplicities = np.dot(s[:n], np.linalg.inv(V))
+
+	### compute the multiplicities, eq. (21) in [SLV]
+	V = np.array([[phiFunc(j)(root) for root in roots] for j in range(n)])
+	multiplicities = np.dot(G[:n,0], np.linalg.inv(V))
 
 	### The method used in the vandermonde module doesn't seem significantly
 	### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
