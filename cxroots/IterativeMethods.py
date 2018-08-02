@@ -1,104 +1,116 @@
 from __future__ import division
 from numpy import inf
 
-def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, verbose=False):
-	# iterate to a root using initial point x0
-	if verbose:
-		print('Refining root:', x0)
+def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20, 
+	attemptBest=False, verbose=False, callback=None):
+	"""
+	Starting with initial point x0 iterate to a root of f. This function 
+	is called during the rootfinding process to refine any roots found.
+	If df is given then the Newton-Raphson method, :func:`~cxroots.IterativeMethods.newton`,
+	will be used, otherwise Muller's method, :func:`~cxroots.IterativeMethods.muller`, will be used instead.
+
+	Parameters
+	----------
+	x0 : complex
+		An initial point for the iteration.
+	f : function
+		Function of a single variable which we seek to find a root of.
+	df : function, optional
+		The derivative of f.
+	steptol: float, optional
+		The routine ends if the step size, dx, between sucessive
+		iterations satisfies abs(dx) < steptol and attemptBest is False.
+	roottol: float, optional
+		The routine ends if abs(f(x)) < roottol and attemptBest is False.
+	maxIter : int, optional
+		The routine ends after maxIter iterations.
+	attemptBest : bool, optional
+		If True then routine ends if the error of the previous iteration, 
+		x0, was at least as good as the current iteration, x, in the 
+		sense that abs(f(x)) >= abs(f(x0)) and the previous iteration 
+		satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In 
+		this case the previous iteration is returned as the approximation 
+		of the root.
+	verbose : bool, optional
+		Print x, dx and f(x) at each step of the iteration.
+	callback : function, optional
+		After each iteration callback(x, dx, f(x), iteration) will be 
+		called where 'x' is the current iteration of the estimated root, 
+		'dx' is the step size between the previous and current 'x' and 
+		'iteration' the number of iterations that have been taken.  If 
+		the callback function evaluates to True then the routine will end.
+
+	Returns
+	-------
+	complex
+		An approximation for a root of f.  If the rootfinding was 
+		unsucessful then None will be returned instead.
+	"""
+	if verbose: print('Refining root:', x0)
 
 	if df is not None:
 		try:
-			# uses Newton-Raphson method if f and df are given.
-
-			# SciPy implementation
-			# import scipy.optimize
-			# root = scipy.optimize.newton(f, x0, df, tol=steptol, maxiter=maxIter)
-			# err = abs(f(root))
-			
-			root, err = newton(x0, f, df, steptol, 0, maxIter)
-
+			root, err = newton(x0, f, df, steptol, 0, maxIter, attemptBest, verbose, callback)
 		except (RuntimeError, OverflowError):
 			return None
 	else:
-		### For profiling number of function calls:
-		# fcalls = [0,0]
-		# def secant_f(z):
-		# 	fcalls[0] += 1
-		# 	return f(z)
-		# def muller_f(z):
-		# 	fcalls[1] += 1
-		# 	return f(z)
-
-		# # Secant method: 
-		# x1, x2 = x0, x0 + (x0+1)*1e-8
-		# root, err = secant(x1, x2, secant_f, steptol, 0, maxIter)
-		# print('-----')
-		# print('Secant:', fcalls[0], root, err)
-
-		# # Muller's method:
-		# x1, x2, x3 = x0, x0*(1 + 1e-8) + 1e-8, x0*(1 - 1e-8) - 1e-8
-		# root, err = muller(x1, x2, x3, muller_f, steptol, 0, maxIter)
-		# print('Muller:', fcalls[1], root, err)
-		# print('-----')
-		############################################
-
 		# Muller's method:
 		f_muller = lambda z: complex(f(z))
 		x1, x2, x3 = x0, x0*(1 + 1e-8) + 1e-8, x0*(1 - 1e-8) - 1e-8
-		root, err = muller(x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, verbose)
+		root, err = muller(x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, verbose, callback)
 
 	if err < roottol:
 		return root
 
-def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, verbose=False, callback=None):
+def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, 
+	attemptBest=False, verbose=False, callback=None):
 	"""
-	Wrapper for mpmath's implementation of Muller's method.  
+	A wrapper for mpmath's implementation of Muller's method.  
 
 	Parameters
 	----------
 	x1 : float or complex
-		An initial point for iteration, should be close to a 
-		root of f.
+		An initial point for iteration, should be close to a root of f.
 	x2 : float or complex
-		An initial point for iteration, should be close to a 
-		root of f.  Should not equal x1.
+		An initial point for iteration, should be close to a root of f.  
+		Should not equal x1.
 	x3 : float or complex
-		An initial point for iteration, should be close to a 
-		root of f.  Should not equal x1 or x2.
+		An initial point for iteration, should be close to a root of f.  
+		Should not equal x1 or x2.
 	f : function
-		Function of a single variable f(x)
+		Function of a single variable which we seek to find a root of.
 	steptol: float, optional
-		Routine will end if the step size, dx, between sucessive
-		iterations of x satisfies abs(dx) < steptol and attemptBest is False
+		The routine ends if the step size, dx, between sucessive
+		iterations satisfies abs(dx) < steptol and attemptBest is False.
 	roottol: float, optional
-		The routine will end if abs(f(x)) < roottol and attemptBest is False
+		The routine ends if abs(f(x)) < roottol and attemptBest is False.
 	maxIter : int, optional
-		Routine ends after maxIter iterations.
+		The routine ends after maxIter iterations.
 	attemptBest : bool, optional
-		If True then routine will exit if error of the previous iteration, x0, was 
-		at least as good as the current iteration, x, in the sense that 
-		abs(f(x)) >= abs(f(x0)) and the previous iteration satisfied either
-		abs(dx0) < steptol or abs(f(x0)) < roottol.  In this case the preivous
-		iteration is returned as the approximation of the root.
+		If True then routine ends if the error of the previous iteration, 
+		x0, was at least as good as the current iteration, x, in the 
+		sense that abs(f(x)) >= abs(f(x0)) and the previous iteration 
+		satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In 
+		this case the previous iteration is returned as the approximation 
+		of the root.
 	verbose : bool, optional
-		Print x, dx and f(x) at each setp of the iteration.
+		Print x, dx and f(x) at each step of the iteration.
 	callback : function, optional
-		After each iteration the supplied function 
-		callback(x, dx, f(x), iteration) will be called where 'x' is the current iteration 
-		of the estimated root, 'dx' is the step size between the previous 
-		and current 'x' and 'iteration' the number of iterations that have been taken.  
-		If the callback function evaluates to True then the routine will end
+		After each iteration callback(x, dx, f(x), iteration) will be 
+		called where 'x' is the current iteration of the estimated root, 
+		'dx' is the step size between the previous and current 'x' and 
+		'iteration' the number of iterations that have been taken.  If 
+		the callback function evaluates to True then the routine will end.
 
 	Returns
 	-------
-	xf : float
-		The approximation to a root of f
-	rooterr : float
-		The error of the original function at xf, abs(f(xf))
+	complex
+		The approximation to a root of f.
+	float
+		abs(f(x)) where x is the final approximation for the root of f.
 	"""
 	from mpmath import mp, mpmathify
 	from mpmath.calculus.optimization import Muller
-
 
 	# mpmath insists on functions accepting mpc
 	f_mpmath = lambda z: mpmathify(f(complex(z)))
@@ -113,8 +125,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 		for x, dx in mull:
 			err = abs(f_mpmath(x))
 
-			if verbose:
-				print(iteration, 'z', x, '|f(z)|', err, 'dz', dx)
+			if verbose: print(iteration, 'x', x, '|f(x)|', err, 'dx', dx)
 
 			if callback is not None and callback(x, dx, err, iteration+1):
 				break
@@ -139,14 +150,14 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=
 		# ZeroDivisionError comes up if the error is evaluated to be zero
 		pass
 
-	if verbose:
-		print('Final approximation: z=', complex(x), 'f(z)=', float(err))
+	if verbose: print('Final approximation: x=', complex(x), 'f(x)=', float(err))
 
 	# cast mpc and mpf back to regular complex and float
 	return complex(x), float(err)
 
 
-def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=False, verbose=False, callback=None):
+def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, 
+	attemptBest=False, verbose=False, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
 	scalar function f using Newton-Raphson iteration starting at 
@@ -158,42 +169,40 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 		Initial point for Newton iteration, should be as close as
 		possible to a root of f
 	f : function
-		Function of a single variable f(x)
+		Function of a single variable which we seek to find a root of.
 	df : function
 		Function of a single variable, df(x), providing the
 		derivative of the function f(x) at the point x
 	steptol: float, optional
-		Routine will end if the step size, dx, between sucessive
-		iterations of x satisfies abs(dx) < steptol
+		The routine ends if the step size, dx, between sucessive
+		iterations satisfies abs(dx) < steptol and attemptBest is False.
 	roottol: float, optional
-		The routine will end if abs(f(x)) < roottol
+		The routine ends if abs(f(x)) < roottol and attemptBest is False.
 	maxIter : int, optional
-		Routine ends after maxIter iterations
+		The routine ends after maxIter iterations.
 	attemptBest : bool, optional
-		If True then routine will exit if error of the previous iteration, x0, was 
-		at least as good as the current iteration, x, in the sense that 
-		abs(f(x)) >= abs(f(x0)) and the previous iteration satisfied either
-		abs(dx0) < steptol or abs(f(x0)) < roottol.  In this case the preivous
-		iteration is returned as the approximation of the root.
+		If True then routine ends if the error of the previous iteration, 
+		x0, was at least as good as the current iteration, x, in the 
+		sense that abs(f(x)) >= abs(f(x0)) and the previous iteration 
+		satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In 
+		this case the previous iteration is returned as the approximation 
+		of the root.
 	verbose : bool, optional
-		Print x, dx and f(x) at each setp of the iteration.
+		Print x, dx and f(x) at each step of the iteration.
 	callback : function, optional
-		After each iteration the supplied function 
-		callback(x, dx, f(x), iteration) will be called where 'x' is the current iteration 
-		of the estimated root, 'dx' is the step size between the previous 
-		and current 'x' and 'iteration' the number of iterations that have been taken.  
-		If the callback function evaluates to True then the routine will end
+		After each iteration callback(x, dx, f(x), iteration) will be 
+		called where 'x' is the current iteration of the estimated root, 
+		'dx' is the step size between the previous and current 'x' and 
+		'iteration' the number of iterations that have been taken.  If 
+		the callback function evaluates to True then the routine will end.
 
 	Returns
 	-------
-	xf : float
-		The approximation to a root of f
-	rooterr : float
-		The error of the original function at xf, abs(f(xf))
-	"""
-
-	# XXX: Could use deflated polynomials to ensure that known roots are not found again?
-	
+	complex
+		The approximation to a root of f.
+	float
+		abs(f(x)) where x is the final approximation for the root of f.
+	"""	
 	x, y = x0, f(x0)
 	dx0, y0 = inf, y
 	for iteration in range(maxIter):
@@ -201,8 +210,7 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 		x += dx
 		y  = f(x)
 
-		if verbose:
-			print('z', x, 'f(z)', err, 'dz', dx)
+		if verbose: print('x', x, 'f(x)', y, 'dx', dx)
 
 		if callback is not None and callback(x, dx, y, iteration+1):
 			break
@@ -217,8 +225,7 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, attemptBest=Fals
 			# store previous dx and y
 			dx0, y0 = dx, y
 
-	if verbose:
-		print('Final approximation: z=', complex(x), 'f(z)=', float(err))
+	if verbose: print('Final approximation: x=', x, 'f(x)=', y)
 
 	return x, abs(y)
 
@@ -226,7 +233,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 	"""
 	Find an approximation to a point xf such that f(xf)=0 for a 
 	scalar function f using the secant method.  The method requires
-	two initial points x1 and x2, ideally close to a root
+	two initial points x1 and x2, ideally close to a root,
 	and proceeds iteratively.
 
 	Parameters
@@ -238,37 +245,34 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 		An initial point for iteration, should be close to a 
 		root of f.  Should not equal x1.
 	f : function
-		Function of a single variable f(x)
+		Function of a single variable which we seek to find a root of.
 	steptol: float, optional
-		Routine will end if the step size, dx, between sucessive
-		iterations of x satisfies abs(dx) < steptol
+		The routine ends if the step size, dx, between sucessive
+		iterations satisfies abs(dx) < steptol and attemptBest is False.
 	roottol: float, optional
-		The routine will end if abs(f(x)) < roottol
+		The routine ends if abs(f(x)) < roottol and attemptBest is False.
 	maxIter : int, optional
-		Routine ends after maxIter iterations
+		The routine ends after maxIter iterations.
 	callback : function, optional
-		After each iteration the supplied function 
-		callback(x, dx, f(x), iteration) will be called where 'x' is the current iteration 
-		of the estimated root, 'dx' is the step size between the previous 
-		and current 'x' and 'iteration' the number of iterations that have been taken.  
-		If the callback function evaluates to True then the routine will end
+		After each iteration callback(x, dx, f(x), iteration) will be 
+		called where 'x' is the current iteration of the estimated root, 
+		'dx' is the step size between the previous and current 'x' and 
+		'iteration' the number of iterations that have been taken.  If 
+		the callback function evaluates to True then the routine will end.
 
 	Returns
 	-------
-	xf : float
-		The approximation to a root of f
-	rooterr : float
-		The error of the original function at xf, abs(f(xf))
+	complex
+		The approximation to a root of f.
+	float
+		abs(f(x)) where x is the final approximation for the root of f.
 	"""
-
 	# As in "Numerical Recipies 3rd Edition" pick the bound with the 
 	# smallest function value as the most recent guess
 	y1, y2 = f(x1), f(x2)
 	if abs(y1) < abs(y2):
 		x1, x2 = x2, x1
 		y1, y2 = y2, y1
-
-	# print('--secant--')
 
 	for iteration in range(maxIter):
 		dx =  -(x2-x1)*y2/(y2-y1)
@@ -277,8 +281,6 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
 
 		if callback is not None and callback(x2, dx, y2, iteration+1):
 			break
-
-		# print(iteration, x2, abs(dx), abs(y2))
 
 		if abs(dx) < steptol or abs(y2) < roottol:
 			break

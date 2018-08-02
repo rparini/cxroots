@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Theory &mdash; cxroots 1.0.9 documentation</title>
+  <title>Theory &mdash; cxroots 1.1.0 documentation</title>
   
 
   
@@ -35,8 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cxroots 1.0.9 documentation" href="index.html"/>
-        <link rel="prev" title="Root Viewing" href="rootresult.html"/> 
+    <link rel="top" title="cxroots 1.1.0 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -65,7 +64,7 @@
             
             
               <div class="version">
-                1.0.9
+                1.1.0
               </div>
             
           
@@ -89,15 +88,23 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roots.html">Root Finding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rootresult.html">Root Viewing</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Theory</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 </ul>
-</li>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a></li>
 </ul>
 
             
@@ -176,37 +183,22 @@
     margin-top: -19px;
 }
 
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
 .admonition > p:before {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
 <div class="section" id="theory">
 <h1>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h1>
-<p>The goal of cxroots is to compute the distinct roots <span class="math">\(\{z_i\}_{i=1}^n\)</span> and corresponding multiplicities <span class="math">\(\{m_i\}\)</span> of the given function <span class="math">\(f(z)\)</span> within the given contour <span class="math">\(C\)</span>.
-cxroots starts by computing the total number of roots (counting multiplicities) <span class="math">\(N\)</span> within <span class="math">\(C\)</span>.
-If <span class="math">\(N&gt;M\)</span>, where <span class="math">\(M\)</span> is supplied by the user, then the contour is subdivided until a set of contours is obtained where the number of roots within each one is <span class="math">\(\leq M\)</span>.</p>
+<p>The goal of cxroots is to compute the distinct roots <span class="math notranslate nohighlight">\(\{z_i\}_{i=1}^n\)</span> and corresponding multiplicities <span class="math notranslate nohighlight">\(\{m_i\}\)</span> of the given function <span class="math notranslate nohighlight">\(f(z)\)</span> within the given contour <span class="math notranslate nohighlight">\(C\)</span>.
+cxroots starts by computing the total number of roots (counting multiplicities) <span class="math notranslate nohighlight">\(N\)</span> within <span class="math notranslate nohighlight">\(C\)</span>.
+If <span class="math notranslate nohighlight">\(N&gt;M\)</span>, where <span class="math notranslate nohighlight">\(M\)</span> is supplied by the user, then the contour is subdivided until a set of contours is obtained where the number of roots within each one is <span class="math notranslate nohighlight">\(\leq M\)</span>.</p>
 <p>The roots within each of these contours are approximated using the method of [1] which involves calculating integrals of the form</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\frac{1}{2\pi i} \int_C \phi(z)\psi(z) \frac{f'(z)}{f(z)} dz
 = \sum_{i=1}^n m_i \phi(z_i) \psi(z_i)\]</div>
-<p>where <span class="math">\(\phi\)</span>, <span class="math">\(\psi\)</span> are formal orthogonal polynomials.
-If <span class="math">\(f'(z)\)</span> is not provided by the user then it is instead approximated using a finite difference method.
-These roots are then refined using the Newton-Raphson method if <span class="math">\(f'(z)\)</span> is provided and Muller’s method otherwise.</p>
+<p>where <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\psi\)</span> are formal orthogonal polynomials.
+If <span class="math notranslate nohighlight">\(f'(z)\)</span> is not provided by the user then it is instead approximated using a finite difference method.
+These roots are then refined using the Newton-Raphson method if <span class="math notranslate nohighlight">\(f'(z)\)</span> is provided and Muller’s method otherwise.</p>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <p>[1] Kravanja, Peter, and Marc Van Barel. “Zeros of analytic functions.” Computing the Zeros of Analytic Functions. Springer Berlin Heidelberg, 2000. 1-59.</p>
@@ -220,13 +212,6 @@ These roots are then refined using the Newton-Raphson method if <span class="mat
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="rootresult.html" class="btn btn-neutral" title="Root Viewing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -255,7 +240,7 @@ These roots are then refined using the Newton-Raphson method if <span class="mat
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.9',
+            VERSION:'1.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

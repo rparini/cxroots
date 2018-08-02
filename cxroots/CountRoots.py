@@ -10,17 +10,17 @@ import numdifftools
 def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3, 
 	divMax=15, m=2, intMethod='quad', integerTol=inf, verbose=False, callback=None):
 	r"""
-	Compute the symmetric bilinear form used in (1.12) of [KB]
+	Compute the symmetric bilinear form used in (1.12) of [KB]_.
 
 	.. math::
 
-		<\phi,\psi> = \frac{1}{2i\pi} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
+		<\phi,\psi> = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
 	
-    Parameters
-    ----------
+	Parameters
+	----------
 	C : :class:`Contour <cxroots.Contour.Contour>`
-		The enclosed_roots function returns the number of roots of f(z) 
-		within C.
+		A contour in the complex plane for.  No roots or poles of f
+		should lie on C.
 	f : function
 		Function of a single variable f(x)
 	df : function, optional
@@ -28,16 +28,18 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 		of the function f(x) at the point x.  If not provided then df is 
 		approximated using a finite difference method.
 	phi : function, optional
-		Function of a single variable phi(x).  If not provided then phi=1.
+		Function of a single variable phi(x).  If not provided then 
+		phi(z)=1.
 	psi : function, optional
-		Function of a single variable psi(x).  If not provided then psi=1.
+		Function of a single variable psi(x).  If not provided then 
+		psi(z)=1.
 	absTol : float, optional
 		Absolute error tolerance for integration.
 	relTol : float, optional
 		Relative error tolerance for integration.
- 	divMin : int, optional
- 		Only used if intMethod='romb'. Minimum number of divisions before 
- 		the Romberg integration routine is allowed to exit.  
+	divMin : int, optional
+		Only used if intMethod='romb'. Minimum number of divisions before 
+		the Romberg integration routine is allowed to exit.  
 	divMax : int, optional
 		Only used if intMethod='romb'.  The maximum number of divisions 
 		before the Romberg integration routine of a path exits.  
@@ -66,13 +68,13 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	Returns
 	-------
 	complex
-		The value of the integral :math:`<\phi,\psi>`.
+		The value of the integral <phi, psi>.
 	float
 		An estimate of the error for the integration.
 
 	References
 	----------
-	[KB] "Computing the zeros of analytic functions" by Peter Kravanja, 
+	.. [KB] "Computing the zeros of analytic functions" by Peter Kravanja, 
 		Marc Van Barel, Springer 2000
 	"""
 	if intMethod == 'romb':
