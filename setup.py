@@ -14,7 +14,7 @@ exec(open('cxroots/version.py').read())
 
 # read the README_pip.rst
 try:
-    with open('README_pip.rst') as file:
+    with open('README.rst') as file:
         long_description = file.read()
 except:
     long_description = None
