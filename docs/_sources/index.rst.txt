@@ -24,6 +24,11 @@ Documentation
 	guesses.rst
 
 .. toctree::
+	:caption: Examples
+
+	ex_annular_combustion.rst
+
+.. toctree::
 	:caption: Reference
 
 	paths.rst
