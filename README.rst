@@ -29,7 +29,18 @@ The implementation is primarily based on [KB] and evaluates contour integrals in
     print(roots)
 
 
-.. literalinclude:: readmeExOut.txt
+.. literalinclude readmeExOut.txt doesn't work on github
+::
+
+	 Multiplicity |               Root              
+	------------------------------------------------
+	      2       | -2.000000000000 +0.000000000000i
+	      1       | -0.651114070264 -0.390425719088i
+	      1       | -0.651114070264 +0.390425719088i
+	      3       |  0.000000000000 +0.000000000000i
+	      1       |  0.648578080954 -1.356622683988i
+	      1       |  0.648578080954 +1.356622683988i
+	      1       |  2.237557782467 +0.000000000000i
 
 
 Documentation
