@@ -1,2 +1,0 @@
-#!/bin/bash
-python3 README_resources/readmeEx.py > README_resources/readmeExOut.txt
