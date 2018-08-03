@@ -262,7 +262,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			if originalContour.contains(root):
 				roots.append(root)
 				multiplicities.append(multiplicity)
-				if verbose: print('Recorded root', root)
+				if verbose: print('Recorded root', root, 'multiplicity', multiplicity)
 			elif verbose: print('Root', root, 'ignored as not within original contour.')
 
 			# check to see if there are any other roots implied by the given symmetry
@@ -360,6 +360,8 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			continue
 
 		for approxRoot, approxMultiplicity in list(zip(approxRoots, approxMultiplicities)):
+			if verbose: print('approxRoot', approxRoot, 'approxMultiplicity', approxMultiplicity)
+
 			# check that the multiplicity is close to an integer
 			multiplicity = round(approxMultiplicity.real)
 			if abs(multiplicity - approxMultiplicity.real) > integerTol or abs(approxMultiplicity.imag) > integerTol or multiplicity < 1:
