@@ -209,7 +209,6 @@ def test_reevaluation_of_N():
 	roots 		   = [1, 0.2]
 	multiplicities = [1, 2]
 	roots_approx_equal(C.roots(f, NIntAbsTol=10, intMethod='romb', verbose=True), (roots, multiplicities))
-	
 
 class TestIntroduction(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
@@ -224,6 +223,26 @@ class TestIntroduction(unittest.TestCase, RootfindingTests, MultiplicityTests):
 					  0.64857808095387581293067569277 - 1.35662268398824203963215495605j,
 					  0.64857808095387581293067569277 + 1.35662268398824203963215495605j]
 		self.multiplicities = [3,2,1,1,1,1,1]
+
+def test_annular_combustion():
+	from numpy import exp
+	from cxroots import Rectangle
+
+	A = -0.19435
+	B = 1000.41
+	C = 522463
+	T = 0.005
+
+	f = lambda z: z**2 + A*z + B*exp(-T*z) + C
+	df = lambda z: 2*z + A - B*T*exp(-T*z)
+
+	rectangle = Rectangle([-15000,5000], [-15000,15000])
+
+	import warnings
+	warnings.filterwarnings('error')
+	roots = rectangle.roots(f, df, verbose=True, rootErrTol=1e-6)
+	assert len(roots.roots) == 24
+
 
 if __name__ == '__main__':
 	unittest.main(verbosity=3)
