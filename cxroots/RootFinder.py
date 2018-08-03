@@ -1,6 +1,5 @@
 from __future__ import division
 import numpy as np
-from collections import deque
 import warnings
 import functools
 
@@ -171,7 +170,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	roots = []
 	multiplicities = []
 	failedContours = []
-	contours = deque()
+	contours = []
 	contours.append(originalContour)
 
 	def subdivide(parentContour):
