@@ -220,7 +220,7 @@ T=0.005\,.\]</div>
 <span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">z</span> <span class="o">+</span> <span class="n">A</span> <span class="o">-</span> <span class="n">B</span><span class="o">*</span><span class="n">T</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">T</span><span class="o">*</span><span class="n">z</span><span class="p">)</span>
 
 <span class="n">rectangle</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="o">-</span><span class="mi">15000</span><span class="p">,</span><span class="mi">5000</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">15000</span><span class="p">,</span><span class="mi">15000</span><span class="p">])</span>
-<span class="n">roots</span> <span class="o">=</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+<span class="n">roots</span> <span class="o">=</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
 <span class="n">roots</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -228,6 +228,7 @@ T=0.005\,.\]</div>
 <div class="figure">
 <img alt="_images/ex_annular_combustion-1.png" src="_images/ex_annular_combustion-1.png" />
 </div>
+<p>Note that if <code class="code docutils literal notranslate"><span class="pre">rootErrTol=1e-6</span></code> is omitted then the Newton-Raphson method used to refine the roots is sometimes unable to converge to a point where <span class="math notranslate nohighlight">\(|f(z)|&lt;\text{rootErrTol}\)</span>.  In this case the contour bounding the root is continually subdivided until it has area less than <code class="code docutils literal notranslate"><span class="pre">newtonStepTol</span></code> at which point the best approximation to the root within the contour will be taken to be ‘good enough’ and a warning message will be printed to inform the user.</p>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <table class="docutils citation" frame="void" id="dsz" rules="none">
