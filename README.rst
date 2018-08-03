@@ -57,6 +57,12 @@ Example
 	      1       |  0.648578080954 +1.356622683988i
 	      1       |  2.237557782467 +0.000000000000i
 
+See also
+--------
+
+The Fortran 90 package `ZEAL <http://cpc.cs.qub.ac.uk/summaries/ADKW>`_ is a direct implementation of [KB]_.
+
+----------
 
 References
 ----------
