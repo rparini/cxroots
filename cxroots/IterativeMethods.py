@@ -150,7 +150,7 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20,
 		# ZeroDivisionError comes up if the error is evaluated to be zero
 		pass
 
-	if verbose: print('Final approximation: x=', complex(x), 'f(x)=', float(err))
+	if verbose: print('Final approximation: x=', complex(x), '|f(x)|=', float(err))
 
 	# cast mpc and mpf back to regular complex and float
 	return complex(x), float(err)
@@ -225,7 +225,7 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20,
 			# store previous dx and y
 			dx0, y0 = dx, y
 
-	if verbose: print('Final approximation: x=', x, 'f(x)=', y)
+	if verbose: print('Final approximation: x=', x, '|f(x)|=', abs(y))
 
 	return x, abs(y)
 
