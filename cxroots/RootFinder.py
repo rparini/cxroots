@@ -380,7 +380,17 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 				root = approxRoot
 
 			if abs(f(root)) < rootErrTol:
-				addRoot(root, multiplicity)
+				if np.any(np.abs(np.round(approxMultiplicities) - approxMultiplicities) > integerTol):
+					# the computed multiplicity might be unreliable so make a contour focused on that point instead
+					if hasattr(contour, '_shrinkingRadius'):
+						contour._shrinkingRadius *= 0.5
+						contours.append(Circle(root, contour._shrinkingRadius))
+					else:
+						contours.append(Circle(root, 1e-3))
+						contours[-1]._shrinkingRadius = 1e-3
+					contours[-1]._numberOfRoots = contours[-1].count_roots(**countKwargs)
+				else:
+					addRoot(root, multiplicity)
 
 			# if the root turns out to be very close to the contour then this may have
 			# introduced an error.  Therefore, compute the multiplicity of this root
