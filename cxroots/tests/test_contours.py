@@ -1,6 +1,7 @@
 import pytest
 
 from cxroots import AnnulusSector
+from cxroots import Rectangle
 
 def test_PolarRect_contains():
 	r0=8.938
@@ -17,3 +18,9 @@ def test_PolarRect_contains():
 
 	assert C.contains(z)
 
+
+def test_rect_contains():
+	C = Rectangle([-2355, -1860], [-8810, -8616])
+
+	assert C.contains(-2258-8694j)
+	assert not C.contains(-2258-8500j)
