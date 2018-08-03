@@ -1,4 +1,10 @@
-.. image:: https://travis-ci.org/rparini/cxroots.svg?branch=master
+|pkg_img| |travis|
+
+.. |travis| image:: https://travis-ci.org/rparini/cxroots.svg?branch=master 
+    :target: https://travis-ci.org/rparini/cxroots/branches
+    
+.. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
+    :target: https://badge.fury.io/py/cxroots
 
 cxroots
 =======
