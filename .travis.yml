@@ -8,4 +8,4 @@ install:
   - python setup.py install
 
 script:
-  - pytest -v -n 2 --durations=10 -m 'not slow'
+  - travis_wait 15 pytest -v -n 2 --durations=10 -m 'not slow'
