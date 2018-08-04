@@ -28,5 +28,5 @@ def test_rootfinding_df(C, roots, multiplicities):
 @pytest.mark.parametrize('roots,multiplicities', funcs)
 def test_rootfinding_f(C, roots, multiplicities):
 	f  = lambda z: np.prod([z-r for r in roots], axis=0)
-	roots_approx_equal(C.roots(f), (roots, multiplicities))
+	roots_approx_equal(C.roots(f, verbose=True), (roots, multiplicities))
 
