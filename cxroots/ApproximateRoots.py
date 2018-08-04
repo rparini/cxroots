@@ -99,7 +99,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	mu = s[1]/N
 	phiZeros = [[],[mu]]
 
-	def phiFunc(i):
+	def phi(i):
 		if len(phiZeros[i]) == 0:
 			return lambda z: np.ones_like(z)
 		else:
@@ -112,7 +112,6 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 
 	# initialize G1_{pq} = <phi_p, phi_1 phi_q>
 	G1 = np.zeros((N,N), dtype=np.complex128)
-	phi1 = phiFunc(1)
 	G1[0,0] = 0 # = <phi_0, phi_1 phi_0> = <1, z-mu> = s1-mu*N = 0
 
 	r, t = 1, 0
@@ -120,11 +119,11 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 		k = r+t+1	# define FOP of degree r+t+1
 
 		p = r+t
-		G[p, 0:p+1] = [product(phiFunc(p), phiFunc(q))[0] for q in range(r+t+1)]
+		G[p, 0:p+1] = [product(phi(p), phi(q))[0] for q in range(r+t+1)]
 		G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
 		if verbose: print('G ', G[:p+1,:p+1])
 
-		G1[p, 0:p+1] = [product(phiFunc(p), lambda z: phi1(z)*phiFunc(q)(z))[0] for q in range(r+t+1)]
+		G1[p, 0:p+1] = [product(phi(p), lambda z: phi(1)(z)*phi(q)(z))[0] for q in range(r+t+1)]
 		G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
 		if verbose: print('G1', G1[:p+1,:p+1])
 
@@ -141,7 +140,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 			if verbose: print('Regular poly', r+t, 'roots:', phiZeros[-1])
 
 			# is the number of distinct roots, n=r?
-			phiFuncLast = phiFunc(-1)
+			phiFuncLast = phi(-1)
 			for j in range(N-r):
 				ip, err = product(lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast)
 
@@ -182,7 +181,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	# multiplicities = np.dot(s[:n], np.linalg.inv(V))
 
 	### compute the multiplicities, eq. (21) in [SLV]
-	V = np.array([[phiFunc(j)(root) for root in roots] for j in range(n)])
+	V = np.array([[phi(j)(root) for root in roots] for j in range(n)])
 	multiplicities = np.dot(np.linalg.inv(V), G[:n,0])
 
 	### The method used in the vandermonde module doesn't seem significantly
