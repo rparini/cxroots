@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cxroots.Contour &mdash; cxroots 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="cxroots 1.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../result.html">Rootfinding Result</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>cxroots.Contour</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cxroots.Contour</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">docrep</span>
+
+<span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">count_roots</span>
+<span class="kn">from</span> <span class="nn">.ApproximateRoots</span> <span class="k">import</span> <span class="n">approximate_roots</span>
+<span class="kn">from</span> <span class="nn">.RootFinder</span> <span class="k">import</span> <span class="n">find_roots</span><span class="p">,</span> <span class="n">MultiplicityError</span>
+<span class="kn">from</span> <span class="nn">.DemoRootFinder</span> <span class="k">import</span> <span class="n">demo_find_roots</span>
+<span class="kn">from</span> <span class="nn">.Misc</span> <span class="k">import</span> <span class="n">doc_tab_to_space</span><span class="p">,</span> <span class="n">docstrings</span><span class="p">,</span> <span class="n">remove_para</span>
+<span class="kn">from</span> <span class="nn">.Paths</span> <span class="k">import</span> <span class="n">ComplexPath</span>
+
+<div class="viewcode-block" id="Contour"><a class="viewcode-back" href="../../contours.html#cxroots.Contour.Contour">[docs]</a><span class="k">class</span> <span class="nc">Contour</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A base class for contours in the complex plane.</span>
+
+<span class="sd">	Attributes</span>
+<span class="sd">	----------</span>
+<span class="sd">	centralPoint : complex</span>
+<span class="sd">		The point at the center of the contour.</span>
+<span class="sd">	area : float</span>
+<span class="sd">		The surface area of the contour.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Contour.__call__"><a class="viewcode-back" href="../../contours.html#cxroots.Contour.Contour.__call__">[docs]</a>	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		The point on the contour corresponding the value of the </span>
+<span class="sd">		parameter t.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		t : float</span>
+<span class="sd">			A real number :math:`0\leq t \leq 1` which parameterises</span>
+<span class="sd">			the contour.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		complex</span>
+<span class="sd">			A point on the contour.</span>
+
+<span class="sd">		Example</span>
+<span class="sd">		-------</span>
+
+<span class="sd">		&gt;&gt;&gt; from cxroots.Paths import Circle</span>
+<span class="sd">		&gt;&gt;&gt; c = Circle(0,1)	# Circle |z|=1 parameterised by e^{it}</span>
+<span class="sd">		&gt;&gt;&gt; c(0.25)</span>
+<span class="sd">		(6.123233995736766e-17+1j)</span>
+<span class="sd">		&gt;&gt;&gt; c(0) == c(1)</span>
+<span class="sd">		True</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+		<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
+		<span class="n">segmentIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+		<span class="n">segmentIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">segmentIndex</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+		<span class="n">segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">segmentIndex</span><span class="p">]</span>
+
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">segmentIndex</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">):</span>
+			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">N</span><span class="o">*</span><span class="n">t</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span><span class="o">%</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">ti</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segmentIndex</span><span class="p">)])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">segmentIndex</span><span class="p">](</span><span class="n">N</span><span class="o">*</span><span class="n">t</span><span class="o">%</span><span class="mi">1</span><span class="p">)</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">centralPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;centralPoint needs to be implemented in the subclass.&#39;</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;area needs to be implemented in the subclass.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Contour.contains"><a class="viewcode-back" href="../../contours.html#cxroots.Contour.Contour.contains">[docs]</a>	<span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Tests whether the point z is within the contour.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		z : complex</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		bool</span>
+<span class="sd">			True if z lies within the contour and false otherwise.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;contains() needs to be implemented in the subclass.&#39;</span><span class="p">)</span></div>
+
+	<span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">ComplexPath</span><span class="o">.</span><span class="n">plot</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_sizePlot</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+			<span class="n">segment</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_sizePlot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+		<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+		<span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+		<span class="n">xpad</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span><span class="o">*</span><span class="mf">0.1</span>
+		<span class="n">ypad</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span><span class="o">*</span><span class="mf">0.1</span>
+
+		<span class="n">xmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">-</span><span class="n">xpad</span>
+		<span class="n">xmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">+</span><span class="n">xpad</span>
+		<span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">-</span><span class="n">ypad</span>
+		<span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">+</span><span class="n">ypad</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">])</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">])</span>
+
+<div class="viewcode-block" id="Contour.show"><a class="viewcode-back" href="../../contours.html#cxroots.Contour.Contour.show">[docs]</a>	<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">plotKwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">		Shows the contour as a 2D plot in the complex plane.  Requires</span>
+<span class="sd">		Matplotlib.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		saveFile : str (optional)</span>
+<span class="sd">			If given then the plot will be saved to disk with name </span>
+<span class="sd">			&#39;saveFile&#39;.  If saveFile=None the plot is shown on-screen.</span>
+<span class="sd">		**plotKwargs</span>
+<span class="sd">			Key word arguments are as in :meth:`~cxroots.Contour.Contour.plot`.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">**</span><span class="n">plotKwargs</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">saveFile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">saveFile</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Contour.subdivisions"><a class="viewcode-back" href="../../contours.html#cxroots.Contour.Contour.subdivisions">[docs]</a>	<span class="k">def</span> <span class="nf">subdivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;alternating&#39;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">		A generator for possible subdivisions of the contour. </span>
+<span class="sd">		</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		axis : str, &#39;alternating&#39; or any element of self.axisName.</span>
+<span class="sd">			The axis along which the line subdividing the contour is a </span>
+<span class="sd">			constant (eg. subdividing a circle along the radial axis </span>
+<span class="sd">			will give an outer annulus and an inner circle).  If </span>
+<span class="sd">			alternating then the dividing axis will always be different</span>
+<span class="sd">			to the dividing axis used to create the contour which is now </span>
+<span class="sd">			being divided.</span>
+
+<span class="sd">		Yields</span>
+<span class="sd">		------</span>
+<span class="sd">		tuple</span>
+<span class="sd">			A tuple with two contours which subdivide the original</span>
+<span class="sd">			contour.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;alternating&#39;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;_createdBySubdivisionAxis&#39;</span><span class="p">):</span>
+				<span class="n">axis</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_createdBySubdivisionAxis</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axisName</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span>
+
+		<span class="k">for</span> <span class="n">divisionFactor</span> <span class="ow">in</span> <span class="n">divisionFactorGen</span><span class="p">():</span>
+			<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">subdivide</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">divisionFactor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Contour.distance"><a class="viewcode-back" href="../../contours.html#cxroots.Contour.Contour.distance">[docs]</a>	<span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Get the distance from the point z in the complex plane to the </span>
+<span class="sd">		nearest point on the contour.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		z : complex</span>
+<span class="sd">			The point from which to measure the distance to the closest</span>
+<span class="sd">			point on the contour to z.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		float</span>
+<span class="sd">			The distance from z to the point on the contour which is </span>
+<span class="sd">			closest to z.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span></div>
+
+	<span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">ComplexPath</span><span class="o">.</span><span class="n">integrate</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">integrationKwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">segment</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">integrationKwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">])</span>
+
+	<span class="nd">@remove_para</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+	<span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">count_roots</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">count_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">count_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+	<span class="nd">@remove_para</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+	<span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">approximate_roots</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">approximate_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">approximate_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+	<span class="nd">@remove_para</span><span class="p">(</span><span class="s1">&#39;originalContour&#39;</span><span class="p">)</span>
+	<span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">find_roots</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">find_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+	<span class="nd">@remove_para</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+	<span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">demo_find_roots</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">demo_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">demo_find_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">divisionFactorGen</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;A generator for divisionFactors.&quot;&quot;&quot;</span>
+	<span class="k">yield</span> <span class="mf">0.3</span>	<span class="c1"># being off-center is a better first choice for certain problems</span>
+	
+	<span class="n">x</span> <span class="o">=</span> <span class="mf">0.5</span>
+	<span class="k">yield</span> <span class="n">x</span>
+	<span class="k">for</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">10</span><span class="o">/</span><span class="mf">2.</span><span class="p">))[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+		<span class="k">yield</span> <span class="n">x</span> <span class="o">+</span> <span class="n">diff</span>
+		<span class="k">yield</span> <span class="n">x</span> <span class="o">-</span> <span class="n">diff</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

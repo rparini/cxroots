@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Paths &mdash; cxroots 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cxroots 1.1.0 documentation" href="index.html"/>
+        <link rel="next" title="Contours" href="contours.html"/>
+        <link rel="prev" title="Stability of an Annular Combustion Chamber" href="ex_annular_combustion.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Paths</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#line">Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#circular-arc">Circular Arc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Paths</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/paths.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="paths">
+<h1>Paths<a class="headerlink" href="#paths" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="cxroots.Paths.ComplexPath">
+<em class="property">class </em><code class="descclassname">cxroots.Paths.</code><code class="descname">ComplexPath</code><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base class for paths in the complex plane.</p>
+<dl class="method">
+<dt id="cxroots.Paths.ComplexPath.integrate">
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>f</em>, <em>absTol=0</em>, <em>relTol=1e-12</em>, <em>divMax=15</em>, <em>intMethod='quad'</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexPath.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexPath.integrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrate the function f along the path.  The value of the
+integral is cached and will be reused if the method is called
+with same arguments (ignoring verbose).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f</strong> (<em>function</em>) – A function of a single complex variable.</li>
+<li><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute tolerance for the integration.</li>
+<li><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The realative tolerance for the integration.</li>
+<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
+maximum number of divisions before the Romberg integration
+routine of a path exits.</li>
+<li><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to
+compute the integral.  If ‘romb’ then Romberg integraion,
+using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>, is used instead.</li>
+<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Passed ass the <cite>show</cite> argument of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.1.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The integral of the function f along the path.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This function is only used when checking the
+multiplicity of roots.  The bulk of the integration for
+rootfinding is done with <a class="reference internal" href="prod.html#cxroots.CountRoots.prod" title="cxroots.CountRoots.prod"><code class="xref py py-func docutils literal notranslate"><span class="pre">cxroots.CountRoots.prod()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cxroots.Paths.ComplexPath.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>N=100</em>, <em>linecolor='C0'</em>, <em>linestyle='-'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexPath.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexPath.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses matplotlib to plot, but not show, the path as a 2D plot in
+the Complex plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>N</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points to use when plotting the path.</li>
+<li><strong>linecolor</strong> (<em>optional</em>) – The colour of the plotted path, passed to the
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v2.2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
+argument of ‘color’.  See the matplotlib tutorial on
+<a class="reference external" href="https://matplotlib.org/users/colors.html#">specifying colours</a>.</li>
+<li><strong>linestyle</strong> (<em>str</em><em>, </em><em>optional</em>) – The line style of the plotted path, passed to the
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v2.2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
+argument of ‘linestyle’.  The default corresponds to a solid
+line.  See <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle" title="(in Matplotlib v2.2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.lines.Line2D.set_linestyle()</span></code></a> for
+other acceptable arguments.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cxroots.Paths.ComplexPath.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>saveFile=None</em>, <em>**plotKwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexPath.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexPath.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the path as a 2D plot in the complex plane.  Requires
+Matplotlib.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>saveFile</strong> (<em>str</em><em> (</em><em>optional</em><em>)</em>) – If given then the plot will be saved to disk with name
+‘saveFile’.  If saveFile=None the plot is shown on-screen.</li>
+<li><strong>**plotKwargs</strong> – Other key word arguments are passed to <a class="reference internal" href="#cxroots.Paths.ComplexPath.plot" title="cxroots.Paths.ComplexPath.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cxroots.Paths.ComplexPath.trap_values">
+<code class="descname">trap_values</code><span class="sig-paren">(</span><em>f</em>, <em>k</em>, <em>useCache=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexPath.trap_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexPath.trap_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute or retrieve (if cached) the values of the functions f
+at <span class="math notranslate nohighlight">\(2^k+1\)</span> points along the contour which are evenly
+spaced with respect to the parameterisation of the contour.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f</strong> (<em>function</em>) – A function of a single complex variable.</li>
+<li><strong>k</strong> (<em>int</em>) – Defines the number of points along the curve that f is to be
+evaluated at as <span class="math notranslate nohighlight">\(2^k+1\)</span>.</li>
+<li><strong>useCache</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then use, if available, the results of any previous
+calls to this function for the same f and save any new
+results so that they can be reused later.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The values of f at <span class="math notranslate nohighlight">\(2^k+1\)</span> points along the contour
+which are evenly spaced with respect to the parameterisation
+of the contour.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="line">
+<h2>Line<a class="headerlink" href="#line" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cxroots.Paths.ComplexLine">
+<em class="property">class </em><code class="descclassname">cxroots.Paths.</code><code class="descname">ComplexLine</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>A straight line <span class="math notranslate nohighlight">\(z\)</span> in the complex plane from a to b
+parameterised by</p>
+<p>..math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">z</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="n">t</span><span class="p">,</span> \<span class="n">quad</span> <span class="mi">0</span>\<span class="n">leq</span> <span class="n">t</span> \<span class="n">leq</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> (<em>float</em>) – </li>
+<li><strong>b</strong> (<em>float</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="cxroots.Paths.ComplexLine.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexLine.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexLine.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function <span class="math notranslate nohighlight">\(z(t) = a + (b-a)t\)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t</strong> (<em>float</em>) – A real number <span class="math notranslate nohighlight">\(0\leq t \leq 1\)</span>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A point on the line in the complex plane.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">complex</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cxroots.Paths.ComplexLine.distance">
+<code class="descname">distance</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexLine.distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexLine.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distance from the point z to the closest point on the line.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>z</strong> (<em>complex</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The distance from z to the point on the line which is
+closest to z.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="circular-arc">
+<h2>Circular Arc<a class="headerlink" href="#circular-arc" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cxroots.Paths.ComplexArc">
+<em class="property">class </em><code class="descclassname">cxroots.Paths.</code><code class="descname">ComplexArc</code><span class="sig-paren">(</span><em>z0</em>, <em>R</em>, <em>t0</em>, <em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexArc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexArc" title="Permalink to this definition">¶</a></dt>
+<dd><p>A circular arc <span class="math notranslate nohighlight">\(z\)</span> with center z0, radius R, initial angle t0
+and change of angle dt.  The arc is parameterised by</p>
+<p>..math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">z</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">R</span> <span class="n">e</span><span class="o">^</span><span class="p">{</span><span class="n">i</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="n">t</span> <span class="n">dt</span><span class="p">)}</span> <span class="o">+</span> <span class="n">z0</span><span class="p">,</span> \<span class="n">quad</span> <span class="mi">0</span>\<span class="n">leq</span> <span class="n">t</span> \<span class="n">leq</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>z0</strong> (<em>complex</em>) – </li>
+<li><strong>R</strong> (<em>float</em>) – </li>
+<li><strong>t0</strong> (<em>float</em>) – </li>
+<li><strong>dt</strong> (<em>float</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="cxroots.Paths.ComplexArc.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexArc.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexArc.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function <span class="math notranslate nohighlight">\(z(t) = R e^{i(t_0 + t dt)} + z_0\)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t</strong> (<em>float</em>) – A real number <span class="math notranslate nohighlight">\(0\leq t \leq 1\)</span>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A point on the arc in the complex plane.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">complex</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cxroots.Paths.ComplexArc.distance">
+<code class="descname">distance</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Paths.html#ComplexArc.distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Paths.ComplexArc.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distance from the point z to the closest point on the arc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>z</strong> (<em>complex</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The distance from z to the point on the arc which is closest
+to z.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="contours.html" class="btn btn-neutral float-right" title="Contours" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ex_annular_combustion.html" class="btn btn-neutral" title="Stability of an Annular Combustion Chamber" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

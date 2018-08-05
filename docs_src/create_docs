@@ -1,13 +1,13 @@
 #!/bin/bash
 rm -rf ../docs
 python3 docex_contour.py
-python3 docex_guessRoots.py
-python3 docex_guessRootSymmetry.py
+python3 docex_tutorial.py
 
-sphinx-build -b html . ../docs
+sphinx-build -b html . ../docs -T -E -a
 
 # clean up
 rm -f *.gif
 rm -f *.pdf
+rm -f *.png
 rm -f *.mov
 rm -f *.mp4

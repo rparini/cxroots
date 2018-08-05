@@ -1,6 +1,6 @@
 import numpy as np
 
-def sets_approx_equal(a, b, decimal=7):
+def sets_approx_equal(a, b, decimal=10):
 	"""
 	Test if iterables a and b are approximately the same, up to reordering.
 
@@ -24,8 +24,8 @@ def sets_approx_equal(a, b, decimal=7):
 	return np.testing.assert_almost_equal(a, b, decimal)
 
 
-def roots_approx_equal(a, b, decimal = 7):
-	a_roots, a_multiplicities = a.roots, a.multiplicities
+def roots_approx_equal(a, b, decimal=10):
+	a_roots, a_multiplicities = a
 	b_roots, b_multiplicities = b
 
 	a_roots, b_roots = np.array(a_roots), np.array(b_roots)

@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Symmetric Bilinear Form &mdash; cxroots 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cxroots 1.1.0 documentation" href="index.html"/>
+        <link rel="next" title="Iterative Methods" href="iteration.html"/>
+        <link rel="prev" title="Contours" href="contours.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Symmetric Bilinear Form</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/prod.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="symmetric-bilinear-form">
+<h1>Symmetric Bilinear Form<a class="headerlink" href="#symmetric-bilinear-form" title="Permalink to this headline">¶</a></h1>
+<p>To find the distinct roots <span class="math notranslate nohighlight">\(\{z_i\}_{i=1}^n\)</span> and corresponding multiplicities <span class="math notranslate nohighlight">\(\{m_i\}\)</span> of the given function <span class="math notranslate nohighlight">\(f(z)\)</span> within the given contour <span class="math notranslate nohighlight">\(C\)</span> use is made of the fact that</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{2\pi i} \int_C \phi(z)\psi(z) \frac{f'(z)}{f(z)} dz
+= \sum_{i=1}^n m_i \phi(z_i) \psi(z_i)\]</div>
+<p>In <cite>cxroots</cite> the left hand side is computed using the function <a class="reference internal" href="#cxroots.CountRoots.prod" title="cxroots.CountRoots.prod"><code class="xref py py-func docutils literal notranslate"><span class="pre">prod()</span></code></a>.</p>
+<dl class="function">
+<dt id="cxroots.CountRoots.prod">
+<code class="descclassname">cxroots.CountRoots.</code><code class="descname">prod</code><span class="sig-paren">(</span><em>C</em>, <em>f</em>, <em>df=None</em>, <em>phi=None</em>, <em>psi=None</em>, <em>absTol=1e-12</em>, <em>relTol=1e-12</em>, <em>divMin=3</em>, <em>divMax=15</em>, <em>m=2</em>, <em>intMethod='quad'</em>, <em>integerTol=inf</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/CountRoots.html#prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.CountRoots.prod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the symmetric bilinear form used in (1.12) of <a class="reference internal" href="#kb" id="id1">[KB]</a>.</p>
+<div class="math notranslate nohighlight">
+\[&lt;\phi,\psi&gt; = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>C</strong> (<a class="reference internal" href="contours.html#cxroots.Contour.Contour" title="cxroots.Contour.Contour"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contour</span></code></a>) – A contour in the complex plane for.  No roots or poles of f
+should lie on C.</li>
+<li><strong>f</strong> (<em>function</em>) – Function of a single variable f(x)</li>
+<li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable, df(x), providing the derivative
+of the function f(x) at the point x.  If not provided then df is
+approximated using a finite difference method.</li>
+<li><strong>phi</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable phi(x).  If not provided then
+phi(z)=1.</li>
+<li><strong>psi</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable psi(x).  If not provided then
+psi(z)=1.</li>
+<li><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance for integration.</li>
+<li><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance for integration.</li>
+<li><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’. Minimum number of divisions before
+the Romberg integration routine is allowed to exit.</li>
+<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’.  The maximum number of divisions
+before the Romberg integration routine of a path exits.</li>
+<li><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and intMethod=’quad’.  Must be even.  The
+argument order=m is passed to numdifftools.Derivative and is the
+order of the error term in the Taylor approximation.</li>
+<li><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then scipy.integrate.quad is used to perform the
+integral.  If ‘romb’ then Romberg integraion, using
+scipy.integrate.romb, is performed instead.</li>
+<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Only used when intMethod is ‘romb’.  The integration routine will
+not exit unless the result is within integerTol of an integer.
+This is useful when computing the number of roots in a contour,
+which must be an integer.  By default integerTol is inf.</li>
+<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True runtime information will be printed.  False be default.</li>
+<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – Only used when intMethod is ‘romb’.  A function that at each
+step in the iteration is passed the current approximation for
+the integral, the estimated error of that approximation and the
+number of iterations.  If the return of callback evaluates to
+True then the integration will end.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>complex</em> – The value of the integral &lt;phi, psi&gt;.</li>
+<li><em>float</em> – An estimate of the error for the integration.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="kb" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[KB]</a></td><td>“Computing the zeros of analytic functions” by Peter Kravanja,
+Marc Van Barel, Springer 2000</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="iteration.html" class="btn btn-neutral float-right" title="Iterative Methods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="contours.html" class="btn btn-neutral" title="Contours" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

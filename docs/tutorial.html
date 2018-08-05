@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tutorial &mdash; cxroots 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cxroots 1.1.0 documentation" href="index.html"/>
+        <link rel="next" title="Demonstrating Rootfinding" href="demo.html"/>
+        <link rel="prev" title="Installation" href="installation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#contours">Contours</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rootfinding">Rootfinding</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Tutorial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="contours">
+<h2>Contours<a class="headerlink" href="#contours" title="Permalink to this headline">¶</a></h2>
+<p>cxroots is not a global rootfinder: it can only find roots within a given region of the complex plane.
+So the first step is to specify this region as the interior of a contour.
+cxroots allows the user to choose from one of four kinds of contours:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="contours.html#circle"><span class="std std-ref">Circle</span></a></td>
+<td><a class="reference internal" href="contours.html#rectangle"><span class="std std-ref">Rectangle</span></a></td>
+<td><a class="reference internal" href="contours.html#annulus"><span class="std std-ref">Annulus</span></a></td>
+<td><a class="reference internal" href="contours.html#annulus-sector"><span class="std std-ref">Annulus Sector</span></a></td>
+</tr>
+<tr class="row-even"><td><img alt="circlefig" src="_images/circle.png" /></td>
+<td><img alt="rectanglefig" src="_images/rectangle.png" /></td>
+<td><img alt="annulusfig" src="_images/annulus.png" /></td>
+<td><img alt="annulussefig" src="_images/annulussefig.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>For example, to define a rectangle whose verticies are the points <span class="math notranslate nohighlight">\(0, i, 2+i, 2\)</span> we would write:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To check that this is what we want we can plot this contour using matplotlib:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rect</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//tutorial-1.py">Source code</a>, <a class="reference external" href=".//tutorial-1.png">png</a>, <a class="reference external" href=".//tutorial-1.hires.png">hires.png</a>, <a class="reference external" href=".//tutorial-1.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/tutorial-1.png" src="_images/tutorial-1.png" />
+</div>
+</div>
+<div class="section" id="rootfinding">
+<h2>Rootfinding<a class="headerlink" href="#rootfinding" title="Permalink to this headline">¶</a></h2>
+<p>To find the roots of a function <span class="math notranslate nohighlight">\(f(z)\)</span> within a contour <span class="math notranslate nohighlight">\(C\)</span> we can use the method <a class="reference internal" href="contours.html#cxroots.Contour.Contour.roots" title="cxroots.Contour.Contour.roots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f)</span></code></a> or preferably <a class="reference internal" href="contours.html#cxroots.Contour.Contour.roots" title="cxroots.Contour.Contour.roots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f,</span> <span class="pre">df)</span></code></a> if the derivative <cite>df</cite> is known.</p>
+<p>For example, suppose we want to find all the roots of the function <span class="math notranslate nohighlight">\(f(z) = iz^5 + z\sin(z)\)</span> within a circle of radius 2 and centered at <span class="math notranslate nohighlight">\(z=0\)</span>.
+With cxroots this acomplished with the following short Python script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span> 			
+<span class="n">f</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>          	<span class="c1"># Define f(z)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">5</span><span class="n">j</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">4</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> 	<span class="c1"># Define f&#39;(z)</span>
+
+<span class="kn">from</span> <span class="nn">cxroots</span> <span class="k">import</span> <span class="n">Circle</span> 			
+<span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>		<span class="c1"># Define a circle, centered at 0 and with radius 2</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>		<span class="c1"># Find the roots of f(z) within the circle </span>
+</pre></div>
+</div>
+<p>In the first three lines we define the function <span class="math notranslate nohighlight">\(f(z)\)</span> and its derivative <span class="math notranslate nohighlight">\(f'(z)\)</span>.
+We then define our contour, in this case the circle <span class="math notranslate nohighlight">\(C=\{z\in\mathbb{C}\,|\,|z|=2\}\)</span>.
+The method <a class="reference internal" href="contours.html#cxroots.Contour.Contour.roots" title="cxroots.Contour.Contour.roots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f,</span> <span class="pre">df)</span></code></a> on the last line returns a <a class="reference internal" href="result.html#cxroots.RootResult.RootResult" title="cxroots.RootResult.RootResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootResult</span></code></a> object which we can use to print the roots and their multiplicities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> Multiplicity |               Root              
+------------------------------------------------
+      1       | -0.861622958732 +0.447663621211i
+      1       |  0.000000000000 -1.062365701233i
+      2       |  0.000000000000 +0.000000000000i
+      1       |  0.861622958732 +0.447663621211i
+</pre></div>
+</div>
+<p>We can also plot the roots using matplotlib:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/tutorial_roots.png"><img alt="_images/tutorial_roots.png" src="_images/tutorial_roots.png" style="width: 400px;" /></a>
+<p>The <a class="reference internal" href="result.html#cxroots.RootResult.RootResult" title="cxroots.RootResult.RootResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootResult</span></code></a> object also contains the roots and multiplicites as lists which can be accessed as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span> <span class="o">=</span> <span class="n">r</span>
+<span class="k">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (1.9913546050657264e-29+6.638141257918372e-29j)]
+[1.0, 1.0, 1.0, 2.0]
+</pre></div>
+</div>
+<p>or as attributes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">roots</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (1.9913546050657264e-29+6.638141257918372e-29j)]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">multiplicities</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1.0, 1.0, 1.0, 2.0]
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="demo.html" class="btn btn-neutral float-right" title="Demonstrating Rootfinding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

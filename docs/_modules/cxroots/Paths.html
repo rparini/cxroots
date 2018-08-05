@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cxroots.Paths &mdash; cxroots 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="cxroots 1.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../result.html">Rootfinding Result</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>cxroots.Paths</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cxroots.Paths</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">pi</span>
+
+<div class="viewcode-block" id="ComplexPath"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexPath">[docs]</a><span class="k">class</span> <span class="nc">ComplexPath</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;A base class for paths in the complex plane.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="ComplexPath.trap_values"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexPath.trap_values">[docs]</a>	<span class="k">def</span> <span class="nf">trap_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">useCache</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Compute or retrieve (if cached) the values of the functions f</span>
+<span class="sd">		at :math:`2^k+1` points along the contour which are evenly </span>
+<span class="sd">		spaced with respect to the parameterisation of the contour.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		f : function</span>
+<span class="sd">			A function of a single complex variable.</span>
+<span class="sd">		k : int</span>
+<span class="sd">			Defines the number of points along the curve that f is to be</span>
+<span class="sd">			evaluated at as :math:`2^k+1`.</span>
+<span class="sd">		useCache : bool, optional</span>
+<span class="sd">			If True then use, if available, the results of any previous </span>
+<span class="sd">			calls to this function for the same f and save any new </span>
+<span class="sd">			results so that they can be reused later.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		:class:`numpy.ndarray`</span>
+<span class="sd">			The values of f at :math:`2^k+1` points along the contour </span>
+<span class="sd">			which are evenly spaced with respect to the parameterisation</span>
+<span class="sd">			of the contour.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">useCache</span><span class="p">:</span>
+			<span class="n">vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
+			<span class="n">vals_k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+			
+			<span class="k">if</span> <span class="n">vals_k</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">vals</span>
+			<span class="k">elif</span> <span class="n">vals_k</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">vals</span><span class="p">[::</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">vals_k</span><span class="o">-</span><span class="n">k</span><span class="p">)]</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+				<span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+				<span class="n">vals</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+				<span class="n">vals</span><span class="p">[::</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="n">vals_k</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
+				<span class="n">vals</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)]))</span>
+
+				<span class="c1"># cache values</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
+				<span class="k">return</span> <span class="n">vals</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+			<span class="n">vals</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">useCache</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
+			<span class="k">return</span> <span class="n">vals</span></div>
+
+
+<div class="viewcode-block" id="ComplexPath.plot"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexPath.plot">[docs]</a>	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Uses matplotlib to plot, but not show, the path as a 2D plot in </span>
+<span class="sd">		the Complex plane.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		N : int, optional</span>
+<span class="sd">			The number of points to use when plotting the path.</span>
+<span class="sd">		linecolor : optional</span>
+<span class="sd">			The colour of the plotted path, passed to the </span>
+<span class="sd">			:func:`matplotlib.pyplot.plot` function as the keyword </span>
+<span class="sd">			argument of &#39;color&#39;.  See the matplotlib tutorial on </span>
+<span class="sd">			`specifying colours &lt;https://matplotlib.org/users/colors.html#&gt;`_.</span>
+<span class="sd">		linestyle : str, optional</span>
+<span class="sd">			The line style of the plotted path, passed to the </span>
+<span class="sd">			:func:`matplotlib.pyplot.plot` function as the keyword </span>
+<span class="sd">			argument of &#39;linestyle&#39;.  The default corresponds to a solid </span>
+<span class="sd">			line.  See :meth:`matplotlib.lines.Line2D.set_linestyle` for</span>
+<span class="sd">			other acceptable arguments.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+		<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+		<span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">linecolor</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Re[$z$]&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Im[$z$]&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+		<span class="c1"># add arrow to indicate direction of path</span>
+		<span class="n">arrow_direction</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mf">0.51</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mf">0.51</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+		<span class="n">arrow_extent</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="o">*</span><span class="n">arrow_direction</span>
+		<span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+		<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+		<span class="n">head_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">))</span><span class="o">/</span><span class="mf">40.</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
+				  <span class="n">arrow_extent</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">arrow_extent</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
+				  <span class="n">head_width</span><span class="o">=</span><span class="n">head_length</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="mf">3.</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="n">head_length</span><span class="p">,</span> 
+				  <span class="n">fc</span><span class="o">=</span><span class="n">linecolor</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">linecolor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ComplexPath.show"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexPath.show">[docs]</a>	<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">plotKwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">		Shows the path as a 2D plot in the complex plane.  Requires</span>
+<span class="sd">		Matplotlib.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		saveFile : str (optional)</span>
+<span class="sd">			If given then the plot will be saved to disk with name </span>
+<span class="sd">			&#39;saveFile&#39;.  If saveFile=None the plot is shown on-screen.</span>
+<span class="sd">		**plotKwargs </span>
+<span class="sd">			Other key word arguments are passed to :meth:`~cxroots.Paths.ComplexPath.plot`.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">**</span><span class="n">plotKwargs</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">saveFile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">saveFile</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ComplexPath.integrate"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexPath.integrate">[docs]</a>	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">intMethod</span><span class="o">=</span><span class="s1">&#39;quad&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Integrate the function f along the path.  The value of the </span>
+<span class="sd">		integral is cached and will be reused if the method is called </span>
+<span class="sd">		with same arguments (ignoring verbose).</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		f : function</span>
+<span class="sd">			A function of a single complex variable.</span>
+<span class="sd">		absTol : float, optional</span>
+<span class="sd">			The absolute tolerance for the integration.</span>
+<span class="sd">		relTol : float, optional</span>
+<span class="sd">			The realative tolerance for the integration.</span>
+<span class="sd">		divMax : int, optional</span>
+<span class="sd">			If the Romberg integration method is used then divMax is the</span>
+<span class="sd">			maximum number of divisions before the Romberg integration</span>
+<span class="sd">			routine of a path exits.</span>
+<span class="sd">		intMethod : {&#39;quad&#39;, &#39;romb&#39;}, optional</span>
+<span class="sd">			If &#39;quad&#39; then :func:`scipy.integrate.quad` is used to </span>
+<span class="sd">			compute the integral.  If &#39;romb&#39; then Romberg integraion, </span>
+<span class="sd">			using :func:`scipy.integrate.romberg`, is used instead.</span>
+<span class="sd">		verbose : bool, optional</span>
+<span class="sd">			Passed ass the `show` argument of :func:`scipy.integrate.romberg`.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		complex</span>
+<span class="sd">			The integral of the function f along the path.</span>
+
+<span class="sd">		Notes</span>
+<span class="sd">		-----</span>
+<span class="sd">		This function is only used when checking the </span>
+<span class="sd">		multiplicity of roots.  The bulk of the integration for </span>
+<span class="sd">		rootfinding is done with :func:`cxroots.CountRoots.prod`.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="p">,</span> <span class="n">divMax</span><span class="p">,</span> <span class="n">intMethod</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">args</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">integral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
+
+		<span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_reversePath&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">args</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reversePath</span><span class="o">.</span><span class="n">_integralCache</span><span class="p">:</span>
+			<span class="c1"># if we have already computed the reverse of this path</span>
+			<span class="n">integral</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_reversePath</span><span class="o">.</span><span class="n">_integralCache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
+
+		<span class="k">else</span><span class="p">:</span>			
+			<span class="n">integrand</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s1">&#39;romb&#39;</span><span class="p">:</span>
+				<span class="n">integral</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">romberg</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">relTol</span><span class="p">,</span> <span class="n">divmax</span><span class="o">=</span><span class="n">divMax</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s1">&#39;quad&#39;</span><span class="p">:</span>
+				<span class="n">integrand_real</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">integrand</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+				<span class="n">integrand_imag</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">integrand</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+
+				<span class="n">integral_real</span><span class="p">,</span> <span class="n">abserr_real</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="n">integrand_real</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">epsabs</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">epsrel</span><span class="o">=</span><span class="n">relTol</span><span class="p">)</span>
+				<span class="n">integral_imag</span><span class="p">,</span> <span class="n">abserr_imag</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="n">integrand_imag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">epsabs</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">epsrel</span><span class="o">=</span><span class="n">relTol</span><span class="p">)</span>
+				<span class="n">integral</span> <span class="o">=</span> <span class="n">integral_real</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">integral_imag</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;intMethod must be either &#39;romb&#39; or &#39;quad&#39;&quot;</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">integral</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;The integral along the segment </span><span class="si">%s</span><span class="s1"> is NaN.</span><span class="se">\</span>
+<span class="s1">					</span><span class="se">\n</span><span class="s1">This is most likely due to a root being on or very close to the path of integration.&#39;</span><span class="o">%</span><span class="bp">self</span><span class="p">)</span>
+
+			<span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span> <span class="o">=</span> <span class="n">integral</span>
+
+		<span class="k">return</span> <span class="n">integral</span></div></div>
+
+
+<div class="viewcode-block" id="ComplexLine"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexLine">[docs]</a><span class="k">class</span> <span class="nc">ComplexLine</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A straight line :math:`z` in the complex plane from a to b </span>
+<span class="sd">	parameterised by</span>
+
+<span class="sd">	..math::</span>
+
+<span class="sd">		z(t) = a + (b-a)t, \quad 0\leq t \leq 1</span>
+
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	a : float</span>
+<span class="sd">	b : float</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dzdt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">ComplexLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s1">&#39;ComplexLine from </span><span class="si">%.3f</span><span class="s1">+</span><span class="si">%.3f</span><span class="s1">i to </span><span class="si">%.3f</span><span class="s1">+</span><span class="si">%.3f</span><span class="s1">i&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ComplexLine.__call__"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexLine.__call__">[docs]</a>	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		The function :math:`z(t) = a + (b-a)t`.</span>
+<span class="sd">	</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		t : float</span>
+<span class="sd">			A real number :math:`0\leq t \leq 1`.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		complex</span>
+<span class="sd">			A point on the line in the complex plane.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ComplexLine.distance"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexLine.distance">[docs]</a>	<span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">		Distance from the point z to the closest point on the line. </span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		z : complex</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		float</span>
+<span class="sd">			The distance from z to the point on the line which is </span>
+<span class="sd">			closest to z.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># convert complex numbers to vectors</span>
+		<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">imag</span><span class="p">])</span>
+		<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">imag</span><span class="p">])</span>
+		<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">])</span>
+
+		<span class="c1"># the projection of the point z onto the line a -&gt; b is where</span>
+		<span class="c1"># the parameter t is </span>
+		<span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">Z</span><span class="o">-</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="o">-</span><span class="n">A</span><span class="p">)</span><span class="o">/</span><span class="nb">abs</span><span class="p">((</span><span class="n">B</span><span class="o">-</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="o">-</span><span class="n">A</span><span class="p">))</span>
+
+		<span class="c1"># but the line segment only has 0 &lt;= t &lt;= 1</span>
+		<span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+		<span class="c1"># so the point on the line segment closest to z is</span>
+		<span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">z</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ComplexArc"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexArc">[docs]</a><span class="k">class</span> <span class="nc">ComplexArc</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A circular arc :math:`z` with center z0, radius R, initial angle t0 </span>
+<span class="sd">	and change of angle dt.  The arc is parameterised by </span>
+
+<span class="sd">	..math::</span>
+
+<span class="sd">		z(t) = R e^{i(t0 + t dt)} + z0, \quad 0\leq t \leq 1</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	z0 : complex</span>
+<span class="sd">	R : float</span>
+<span class="sd">	t0 : float</span>
+<span class="sd">	dt : float</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">z0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">z0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">dt</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dzdt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">ComplexArc</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s1">&#39;ComplexArc: z0=</span><span class="si">%.3f</span><span class="s1">, R=</span><span class="si">%.3f</span><span class="s1">, t0=</span><span class="si">%.3f</span><span class="s1">, dt=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ComplexArc.__call__"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexArc.__call__">[docs]</a>	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.</span>
+<span class="sd">	</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		t : float</span>
+<span class="sd">			A real number :math:`0\leq t \leq 1`.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		complex</span>
+<span class="sd">			A point on the arc in the complex plane.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z0</span></div>
+
+<div class="viewcode-block" id="ComplexArc.distance"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexArc.distance">[docs]</a>	<span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">		Distance from the point z to the closest point on the arc. </span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		z : complex</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		float</span>
+<span class="sd">			The distance from z to the point on the arc which is closest</span>
+<span class="sd">			to z.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">z0</span><span class="p">)</span> 				<span class="c1"># np.angle maps to (-pi,pi]</span>
+		<span class="n">theta</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> 	<span class="c1"># put theta in [t0,t0+2pi)</span>
+
+		<span class="k">if</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">&lt;</span> <span class="n">theta</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+			<span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">&lt;</span> <span class="n">theta</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">)):</span>
+			<span class="c1"># the closest point to z lies on the arc</span>
+			<span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z0</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># the closest point to z is one of the endpoints</span>
+			<span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="n">z</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">z</span><span class="p">))</span></div></div>
+
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

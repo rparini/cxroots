@@ -8,3 +8,6 @@ dist/*
 cxroots.egg-info/*
 upload
 .cache/v/cache/lastfailed
+scrapbook/*
+.pytest_cache
+

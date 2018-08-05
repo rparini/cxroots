@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using Known Roots or Symmetries &mdash; cxroots 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cxroots 1.1.0 documentation" href="index.html"/>
+        <link rel="next" title="Stability of an Annular Combustion Chamber" href="ex_annular_combustion.html"/>
+        <link rel="prev" title="Demonstrating Rootfinding" href="demo.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using Known Roots or Symmetries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#guessing-roots">Guessing Roots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#guessing-root-symmetry">Guessing Root Symmetry</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Using Known Roots or Symmetries</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/guesses.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="using-known-roots-or-symmetries">
+<h1>Using Known Roots or Symmetries<a class="headerlink" href="#using-known-roots-or-symmetries" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="guessing-roots">
+<h2>Guessing Roots<a class="headerlink" href="#guessing-roots" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>guessRoots</cite> argument of <a class="reference internal" href="contours.html#cxroots.Contour.Contour.roots" title="cxroots.Contour.Contour.roots"><code class="xref py py-func docutils literal notranslate"><span class="pre">Contour.roots</span></code></a> can be used to supply any roots the user already knows or suspects.
+For example, suppose we want to find the roots of the function</p>
+<div class="math notranslate nohighlight">
+\[f(z)=(z+1.2)(z-2.5)^2\left(e^{-z}\sin\left(\frac{z}{2}\right)-1.2\cos(z)\right)\,, \quad |z|&lt;3\]</div>
+<p>It’s obvious that 2.5 and -1.2 are roots so we can tell cxroots this by passing <code class="code docutils literal notranslate"><span class="pre">guessRoots=[2.5,</span> <span class="pre">-1.2]</span></code> to <code class="xref py py-func docutils literal notranslate"><span class="pre">C.roots()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
+<span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mf">1.2</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mf">1.2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="mf">2.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">guessRoots</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This causes cxroots to first check for roots within small circles centered on the points 2.5 and -1.2</p>
+<p>(<a class="reference external" href=".//guesses-1.py">Source code</a>)</p>
+<a class="reference internal image-reference" href="_images/guessRoots.gif"><img alt="_images/guessRoots.gif" src="_images/guessRoots.gif" style="width: 500px;" /></a>
+<p>Note that the list we supply to <cite>guessRoots</cite> simply tells <cite>cxroots</cite> where to look first for roots, the guesses will not be blindly accepted so they do not need to be particularly accurate.</p>
+</div>
+<div class="section" id="guessing-root-symmetry">
+<h2>Guessing Root Symmetry<a class="headerlink" href="#guessing-root-symmetry" title="Permalink to this headline">¶</a></h2>
+<p>It may be that something is known about the structure of the roots.
+<cite>cxroots</cite> can be told this using the <cite>guessRootSymmetry</cite> argument which should be a function of a complex number, <span class="math notranslate nohighlight">\(z\)</span>, which returns a list of roots assuming that <span class="math notranslate nohighlight">\(z\)</span> is a root.</p>
+<p>For example, if <span class="math notranslate nohighlight">\(z_i\)</span> is a root of</p>
+<div class="math notranslate nohighlight">
+\[f(z)=z^{26}-2z^{10}+\frac{1}{2}z^6-1\]</div>
+<p>then so is <span class="math notranslate nohighlight">\(\overline{z_i}\)</span> and <span class="math notranslate nohighlight">\(-z_i\)</span>.
+We should therefore pass <code class="code docutils literal notranslate"><span class="pre">guessRootSymmetry=lambda</span> <span class="pre">z:</span> <span class="pre">[z.conjugate(),</span> <span class="pre">-z]</span></code> to <code class="xref py py-func docutils literal notranslate"><span class="pre">C.roots()</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">])</span>
+<span class="n">f</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">**</span><span class="mi">26</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">10</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">6</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">26</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">25</span><span class="o">-</span><span class="mi">20</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">3</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="o">=</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="o">-</span><span class="n">z</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This causes <cite>cxroots</cite> to check for roots within a small circle centered on the points <span class="math notranslate nohighlight">\(\overline{z_i}\)</span> and <span class="math notranslate nohighlight">\(-z_i\)</span> whenever a root, <span class="math notranslate nohighlight">\(z_i\)</span>, is found.</p>
+<p>(<a class="reference external" href=".//guesses-2.py">Source code</a>)</p>
+<a class="reference internal image-reference" href="_images/ex_rootSymmetry.gif"><img alt="_images/ex_rootSymmetry.gif" src="_images/ex_rootSymmetry.gif" style="width: 500px;" /></a>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ex_annular_combustion.html" class="btn btn-neutral float-right" title="Stability of an Annular Combustion Chamber" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="demo.html" class="btn btn-neutral" title="Demonstrating Rootfinding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

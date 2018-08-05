@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cxroots.RootFinder &mdash; cxroots 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="cxroots 1.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../result.html">Rootfinding Result</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>cxroots.RootFinder</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cxroots.RootFinder</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">from</span> <span class="nn">.IterativeMethods</span> <span class="k">import</span> <span class="n">iterateToRoot</span>
+<span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">RootError</span>
+<span class="kn">from</span> <span class="nn">.RootResult</span> <span class="k">import</span> <span class="n">RootResult</span>
+<span class="kn">from</span> <span class="nn">.Misc</span> <span class="k">import</span> <span class="n">doc_tab_to_space</span><span class="p">,</span> <span class="n">docstrings</span><span class="p">,</span> <span class="n">NumberOfRootsChanged</span>
+
+<span class="k">class</span> <span class="nc">MultiplicityError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+	<span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">countCalls</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Count how many times a given function is called.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="mi">0</span>
+
+	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">+=</span> <span class="mi">1</span>
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">+=</span> <span class="mi">1</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+<span class="nd">@docstrings</span><span class="o">.</span><span class="n">get_sectionsf</span><span class="p">(</span><span class="s1">&#39;find_roots_gen&#39;</span><span class="p">)</span>
+<span class="nd">@docstrings</span><span class="o">.</span><span class="n">dedent</span>
+<span class="nd">@doc_tab_to_space</span>
+<span class="k">def</span> <span class="nf">find_roots_gen</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">guessRoots</span><span class="o">=</span><span class="p">[],</span> <span class="n">guessRootSymmetry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+	<span class="n">newtonStepTol</span><span class="o">=</span><span class="mf">1e-14</span><span class="p">,</span> <span class="n">attemptIterBest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> 
+	<span class="n">absTol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">NIntAbsTol</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">errStop</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> 
+	<span class="n">intMethod</span><span class="o">=</span><span class="s1">&#39;quad&#39;</span><span class="p">,</span> <span class="n">divMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A generator which at each step takes a contour and either finds all </span>
+<span class="sd">	the zeros of f within it or subdivides it further.  Based on the </span>
+<span class="sd">	algorithm in [KB]_.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	originalContour : :class:`Contour &lt;cxroots.Contour.Contour&gt;`</span>
+<span class="sd">		The contour which bounds the region in which all the roots of </span>
+<span class="sd">		f(z) are sought.</span>
+<span class="sd">	f : function</span>
+<span class="sd">		A function of a single complex variable, z, which is analytic </span>
+<span class="sd">		within the contour and has no poles or roots on the contour.</span>
+<span class="sd">	df : function, optional</span>
+<span class="sd">		A function of a single complex variable which is the derivative </span>
+<span class="sd">		of the function f(z). If df is not given then it will be </span>
+<span class="sd">		approximated with a finite difference formula.</span>
+<span class="sd">	guessRoots : list, optional</span>
+<span class="sd">		A list of known roots or guesses for roots (they are checked </span>
+<span class="sd">		before being accepted).</span>
+<span class="sd">	guessRootSymmetry : function, optional</span>
+<span class="sd">		A function of a single complex variable, z, which returns a list</span>
+<span class="sd">		of all points which are expected to be roots of f, given that z </span>
+<span class="sd">		is a root of f.</span>
+<span class="sd">	newtonStepTol : float, optional</span>
+<span class="sd">		The required accuracy of the root.  The iterative method used to</span>
+<span class="sd">		give a final value for each root will exit if the step size, dx,</span>
+<span class="sd">		between sucessive iterations satisfies abs(dx) &lt; newtonStepTol </span>
+<span class="sd">		and iterBestAttempt is False.</span>
+<span class="sd">	attemptIterBest : bool, optional</span>
+<span class="sd">		If True then the iterative method used to refine the roots will </span>
+<span class="sd">		exit when error of the previous iteration, x0, was at least as </span>
+<span class="sd">		good as the current iteration, x, in the sense that </span>
+<span class="sd">		abs(f(x)) &gt;= abs(f(x0)) and the previous iteration satisfied </span>
+<span class="sd">		abs(dx0) &lt; newtonStepTol.  In this case the preivous iteration </span>
+<span class="sd">		is returned as the approximation of the root.</span>
+<span class="sd">	newtonMaxIter : int, optional</span>
+<span class="sd">		The iterative method used to give a final value for each root </span>
+<span class="sd">		will exit if the number of iterations exceeds newtonMaxIter.</span>
+<span class="sd">	rootErrTol : float, optional</span>
+<span class="sd">		A complex value z is considered a root if abs(f(z)) &lt; rootErrTol</span>
+<span class="sd">	absTol : float, optional</span>
+<span class="sd">		Absolute error tolerance used by the contour integration.</span>
+<span class="sd">	relTol : float, optional</span>
+<span class="sd">		Relative error tolerance used by the contour integration.</span>
+<span class="sd">	integerTol : float, optional</span>
+<span class="sd">		A number is considered an integer if it is within integerTol of </span>
+<span class="sd">		an integer.  Used when determing if the value for the number of </span>
+<span class="sd">		roots within a contour and the values of the computed </span>
+<span class="sd">		multiplicities of roots are acceptably close to integers.</span>
+<span class="sd">	NIntAbsTol : float, optional</span>
+<span class="sd">		The absolute error tolerance used for the contour integration </span>
+<span class="sd">		when determining the number of roots within a contour.  Since </span>
+<span class="sd">		the result of this integration must be an integer it can be much</span>
+<span class="sd">		less accurate than usual.</span>
+<span class="sd">	M : int, optional</span>
+<span class="sd">		If the number of roots (including multiplicites) within a </span>
+<span class="sd">		contour is greater than M then the contour is subdivided</span>
+<span class="sd">		further.  M must be greater than or equal to the largest </span>
+<span class="sd">		multiplcity of any root.  </span>
+<span class="sd">	errStop : float, optional</span>
+<span class="sd">		The number of distinct roots within a contour, n, is determined </span>
+<span class="sd">		by checking if all the elements of a list of contour integrals </span>
+<span class="sd">		involving formal orthogonal polynomials are sufficently close to</span>
+<span class="sd">		zero, ie. that the absolute value of each element is &lt; errStop.</span>
+<span class="sd">		If errStop is too large/small then n may be smaller/larger than </span>
+<span class="sd">		it actually is.</span>
+<span class="sd">	intMethod : {&#39;quad&#39;, &#39;romb&#39;}, optional</span>
+<span class="sd">		If &#39;quad&#39; then :func:`scipy.integrate.quad` is used to perform the </span>
+<span class="sd">		integral.  If &#39;romb&#39; then Romberg integraion, using </span>
+<span class="sd">		:func:`scipy.integrate.romb`, is performed instead.  Typically, quad is </span>
+<span class="sd">		the better choice but it requires that the real and imaginary </span>
+<span class="sd">		parts of each integral are calculated sepeartely, in addition, </span>
+<span class="sd">		if df is not provided, &#39;quad&#39; will require additional function </span>
+<span class="sd">		evaluations to approximate df at each point that f is evaluated </span>
+<span class="sd">		at.  If evaluating f is expensive then &#39;romb&#39; may be more </span>
+<span class="sd">		efficient since it computes the real and imaginary parts </span>
+<span class="sd">		simultaniously and if df is not provided it will approximate it </span>
+<span class="sd">		using only the values of f that would be required by the </span>
+<span class="sd">		integration routine in any case.</span>
+<span class="sd">	divMin : int, optional</span>
+<span class="sd">		If the Romberg integration method is used then divMin is the</span>
+<span class="sd">		minimum number of divisions before the Romberg integration</span>
+<span class="sd">		routine is allowed to exit.</span>
+<span class="sd">	divMax : int, optional</span>
+<span class="sd">		If the Romberg integration method is used then divMax is the</span>
+<span class="sd">		maximum number of divisions before the Romberg integration</span>
+<span class="sd">		routine exits.</span>
+<span class="sd">	m : int, optional</span>
+<span class="sd">		Only used if df=None and method=&#39;quad&#39;.  The argument order=m is </span>
+<span class="sd">		passed to :func:`numdifftools.Derivative` and is the order of the error </span>
+<span class="sd">		term in the Taylor approximation.  m must be even.</span>
+<span class="sd">	verbose : bool, optional</span>
+<span class="sd">		If True certain messages concerning the rootfinding process will</span>
+<span class="sd">		be printed.</span>
+
+<span class="sd">	Yields</span>
+<span class="sd">	------</span>
+<span class="sd">	list</span>
+<span class="sd">		Roots of f(z) within the contour originalContour</span>
+<span class="sd">	list</span>
+<span class="sd">		Multiplicites of roots</span>
+<span class="sd">	deque</span>
+<span class="sd">		The contours which still contain roots</span>
+<span class="sd">	int</span>
+<span class="sd">		Remaining number of roots to be found within the contour</span>
+
+<span class="sd">	References</span>
+<span class="sd">	----------</span>
+<span class="sd">	.. [KB] Peter Kravanja, Marc Van Barel, &quot;Computing the Zeros of </span>
+<span class="sd">		Anayltic Functions&quot;, Springer (2000)</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="kn">from</span> <span class="nn">.contours.Circle</span> <span class="k">import</span> <span class="n">Circle</span>
+
+	<span class="c1"># wrap f to record the number of function calls</span>
+	<span class="n">f</span> <span class="o">=</span> <span class="n">countCalls</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+	<span class="n">countKwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;f&#39;</span><span class="p">:</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;df&#39;</span><span class="p">:</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;NIntAbsTol&#39;</span><span class="p">:</span><span class="n">NIntAbsTol</span><span class="p">,</span> <span class="s1">&#39;integerTol&#39;</span><span class="p">:</span><span class="n">integerTol</span><span class="p">,</span> 
+		<span class="s1">&#39;divMin&#39;</span><span class="p">:</span><span class="n">divMin</span><span class="p">,</span> <span class="s1">&#39;divMax&#39;</span><span class="p">:</span><span class="n">divMax</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;intMethod&#39;</span><span class="p">:</span><span class="n">intMethod</span><span class="p">,</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span><span class="n">verbose</span><span class="p">}</span>
+
+	<span class="k">try</span><span class="p">:</span>
+		<span class="c1"># compute the total number of zeros, including multiplicities, within the originally given contour</span>
+		<span class="n">originalContour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">=</span> <span class="n">originalContour</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="o">**</span><span class="n">countKwargs</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">			Integration along the initial contour has failed.  </span>
+<span class="s2">			There is likely a root on or close to the initial contour.</span>
+<span class="s2">			Try changing the initial contour, if possible.&quot;&quot;&quot;</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total number of roots (counting multiplicities) within the original contour =&#39;</span><span class="p">,</span> <span class="n">originalContour</span><span class="o">.</span><span class="n">_numberOfRoots</span><span class="p">)</span>
+
+	<span class="n">roots</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">multiplicities</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">failedContours</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">contours</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+	<span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">originalContour</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">subdivide</span><span class="p">(</span><span class="n">parentContour</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Given a contour, parentContour, subdivide it into multiple contours.&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Subdividing&#39;</span><span class="p">,</span> <span class="n">parentContour</span><span class="p">)</span>
+
+		<span class="n">numberOfRoots</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="k">for</span> <span class="n">subcontours</span> <span class="ow">in</span> <span class="n">parentContour</span><span class="o">.</span><span class="n">subdivisions</span><span class="p">():</span>
+			<span class="c1"># if a contour has already been used and caused an error then skip it</span>
+			<span class="n">failedContourDesc</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">failedContours</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="n">contourDesc</span> <span class="ow">in</span> <span class="n">failedContourDesc</span> <span class="k">for</span> <span class="n">contourDesc</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">subcontours</span><span class="p">))]):</span>
+				<span class="k">continue</span>
+
+			<span class="c1"># if a contour is near to a known root then skip it</span>
+			<span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">roots</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">contour</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">subcontours</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">):</span>
+					<span class="k">continue</span>
+
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">numberOfRoots</span> <span class="o">=</span> <span class="p">[</span><span class="n">contour</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="o">**</span><span class="n">countKwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">subcontours</span><span class="p">)]</span>
+				<span class="k">while</span> <span class="n">parentContour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">!=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numberOfRoots</span><span class="p">):</span>
+					<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+						<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of roots in sub contours not adding up to parent contour.&#39;</span><span class="p">)</span>
+						<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recomputing number of roots in parent and child contours with NIntAbsTol = &#39;</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="n">NIntAbsTol</span><span class="p">)</span>
+
+					<span class="n">tempCountKwargs</span> <span class="o">=</span> <span class="n">countKwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+					<span class="n">tempCountKwargs</span><span class="p">[</span><span class="s1">&#39;NIntAbsTol&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">0.5</span>
+					<span class="n">parentContour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">=</span> <span class="n">parentContour</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="o">**</span><span class="n">tempCountKwargs</span><span class="p">)</span>
+					<span class="n">numberOfRoots</span> <span class="o">=</span> <span class="p">[</span><span class="n">contour</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="o">**</span><span class="n">tempCountKwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">subcontours</span><span class="p">)]</span>
+
+				<span class="k">if</span> <span class="n">parentContour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numberOfRoots</span><span class="p">):</span>
+					<span class="k">break</span>
+
+			<span class="k">except</span> <span class="n">RootError</span><span class="p">:</span>
+				<span class="c1"># If the number of zeros within either of the new contours is not an integer then it is</span>
+				<span class="c1"># likely that the introduced line which subdivides &#39;parentContour&#39; lies on a zero.</span>
+				<span class="c1"># To avoid this we will try to place the subdividing line at a different point along </span>
+				<span class="c1"># the division axis</span>
+				<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+					<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RootError encountered when subdivding&#39;</span><span class="p">,</span> <span class="n">parentContour</span><span class="p">,</span> <span class="s1">&#39;into:&#39;</span><span class="p">)</span>
+					<span class="nb">print</span><span class="p">(</span><span class="n">subcontours</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+					<span class="nb">print</span><span class="p">(</span><span class="n">subcontours</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+				<span class="k">continue</span>
+
+		<span class="k">if</span> <span class="n">numberOfRoots</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">parentContour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">!=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numberOfRoots</span><span class="p">):</span>
+			<span class="c1"># The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up </span>
+			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Unable to subdivide contour:</span>
+<span class="s2">				</span><span class="se">\t</span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">				&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">parentContour</span><span class="p">)</span>
+
+		<span class="c1"># record number of roots within each sub-contour</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">contour</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subcontours</span><span class="p">):</span>
+			<span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">=</span> <span class="n">numberOfRoots</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+		<span class="c1"># add these sub-contours to the list of contours to find the roots in</span>
+		<span class="n">contours</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">contour</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">contour</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subcontours</span><span class="p">)</span> <span class="k">if</span> <span class="n">numberOfRoots</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
+
+
+	<span class="k">def</span> <span class="nf">remove_siblings_children</span><span class="p">(</span><span class="n">C</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Remove the contour C and all its siblings and children from the </span>
+<span class="sd">		list of contours to be examined/subdivided.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">contours</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+			<span class="k">pass</span>
+
+		<span class="c1"># get sibling and child contours</span>
+		<span class="c1"># siblings:</span>
+		<span class="n">relations</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">_parentContour</span><span class="o">.</span><span class="n">_childcontours</span> 
+		<span class="n">relations</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+		<span class="c1"># children:</span>
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="s1">&#39;_childcontours&#39;</span><span class="p">):</span>
+			<span class="n">relations</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">_childcontours</span><span class="p">)</span>
+
+		<span class="c1"># interate over all relations</span>
+		<span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+			<span class="n">remove_relations</span><span class="p">(</span><span class="n">relation</span><span class="p">)</span>
+
+
+	<span class="k">def</span> <span class="nf">addRoot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">):</span>
+		<span class="c1"># check that the root we have found is distinct from the ones we already have</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">roots</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">-</span> <span class="n">root</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">newtonStepTol</span><span class="p">):</span>
+			<span class="c1"># add the root to the list if it is within the original contour</span>
+			<span class="k">if</span> <span class="n">originalContour</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+				<span class="n">roots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+				<span class="n">multiplicities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">multiplicity</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recorded root&#39;</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="s1">&#39;multiplicity&#39;</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Root&#39;</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="s1">&#39;ignored as not within original contour.&#39;</span><span class="p">)</span>
+
+			<span class="c1"># check to see if there are any other roots implied by the given symmetry</span>
+			<span class="k">if</span> <span class="n">guessRootSymmetry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">for</span> <span class="n">x0</span> <span class="ow">in</span> <span class="n">guessRootSymmetry</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+					<span class="c1"># first check that x0 is distinct from the roots we already have</span>
+					<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">newtonStepTol</span><span class="p">):</span>
+						<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+							<span class="nb">print</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;is a root so guessRootSymmetry suggests that&#39;</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="s1">&#39;might also be a root.&#39;</span><span class="p">)</span>
+						<span class="n">root</span> <span class="o">=</span> <span class="n">iterateToRoot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">,</span> <span class="n">attemptIterBest</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+						<span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+							<span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Circle</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">))</span>
+							<span class="n">contours</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">=</span> <span class="n">contours</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="o">**</span><span class="n">countKwargs</span><span class="p">)</span>
+
+		<span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Already recorded root&#39;</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+
+	<span class="c1"># Add contours surrounding known roots so that they will be checked</span>
+	<span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">guessRoots</span><span class="p">:</span>
+		<span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Circle</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">))</span>
+		<span class="n">contours</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">=</span> <span class="n">contours</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="o">**</span><span class="n">countKwargs</span><span class="p">)</span>
+
+	<span class="k">while</span> <span class="n">contours</span><span class="p">:</span>
+		<span class="c1"># yield the initial state here so that the animation in demo_find_roots shows the first frame</span>
+		<span class="n">totFoundRoots</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">multiplicity</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">multiplicity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">))</span>
+		<span class="k">yield</span> <span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">originalContour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">-</span> <span class="n">totFoundRoots</span>
+
+		<span class="n">contour</span> <span class="o">=</span> <span class="n">contours</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span><span class="p">,</span> <span class="s1">&#39;roots in&#39;</span><span class="p">,</span> <span class="n">contour</span><span class="p">)</span>
+
+		<span class="c1"># if a known root is too near to this contour then reverse the subdivision that created it </span>
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="n">contour</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">newtonStepTol</span> <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">roots</span><span class="p">]):</span>
+			<span class="c1"># remove the contour together with its children and siblings</span>
+			<span class="n">remove_siblings_children</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+
+			<span class="c1"># put the parent contour back into the list of contours to be subdivided again</span>
+			<span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">_parentContour</span><span class="p">)</span>
+
+			<span class="c1"># do not use this contour again</span>
+			<span class="n">failedContours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+			<span class="k">continue</span>
+
+		<span class="c1"># if the contour is smaller than the newtonStepTol then just assume that </span>
+		<span class="c1"># the root is at the center of the contour, print a warning and move on</span>
+		<span class="k">if</span> <span class="n">contour</span><span class="o">.</span><span class="n">area</span> <span class="o">&lt;</span> <span class="n">newtonStepTol</span><span class="p">:</span>
+			<span class="n">root</span> <span class="o">=</span> <span class="n">iterateToRoot</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">centralPoint</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">,</span> <span class="n">attemptIterBest</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">root</span><span class="p">))</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">centralPoint</span><span class="p">))</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">contour</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+				<span class="n">root</span> <span class="o">=</span> <span class="n">contour</span><span class="o">.</span><span class="n">centralPoint</span>
+
+			<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The area of the interior of this contour with is smaller than newtonStepTol!  Try increasing rootTol&quot;</span> \
+				<span class="s2">&quot;The point z = </span><span class="si">%f</span><span class="s2"> + </span><span class="si">%f</span><span class="s2">i has been recorded as a root of multiplicity </span><span class="si">%i</span><span class="s2">.&quot;</span> \
+				<span class="s2">&quot;The error |f(z)| = &quot;</span><span class="o">%</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">contour</span><span class="o">.</span><span class="n">centralPoint</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">root</span><span class="p">)))</span> \
+				<span class="p">)</span>
+			<span class="n">addRoot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span>  <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span><span class="p">)</span>
+			<span class="k">continue</span>
+
+		<span class="c1"># if all the roots within the contour have been located then continue to the next contour</span>
+		<span class="n">numberOfKnownRootsInContour</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">multiplicity</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">multiplicity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">)</span> <span class="k">if</span> <span class="n">contour</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">root</span><span class="p">)])</span>
+		<span class="k">if</span> <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">==</span> <span class="n">numberOfKnownRootsInContour</span><span class="p">:</span>
+			<span class="k">continue</span>
+
+		<span class="c1"># if there are too many roots within the contour then subdivide or</span>
+		<span class="c1"># if there are any known roots within the contour then also subdivide </span>
+		<span class="c1"># (so as not to waste time re-approximating these roots)</span>
+		<span class="k">if</span> <span class="n">numberOfKnownRootsInContour</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">&gt;</span> <span class="n">M</span><span class="p">:</span>
+			<span class="n">subdivide</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+			<span class="k">continue</span>
+
+		<span class="c1">### Approximate the roots in this contour</span>
+		<span class="k">if</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s1">&#39;romb&#39;</span><span class="p">:</span>
+			<span class="c1"># Check to see if the number of roots has changed after new values of f have been sampled</span>
+			<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">numberOfDiv</span><span class="p">):</span>
+				<span class="k">if</span> <span class="n">numberOfDiv</span> <span class="o">&gt;</span> <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfDivisionsForN</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;--- Checking N using the newly sampled values of f ---&#39;</span><span class="p">)</span>
+					<span class="n">new_N</span> <span class="o">=</span> <span class="n">contour</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">NIntAbsTol</span><span class="o">=</span><span class="n">NIntAbsTol</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="n">integerTol</span><span class="p">,</span> 
+						<span class="n">divMin</span><span class="o">=</span><span class="n">numberOfDiv</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="n">divMax</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">intMethod</span><span class="o">=</span><span class="n">intMethod</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+					<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------------&#39;</span><span class="p">)</span>
+
+					<span class="k">if</span> <span class="n">new_N</span> <span class="o">!=</span> <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span><span class="p">:</span>
+						<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>			
+							<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;N has been recalculated using more samples of f&#39;</span><span class="p">)</span>
+						<span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">=</span> <span class="n">new_N</span>
+						<span class="k">raise</span> <span class="n">NumberOfRootsChanged</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;The additional function evaluations of f taken while</span>
+<span class="s2">							approximating the roots within the contour have been shown that the number of roots</span>
+<span class="s2">							of f within the contour is </span><span class="si">%i</span><span class="s2"> rather than the supplied </span><span class="si">%i</span><span class="s2">.&quot;&quot;&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">new_N</span><span class="p">,</span> <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">callback</span> <span class="o">=</span> <span class="kc">None</span>
+
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">approxRoots</span><span class="p">,</span> <span class="n">approxMultiplicities</span> <span class="o">=</span> <span class="n">contour</span><span class="o">.</span><span class="n">approximate_roots</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> 
+				<span class="n">absTol</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="n">relTol</span><span class="p">,</span> <span class="n">errStop</span><span class="o">=</span><span class="n">errStop</span><span class="p">,</span> <span class="n">divMin</span><span class="o">=</span><span class="n">divMin</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="n">divMax</span><span class="p">,</span> 
+				<span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">rootTol</span><span class="o">=</span><span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">intMethod</span><span class="o">=</span><span class="n">intMethod</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">NumberOfRootsChanged</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The number of roots within the contour have been reevaluated.&#39;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">&gt;</span> <span class="n">M</span><span class="p">:</span>
+				<span class="n">subdivide</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+			<span class="k">continue</span>
+
+		<span class="k">for</span> <span class="n">approxRoot</span><span class="p">,</span> <span class="n">approxMultiplicity</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">approxRoots</span><span class="p">,</span> <span class="n">approxMultiplicities</span><span class="p">)):</span>
+			<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;approxRoot&#39;</span><span class="p">,</span> <span class="n">approxRoot</span><span class="p">,</span> <span class="s1">&#39;approxMultiplicity&#39;</span><span class="p">,</span> <span class="n">approxMultiplicity</span><span class="p">)</span>
+
+			<span class="c1"># check that the multiplicity is close to an integer</span>
+			<span class="n">multiplicity</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">approxMultiplicity</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">multiplicity</span> <span class="o">-</span> <span class="n">approxMultiplicity</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">approxMultiplicity</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span> <span class="ow">or</span> <span class="n">multiplicity</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="k">continue</span>
+
+			<span class="c1"># attempt to refine the root</span>
+			<span class="n">root</span> <span class="o">=</span> <span class="n">iterateToRoot</span><span class="p">(</span><span class="n">approxRoot</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">newtonStepTol</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="p">,</span> <span class="n">newtonMaxIter</span><span class="p">,</span> <span class="n">attemptIterBest</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">approxRoot</span><span class="p">))</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">root</span><span class="p">)):</span>
+				<span class="c1"># stick with the original approximation</span>
+				<span class="n">root</span> <span class="o">=</span> <span class="n">approxRoot</span>
+
+			<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">root</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">rootErrTol</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">approxMultiplicities</span><span class="p">)</span> <span class="o">-</span> <span class="n">approxMultiplicities</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span><span class="p">):</span>
+					<span class="c1"># the computed multiplicity might be unreliable so make a contour focused on that point instead</span>
+					<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="s1">&#39;_shrinkingRadius&#39;</span><span class="p">):</span>
+						<span class="n">contour</span><span class="o">.</span><span class="n">_shrinkingRadius</span> <span class="o">*=</span> <span class="mf">0.5</span>
+						<span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Circle</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">contour</span><span class="o">.</span><span class="n">_shrinkingRadius</span><span class="p">))</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Circle</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">))</span>
+						<span class="n">contours</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_shrinkingRadius</span> <span class="o">=</span> <span class="mf">1e-3</span>
+					<span class="n">contours</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">=</span> <span class="n">contours</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="o">**</span><span class="n">countKwargs</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">addRoot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">)</span>
+
+			<span class="c1"># if the root turns out to be very close to the contour then this may have</span>
+			<span class="c1"># introduced an error.  Therefore, compute the multiplicity of this root</span>
+			<span class="c1"># directly and disregard this contour (repeat its parent&#39;s subdivision).</span>
+			<span class="k">if</span> <span class="n">contour</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">newtonStepTol</span><span class="p">:</span>
+				<span class="c1"># remove the contour and any relations</span>
+				<span class="n">remove_siblings_children</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+
+				<span class="c1"># put the parent contour back into the list of contours to subdivide again</span>
+				<span class="n">parent</span> <span class="o">=</span> <span class="n">contour</span><span class="o">.</span><span class="n">_parentContour</span>
+				<span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+				<span class="c1"># do not use this contour again</span>
+				<span class="n">failedContours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+
+		<span class="c1"># if we haven&#39;t found all the roots then subdivide further</span>
+		<span class="n">numberOfKnownRootsInContour</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">multiplicity</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">multiplicity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">)</span> <span class="k">if</span> <span class="n">contour</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">root</span><span class="p">)])</span>
+		<span class="k">if</span> <span class="n">contour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">!=</span> <span class="n">numberOfKnownRootsInContour</span> <span class="ow">and</span> <span class="n">contour</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">failedContours</span><span class="p">:</span>
+			<span class="n">subdivide</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+
+	<span class="c1"># delete cache for original contour incase this contour is being reused</span>
+	<span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">originalContour</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+		<span class="n">segment</span><span class="o">.</span><span class="n">_integralCache</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="n">segment</span><span class="o">.</span><span class="n">_trapValuesCache</span> <span class="o">=</span> <span class="p">{}</span>
+
+	<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed rootfinding with&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">calls</span><span class="p">,</span> <span class="s1">&#39;evaluations of f at&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="s1">&#39;points&#39;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">RootResult</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">,</span> <span class="n">originalContour</span><span class="p">))</span>
+
+	<span class="n">totFoundRoots</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">multiplicity</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">multiplicity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">))</span>
+	<span class="k">yield</span> <span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">originalContour</span><span class="o">.</span><span class="n">_numberOfRoots</span> <span class="o">-</span> <span class="n">totFoundRoots</span>
+
+<span class="nd">@docstrings</span><span class="o">.</span><span class="n">dedent</span>
+<span class="nd">@doc_tab_to_space</span>
+<span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">find_roots_gen</span><span class="p">,</span> <span class="n">assigned</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">find_roots</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Find all the roots of the complex analytic function f within the </span>
+<span class="sd">	given contour.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	%(find_roots_gen.parameters)s</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	result : :class:`RootResult &lt;cxroots.RootResult.RootResult&gt;`</span>
+<span class="sd">		A container for the roots and their multiplicities.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">rootFinder</span> <span class="o">=</span> <span class="n">find_roots_gen</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">numberOfRemainingRoots</span> <span class="ow">in</span> <span class="n">rootFinder</span><span class="p">:</span>
+		<span class="k">pass</span>
+	<span class="k">return</span> <span class="n">RootResult</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">,</span> <span class="n">originalContour</span><span class="p">)</span>
+
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

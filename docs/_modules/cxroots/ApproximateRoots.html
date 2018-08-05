@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cxroots.ApproximateRoots &mdash; cxroots 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="cxroots 1.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> cxroots
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../result.html">Rootfinding Result</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cxroots</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>cxroots.ApproximateRoots</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cxroots.ApproximateRoots</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">count_roots</span><span class="p">,</span> <span class="n">prod</span>
+<span class="kn">from</span> <span class="nn">.Misc</span> <span class="k">import</span> <span class="n">NumberOfRootsChanged</span>
+
+<span class="k">def</span> <span class="nf">approximate_roots</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> 
+	<span class="n">errStop</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">divMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rootTol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> 
+	<span class="n">intMethod</span><span class="o">=</span><span class="s1">&#39;quad&#39;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Approximate the roots and multiplcities of the function f within the </span>
+<span class="sd">	contour C using the method of [KB]_.  The multiplicites are computed</span>
+<span class="sd">	using eq. (21) in [SLV]_.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	C : :class:`~&lt;cxroots.Contour.Contour&gt;`</span>
+<span class="sd">		The contour which encloses the roots of f the user wishes to find.</span>
+<span class="sd">	N : int</span>
+<span class="sd">		The number of roots (counting multiplicties) of f within C.  </span>
+<span class="sd">		This is the result of calling :meth:`~cxroots.Contour.Contour.count_roots`.</span>
+<span class="sd">	f : function</span>
+<span class="sd">		The function for which the roots are sought.  Must be a function </span>
+<span class="sd">		of a single complex variable, z, which is analytic within C and </span>
+<span class="sd">		has no poles or roots on the C.</span>
+<span class="sd">	df : function, optional</span>
+<span class="sd">		A function of a single complex variable which is the derivative </span>
+<span class="sd">		of the function f(z). If df is not given then it will be </span>
+<span class="sd">		approximated with a finite difference formula.</span>
+<span class="sd">	absTol : float, optional</span>
+<span class="sd">		Absolute error tolerance for integration.</span>
+<span class="sd">	relTol : float, optional</span>
+<span class="sd">		Relative error tolerance for integration.</span>
+<span class="sd">	errStop : float, optional</span>
+<span class="sd">		The number of distinct roots within a contour, n, is determined </span>
+<span class="sd">		by checking if all the elements of a list of contour integrals </span>
+<span class="sd">		involving formal orthogonal polynomials are sufficently close to</span>
+<span class="sd">		zero, ie. that the absolute value of each element is &lt; errStop.</span>
+<span class="sd">		If errStop is too large/small then n may be smaller/larger than </span>
+<span class="sd">		it actually is.</span>
+<span class="sd">	divMin : int, optional</span>
+<span class="sd">		If the Romberg integration method is used then divMin is the</span>
+<span class="sd">		minimum number of divisions before the Romberg integration</span>
+<span class="sd">		routine is allowed to exit.</span>
+<span class="sd">	divMax : int, optional</span>
+<span class="sd">		If the Romberg integration method is used then divMax is the</span>
+<span class="sd">		maximum number of divisions before the Romberg integration</span>
+<span class="sd">		routine exits.</span>
+<span class="sd">	m : int, optional</span>
+<span class="sd">		Only used if df=None and method=&#39;quad&#39;.  The argument order=m is </span>
+<span class="sd">		passed to numdifftools.Derivative and is the order of the error </span>
+<span class="sd">		term in the Taylor approximation.  m must be even.</span>
+<span class="sd">	rootTol : float, optional</span>
+<span class="sd">		If any roots are within rootTol of one another then they will be</span>
+<span class="sd">		treated as duplicates and removed.  This helps to alleviate the </span>
+<span class="sd">		problem of errStop being too small.</span>
+<span class="sd">	intMethod : {&#39;quad&#39;, &#39;romb&#39;}, optional</span>
+<span class="sd">		If &#39;quad&#39; then :func:`scipy.integrate.quad` is used to perform </span>
+<span class="sd">		integration.  If &#39;romb&#39; then Romberg integraion is performed </span>
+<span class="sd">		instead.</span>
+<span class="sd">	callback : function, optional</span>
+<span class="sd">		Only used if intMethod is &#39;romb&#39;.  Passed to :func:`~&lt;cxroots.CountRoots.prod&gt;`.</span>
+<span class="sd">	verbose : bool, optional</span>
+<span class="sd">		If True certain information regarding the rootfinding process</span>
+<span class="sd">		will be printed.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	tuple of complex</span>
+<span class="sd">		The distinct roots of f within the contour C.</span>
+<span class="sd">	tuple of float</span>
+<span class="sd">		The corresponding multiplicites of the roots within C.  Should </span>
+<span class="sd">		be integers but will not be automatically rounded here.</span>
+
+<span class="sd">	References</span>
+<span class="sd">	----------</span>
+<span class="sd">	.. [KB] P. Kravanja and M. Van Barel. &quot;Computing the Zeros of </span>
+<span class="sd">		Anayltic Functions&quot;. Springer (2000)</span>
+<span class="sd">	.. [SLV] E. Strakova, D. Lukas, P. Vodstrcil. &quot;Finding Zeros of </span>
+<span class="sd">		Analytic Functions and Local Eigenvalue Analysis Using Contour </span>
+<span class="sd">		Integral Method in Examples&quot;. Mathematical Analysis and Numerical</span>
+<span class="sd">		Mathematics, Vol. 15, 2, (2017)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Approximating roots in: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">C</span><span class="p">))</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The number of roots, counting multiplcities, within this contour is&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">return</span> <span class="p">(),</span> <span class="p">()</span>
+
+	<span class="n">product</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> 
+		<span class="n">absTol</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="n">relTol</span><span class="p">,</span> <span class="n">divMin</span><span class="o">=</span><span class="n">divMin</span><span class="p">,</span> <span class="n">divMax</span><span class="o">=</span><span class="n">divMax</span><span class="p">,</span>
+		<span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">intMethod</span><span class="o">=</span><span class="n">intMethod</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+
+	<span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">product</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>	<span class="c1"># ordinary moments</span>
+	<span class="n">mu</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">N</span>
+	<span class="n">phiZeros</span> <span class="o">=</span> <span class="p">[[],[</span><span class="n">mu</span><span class="p">]]</span>
+
+	<span class="k">def</span> <span class="nf">phiFunc</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">coeff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+			<span class="k">return</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+	
+	<span class="c1"># initialize G_{pq} = &lt;phi_p, phi_q&gt;</span>
+	<span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+	<span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">N</span> <span class="c1"># = &lt;phi_0, phi_0&gt; = &lt;1,1&gt;</span>
+
+	<span class="c1"># initialize G1_{pq} = &lt;phi_p, phi_1 phi_q&gt;</span>
+	<span class="n">G1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+	<span class="n">phi1</span> <span class="o">=</span> <span class="n">phiFunc</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">G1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># = &lt;phi_0, phi_1 phi_0&gt; = &lt;1, z-mu&gt; = s1-mu*N = 0</span>
+
+	<span class="n">r</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+	<span class="k">while</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">&lt;</span><span class="n">N</span><span class="p">:</span>
+		<span class="n">k</span> <span class="o">=</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span>	<span class="c1"># define FOP of degree r+t+1</span>
+
+		<span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span>
+		<span class="n">G</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">product</span><span class="p">(</span><span class="n">phiFunc</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">phiFunc</span><span class="p">(</span><span class="n">q</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+		<span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># G is symmetric</span>
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G &#39;</span><span class="p">,</span> <span class="n">G</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+
+		<span class="n">G1</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">product</span><span class="p">(</span><span class="n">phiFunc</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">phi1</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">phiFunc</span><span class="p">(</span><span class="n">q</span><span class="p">)(</span><span class="n">z</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+		<span class="n">G1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">G1</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># G1 is symmetric</span>
+		<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G1&#39;</span><span class="p">,</span> <span class="n">G1</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		If any of the zeros of the FOP are outside of the interior </span>
+<span class="sd">		of the contour then we assume that they are &#39;arbitary&#39; and </span>
+<span class="sd">		instead define the FOP as an inner polynomial. [KB]</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">polyRoots</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">G1</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">G</span><span class="p">[:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">mu</span>
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="n">C</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">polyRoots</span><span class="p">]):</span>
+			<span class="n">r</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+			<span class="n">phiZeros</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">polyRoots</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Regular poly&#39;</span><span class="p">,</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;roots:&#39;</span><span class="p">,</span> <span class="n">phiZeros</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+			<span class="c1"># is the number of distinct roots, n=r?</span>
+			<span class="n">phiFuncLast</span> <span class="o">=</span> <span class="n">phiFunc</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">r</span><span class="p">):</span>
+				<span class="n">ip</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">product</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">phiFuncLast</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="n">j</span><span class="p">,</span> <span class="n">phiFuncLast</span><span class="p">)</span>
+
+				<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="s1">&#39;err&#39;</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="s1">&#39;abs(ip)&#39;</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ip</span><span class="p">))</span>
+				<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">errStop</span><span class="p">:</span>
+					<span class="c1"># n != r so carry on</span>
+					<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;n !=&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+					<span class="k">break</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1"># the for loop did not break</span>
+				<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;n =&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+				<span class="k">break</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># define an inner polynomial as phi_{r+t+1} = phi_{t+1} phi_{r}</span>
+			<span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+			<span class="n">phiZeros</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">t</span><span class="p">],</span><span class="n">phiZeros</span><span class="p">[</span><span class="n">r</span><span class="p">]))</span>
+			<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Inner poly&#39;</span><span class="p">,</span> <span class="n">r</span><span class="o">+</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;roots:&#39;</span><span class="p">,</span> <span class="n">phiZeros</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+	<span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">phiZeros</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+	<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computed Roots:&#39;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+
+	<span class="c1"># remove any roots which are not distinct</span>
+	<span class="n">rootsToRemove</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">root</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">roots</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">root</span><span class="o">-</span><span class="n">roots</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&lt;</span> <span class="n">rootTol</span><span class="p">):</span>
+			<span class="n">rootsToRemove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+	<span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">rootsToRemove</span><span class="p">)</span>
+	<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+
+	<span class="c1">### compute the multiplicities, eq. (1.19) in [KB]</span>
+	<span class="c1"># V = np.column_stack([roots**i for i in range(n)])</span>
+	<span class="c1"># if verbose and n &gt; 2: print(&#39;Computing ordinary moments&#39;)</span>
+	<span class="c1"># s += [product(lambda z: z**p)[0] for p in range(2, n)]</span>
+	<span class="c1"># multiplicities = np.dot(s[:n], np.linalg.inv(V))</span>
+
+	<span class="c1">### compute the multiplicities, eq. (21) in [SLV]</span>
+	<span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">phiFunc</span><span class="p">(</span><span class="n">j</span><span class="p">)(</span><span class="n">root</span><span class="p">)</span> <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">roots</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+	<span class="n">multiplicities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">V</span><span class="p">),</span> <span class="n">G</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+	<span class="c1">### The method used in the vandermonde module doesn&#39;t seem significantly</span>
+	<span class="c1">### better than np.dot(s, np.linalg.inv(V)).  Especially since we know</span>
+	<span class="c1">### the result must be an integer anyway.</span>
+	<span class="c1"># import vandermonde</span>
+	<span class="c1"># multiplicities_vandermonde = vandermonde.solve_transpose(np.array(roots), np.array(s))</span>
+
+	<span class="c1">### Note that n = rank(H_N) is not used since calculating the</span>
+	<span class="c1">### rank of a matrix of floats can be quite unstable</span>
+	<span class="c1"># s_func = lambda p: prod(C, f, df, lambda z: z**p)[0]</span>
+	<span class="c1"># HN = np.fromfunction(np.vectorize(lambda p,q: s_func(p+q)), shape=(N,N))</span>
+	<span class="c1"># print(&#39;n?&#39;, np.linalg.matrix_rank(HN, tol=1e-10))</span>
+
+	<span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Approximations for roots:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">roots</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Approximations for multiplicities:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
+
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robert Parini.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

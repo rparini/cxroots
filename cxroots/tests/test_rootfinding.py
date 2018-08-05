@@ -13,17 +13,64 @@ import pytest
 import numpy as np
 from scipy import pi, sqrt, exp, sin, cos
 
-from cxroots import Circle, Rectangle
+from cxroots import Circle, Rectangle, Annulus
 from cxroots.tests.ApproxEqual import roots_approx_equal
+from cxroots.Derivative import find_multiplicity
 
 class RootfindingTests(object):
-	def test_rootfinding_df(self):
-		roots_approx_equal(self.C.roots(self.f, self.df), (self.roots, self.multiplicities), decimal=12)
+	def test_rootfinding_romb_df(self):
+		roots_approx_equal(self.C.roots(self.f, self.df, intMethod='romb', verbose=True), (self.roots, self.multiplicities), decimal=10)
 
-	def test_rootfinding_f(self):
-		roots_approx_equal(self.C.roots(self.f), (self.roots, self.multiplicities), decimal=12)
+	def test_rootfinding_romb_f(self):
+		roots_approx_equal(self.C.roots(self.f, intMethod='romb', verbose=True), (self.roots, self.multiplicities), decimal=10)
 
-class TestRootfinding_141(unittest.TestCase, RootfindingTests):
+	def test_rootfinding_quad_df(self):
+		roots_approx_equal(self.C.roots(self.f, self.df, intMethod='quad', verbose=True), (self.roots, self.multiplicities), decimal=10)
+
+	def test_rootfinding_quad_f(self):
+		roots_approx_equal(self.C.roots(self.f, intMethod='quad', verbose=True), (self.roots, self.multiplicities), decimal=10)
+
+
+class MultiplicityTests(object):
+	def test_multiplicity_f(self):
+		# Check that if only the root is given then the multiplcity could be computed
+		for i, root in enumerate(self.roots):
+			assert find_multiplicity(root, self.f, df=None, verbose=True) == self.multiplicities[i]
+
+	def test_multiplicity_df(self):
+		# Check that if only the root is given then the multiplcity could be computed
+		for i, root in enumerate(self.roots):
+			assert find_multiplicity(root, self.f, df=self.df, verbose=True) == self.multiplicities[i]
+
+
+class TestRootfinding_noRoots(unittest.TestCase, RootfindingTests):
+	def setUp(self):
+		self.C = Annulus(1, [1,2])
+		self.f = lambda z: (z-1)**3
+		self.df = lambda z: 3*(z-1)**2
+
+		self.roots = []
+		self.multiplicities = []
+
+class TestRootfinding_poly1(unittest.TestCase, RootfindingTests, MultiplicityTests):
+	def setUp(self):
+		self.C = Rectangle([-2,2],[-2,2])
+		self.f = lambda z: z**3 * (z-1.2)**2
+		self.df = lambda z: 3*(z)**2 * (z-1.2)**2 + 2*z**3 * (z-1.2)
+
+		self.roots = [0, 1.2]
+		self.multiplicities = [3,2]
+
+class TestRootfinding_poly2(unittest.TestCase, RootfindingTests, MultiplicityTests):
+	def setUp(self):
+		self.C = Annulus(0, [0.5, 2.5])
+		self.f = lambda z: (z-2)**2*(z-1)**5
+		self.df = lambda z: 2*(z-2)*(z-1)**5 + 5*(z-2)**2*(z-1)**4
+
+		self.roots = [1, 2]
+		self.multiplicities = [5,2]
+
+class TestRootfinding_141(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.4.1 from [KB]
 		self.C = Circle(0,3)
@@ -34,7 +81,7 @@ class TestRootfinding_141(unittest.TestCase, RootfindingTests):
 		self.roots = [e, sqrt(3)+1j, sqrt(3)-1j]
 		self.multiplicities = [1,1,1]
 
-class TestRootfinding_142(unittest.TestCase, RootfindingTests):
+class TestRootfinding_142(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.4.2 from [KB]
 		self.C = Circle(0,2)
@@ -47,7 +94,7 @@ class TestRootfinding_142(unittest.TestCase, RootfindingTests):
 				 	  0.5308949302929305 - 1.33179187675112098j]
 		self.multiplicities = [1,1,1,1]
 
-class TestRootfinding_142b(unittest.TestCase, RootfindingTests):
+class TestRootfinding_142b(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.4.2 from [KB] with a rectangular initial contour
 		self.C = Rectangle([-2,2],[-2,2])
@@ -55,12 +102,12 @@ class TestRootfinding_142b(unittest.TestCase, RootfindingTests):
 		self.df = lambda z: 3*exp(3*z) + 2*cos(z) - 2*z*sin(z)
 
 		self.roots = [0,
-				 -1.844233953262213, 
-				 0.5308949302929305 + 1.33179187675112098j,
-				 0.5308949302929305 - 1.33179187675112098j]
+					  -1.844233953262213, 
+					  0.5308949302929305 + 1.33179187675112098j,
+					  0.5308949302929305 - 1.33179187675112098j]
 		self.multiplicities = [1,1,1,1]
 
-class TestRootfinding_143(unittest.TestCase, RootfindingTests):
+class TestRootfinding_143(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.4.3 from [KB]
 		self.C = Circle(0,5)
@@ -68,13 +115,13 @@ class TestRootfinding_143(unittest.TestCase, RootfindingTests):
 		self.df = lambda z: 2*z*(3*z**4-25*z**3+70*z**2-75*z+24)+sin(z)+z*cos(z)
 
 		self.roots = [0,
-				 1.18906588973011365517521756, 
-				 1.72843498616506284043592924,
-				 3.01990732809571222812005354,
-				 4.03038191606046844562845941]
+				 	  1.18906588973011365517521756, 
+				 	  1.72843498616506284043592924,
+				 	  3.01990732809571222812005354,
+				 	  4.03038191606046844562845941]
 		self.multiplicities = [2,1,1,1,1]
 
-class TestRootfinding_144(unittest.TestCase, RootfindingTests):
+class TestRootfinding_144(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.4.4 from [KB]
 		self.C = Circle(0,3)
@@ -88,7 +135,7 @@ class TestRootfinding_144(unittest.TestCase, RootfindingTests):
 				 1.66468286974551654134568653]
 		self.multiplicities = [1,1,3,2,1]
 
-class TestRootfinding_145(unittest.TestCase, RootfindingTests):
+class TestRootfinding_145(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.4.5 from [KB]
 		self.C = Circle(0,11)
@@ -98,7 +145,7 @@ class TestRootfinding_145(unittest.TestCase, RootfindingTests):
 		self.roots = [1,2,3,4,5,6,7,8,9,10]
 		self.multiplicities = np.ones(10)
 
-class TestRootfinding_145b(unittest.TestCase, RootfindingTests):
+class TestRootfinding_145b(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.4.5 from [KB] with a rectangular initial contour
 		self.C = Rectangle([-1,11],[-1,1])
@@ -108,7 +155,7 @@ class TestRootfinding_145b(unittest.TestCase, RootfindingTests):
 		self.roots = [1,2,3,4,5,6,7,8,9,10]
 		self.multiplicities = np.ones(10)
 
-class TestRootfinding_151(unittest.TestCase, RootfindingTests):
+class TestRootfinding_151(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.5.1 from [KB]
 		self.C = Rectangle([-2,2], [-2,3])
@@ -116,18 +163,18 @@ class TestRootfinding_151(unittest.TestCase, RootfindingTests):
 		self.df = lambda z: 3*exp(3*z) + 2*cos(z) - 2*z*sin(z)
 
 		self.roots = np.array([-1.84423395326221337491592440,
-				 0,
-				 0.5308949302929305274642203840 - 1.331791876751120981651544228j,
-				 0.5308949302929305274642203840 + 1.331791876751120981651544228j], dtype=complex)
+				 			    0,
+				 			    0.5308949302929305274642203840 - 1.331791876751120981651544228j,
+				 			    0.5308949302929305274642203840 + 1.331791876751120981651544228j], dtype=complex)
 		self.multiplicities = [1,1,1,1]
 
 	def test_rootfinding_b_df(self):
-		roots_approx_equal(self.C.roots(self.f, self.df, M=2), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, self.df, verbose=True, M=2), (self.roots, self.multiplicities), decimal=12)
 
 	def test_rootfinding_b_f(self):
-		roots_approx_equal(self.C.roots(self.f, M=2), (self.roots, self.multiplicities), decimal=12)
+		roots_approx_equal(self.C.roots(self.f, verbose=True, M=2), (self.roots, self.multiplicities), decimal=12)
 
-class TestRootfinding_152(unittest.TestCase, RootfindingTests):
+class TestRootfinding_152(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.5.2 from [KB]
 		self.C = Rectangle([-0.5,5.5], [-0.5,1.5])
@@ -135,72 +182,35 @@ class TestRootfinding_152(unittest.TestCase, RootfindingTests):
 		self.df = lambda z: 2*z*(3*z**4-25*z**3+70*z**2-75*z+24)+sin(z)+z*cos(z)
 
 		self.roots = [0,
-				 1.18906588973011365517521756,
-				 1.72843498616506284043592924,
-				 3.01990732809571222812005354,
-				 4.03038191606046844562845941]
+				 	  1.18906588973011365517521756,
+				 	  1.72843498616506284043592924,
+				 	  3.01990732809571222812005354,
+				 	  4.03038191606046844562845941]
 		self.multiplicities = [2,1,1,1,1]
 
-class TestRootfinding_153(unittest.TestCase, RootfindingTests):
+class TestRootfinding_153(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		# Ex 1.5.3 from [KB]
 		self.C = Rectangle([-1,3], [-1,1])
 		self.f  = lambda z: (z*(z-2))**2 * (exp(2*z)*cos(z)+z**3-1-sin(z))
 		self.df = lambda z: 2*z*(z-2)**2 * (exp(2*z)*cos(z)+z**3-1-sin(z)) + 2*z**2*(z-2) * (exp(2*z)*cos(z)+z**3-1-sin(z)) + (z*(z-2))**2 * (2*exp(2*z)*cos(z)-exp(2*z)*sin(z)+3*z**2-cos(z))
 
-		self.roots = [0, 
-				 2,
-				 1.66468286974551654134568653,
-				 -0.4607141197289707542294459477 - 0.6254277693477682516688207854j,
-				 -0.4607141197289707542294459477 + 0.6254277693477682516688207854j]
+		self.roots = [0, 2,
+					  1.66468286974551654134568653,
+					  -0.4607141197289707542294459477 - 0.6254277693477682516688207854j,
+					  -0.4607141197289707542294459477 + 0.6254277693477682516688207854j]
 		self.multiplicities = [3,2,1,1,1]
 
-class TestConjugate(unittest.TestCase):
-	def setUp(self):
-		self.C = Circle(0, 1.5)
-		self.f = lambda z: z**27-2*z**11+0.5*z**6-1
-		self.df = lambda z: 27*z**26-22*z**10+3*z**5
-		self.symmetry = lambda z: [z.conjugate()]
+def test_reevaluation_of_N():
+	from cxroots import Circle
+	C = Circle(0,2)
+	f = lambda z: (z-1)*(z-0.2)**2
 
-		self.roots = [-1.03509521179240, 
-					  -0.920332541459108, 
-					  1.05026721944263, 
-					  -0.983563736801535 - 0.382365167035741j, 
-					  -0.983563736801535 + 0.382365167035741j, 
-					  -0.792214346729517 - 0.520708613101932j, 
-					  -0.792214346729517 + 0.520708613101932j, 
-					  -0.732229626596468 - 0.757345327222341j, 
-					  -0.732229626596468 + 0.757345327222341j, 
-					  -0.40289002582335 - 0.825650446354661j, 
-					  -0.40289002582335 + 0.825650446354661j, 
-					  -0.383382611408318 - 0.967939747947639j, 
-					  -0.383382611408318 + 0.967939747947639j, 
-					  -0.02594227096144 - 1.05524415820652j, 
-					  -0.02594227096144 + 1.05524415820652j, 
-					  0.160356899544475 - 0.927983420797727j, 
-					  0.160356899544475 + 0.927983420797727j, 
-					  0.41133738621461 - 0.967444751898913j, 
-					  0.41133738621461 + 0.967444751898913j, 
-					  0.576737152896681 - 0.719511178392941j, 
-					  0.576737152896681 + 0.719511178392941j, 
-					  0.758074415348703 - 0.724716122470435j, 
-					  0.758074415348703 + 0.724716122470435j, 
-					  0.903278407433416 - 0.22751872334709j, 
-					  0.903278407433416 + 0.22751872334709j, 
-					  0.963018623787179 - 0.427294816877434j, 
-					  0.963018623787179 + 0.427294816877434j]
-		
-		self.multiplicities = np.ones_like(self.roots)
+	roots 		   = [1, 0.2]
+	multiplicities = [1, 2]
+	roots_approx_equal(C.roots(f, NIntAbsTol=10, intMethod='romb', verbose=True), (roots, multiplicities))
 
-	def test_conjugate_realPoly_df(self):
-		roots = self.C.roots(self.f, self.df, guessRootSymmetry = self.symmetry)
-		roots_approx_equal(roots, (self.roots, self.multiplicities), decimal=12)
-
-	def test_conjugate_realPoly_f(self):
-		roots = self.C.roots(self.f, guessRootSymmetry = self.symmetry)
-		roots_approx_equal(roots, (self.roots, self.multiplicities), decimal=12)
-
-class TestIntroduction(unittest.TestCase, RootfindingTests):
+class TestIntroduction(unittest.TestCase, RootfindingTests, MultiplicityTests):
 	def setUp(self):
 		self.C = Circle(0,3)
 		self.f = lambda z: (z*(z+2))**2 * (exp(2*z)*cos(z)-1-sin(z)+z**5)
@@ -213,6 +223,25 @@ class TestIntroduction(unittest.TestCase, RootfindingTests):
 					  0.64857808095387581293067569277 - 1.35662268398824203963215495605j,
 					  0.64857808095387581293067569277 + 1.35662268398824203963215495605j]
 		self.multiplicities = [3,2,1,1,1,1,1]
+
+def test_annular_combustion():
+	from numpy import exp
+	from cxroots import Rectangle
+
+	A = -0.19435
+	B = 1000.41
+	C = 522463
+	T = 0.005
+
+	f = lambda z: z**2 + A*z + B*exp(-T*z) + C
+	df = lambda z: 2*z + A - B*T*exp(-T*z)
+
+	rectangle = Rectangle([-15000,5000], [-15000,15000])
+
+	import warnings
+	warnings.filterwarnings('error')
+	roots = rectangle.roots(f, df, verbose=True, rootErrTol=1e-6)
+	assert len(roots.roots) == 24
 
 
 if __name__ == '__main__':

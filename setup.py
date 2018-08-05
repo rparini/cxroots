@@ -3,42 +3,21 @@ import os
 import sys
 import shutil
 import unittest
-from distutils.core import setup, Command
+from setuptools import setup
+from setuptools.command.test import test as TestCommand # Need for 'test' command to be recognised
 from numpy.distutils.misc_util import get_numpy_include_dirs
 
-packages = ['cxroots', 'cxroots.tests']
+packages = ['cxroots', 'cxroots.tests', 'cxroots.contours']
 
-# get the version
+# get the version, this will assign __version__
 exec(open('cxroots/version.py').read())
 
 # read the README_pip.rst
 try:
-    with open('README_pip.rst') as file:
+    with open('README.rst') as file:
         long_description = file.read()
 except:
     long_description = None
-
-# create test commmand
-class TestCommand(Command):
-    # See: https://justin.abrah.ms/python/setuppy_distutils_testing.html by Justin Abrahms
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        import sys, subprocess
-
-        raise SystemExit(
-            subprocess.call([sys.executable,
-                             '-m',
-                             'unittest',
-                             'discover',
-                             '-v',
-                             'cxroots/tests']))
 
 setup(
     name = 'cxroots',
@@ -46,14 +25,16 @@ setup(
     description = 'Find all the roots (zeros) of a complex analytic function within a given contour in the complex plane.',
     long_description = long_description,
     author = 'Robert Parini',
-    author_email = 'rp910@york.ac.uk',
+    author_email = 'robert.parini@gmail.com',
     url = 'https://rparini.github.io/cxroots/',
     license = 'BSD',
     data_files = [("", ["LICENSE"])],
     packages = packages,
+    zip_safe = False,   # prevent cxroots from installing as a .egg zip file
     platforms = ['all'],
-    install_requires = ['numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
-    dependency_links=['git+git://github.com/pbrod/numdifftools@406a79877e0dd45aefe210b08e73cdd58ff4cb15#egg=numdifftools'],
+    dependency_links=['git+git://github.com/pbrod/numdifftools'],
+    install_requires = ['pytest-runner', 'numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
+    tests_require=['pytest'],
     keywords='roots zeros complex analytic functions',
     classifiers=[
 	    'Development Status :: 4 - Beta',
@@ -63,7 +44,4 @@ setup(
 	    'Programming Language :: Python :: 2.7',
 	    'Programming Language :: Python :: 3',
 	],
-    cmdclass={
-        'test': TestCommand,
-    }
 )
