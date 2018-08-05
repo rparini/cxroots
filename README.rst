@@ -45,7 +45,7 @@ Example
 
 
 .. literalinclude readmeExOut.txt doesn't work on github
-::
+.. code::
 
 	 Multiplicity |               Root              
 	------------------------------------------------
@@ -56,6 +56,7 @@ Example
 	      1       |  0.648578080954 -1.356622683988i
 	      1       |  0.648578080954 +1.356622683988i
 	      1       |  2.237557782467 +0.000000000000i
+
 
 See also
 --------
