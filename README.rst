@@ -36,11 +36,8 @@ Example
     roots.show()
 
 
-.. Doesn't show on pypi
-.. image:: README_resources/readmeEx.png
-	:target: https://github.com/rparini/cxroots/blob/master/README_resources/readmeEx.png
-	:alt: Click for image!
-
+.. Relative images do not display on pypi
+.. image:: https://github.com/rparini/cxroots/blob/master/README_resources/readmeEx.png
 
 .. code:: python
 
