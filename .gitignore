@@ -1,13 +1,19 @@
-*.pyc
-build/
-.ipynb_checkpoints
-*.mov
 .DS_Store
+
+*.pyc
+
+scrapbook/*
+*.mov
+.ipynb_checkpoints
+
+upload
+
+build/
 MANIFEST
 dist/*
-cxroots.egg-info/*
-upload
+.eggs/
+*.egg-info/*
+
 .cache/v/cache/lastfailed
-scrapbook/*
 .pytest_cache
 
