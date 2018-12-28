@@ -9,21 +9,20 @@ install:
   - python setup.py install
 
 jobs:
-  include:
-    - stage: test
-    - name: pytest
-      install: 
-        - pip install -U -r requirements.txt --upgrade-strategy=eager
-        - pip install -U -r requirements_test.txt --upgrade-strategy=eager
-        - python setup.py install
-      script:
-        - pytest -v -n 2 --durations=10 -m 'not slow'
+  - stage: test
+  - name: pytest
+    install: 
+      - pip install -U -r requirements.txt --upgrade-strategy=eager
+      - pip install -U -r requirements_test.txt --upgrade-strategy=eager
+      - python setup.py install
+    script:
+      - pytest -v -n 2 --durations=10 -m 'not slow'
 
-    - name: setup.py test
-      install:
-        - pip install cxroots
-        - pip download cxroots --no-deps
-        - tar -xzf cxroots-*.tar.gz
-        - cd cxroots-*
-      script:
-        - python setup.py test --addopts "-v -n 2 -m 'not slow'"
+  - name: setup.py test
+    install:
+      - pip install cxroots
+      - pip download cxroots --no-deps
+      - tar -xzf cxroots-*.tar.gz
+      - cd cxroots-*
+    script:
+      - python setup.py test --addopts "-v -n 2 -m 'not slow'"
