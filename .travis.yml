@@ -14,6 +14,10 @@ install:
       pip install -U -r requirements_test.txt --upgrade-strategy=eager
       python setup.py install
     fi
+  - |
+    if [ "${TEST}" == "setup.py test" ]; then
+      pip install -U pytest
+    fi
 
 script:
   - |
