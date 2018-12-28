@@ -7,8 +7,11 @@ env:
   - TEST="python setup.py test --addopts "-v -n 2 -m 'not slow'""
 
 install:
-  - pip install -U -r requirements.txt --upgrade-strategy=eager
-  - pip install -U -r requirements_test.txt --upgrade-strategy=eager
-  - python setup.py install  
+  - |
+    if [ "${TEST}" == "pytest -v -n 2 --durations=10 -m 'not slow'" ]; then
+      pip install -U -r requirements.txt --upgrade-strategy=eager
+      pip install -U -r requirements_test.txt --upgrade-strategy=eager
+      python setup.py install  
+    fi
 
 script: eval $TEST
