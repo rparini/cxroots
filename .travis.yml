@@ -22,6 +22,6 @@ script:
     fi
   - |
     if [ "${TEST}" == "setup.py test" ]; then
-      python setup.py test
+      python setup.py test --addopts "-v -n 2 -m 'not slow'"
     fi
 
