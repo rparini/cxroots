@@ -16,7 +16,7 @@ install:
     fi
   - |
     if [ "${TEST}" == "setup.py test" ]; then
-      pip install -U pytest
+      pip uninstall pytest
     fi
 
 script:
