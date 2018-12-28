@@ -3,7 +3,6 @@ numpy
 matplotlib
 docrep
 mpmath
-pytest-xdist
 
 ### numdifftools
 git+https://github.com/pbrod/numdifftools
