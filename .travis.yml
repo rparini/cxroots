@@ -3,15 +3,25 @@ python:
   - "2.7"
   - "3.6"
 env:
-  - TEST="pytest -v -n 2 --durations=10 -m 'not slow'"
-  - TEST="python setup.py test --addopts "-v -n 2 -m 'not slow'""
+  - TEST="pytest"
+  - TEST="setup.py test"
+
 
 install:
   - |
-    if [ "${TEST}" == "pytest -v -n 2 --durations=10 -m 'not slow'" ]; then
+    if [ "${TEST}" == "pytest" ]; then
       pip install -U -r requirements.txt --upgrade-strategy=eager
       pip install -U -r requirements_test.txt --upgrade-strategy=eager
-      python setup.py install  
+      python setup.py install
     fi
 
-script: eval $TEST
+script:
+  - |
+    if [ "${TEST}" == "pytest" ]; then
+      pytest -v -n 2 --durations=10 -m 'not slow'
+    fi
+  - |
+    if [ "${TEST}" == "setup.py test" ]; then
+      python setup.py test
+    fi
+
