@@ -29,7 +29,7 @@ setup(
     dependency_links=['git+https://github.com/pbrod/numdifftools.git#egg=numdifftools'],
     setup_requires = ['pytest-runner'],
     install_requires = ['numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
-    tests_require=['pytest', 'pytest-xdist'],
+    tests_require=['pytest'],
     keywords='roots zeros complex analytic functions',
     classifiers=[
 	    'Development Status :: 4 - Beta',

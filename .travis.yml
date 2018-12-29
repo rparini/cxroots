@@ -14,10 +14,6 @@ install:
       pip install -U -r requirements_test.txt --upgrade-strategy=eager
       python setup.py install
     fi
-  - |
-    if [ "${TEST}" == "setup.py test" ]; then
-      pip uninstall -y pytest
-    fi
 
 script:
   - |
@@ -26,6 +22,6 @@ script:
     fi
   - |
     if [ "${TEST}" == "setup.py test" ]; then
-      python setup.py test --addopts "-v -n 2 -m 'not slow'"
+      python setup.py test --addopts "-v -m 'not slow'"
     fi
 
