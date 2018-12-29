@@ -1,10 +1,11 @@
 from __future__ import division
-import numpy as np
 from collections import namedtuple
+
+import numpy as np
 
 class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
 	"""
-	A class which stores the roots and their multiplicites as attributes 
+	A class which stores the roots and their multiplicites as attributes
 	and provides convienent methods for displaying them.
 
 	Attributes
@@ -12,7 +13,7 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
 	roots : list
 		List of roots
 	multiplicities : list
-		List of multiplicities where the ith element of the list is the 
+		List of multiplicities where the ith element of the list is the
 		multiplicity of the ith element of roots.
 	originalContour : Contour
 		The contour bounding the region in which the roots were found.
@@ -24,7 +25,7 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
 
 	def show(self, saveFile=None):
 		"""
-		Plot the roots and the initial integration contour in the 
+		Plot the roots and the initial integration contour in the
 		complex plane.
 
 		Parameters
@@ -37,7 +38,7 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
 		-------
 		.. plot::
 			:include-source:
-			
+
 			from cxroots import Circle
 			C = Circle(0, 2)
 			f = lambda z: z**6 + z**3

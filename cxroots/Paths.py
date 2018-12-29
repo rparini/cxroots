@@ -1,5 +1,5 @@
 from __future__ import division
-import warnings
+
 import numpy as np
 import scipy.integrate
 from scipy import exp, pi
@@ -13,7 +13,7 @@ class ComplexPath(object):
 	def trap_values(self, f, k, useCache=True):
 		"""
 		Compute or retrieve (if cached) the values of the functions f
-		at :math:`2^k+1` points along the contour which are evenly 
+		at :math:`2^k+1` points along the contour which are evenly
 		spaced with respect to the parameterisation of the contour.
 
 		Parameters
@@ -24,21 +24,21 @@ class ComplexPath(object):
 			Defines the number of points along the curve that f is to be
 			evaluated at as :math:`2^k+1`.
 		useCache : bool, optional
-			If True then use, if available, the results of any previous 
-			calls to this function for the same f and save any new 
+			If True then use, if available, the results of any previous
+			calls to this function for the same f and save any new
 			results so that they can be reused later.
 
 		Returns
 		-------
 		:class:`numpy.ndarray`
-			The values of f at :math:`2^k+1` points along the contour 
+			The values of f at :math:`2^k+1` points along the contour
 			which are evenly spaced with respect to the parameterisation
 			of the contour.
 		"""
 		if f in self._trapValuesCache.keys() and useCache:
 			vals = self._trapValuesCache[f]
 			vals_k = int(np.log2(len(vals)-1))
-			
+
 			if vals_k == k:
 				return vals
 			elif vals_k > k:
@@ -64,7 +64,7 @@ class ComplexPath(object):
 
 	def plot(self, N=100, linecolor='C0', linestyle='-'):
 		"""
-		Uses matplotlib to plot, but not show, the path as a 2D plot in 
+		Uses matplotlib to plot, but not show, the path as a 2D plot in
 		the Complex plane.
 
 		Parameters
@@ -72,14 +72,14 @@ class ComplexPath(object):
 		N : int, optional
 			The number of points to use when plotting the path.
 		linecolor : optional
-			The colour of the plotted path, passed to the 
-			:func:`matplotlib.pyplot.plot` function as the keyword 
-			argument of 'color'.  See the matplotlib tutorial on 
+			The colour of the plotted path, passed to the
+			:func:`matplotlib.pyplot.plot` function as the keyword
+			argument of 'color'.  See the matplotlib tutorial on
 			`specifying colours <https://matplotlib.org/users/colors.html#>`_.
 		linestyle : str, optional
-			The line style of the plotted path, passed to the 
-			:func:`matplotlib.pyplot.plot` function as the keyword 
-			argument of 'linestyle'.  The default corresponds to a solid 
+			The line style of the plotted path, passed to the
+			:func:`matplotlib.pyplot.plot` function as the keyword
+			argument of 'linestyle'.  The default corresponds to a solid
 			line.  See :meth:`matplotlib.lines.Line2D.set_linestyle` for
 			other acceptable arguments.
 		"""
@@ -99,20 +99,20 @@ class ComplexPath(object):
 		head_length = max(abs(ymax - ymin), abs(xmax - xmin))/40.
 		plt.arrow(self(0.5).real, self(0.5).imag,
 				  arrow_extent.real, arrow_extent.imag,
-				  head_width=head_length*2/3., head_length=head_length, 
+				  head_width=head_length*2/3., head_length=head_length,
 				  fc=linecolor, ec=linecolor)
 
 	def show(self, saveFile=None, **plotKwargs):
-		""" 
+		"""
 		Shows the path as a 2D plot in the complex plane.  Requires
 		Matplotlib.
 
 		Parameters
 		----------
 		saveFile : str (optional)
-			If given then the plot will be saved to disk with name 
+			If given then the plot will be saved to disk with name
 			'saveFile'.  If saveFile=None the plot is shown on-screen.
-		**plotKwargs 
+		**plotKwargs
 			Other key word arguments are passed to :meth:`~cxroots.Paths.ComplexPath.plot`.
 		"""
 		import matplotlib.pyplot as plt
@@ -126,8 +126,8 @@ class ComplexPath(object):
 
 	def integrate(self, f, absTol=0, relTol=1e-12, divMax=15, intMethod='quad', verbose=False):
 		"""
-		Integrate the function f along the path.  The value of the 
-		integral is cached and will be reused if the method is called 
+		Integrate the function f along the path.  The value of the
+		integral is cached and will be reused if the method is called
 		with same arguments (ignoring verbose).
 
 		Parameters
@@ -143,8 +143,8 @@ class ComplexPath(object):
 			maximum number of divisions before the Romberg integration
 			routine of a path exits.
 		intMethod : {'quad', 'romb'}, optional
-			If 'quad' then :func:`scipy.integrate.quad` is used to 
-			compute the integral.  If 'romb' then Romberg integraion, 
+			If 'quad' then :func:`scipy.integrate.quad` is used to
+			compute the integral.  If 'romb' then Romberg integraion,
 			using :func:`scipy.integrate.romberg`, is used instead.
 		verbose : bool, optional
 			Passed ass the `show` argument of :func:`scipy.integrate.romberg`.
@@ -156,8 +156,8 @@ class ComplexPath(object):
 
 		Notes
 		-----
-		This function is only used when checking the 
-		multiplicity of roots.  The bulk of the integration for 
+		This function is only used when checking the
+		multiplicity of roots.  The bulk of the integration for
 		rootfinding is done with :func:`cxroots.CountRoots.prod`.
 		"""
 
@@ -169,7 +169,7 @@ class ComplexPath(object):
 			# if we have already computed the reverse of this path
 			integral = -self._reversePath._integralCache[args]
 
-		else:			
+		else:
 			integrand = lambda t: f(self(t))*self.dzdt(t)
 
 			if intMethod == 'romb':
@@ -195,7 +195,7 @@ class ComplexPath(object):
 
 class ComplexLine(ComplexPath):
 	"""
-	A straight line :math:`z` in the complex plane from a to b 
+	A straight line :math:`z` in the complex plane from a to b
 	parameterised by
 
 	..math::
@@ -219,7 +219,7 @@ class ComplexLine(ComplexPath):
 	def __call__(self, t):
 		"""
 		The function :math:`z(t) = a + (b-a)t`.
-	
+
 		Parameters
 		----------
 		t : float
@@ -233,8 +233,8 @@ class ComplexLine(ComplexPath):
 		return self.a + t*(self.b-self.a)
 
 	def distance(self, z):
-		""" 
-		Distance from the point z to the closest point on the line. 
+		"""
+		Distance from the point z to the closest point on the line.
 
 		Parameters
 		----------
@@ -243,7 +243,7 @@ class ComplexLine(ComplexPath):
 		Returns
 		-------
 		float
-			The distance from z to the point on the line which is 
+			The distance from z to the point on the line which is
 			closest to z.
 		"""
 		# convert complex numbers to vectors
@@ -252,7 +252,7 @@ class ComplexLine(ComplexPath):
 		Z = np.array([z.real, z.imag])
 
 		# the projection of the point z onto the line a -> b is where
-		# the parameter t is 
+		# the parameter t is
 		t = (Z-A).dot(B-A)/abs((B-A).dot(B-A))
 
 		# but the line segment only has 0 <= t <= 1
@@ -264,8 +264,8 @@ class ComplexLine(ComplexPath):
 
 class ComplexArc(ComplexPath):
 	"""
-	A circular arc :math:`z` with center z0, radius R, initial angle t0 
-	and change of angle dt.  The arc is parameterised by 
+	A circular arc :math:`z` with center z0, radius R, initial angle t0
+	and change of angle dt.  The arc is parameterised by
 
 	..math::
 
@@ -289,7 +289,7 @@ class ComplexArc(ComplexPath):
 	def __call__(self, t):
 		"""
 		The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.
-	
+
 		Parameters
 		----------
 		t : float
@@ -303,8 +303,8 @@ class ComplexArc(ComplexPath):
 		return self.R*exp(1j*(self.t0 + t*self.dt)) + self.z0
 
 	def distance(self, z):
-		""" 
-		Distance from the point z to the closest point on the arc. 
+		"""
+		Distance from the point z to the closest point on the arc.
 
 		Parameters
 		----------

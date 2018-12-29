@@ -1,13 +1,14 @@
 from __future__ import division
+import warnings
+
 import numpy as np
 from numpy import inf, pi
 import scipy.integrate
 import scipy.misc
-import warnings
 import numdifftools.fornberg as ndf
 import numdifftools
 
-def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3, 
+def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3,
 	divMax=15, m=2, intMethod='quad', integerTol=inf, verbose=False, callback=None):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]_.
@@ -15,7 +16,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	.. math::
 
 		<\phi,\psi> = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
-	
+
 	Parameters
 	----------
 	C : :class:`Contour <cxroots.Contour.Contour>`
@@ -24,46 +25,46 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	f : function
 		Function of a single variable f(x)
 	df : function, optional
-		Function of a single variable, df(x), providing the derivative 
-		of the function f(x) at the point x.  If not provided then df is 
+		Function of a single variable, df(x), providing the derivative
+		of the function f(x) at the point x.  If not provided then df is
 		approximated using a finite difference method.
 	phi : function, optional
-		Function of a single variable phi(x).  If not provided then 
+		Function of a single variable phi(x).  If not provided then
 		phi(z)=1.
 	psi : function, optional
-		Function of a single variable psi(x).  If not provided then 
+		Function of a single variable psi(x).  If not provided then
 		psi(z)=1.
 	absTol : float, optional
 		Absolute error tolerance for integration.
 	relTol : float, optional
 		Relative error tolerance for integration.
 	divMin : int, optional
-		Only used if intMethod='romb'. Minimum number of divisions before 
-		the Romberg integration routine is allowed to exit.  
+		Only used if intMethod='romb'. Minimum number of divisions before
+		the Romberg integration routine is allowed to exit.
 	divMax : int, optional
-		Only used if intMethod='romb'.  The maximum number of divisions 
-		before the Romberg integration routine of a path exits.  
+		Only used if intMethod='romb'.  The maximum number of divisions
+		before the Romberg integration routine of a path exits.
 	m : int, optional
-		Only used if df=None and intMethod='quad'.  Must be even.  The 
-		argument order=m is passed to numdifftools.Derivative and is the 
+		Only used if df=None and intMethod='quad'.  Must be even.  The
+		argument order=m is passed to numdifftools.Derivative and is the
 		order of the error term in the Taylor approximation.
 	intMethod : {'quad', 'romb'}, optional
-		If 'quad' then scipy.integrate.quad is used to perform the 
-		integral.  If 'romb' then Romberg integraion, using 
+		If 'quad' then scipy.integrate.quad is used to perform the
+		integral.  If 'romb' then Romberg integraion, using
 		scipy.integrate.romb, is performed instead.
 	integerTol : float, optional
-		Only used when intMethod is 'romb'.  The integration routine will 
-		not exit unless the result is within integerTol of an integer.  
+		Only used when intMethod is 'romb'.  The integration routine will
+		not exit unless the result is within integerTol of an integer.
 		This is useful when computing the number of roots in a contour,
 		which must be an integer.  By default integerTol is inf.
 	verbose : bool, optional
 		If True runtime information will be printed.  False be default.
 	callback : function, optional
-		Only used when intMethod is 'romb'.  A function that at each 
-		step in the iteration is passed the current approximation for 
+		Only used when intMethod is 'romb'.  A function that at each
+		step in the iteration is passed the current approximation for
 		the integral, the estimated error of that approximation and the
-		number of iterations.  If the return of callback evaluates to 
-		True then the integration will end. 
+		number of iterations.  If the return of callback evaluates to
+		True then the integration will end.
 
 	Returns
 	-------
@@ -74,7 +75,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 
 	References
 	----------
-	.. [KB] "Computing the zeros of analytic functions" by Peter Kravanja, 
+	.. [KB] "Computing the zeros of analytic functions" by Peter Kravanja,
 		Marc Van Barel, Springer 2000
 	"""
 	if intMethod == 'romb':
@@ -85,7 +86,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 		while k < divMax and (len(I) < divMin
 			or (abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol*abs(I[-1]))
 			or (abs(I[-3] - I[-2]) > absTol and abs(I[-3] - I[-2]) > relTol*abs(I[-2]))
-			or abs(int(round(I[-1].real)) - I[-1].real) > integerTol 
+			or abs(int(round(I[-1].real)) - I[-1].real) > integerTol
 			or abs(I[-1].imag) > integerTol):
 			N = 2*N
 			t = np.linspace(0,1,N+1)
@@ -112,7 +113,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 
 				segment_integral = scipy.integrate.romb(segment_integrand, dx=dt, axis=-1)/(2j*pi)
 				integrals.append(segment_integral)
-			
+
 			I.append(sum(integrals))
 
 			if verbose:
@@ -132,7 +133,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 		if df is None:
 			df = numdifftools.Derivative(f, order=m)
 			# df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
-			
+
 			### Too slow
 			# ndf.derivative returns an array [f, f', f'', ...]
 			# df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
@@ -158,7 +159,7 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 			result_real = scipy.integrate.quad(integrand_real, 0, 1, full_output=1, epsabs=absTol, epsrel=relTol)
 			I_real, abserr_real, infodict_real = result_real[:3]
 
-			# integrate imaginary part			
+			# integrate imaginary part
 			integrand_imag = lambda t: np.imag(integrand(t))
 			result_imag = scipy.integrate.quad(integrand_imag, 0, 1, full_output=1, epsabs=absTol, epsrel=relTol)
 			I_imag, abserr_imag, infodict_imag = result_imag[:3]
@@ -174,68 +175,68 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 class RootError(RuntimeError):
 	pass
 
-def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3, 
+def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3,
 	divMax=15, m=2, intMethod='quad', verbose=False):
 	r"""
-	For a function of one complex variable, f(z), which is analytic in 
-	and within the contour C, return the number of zeros (counting 
-	multiplicities) within the contour, N, using Cauchy's argument 
+	For a function of one complex variable, f(z), which is analytic in
+	and within the contour C, return the number of zeros (counting
+	multiplicities) within the contour, N, using Cauchy's argument
 	principle,
-	
+
 	.. math::
 
 		N = \frac{1}{2i\pi} \oint_C \frac{f'(z)}{f(z)} dz.
 
-	If df(z), the derivative of f(z), is provided then the above 
-	integral is computed directly.  Otherwise the derivative is 
+	If df(z), the derivative of f(z), is provided then the above
+	integral is computed directly.  Otherwise the derivative is
 	approximated using a finite difference method.
 
-	The number of roots is taken to be the closest integer to the 
-	computed value of the integral and the result is only accepted 
+	The number of roots is taken to be the closest integer to the
+	computed value of the integral and the result is only accepted
 	if the integral is within integerTol of the closest integer.
-	
+
 	Parameters
 	----------
 	C : :class:`Contour <cxroots.Contour.Contour>`
-		The contour which encloses the roots of f(z) that are to be 
-		counted. 
+		The contour which encloses the roots of f(z) that are to be
+		counted.
 	f : function
 		Function of a single variable f(z).
 	df : function, optional
-		Function of a single complex variable, df(z), providing the 
-		derivative of the function f(z) at the point z.  If not 
-		provided, df will be approximated using a finite difference 
+		Function of a single complex variable, df(z), providing the
+		derivative of the function f(z) at the point z.  If not
+		provided, df will be approximated using a finite difference
 		method.
 	NIntAbsTol : float, optional
 		Required absolute error tolerance for the contour integration.
-		Since the Cauchy integral must be an integer it is only 
-		necessary to distinguish which integer the integral is 
+		Since the Cauchy integral must be an integer it is only
+		necessary to distinguish which integer the integral is
 		converging towards.  Therefore, NIntAbsTol can be fairly large.
 	integerTol : float, optional
-		The evaluation of the Cauchy integral will be accepted if its 
+		The evaluation of the Cauchy integral will be accepted if its
 		value is within integerTol of the closest integer.
 	divMin : int, optional
-		Only used if intMethod='romb'. Minimum number of divisions 
+		Only used if intMethod='romb'. Minimum number of divisions
 		before the Romberg integration routine is allowed to exit.
 	divMax : int, optional
-		Only used if intMethod='romb'.  The maximum number of divisions 
+		Only used if intMethod='romb'.  The maximum number of divisions
 		before the Romberg integration routine of a path exits.
 	m : int, optional
-		Only used if df=None and intMethod='quad'.  The argument order=m 
-		is passed to numdifftools.Derivative and is the order of the 
+		Only used if df=None and intMethod='quad'.  The argument order=m
+		is passed to numdifftools.Derivative and is the order of the
 		error term in the Taylor approximation.  m must be even.
 	intMethod : {'quad', 'romb'}, optional
-		If 'quad' then scipy.integrate.quad is used to perform the 
-		integral.  If 'romb' then Romberg integraion, using 
+		If 'quad' then scipy.integrate.quad is used to perform the
+		integral.  If 'romb' then Romberg integraion, using
 		scipy.integrate.romb, is performed instead.
 	verbose : bool, optional
-		If True certain messages regarding the integration will be 
+		If True certain messages regarding the integration will be
 		printed.
 
 	Returns
 	-------
 	int
-		The number of zeros of f (counting multiplicities) which lie 
+		The number of zeros of f (counting multiplicities) which lie
 		within the contour C.
 	"""
 	if verbose:
@@ -244,14 +245,14 @@ def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3,
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
-		I, err = prod(C, f, df, absTol=NIntAbsTol, relTol=0, divMin=divMin, 
+		I, err = prod(C, f, df, absTol=NIntAbsTol, relTol=0, divMin=divMin,
 			divMax=divMax, m=m, intMethod=intMethod, verbose=verbose, integerTol=integerTol)
 
 	if intMethod == 'romb':
 		C._numberOfDivisionsForN = int(np.log2(len(C.segments[0]._trapValuesCache[f])-1))
 
 	if np.isnan(I):
-		raise RootError("""Result of integral is an invalid value.  
+		raise RootError("""Result of integral is an invalid value.
 						   Most likely because of a divide by zero error.""")
 
 	elif abs(int(round(I.real)) - I.real) < integerTol and abs(I.imag) < integerTol:
