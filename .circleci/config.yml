@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  test-python-2.7:
+  test-python27-pytest:
     docker:
       image: circleci/python:2.7
     steps:
@@ -10,7 +10,7 @@ jobs:
       - run: checkout
       - run: python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
-  test-python-3.6:
+  test-python36-pytest:
     docker:
       image: circleci/python:3.6
     steps:
@@ -19,7 +19,7 @@ jobs:
       - run: checkout
       - run: python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
-  test-python-3.7:
+  test-python37-pytest:
     docker:
       image: circleci/python:3.7
     steps:
@@ -30,19 +30,19 @@ jobs:
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
 
 
-  test-python-2.7-setup-test:
+  test-python27-setup-test:
     docker:
       image: circleci/python:2.7
     steps:
       - run: checkout
       - run: python setup.py test
-  test-python-3.6-setup-test:
+  test-python36-setup-test:
     docker:
       image: circleci/python:3.6
     steps:
       - run: checkout
       - run: python setup.py test
-  test-python-3.7-setup-test:
+  test-python37-setup-test:
     docker:
       image: circleci/python:3.7
     steps:
