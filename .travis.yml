@@ -35,6 +35,8 @@ script:
 jobs:
   include:
     - stage: deploy
+      install:
+      script:
       deploy:
         provider: pypi
         user: "rparini"
