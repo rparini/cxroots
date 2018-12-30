@@ -70,6 +70,7 @@ jobs:
     docker:
       - image: circleci/python:3.6
     steps:
+      - run: sudo pip install twine
       - checkout
       - run: python setup.py sdist
       - run: python setup.py bdist_wheel
@@ -80,6 +81,7 @@ jobs:
     docker:
       - image: circleci/python:3.6
     steps:
+      - run: sudo pip install twine
       - checkout
       - run: python setup.py sdist
       - run: python setup.py bdist_wheel
