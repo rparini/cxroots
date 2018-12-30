@@ -170,14 +170,14 @@ workflows:
           requires:
             - test_python37_pytest
 
-      - build_README
+      - build_README:
           requires:
             - test_python27_setup
             - test_python35_setup
             - test_python36_setup
             - test_python37_setup
 
-      - build_docs
+      - build_docs:
           requires:
             - test_python27_setup
             - test_python35_setup
