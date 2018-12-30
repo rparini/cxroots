@@ -42,13 +42,13 @@ jobs:
   # Quickly test that 'setup.py test' works
   test_python27_setup_test:
     docker:
-      image: circleci/python:2.7
+      - image: circleci/python:2.7
     steps:
       - run: checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
   test_python35_setup_test:
     docker:
-      image: circleci/python:3.5
+      - image: circleci/python:3.5
     steps:
       - run: checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
@@ -60,7 +60,7 @@ jobs:
       - run: sudo python setup.py test --addopts "-v -k quad_df"
   test_python37_setup_test:
     docker:
-      image: circleci/python:3.7
+      - image: circleci/python:3.7
     steps:
       - run: checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
