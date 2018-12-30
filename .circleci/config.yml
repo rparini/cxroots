@@ -72,21 +72,21 @@ workflows:
       - test_python27_pytest
       - test_python27_setup_test:
         requires:
-          test_python27_pytest
+          - test_python27_pytest
 
       - test_python35_pytest
       - test_python35_setup_test:
         requires:
-          test_python35_pytest
+          - test_python35_pytest
 
       - test_python36_pytest
       - test_python36_setup_test:
         requires:
-          test_python36_pytest
+          - test_python36_pytest
 
       - test_python37_pytest
       - test_python37_setup_test:
         requires:
-          test_python37_pytest
+          - test_python37_pytest
 
 
