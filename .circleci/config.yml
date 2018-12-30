@@ -44,25 +44,25 @@ jobs:
     docker:
       - image: circleci/python:2.7
     steps:
-      - run: checkout
+      - checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
   test_python35_setup:
     docker:
       - image: circleci/python:3.5
     steps:
-      - run: checkout
+      - checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
   test_python36_setup:
     docker:
       - image: circleci/python:3.6
     steps:
-      - run: checkout
+      - checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
   test_python37_setup:
     docker:
       - image: circleci/python:3.7
     steps:
-      - run: checkout
+      - checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
 
 
