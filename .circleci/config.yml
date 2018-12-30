@@ -65,9 +65,29 @@ jobs:
       - checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
 
+  # Check that the long description (README.rst) will render correctly on PyPI
+  twine_check:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run: python setup.py sdist
+      - run: python setup.py bdist_wheel
+      - run: twine check dist/*
+
+  # Deploy to PyPi
+  deploy:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run: python setup.py sdist
+      - run: python setup.py bdist_wheel
+      - run: twine upload dist/*
+
 
 workflows:
-  test:
+  test-deploy:
     jobs:
       - test_python27_pytest
       - test_python27_setup:
@@ -88,5 +108,20 @@ workflows:
       - test_python37_setup:
           requires:
             - test_python37_pytest
+
+      - twine_check
+
+      - deploy:
+          requires:
+            - twine_check
+            - test_python27_setup
+            - test_python35_setup
+            - test_python36_setup
+            - test_python37_setup
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
 
 
