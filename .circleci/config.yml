@@ -142,6 +142,11 @@ workflows:
             - test_python37_pytest
 
       - build_README
+          requires:
+            - test_python27_setup
+            - test_python35_setup
+            - test_python36_setup
+            - test_python37_setup
       - twine_check
 
       - deploy:
