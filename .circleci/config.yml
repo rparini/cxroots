@@ -30,6 +30,13 @@ jobs:
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
 
 
+workflows:
+  test:
+    jobs:
+      - test_python27_pytest
+      - test_python36_pytest
+      - test_python37_pytest
+
   # test-python27-setup-test:
   #   docker:
   #     image: circleci/python:2.7
