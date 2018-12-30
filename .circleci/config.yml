@@ -65,6 +65,35 @@ jobs:
       - checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
 
+
+  build_docs:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run: sudo pip install matplotlib
+      - run: sudo python setup.py install
+      - run:
+          name: Build documentation
+          command: |
+            cd docs_src
+            bash create_docs
+
+      # Commit documentation
+      - run:
+          name: Commit documentation
+          command: |
+            git config --global user.email "robert.parini@gmail.com"
+            git config --global user.name "Circle CI"
+            git add .
+            if git diff --cached --quiet ; then
+              echo "No changes to documentation";
+            else
+              git commit -m "Update documentation via CircleCI";
+              git push origin ${CIRCLE_BRANCH};
+            fi
+
+
   build_README:
     docker:
       - image: circleci/python:3.6
@@ -147,6 +176,14 @@ workflows:
             - test_python35_setup
             - test_python36_setup
             - test_python37_setup
+
+      - build_docs
+          requires:
+            - test_python27_setup
+            - test_python35_setup
+            - test_python36_setup
+            - test_python37_setup
+
       - twine_check
 
       - deploy:
