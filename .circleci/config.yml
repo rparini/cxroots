@@ -65,6 +65,33 @@ jobs:
       - checkout
       - run: sudo python setup.py test --addopts "-v -k quad_df"
 
+  build_README:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      # Build resources (eg. images) that README uses
+      - checkout
+      - run:
+          name: Build resources
+          command: |
+            cd README_resources
+            bash create_resources
+
+      # Commit README resources
+      - run:
+          name: Commit README resources and push
+          command: |
+            git config --global user.email "robert.parini@gmail.com"
+            git config --global user.name "Circle CI"
+            git add .
+            if git diff --cached --quiet ; then
+              echo "No changes to README resources";
+            else
+              git commit -m "Update README resources via CircleCI";
+              git push;
+            fi
+
+
   # Check that the long description (README.rst) will render correctly on PyPI
   twine_check:
     docker:
@@ -75,6 +102,7 @@ jobs:
       - run: python setup.py sdist
       - run: python setup.py bdist_wheel
       - run: twine check dist/*
+
 
   # Deploy to PyPi
   deploy:
@@ -111,6 +139,7 @@ workflows:
           requires:
             - test_python37_pytest
 
+      - build_README
       - twine_check
 
       - deploy:
