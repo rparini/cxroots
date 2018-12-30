@@ -71,6 +71,7 @@ jobs:
     steps:
       # Build resources (eg. images) that README uses
       - checkout
+      - run: sudo python setup.py install
       - run:
           name: Build resources
           command: |
