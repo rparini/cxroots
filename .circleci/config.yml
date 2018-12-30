@@ -5,27 +5,27 @@ jobs:
     docker:
       - image: circleci/python:2.7
     steps:
+      - run: checkout
       - run: pip install -U -r requirements.txt --upgrade-strategy=eager
       - run: pip install -U -r requirements_test.txt --upgrade-strategy=eager
-      - run: checkout
       - run: python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
   test_python36_pytest:
     docker:
       - image: circleci/python:3.6
     steps:
+      - run: checkout
       - run: pip install -U -r requirements.txt --upgrade-strategy=eager
       - run: pip install -U -r requirements_test.txt --upgrade-strategy=eager
-      - run: checkout
       - run: python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
   test_python37_pytest:
     docker:
       - image: circleci/python:3.7
     steps:
+      - run: checkout
       - run: pip install -U -r requirements.txt --upgrade-strategy=eager
       - run: pip install -U -r requirements_test.txt --upgrade-strategy=eager
-      - run: checkout
       - run: python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
 
