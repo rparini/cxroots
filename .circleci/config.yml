@@ -1,6 +1,7 @@
 version: 2.1
 
 jobs:
+  # Full tests
   test_python27_pytest:
     docker:
       - image: circleci/python:2.7
@@ -38,30 +39,54 @@ jobs:
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
 
+  # Quickly test that 'setup.py test' works
+  test_python27_setup_test:
+    docker:
+      image: circleci/python:2.7
+    steps:
+      - run: checkout
+      - run: sudo python setup.py test --addopts "-v -k quad_df"
+  test_python35_setup_test:
+    docker:
+      image: circleci/python:3.5
+    steps:
+      - run: checkout
+      - run: sudo python setup.py test --addopts "-v -k quad_df"
+  test_python36_setup_test:
+    docker:
+      image: circleci/python:3.6
+    steps:
+      - run: checkout
+      - run: sudo python setup.py test --addopts "-v -k quad_df"
+  test_python37_setup_test:
+    docker:
+      image: circleci/python:3.7
+    steps:
+      - run: checkout
+      - run: sudo python setup.py test --addopts "-v -k quad_df"
+
 
 workflows:
   test:
     jobs:
       - test_python27_pytest
-      - test_python35_pytest
-      - test_python36_pytest
-      - test_python37_pytest
+      - test_python27_setup_test:
+        requires:
+          test_python27_pytest
 
-  # test-python27-setup-test:
-  #   docker:
-  #     image: circleci/python:2.7
-  #   steps:
-  #     - run: checkout
-  #     - run: python setup.py test
-  # test-python36-setup-test:
-  #   docker:
-  #     image: circleci/python:3.6
-  #   steps:
-  #     - run: checkout
-  #     - run: python setup.py test
-  # test-python37-setup-test:
-  #   docker:
-  #     image: circleci/python:3.7
-  #   steps:
-  #     - run: checkout
-  #     - run: python setup.py test
+      - test_python35_pytest
+      - test_python35_setup_test:
+        requires:
+          test_python35_pytest
+
+      - test_python36_pytest
+      - test_python36_setup_test:
+        requires:
+          test_python36_pytest
+
+      - test_python37_pytest
+      - test_python37_setup_test:
+        requires:
+          test_python37_pytest
+
+
