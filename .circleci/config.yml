@@ -90,7 +90,7 @@ jobs:
               echo "No changes to README resources";
             else
               git commit -m "Update README resources via CircleCI";
-              git push origin HEAD;
+              git push origin ${CIRCLE_BRANCH};
             fi
 
 
