@@ -13,9 +13,9 @@ env:
 
 
 install:
+  - pip install -r requirements.txt
   - |
     if [ "${TEST}" == "pytest" ]; then
-      pip install -r requirements.txt
       python setup.py install
     fi
 
