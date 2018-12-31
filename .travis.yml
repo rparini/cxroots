@@ -33,6 +33,7 @@ script:
 jobs:
   include:
     - stage: document
+      name: Update documentation
       python: "3.6"
       install:
         - pip install -r requirements.txt
@@ -52,9 +53,10 @@ jobs:
             git commit -m "Update documentation via Travis CI";
             git push -u origin ${TRAVIS_BRANCH};
           fi
-      name: Update documentation
 
-    - install:
+    - name: Update README
+      python: "3.6"
+      install:
         - pip install -r requirements.txt
         - pip install -r requirements_doc.txt
         - python setup.py install
@@ -72,7 +74,6 @@ jobs:
             git commit -m "Update README resources via Travis CI";
             git push origin ${TRAVIS_BRANCH};
           fi
-      name: Update README
 
     - stage: deploy
       python: "3.6"
