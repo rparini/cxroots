@@ -90,7 +90,7 @@ jobs:
             if git diff --cached --quiet ; then
               echo "No changes to documentation";
             else
-              git commit -m "Update documentation via CircleCI";
+              git commit -m "Update documentation via Circle CI build: ${CIRCLE_BUILD_NUM}";
               git push origin ${CIRCLE_BRANCH};
             fi
 
@@ -120,7 +120,7 @@ jobs:
             if git diff --cached --quiet ; then
               echo "No changes to README resources";
             else
-              git commit -m "Update README resources via CircleCI";
+              git commit -m "Update README resources via Circle CI build: ${CIRCLE_BUILD_NUM}";
               git push origin ${CIRCLE_BRANCH};
             fi
 
