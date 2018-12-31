@@ -155,34 +155,34 @@ workflows:
           requires:
             - test_python27_pytest
 
-      - test_python35_pytest
-      - test_python35_setup:
-          requires:
-            - test_python35_pytest
+      # - test_python35_pytest
+      # - test_python35_setup:
+      #     requires:
+      #       - test_python35_pytest
 
       - test_python36_pytest
       - test_python36_setup:
           requires:
             - test_python36_pytest
 
-      - test_python37_pytest
-      - test_python37_setup:
-          requires:
-            - test_python37_pytest
+      # - test_python37_pytest
+      # - test_python37_setup:
+      #     requires:
+      #       - test_python37_pytest
 
       - build_README:
           requires:
             - test_python27_setup
-            - test_python35_setup
+            # - test_python35_setup
             - test_python36_setup
-            - test_python37_setup
+            # - test_python37_setup
 
       - build_docs:
           requires:
             - test_python27_setup
-            - test_python35_setup
+            # - test_python35_setup
             - test_python36_setup
-            - test_python37_setup
+            # - test_python37_setup
 
       - twine_check
 
@@ -190,9 +190,9 @@ workflows:
           requires:
             - twine_check
             - test_python27_setup
-            - test_python35_setup
+            # - test_python35_setup
             - test_python36_setup
-            - test_python37_setup
+            # - test_python37_setup
           filters:
             tags:
               only: /^v.*/
