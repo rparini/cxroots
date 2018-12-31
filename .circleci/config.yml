@@ -67,7 +67,8 @@ jobs:
       - image: circleci/python:3.6
     steps:
       - checkout
-      - run: sudo pip install matplotlib
+      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install -r requirements_doc.txt
       - run: sudo python setup.py install
       - run:
           name: Build documentation
@@ -96,7 +97,8 @@ jobs:
     steps:
       # Build resources (eg. images) that README uses
       - checkout
-      - run: sudo pip install matplotlib
+      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install -r requirements_doc.txt
       - run: sudo python setup.py install
       - run:
           name: Build resources
