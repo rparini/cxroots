@@ -43,8 +43,8 @@ jobs:
           cd docs_src
           bash create_docs
         - |
-          git config --global user.email "robert.parini@gmail.com"
-          git config --global user.name "Travis CI"
+          git config --global user.email "Travis"
+          git config --global user.name "Travis"
           git add .
           if git diff --cached --quiet ; then
             echo "No changes to documentation";
@@ -63,8 +63,8 @@ jobs:
           cd README_resources
           bash create_resources
         - |
-          git config --global user.email "robert.parini@gmail.com"
-          git config --global user.name "Travis CI"
+          git config --global user.email "Travis"
+          git config --global user.name "Travis"
           git add .
           if git diff --cached --quiet ; then
             echo "No changes to README resources";
