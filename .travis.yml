@@ -45,6 +45,7 @@ jobs:
           cd docs_src
           bash create_docs
         - |
+          cd ${TRAVIS_BUILD_DIR}
           git config --global user.email "robert.parini@gmail.com"
           git config --global user.name "Travis CI"
           git add .
@@ -66,6 +67,7 @@ jobs:
           cd README_resources
           bash create_resources
         - |
+          cd ${TRAVIS_BUILD_DIR}
           git config --global user.email "robert.parini@gmail.com"
           git config --global user.name "Travis CI"
           git add .
