@@ -40,7 +40,6 @@ jobs:
         - pip install -r requirements_doc.txt
         - python setup.py install
       script:
-        - echo "backend: Agg" > ~/.config/matplotlib/matplotlibrc
         - |
           cd docs_src
           bash create_docs
