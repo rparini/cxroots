@@ -40,6 +40,7 @@ jobs:
         - pip install -r requirements_doc.txt
         - python setup.py install
       script:
+        - echo "backend: Agg" > ~/.config/matplotlib/matplotlibrc
         - |
           cd docs_src
           bash create_docs
@@ -51,7 +52,7 @@ jobs:
             echo "No changes to documentation";
           else
             git commit -m "Update documentation via Travis CI build: $TRAVIS_BUILD_NUMBER";
-            git push -u origin ${TRAVIS_BRANCH};
+            git push "https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git" --quiet -u origin ${TRAVIS_BRANCH};
           fi
 
     - name: Update README
@@ -72,7 +73,7 @@ jobs:
             echo "No changes to README resources";
           else
             git commit -m "Update README resources via Travis CI build: $TRAVIS_BUILD_NUMBER";
-            git push origin ${TRAVIS_BRANCH};
+            git push "https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git" --quiet -u origin ${TRAVIS_BRANCH};
           fi
 
     - stage: deploy
