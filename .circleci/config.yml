@@ -7,8 +7,7 @@ jobs:
       - image: circleci/python:2.7
     steps:
       - checkout
-      - run: sudo pip install -U -r requirements.txt --upgrade-strategy=eager
-      - run: sudo pip install -U -r requirements_test.txt --upgrade-strategy=eager
+      - run: sudo pip install -r requirements.txt
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
   test_python35_pytest:
@@ -16,8 +15,7 @@ jobs:
       - image: circleci/python:3.5
     steps:
       - checkout
-      - run: sudo pip install -U -r requirements.txt --upgrade-strategy=eager
-      - run: sudo pip install -U -r requirements_test.txt --upgrade-strategy=eager
+      - run: sudo pip install -r requirements.txt
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
   test_python36_pytest:
@@ -25,8 +23,7 @@ jobs:
       - image: circleci/python:3.6
     steps:
       - checkout
-      - run: sudo pip install -U -r requirements.txt --upgrade-strategy=eager
-      - run: sudo pip install -U -r requirements_test.txt --upgrade-strategy=eager
+      - run: sudo pip install -r requirements.txt
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
   test_python37_pytest:
@@ -34,8 +31,7 @@ jobs:
       - image: circleci/python:3.7
     steps:
       - checkout
-      - run: sudo pip install -U -r requirements.txt --upgrade-strategy=eager
-      - run: sudo pip install -U -r requirements_test.txt --upgrade-strategy=eager
+      - run: sudo pip install -r requirements.txt
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
 
