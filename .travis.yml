@@ -34,6 +34,43 @@ script:
 
 jobs:
   include:
+    - stage: document
+      python: "3.6"
+      env: TEST="setup.py test"
+      script:
+        - pip install -U -r requirements_docs.txt --upgrade-strategy=eager
+        - |
+          cd docs_src
+          bash create_docs
+        - |
+          git config --global user.email "robert.parini@gmail.com"
+          git config --global user.name "Travis CI"
+          git add .
+          if git diff --cached --quiet ; then
+            echo "No changes to documentation";
+          else
+            git commit -m "Update documentation via Travis CI";
+            git push -u origin ${TRAVIS_BRANCH};
+          fi
+      name: Update documentation
+
+    - script:
+        - pip install -U -r requirements_docs.txt --upgrade-strategy=eager
+        - |
+          cd README_resources
+          bash create_resources
+        - |
+          git config --global user.email "robert.parini@gmail.com"
+          git config --global user.name "Travis CI"
+          git add .
+          if git diff --cached --quiet ; then
+            echo "No changes to README resources";
+          else
+            git commit -m "Update README resources via Travis CI";
+            git push origin ${TRAVIS_BRANCH};
+          fi
+      name: Update README
+
     - stage: deploy
       python: "3.6"
       env: TEST="setup.py test"
@@ -48,8 +85,8 @@ jobs:
           tags: true
 
 stages:
-  - compile
   - test
+  - document
   - name: deploy
     if: branch = master
     if: tags = true
