@@ -49,16 +49,15 @@ jobs:
         - git config --global user.name "Travis CI"
         - git remote set-url origin https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git
         - git add .
-        - git commit -m "Update documentation via Travis CI build ${TRAVIS_BUILD_NUMBER} [ci skip]"
-        - git push --quiet -u origin HEAD:${TRAVIS_BRANCH}
-        # - |
-        #   if git diff --cached --quiet ; then
-        #     echo "No changes to documentation";
-        #   else
-        #     echo "Pushing changes";
-        #     git commit -m "Update documentation via Travis CI build: $TRAVIS_BUILD_NUMBER";
-        #     git push --quiet -u origin dev;
-        #   fi
+        - |
+          if git diff --cached --quiet ; then
+            echo "No changes to documentation";
+          else
+            echo "Pushing changes";
+            git commit -m "Update documentation via Travis CI build ${TRAVIS_BUILD_NUMBER} [ci skip]";
+            git pull;
+            git push --quiet -u origin HEAD:${TRAVIS_BRANCH};
+          fi
 
     - name: Update README
       python: "3.6"
@@ -67,20 +66,20 @@ jobs:
         - pip install -r requirements_doc.txt
         - python setup.py install
       script:
+        - cd README_resources
+        - bash create_resources
+        - cd ${TRAVIS_BUILD_DIR}
+        - git config --global user.email "robert.parini@gmail.com"
+        - git config --global user.name "Travis CI"
+        - git remote set-url origin https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git
+        - git add .
         - |
-          cd README_resources
-          bash create_resources
-        - |
-          cd ${TRAVIS_BUILD_DIR}
-          git config --global user.email "robert.parini@gmail.com"
-          git config --global user.name "Travis CI"
-          git remote set-url origin https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git
-          git add .
           if git diff --cached --quiet ; then
             echo "No changes to README resources";
           else
             echo "Pushing changes";
             git commit -m "Update README resources via Travis CI build $TRAVIS_BUILD_NUMBER [ci skip]";
+            git pull
             git push --quiet -u origin HEAD:${TRAVIS_BRANCH};
           fi
 
