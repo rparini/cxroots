@@ -40,21 +40,21 @@ jobs:
         - pip install -r requirements_doc.txt
         - python setup.py install
       script:
+        - cd docs_src
+        - ls
+        - bash create_docs
+        - cd ${TRAVIS_BUILD_DIR}
+        - git config --global user.email "robert.parini@gmail.com"
+        - git config --global user.name "Travis CI"
+        - git remote set-url origin https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git
+        - git add .
         - |
-          cd docs_src
-          bash create_docs
-        - |
-          cd ${TRAVIS_BUILD_DIR}
-          git config --global user.email "robert.parini@gmail.com"
-          git config --global user.name "Travis CI"
-          git remote set-url origin https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git
-          git add .
           if git diff --cached --quiet ; then
             echo "No changes to documentation";
           else
             echo "Pushing changes";
             git commit -m "Update documentation via Travis CI build: $TRAVIS_BUILD_NUMBER";
-            git push --quiet origin dev;
+            git push --quiet -u origin dev;
           fi
 
     - name: Update README
@@ -78,7 +78,7 @@ jobs:
           else
             echo "Pushing changes";
             git commit -m "Update README resources via Travis CI build: $TRAVIS_BUILD_NUMBER";
-            git push --quiet origin dev;
+            git push --quiet -u origin dev;
           fi
 
     - stage: deploy
