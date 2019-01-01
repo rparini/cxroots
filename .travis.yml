@@ -48,14 +48,16 @@ jobs:
         - git config --global user.name "Travis CI"
         - git remote set-url origin https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git
         - git add .
-        - |
-          if git diff --cached --quiet ; then
-            echo "No changes to documentation";
-          else
-            echo "Pushing changes";
-            git commit -m "Update documentation via Travis CI build: $TRAVIS_BUILD_NUMBER";
-            git push --quiet -u origin dev;
-          fi
+        - git commit -m "Update documentation via Travis CI build: $TRAVIS_BUILD_NUMBER"
+        - git push --quiet -u origin dev
+        # - |
+        #   if git diff --cached --quiet ; then
+        #     echo "No changes to documentation";
+        #   else
+        #     echo "Pushing changes";
+        #     git commit -m "Update documentation via Travis CI build: $TRAVIS_BUILD_NUMBER";
+        #     git push --quiet -u origin dev;
+        #   fi
 
     - name: Update README
       python: "3.6"
