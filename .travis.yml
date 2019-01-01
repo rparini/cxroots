@@ -52,8 +52,9 @@ jobs:
           if git diff --cached --quiet ; then
             echo "No changes to documentation";
           else
+            echo "Pushing changes";
             git commit -m "Update documentation via Travis CI build: $TRAVIS_BUILD_NUMBER";
-            git push --quiet -u origin dev;
+            git push --quiet origin dev;
           fi
 
     - name: Update README
@@ -75,8 +76,9 @@ jobs:
           if git diff --cached --quiet ; then
             echo "No changes to README resources";
           else
+            echo "Pushing changes";
             git commit -m "Update README resources via Travis CI build: $TRAVIS_BUILD_NUMBER";
-            git push --quiet -u origin dev;
+            git push --quiet origin dev;
           fi
 
     - stage: deploy
