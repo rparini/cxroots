@@ -43,12 +43,13 @@ jobs:
         - cd docs_src
         - ls
         - bash create_docs
+
         - cd ${TRAVIS_BUILD_DIR}
         - git config --global user.email "robert.parini@gmail.com"
         - git config --global user.name "Travis CI"
         - git remote set-url origin https://${GITHUB_TOKEN}@github.com/rparini/cxroots.git
         - git add .
-        - git commit -m "Update documentation via Travis CI build: $TRAVIS_BUILD_NUMBER"
+        - git commit -m "Update documentation via Travis CI build ${TRAVIS_BUILD_NUMBER}"
         - git push --quiet -u origin HEAD:dev
         - echo "$TRAVIS_BRANCH"
         # - |
