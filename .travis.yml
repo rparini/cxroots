@@ -70,6 +70,7 @@ jobs:
       script:
         - cd README_resources
         - bash create_resources
+
         - cd ${TRAVIS_BUILD_DIR}
         - git config --global user.email "robert.parini@gmail.com"
         - git config --global user.name "Travis CI"
@@ -80,7 +81,7 @@ jobs:
             echo "No changes to README resources";
           else
             echo "Pushing changes";
-            git commit -m "Update README resources via Travis CI build $TRAVIS_BUILD_NUMBER [ci skip]";
+            git commit -m "Update README resources via Travis CI build ${TRAVIS_BUILD_NUMBER} [ci skip]";
             git pull
             git push --quiet -u origin HEAD:${TRAVIS_BRANCH};
           fi
