@@ -24,13 +24,13 @@ install:
 script:
   - |
     if [ "${TEST}" == "pytest" ]; then
-      pytest -v -n 2 --durations=10 -m 'not slow'
+      pytest -n 2 --durations=10 -m 'not slow'
     fi
 
   # Do a quick test to make sure 'setup.py test' works
   - |
     if [ "${TEST}" == "setup.py test" ]; then
-      python setup.py test --addopts "-v -k quad_df"
+      python setup.py test --addopts "-k quad_df"
     fi
 
 
