@@ -102,8 +102,8 @@ jobs:
           tags: true
 
 stages:
-  - document
   - test
+  - document
   - name: deploy
     if: branch = master
     if: tags = true
