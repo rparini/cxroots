@@ -1,8 +1,8 @@
 language: python
 
 # To use python 3.7 need xenial
-# dist: xenial
-# sudo: required
+dist: xenial
+sudo: required
 
 python:
   - "2.7"
