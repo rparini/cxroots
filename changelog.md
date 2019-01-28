@@ -3,7 +3,7 @@
 ### 1.1.6 - 19/Sep/2018
 - Added example to index page of documentation.
 - Removed unnecessary imports.
-- Enable 'setup.py test'.
+- Enable `setup.py test`.
 
 ### 1.1.5 - 5/Aug/2018
 - Got project description working on PyPi.
