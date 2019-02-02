@@ -1,5 +1,5 @@
 scipy==1.2.0
-numpy
+numpy==1.16.1
 matplotlib
 docrep
 mpmath
