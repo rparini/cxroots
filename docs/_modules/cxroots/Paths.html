@@ -360,7 +360,7 @@
 
 
 <div class="viewcode-block" id="ComplexLine"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexLine">[docs]</a><span class="k">class</span> <span class="nc">ComplexLine</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
+	<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A straight line :math:`z` in the complex plane from a to b</span>
 <span class="sd">	parameterised by</span>
 
@@ -383,7 +383,7 @@
 		<span class="k">return</span> <span class="s1">&#39;ComplexLine from </span><span class="si">%.3f</span><span class="s1">+</span><span class="si">%.3f</span><span class="s1">i to </span><span class="si">%.3f</span><span class="s1">+</span><span class="si">%.3f</span><span class="s1">i&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ComplexLine.__call__"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexLine.__call__">[docs]</a>	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
+		<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		The function :math:`z(t) = a + (b-a)t`.</span>
 
 <span class="sd">		Parameters</span>
@@ -429,7 +429,7 @@
 		<span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">z</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="ComplexArc"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexArc">[docs]</a><span class="k">class</span> <span class="nc">ComplexArc</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
+	<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A circular arc :math:`z` with center z0, radius R, initial angle t0</span>
 <span class="sd">	and change of angle dt.  The arc is parameterised by</span>
 
@@ -453,7 +453,7 @@
 		<span class="k">return</span> <span class="s1">&#39;ComplexArc: z0=</span><span class="si">%.3f</span><span class="s1">, R=</span><span class="si">%.3f</span><span class="s1">, t0=</span><span class="si">%.3f</span><span class="s1">, dt=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ComplexArc.__call__"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexArc.__call__">[docs]</a>	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
+		<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.</span>
 
 <span class="sd">		Parameters</span>
