@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.1.7
+- Fix `setup.py test`.
+
 ### 1.1.6 - 19/Sep/2018
 - Added example to index page of documentation.
 - Removed unnecessary imports.
