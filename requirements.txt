@@ -19,5 +19,5 @@ matplotlib==2.2.3; python_version <= '2.7'
 
 
 pytest==4.2.0
-pytest-xdist==1.25.0
+pytest-xdist==1.26.1
 
