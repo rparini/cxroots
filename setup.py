@@ -26,7 +26,7 @@ setup(
     packages = packages,
     zip_safe = False,   # prevent cxroots from installing as a .egg zip file
     platforms = ['all'],
-    dependency_links=['git+https://github.com/pbrod/numdifftools.git#egg=numdifftools'],
+    dependency_links=['git+https://github.com/rparini/numdifftools.git@fix_vstack_futurewarning#egg=numdifftools'],
     setup_requires = ['pytest-runner'],
     install_requires = ['numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
     tests_require=['pytest'],
