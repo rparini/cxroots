@@ -12,7 +12,7 @@ docrep==0.2.5
 mpmath==1.1.0
 
 ### numdifftools
-git+https://github.com/pbrod/numdifftools
+git+https://github.com/rparini/numdifftools.git@fix_vstack_futurewarning#egg=numdifftools
 
 matplotlib==3.0.2; python_version > '2.7'
 matplotlib==2.2.3; python_version <= '2.7'
