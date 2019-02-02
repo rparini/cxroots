@@ -2,7 +2,7 @@ scipy==1.2.0
 numpy==1.16.1
 matplotlib==3.0.2
 docrep==0.2.5
-mpmath
+mpmath==1.1.0
 
 ### numdifftools
 git+https://github.com/pbrod/numdifftools
