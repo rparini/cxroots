@@ -1,7 +1,7 @@
 scipy==1.2.0
 numpy==1.16.1
 matplotlib==3.0.2
-docrep
+docrep==0.2.5
 mpmath
 
 ### numdifftools
