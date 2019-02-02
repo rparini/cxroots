@@ -1,10 +1,13 @@
-|pkg_img| |travis|
+|pkg_img| |travis| |pyup|
 
 .. |travis| image:: https://travis-ci.org/rparini/cxroots.svg?branch=master 
     :target: https://travis-ci.org/rparini/cxroots/branches
     
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
+
+.. |pyup| image:: https://pyup.io/repos/github/rparini/cxroots/shield.svg
+    :target: https://pyup.io/repos/github/rparini/cxroots/
 
 cxroots
 =======
