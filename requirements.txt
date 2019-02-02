@@ -15,7 +15,7 @@ mpmath==1.1.0
 git+https://github.com/rparini/numdifftools.git@fix_vstack_futurewarning#egg=numdifftools
 
 matplotlib==3.0.2; python_version > '2.7'
-matplotlib==2.2.3; python_version <= '2.7'
+matplotlib==3.0.2; python_version <= '2.7'
 
 
 pytest==4.2.0
