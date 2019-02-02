@@ -2,6 +2,7 @@
 
 ### 1.1.7
 - Fix `setup.py test`.
+- Fix invalid escape characters
 
 ### 1.1.6 - 19/Sep/2018
 - Added example to index page of documentation.

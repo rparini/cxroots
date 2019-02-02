@@ -8,7 +8,7 @@ import numdifftools.fornberg as ndf
 
 @np.vectorize
 def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=False):
-	"""
+	r"""
 	Compute the derivaive of an analytic function using Cauchy's
 	Integral Formula for Derivatives.
 

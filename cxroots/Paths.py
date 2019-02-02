@@ -194,7 +194,7 @@ class ComplexPath(object):
 
 
 class ComplexLine(ComplexPath):
-	"""
+	r"""
 	A straight line :math:`z` in the complex plane from a to b
 	parameterised by
 
@@ -217,7 +217,7 @@ class ComplexLine(ComplexPath):
 		return 'ComplexLine from %.3f+%.3fi to %.3f+%.3fi' % (self.a.real, self.a.imag, self.b.real, self.b.imag)
 
 	def __call__(self, t):
-		"""
+		r"""
 		The function :math:`z(t) = a + (b-a)t`.
 
 		Parameters
@@ -263,7 +263,7 @@ class ComplexLine(ComplexPath):
 		return abs(c-z)
 
 class ComplexArc(ComplexPath):
-	"""
+	r"""
 	A circular arc :math:`z` with center z0, radius R, initial angle t0
 	and change of angle dt.  The arc is parameterised by
 
@@ -287,7 +287,7 @@ class ComplexArc(ComplexPath):
 		return 'ComplexArc: z0=%.3f, R=%.3f, t0=%.3f, dt=%.3f' % (self.z0, self.R, self.t0, self.dt)
 
 	def __call__(self, t):
-		"""
+		r"""
 		The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.
 
 		Parameters

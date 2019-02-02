@@ -25,7 +25,7 @@ class Contour(object):
 		self.segments = np.array(segments, dtype=object)
 
 	def __call__(self, t):
-		"""
+		r"""
 		The point on the contour corresponding the value of the
 		parameter t.
 
