@@ -81,7 +81,8 @@ jobs:
 
 stages:
   - test
-  - document
+  - name: document
+    if: branch IN (master, dev)
   - name: deploy
     if: branch = master
     if: tags = true
