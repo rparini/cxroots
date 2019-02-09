@@ -1,17 +1,17 @@
 from __future__ import division
-import numpy as np
-import scipy.integrate
-import scipy.linalg
 import functools
+
+import numpy as np
+import scipy.linalg
 
 from .CountRoots import count_roots, prod
 from .Misc import NumberOfRootsChanged
 
-def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12, 
-	errStop=1e-10, divMin=3, divMax=15, m=2, rootTol=1e-8, 
+def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
+	errStop=1e-10, divMin=3, divMax=15, m=2, rootTol=1e-8,
 	intMethod='quad', callback=None, verbose=False):
 	"""
-	Approximate the roots and multiplcities of the function f within the 
+	Approximate the roots and multiplcities of the function f within the
 	contour C using the method of [KB]_.  The multiplicites are computed
 	using eq. (21) in [SLV]_.
 
@@ -20,26 +20,26 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	C : :class:`~<cxroots.Contour.Contour>`
 		The contour which encloses the roots of f the user wishes to find.
 	N : int
-		The number of roots (counting multiplicties) of f within C.  
+		The number of roots (counting multiplicties) of f within C.
 		This is the result of calling :meth:`~cxroots.Contour.Contour.count_roots`.
 	f : function
-		The function for which the roots are sought.  Must be a function 
-		of a single complex variable, z, which is analytic within C and 
+		The function for which the roots are sought.  Must be a function
+		of a single complex variable, z, which is analytic within C and
 		has no poles or roots on the C.
 	df : function, optional
-		A function of a single complex variable which is the derivative 
-		of the function f(z). If df is not given then it will be 
+		A function of a single complex variable which is the derivative
+		of the function f(z). If df is not given then it will be
 		approximated with a finite difference formula.
 	absTol : float, optional
 		Absolute error tolerance for integration.
 	relTol : float, optional
 		Relative error tolerance for integration.
 	errStop : float, optional
-		The number of distinct roots within a contour, n, is determined 
-		by checking if all the elements of a list of contour integrals 
+		The number of distinct roots within a contour, n, is determined
+		by checking if all the elements of a list of contour integrals
 		involving formal orthogonal polynomials are sufficently close to
 		zero, ie. that the absolute value of each element is < errStop.
-		If errStop is too large/small then n may be smaller/larger than 
+		If errStop is too large/small then n may be smaller/larger than
 		it actually is.
 	divMin : int, optional
 		If the Romberg integration method is used then divMin is the
@@ -50,16 +50,16 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 		maximum number of divisions before the Romberg integration
 		routine exits.
 	m : int, optional
-		Only used if df=None and method='quad'.  The argument order=m is 
-		passed to numdifftools.Derivative and is the order of the error 
+		Only used if df=None and method='quad'.  The argument order=m is
+		passed to numdifftools.Derivative and is the order of the error
 		term in the Taylor approximation.  m must be even.
 	rootTol : float, optional
 		If any roots are within rootTol of one another then they will be
-		treated as duplicates and removed.  This helps to alleviate the 
+		treated as duplicates and removed.  This helps to alleviate the
 		problem of errStop being too small.
 	intMethod : {'quad', 'romb'}, optional
-		If 'quad' then :func:`scipy.integrate.quad` is used to perform 
-		integration.  If 'romb' then Romberg integraion is performed 
+		If 'quad' then :func:`scipy.integrate.quad` is used to perform
+		integration.  If 'romb' then Romberg integraion is performed
 		instead.
 	callback : function, optional
 		Only used if intMethod is 'romb'.  Passed to :func:`~<cxroots.CountRoots.prod>`.
@@ -72,15 +72,15 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	tuple of complex
 		The distinct roots of f within the contour C.
 	tuple of float
-		The corresponding multiplicites of the roots within C.  Should 
+		The corresponding multiplicites of the roots within C.  Should
 		be integers but will not be automatically rounded here.
 
 	References
 	----------
-	.. [KB] P. Kravanja and M. Van Barel. "Computing the Zeros of 
+	.. [KB] P. Kravanja and M. Van Barel. "Computing the Zeros of
 		Anayltic Functions". Springer (2000)
-	.. [SLV] E. Strakova, D. Lukas, P. Vodstrcil. "Finding Zeros of 
-		Analytic Functions and Local Eigenvalue Analysis Using Contour 
+	.. [SLV] E. Strakova, D. Lukas, P. Vodstrcil. "Finding Zeros of
+		Analytic Functions and Local Eigenvalue Analysis Using Contour
 		Integral Method in Examples". Mathematical Analysis and Numerical
 		Mathematics, Vol. 15, 2, (2017)
 	"""
@@ -91,7 +91,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	if N == 0:
 		return (), ()
 
-	product = functools.partial(prod, C, f, df, 
+	product = functools.partial(prod, C, f, df,
 		absTol=absTol, relTol=relTol, divMin=divMin, divMax=divMax,
 		m=m, intMethod=intMethod, verbose=verbose, callback=callback)
 
@@ -105,7 +105,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 		else:
 			coeff = np.poly(phiZeros[i])
 			return lambda z: np.polyval(coeff, z)
-	
+
 	# initialize G_{pq} = <phi_p, phi_q>
 	G = np.zeros((N,N), dtype=np.complex128)
 	G[0,0] = N # = <phi_0, phi_0> = <1,1>
@@ -128,8 +128,8 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 		if verbose: print('G1', G1[:p+1,:p+1])
 
 		"""
-		If any of the zeros of the FOP are outside of the interior 
-		of the contour then we assume that they are 'arbitary' and 
+		If any of the zeros of the FOP are outside of the interior
+		of the contour then we assume that they are 'arbitary' and
 		instead define the FOP as an inner polynomial. [KB]
 		"""
 		polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu

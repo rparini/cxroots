@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cxroots.DemoRootFinder &mdash; cxroots 1.1.5 documentation</title>
+  <title>cxroots.DemoRootFinder &mdash; cxroots 1.1.7 documentation</title>
   
 
   
@@ -24,26 +24,17 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="cxroots 1.1.5 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -65,7 +56,7 @@
             
             
               <div class="version">
-                1.1.5
+                1.1.7
               </div>
             
           
@@ -121,7 +112,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">cxroots</a>
@@ -129,9 +120,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -161,8 +153,6 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
-        
       </li>
     
   </ul>
@@ -175,11 +165,12 @@
             
   <h1>Source code for cxroots.DemoRootFinder</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">.RootFinder</span> <span class="k">import</span> <span class="n">find_roots_gen</span>
 
-<span class="k">def</span> <span class="nf">demo_find_roots</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">automaticAnim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">demo_find_roots</span><span class="p">(</span><span class="n">originalContour</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">automaticAnim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 	<span class="n">returnAnim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">rootsKwargs</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	An animated demonstration of the root finding process using matplotlib.</span>
@@ -187,14 +178,14 @@
 <span class="sd">	Parameters</span>
 <span class="sd">	----------</span>
 <span class="sd">	saveFile : str, optional</span>
-<span class="sd">		If given then the animation will be saved to disk with filename </span>
+<span class="sd">		If given then the animation will be saved to disk with filename</span>
 <span class="sd">		equal to saveFile instead of being shown.</span>
 <span class="sd">	automaticAnim : bool, optional</span>
 <span class="sd">		If False (default) then press SPACE to step the animation forward</span>
-<span class="sd">		If True then the animation will play automatically until all the </span>
+<span class="sd">		If True then the animation will play automatically until all the</span>
 <span class="sd">		roots have been found.</span>
 <span class="sd">	returnAnim : bool, optional</span>
-<span class="sd">		If True then the matplotlib animation object will be returned </span>
+<span class="sd">		If True then the matplotlib animation object will be returned</span>
 <span class="sd">		instead of being shown.  Defaults to False.</span>
 <span class="sd">	writer : str, optional</span>
 <span class="sd">		Passed to :meth:`matplotlib.animation.FuncAnimation.save`.</span>
@@ -215,15 +206,13 @@
 	<span class="k">def</span> <span class="nf">update_frame</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 		<span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">,</span> <span class="n">boxes</span><span class="p">,</span> <span class="n">numberOfRemainingRoots</span> <span class="o">=</span> <span class="n">args</span>
 
-		<span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-
 		<span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span> <span class="c1"># clear axis</span>
 		<span class="n">originalContour</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 		<span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">boxes</span><span class="p">:</span>
 			<span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="s1">&#39;_color&#39;</span><span class="p">):</span>
 				<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span>
 				<span class="n">box</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
-			
+
 			<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">centralPoint</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">centralPoint</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">_numberOfRoots</span><span class="p">)</span>
 			<span class="n">box</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linecolor</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
 
@@ -242,7 +231,7 @@
 	<span class="k">else</span><span class="p">:</span>
 		<span class="k">def</span> <span class="nf">draw_next</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
 			<span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
-				<span class="n">update_frame</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">rootFinder</span><span class="p">))</span> 
+				<span class="n">update_frame</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">rootFinder</span><span class="p">))</span>
 		<span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s1">&#39;key_press_event&#39;</span><span class="p">,</span> <span class="n">draw_next</span><span class="p">)</span>
 
 	<span class="k">if</span> <span class="n">saveFile</span><span class="p">:</span>
@@ -253,9 +242,7 @@
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -264,11 +251,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Robert Parini.
+        &copy; Copyright 2017, Robert Parini
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -283,36 +270,26 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.1.5',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

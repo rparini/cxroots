@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cxroots.contours.Rectangle &mdash; cxroots 1.1.5 documentation</title>
+  <title>cxroots.contours.Rectangle &mdash; cxroots 1.1.7 documentation</title>
   
 
   
@@ -24,26 +24,17 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../../genindex.html"/>
-        <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="cxroots 1.1.5 documentation" href="../../../index.html"/>
-        <link rel="up" title="Module code" href="../../index.html"/> 
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -65,7 +56,7 @@
             
             
               <div class="version">
-                1.1.5
+                1.1.7
               </div>
             
           
@@ -121,7 +112,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">cxroots</a>
@@ -129,9 +120,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -161,8 +153,6 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
-        
       </li>
     
   </ul>
@@ -174,7 +164,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cxroots.contours.Rectangle</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">pi</span>
 
 <span class="kn">from</span> <span class="nn">..Contour</span> <span class="k">import</span> <span class="n">Contour</span>
@@ -183,21 +174,21 @@
 <div class="viewcode-block" id="Rectangle"><a class="viewcode-back" href="../../../contours.html#cxroots.Rectangle">[docs]</a><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A positively oriented rectangle in the complex plane.</span>
-<span class="sd">	</span>
+
 <span class="sd">	Parameters</span>
 <span class="sd">	----------</span>
 <span class="sd">	xRange : tuple</span>
-<span class="sd">		Tuple of length two giving the range of the rectangle along the </span>
+<span class="sd">		Tuple of length two giving the range of the rectangle along the</span>
 <span class="sd">		real axis.</span>
 <span class="sd">	yRange : tuple</span>
-<span class="sd">		Tuple of length two giving the range of the rectangle along the </span>
+<span class="sd">		Tuple of length two giving the range of the rectangle along the</span>
 <span class="sd">		imaginary axis.</span>
 
 <span class="sd">	Examples</span>
 <span class="sd">	--------</span>
 <span class="sd">	.. plot::</span>
 <span class="sd">		:include-source:</span>
-<span class="sd">	</span>
+
 <span class="sd">		from cxroots import Rectangle</span>
 <span class="sd">		rect = Rectangle(xRange=(-2, 2), yRange=(-1, 1))</span>
 <span class="sd">		rect.show()</span>
@@ -243,23 +234,23 @@
 <span class="sd">		Parameters</span>
 <span class="sd">		----------</span>
 <span class="sd">		axis : str, can be either &#39;x&#39; or &#39;y&#39;</span>
-<span class="sd">			The axis along which the line subdividing the contour is a </span>
+<span class="sd">			The axis along which the line subdividing the contour is a</span>
 <span class="sd">			constant.</span>
 <span class="sd">		divisionFactor : float in range (0,1), optional</span>
-<span class="sd">			Determines the point along &#39;axis&#39; at which the line dividing </span>
+<span class="sd">			Determines the point along &#39;axis&#39; at which the line dividing</span>
 <span class="sd">			the contour is placed.</span>
 
 <span class="sd">		Returns</span>
 <span class="sd">		-------</span>
 <span class="sd">		box1 : Rectangle</span>
-<span class="sd">			If axis is &#39;x&#39; then box1 has the same yRange and minimum value of xRange as the </span>
+<span class="sd">			If axis is &#39;x&#39; then box1 has the same yRange and minimum value of xRange as the</span>
 <span class="sd">			original Rectangle but the maximum xRange is determined by the divisionFactor.</span>
 <span class="sd">			If axis is &#39;y&#39; then box1 has the same xRange and minimum value of yRange as the</span>
 <span class="sd">			original Rectangle but the maximum yRange is determined by the divisionFactor.</span>
 <span class="sd">		box2 : Rectangle</span>
-<span class="sd">			If axis is &#39;x&#39; then box2 has the same yRange and maximum value of xRange as the </span>
+<span class="sd">			If axis is &#39;x&#39; then box2 has the same yRange and maximum value of xRange as the</span>
 <span class="sd">			original Rectangle but the minimum xRange is equal to the maximum xRange of box1.</span>
-<span class="sd">			If axis is &#39;x&#39; then box2 has the same xRange and maximum value of yRange as the </span>
+<span class="sd">			If axis is &#39;x&#39; then box2 has the same xRange and maximum value of yRange as the</span>
 <span class="sd">			original Rectangle but the minimum yRange is equal to the maximum yRange of box1.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">axisName</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
@@ -297,9 +288,7 @@
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -308,11 +297,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Robert Parini.
+        &copy; Copyright 2017, Robert Parini
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -327,36 +316,26 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'1.1.5',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

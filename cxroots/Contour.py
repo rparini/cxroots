@@ -1,7 +1,7 @@
 from __future__ import division
+
 import numpy as np
 import functools
-import docrep
 
 from .CountRoots import count_roots
 from .ApproximateRoots import approximate_roots
@@ -25,8 +25,8 @@ class Contour(object):
 		self.segments = np.array(segments, dtype=object)
 
 	def __call__(self, t):
-		"""
-		The point on the contour corresponding the value of the 
+		r"""
+		The point on the contour corresponding the value of the
 		parameter t.
 
 		Parameters
@@ -105,14 +105,14 @@ class Contour(object):
 		plt.ylim([ymin, ymax])
 
 	def show(self, saveFile=None, **plotKwargs):
-		""" 
+		"""
 		Shows the contour as a 2D plot in the complex plane.  Requires
 		Matplotlib.
 
 		Parameters
 		----------
 		saveFile : str (optional)
-			If given then the plot will be saved to disk with name 
+			If given then the plot will be saved to disk with name
 			'saveFile'.  If saveFile=None the plot is shown on-screen.
 		**plotKwargs
 			Key word arguments are as in :meth:`~cxroots.Contour.Contour.plot`.
@@ -127,17 +127,17 @@ class Contour(object):
 			plt.show()
 
 	def subdivisions(self, axis='alternating'):
-		""" 
-		A generator for possible subdivisions of the contour. 
-		
+		"""
+		A generator for possible subdivisions of the contour.
+
 		Parameters
 		----------
 		axis : str, 'alternating' or any element of self.axisName.
-			The axis along which the line subdividing the contour is a 
-			constant (eg. subdividing a circle along the radial axis 
-			will give an outer annulus and an inner circle).  If 
+			The axis along which the line subdividing the contour is a
+			constant (eg. subdividing a circle along the radial axis
+			will give an outer annulus and an inner circle).  If
 			alternating then the dividing axis will always be different
-			to the dividing axis used to create the contour which is now 
+			to the dividing axis used to create the contour which is now
 			being divided.
 
 		Yields
@@ -157,7 +157,7 @@ class Contour(object):
 
 	def distance(self, z):
 		"""
-		Get the distance from the point z in the complex plane to the 
+		Get the distance from the point z in the complex plane to the
 		nearest point on the contour.
 
 		Parameters
@@ -169,7 +169,7 @@ class Contour(object):
 		Returns
 		-------
 		float
-			The distance from z to the point on the contour which is 
+			The distance from z to the point on the contour which is
 			closest to z.
 		"""
 		return min(segment.distance(z) for segment in self.segments)
@@ -201,7 +201,7 @@ class Contour(object):
 def divisionFactorGen():
 	"""A generator for divisionFactors."""
 	yield 0.3	# being off-center is a better first choice for certain problems
-	
+
 	x = 0.5
 	yield x
 	for diff in np.linspace(0, 0.5, int(1+10/2.))[1:-1]:

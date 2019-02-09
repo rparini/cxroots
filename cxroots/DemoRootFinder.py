@@ -1,9 +1,10 @@
 from __future__ import division
+
 import numpy as np
 
 from .RootFinder import find_roots_gen
 
-def demo_find_roots(originalContour, f, df=None, saveFile=None, automaticAnim=False, 
+def demo_find_roots(originalContour, f, df=None, saveFile=None, automaticAnim=False,
 	returnAnim=False, writer=None, **rootsKwargs):
 	"""
 	An animated demonstration of the root finding process using matplotlib.
@@ -11,14 +12,14 @@ def demo_find_roots(originalContour, f, df=None, saveFile=None, automaticAnim=Fa
 	Parameters
 	----------
 	saveFile : str, optional
-		If given then the animation will be saved to disk with filename 
+		If given then the animation will be saved to disk with filename
 		equal to saveFile instead of being shown.
 	automaticAnim : bool, optional
 		If False (default) then press SPACE to step the animation forward
-		If True then the animation will play automatically until all the 
+		If True then the animation will play automatically until all the
 		roots have been found.
 	returnAnim : bool, optional
-		If True then the matplotlib animation object will be returned 
+		If True then the matplotlib animation object will be returned
 		instead of being shown.  Defaults to False.
 	writer : str, optional
 		Passed to :meth:`matplotlib.animation.FuncAnimation.save`.
@@ -39,15 +40,13 @@ def demo_find_roots(originalContour, f, df=None, saveFile=None, automaticAnim=Fa
 	def update_frame(args):
 		roots, multiplicities, boxes, numberOfRemainingRoots = args
 
-		print(args)
-
 		plt.cla() # clear axis
 		originalContour.plot(linecolor='k', linestyle='--')
 		for box in boxes:
 			if not hasattr(box, '_color'):
 				cmap = plt.get_cmap('jet')
 				box._color = cmap(np.random.random())
-			
+
 			plt.text(box.centralPoint.real, box.centralPoint.imag, box._numberOfRoots)
 			box.plot(linecolor=box._color)
 
@@ -66,7 +65,7 @@ def demo_find_roots(originalContour, f, df=None, saveFile=None, automaticAnim=Fa
 	else:
 		def draw_next(event):
 			if event.key == ' ':
-				update_frame(next(rootFinder)) 
+				update_frame(next(rootFinder))
 		fig.canvas.mpl_connect('key_press_event', draw_next)
 
 	if saveFile:

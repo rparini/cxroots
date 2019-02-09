@@ -1,8 +1,23 @@
-scipy
-numpy
-matplotlib
-docrep
-mpmath
+#
+# requirements.txt used for concrete testing enviroment.
+#
+# install_requires in setup.py gives the abstract requiments
+# used by 'pip install' and 'setup.py install' to install
+# cxroots as a library.
+#
+
+scipy==1.2.1
+numpy==1.16.1
+docrep==0.2.5
+mpmath==1.1.0
 
 ### numdifftools
-git+https://github.com/pbrod/numdifftools
+git+https://github.com/rparini/numdifftools.git@fix_vstack_futurewarning#egg=numdifftools
+
+matplotlib==3.0.2; python_version > '2.7'
+matplotlib==2.2.3; python_version <= '2.7'  # pyup: ignore
+
+
+pytest==4.2.0
+pytest-xdist==1.26.1
+

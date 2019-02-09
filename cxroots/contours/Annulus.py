@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 from scipy import pi
 
@@ -21,7 +22,7 @@ class Annulus(Contour):
 	--------
 	.. plot::
 		:include-source:
-	
+
 		from cxroots import Annulus
 		annulus = Annulus(center=0, radii=(0.5,0.75))
 		annulus.show()
@@ -36,7 +37,7 @@ class Annulus(Contour):
 
 	def __str__(self):
 		return 'Annulus: center={center.real:.3f}{center.imag:+.3f}i, inner radius={radii[0]:.3f}, outer radius={radii[1]:.3f}'.format(center=self.center, radii=self.radii)
-	
+
 	@property
 	def centralPoint(self):
 		# get the central point within the contour
@@ -82,7 +83,7 @@ class Annulus(Contour):
 			box2._createdBySubdivisionAxis = axis
 
 		elif axis == 'phi' or self.axisName[axis] == 'phi':
-			# Subdividing into two radial boxes rather than one to 
+			# Subdividing into two radial boxes rather than one to
 			# ensure that an error is raised if one of the new paths
 			# is too close to a root
 			# XXX: introduce another parameter for phi1

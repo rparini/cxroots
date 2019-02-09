@@ -1,3 +1,5 @@
 ### For pyup
+schedule: every week
+
 # set the default branch
 branch: dev

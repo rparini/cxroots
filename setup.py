@@ -26,10 +26,10 @@ setup(
     packages = packages,
     zip_safe = False,   # prevent cxroots from installing as a .egg zip file
     platforms = ['all'],
-    dependency_links=['git+git://github.com/pbrod/numdifftools'],
+    dependency_links=['git+https://github.com/rparini/numdifftools.git@fix_vstack_futurewarning#egg=numdifftools'],
     setup_requires = ['pytest-runner'],
     install_requires = ['numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools'],
-    tests_require=['pytest', 'pytest-xdist'],
+    tests_require=['pytest'],
     keywords='roots zeros complex analytic functions',
     classifiers=[
 	    'Development Status :: 4 - Beta',

@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 from scipy import pi, exp
 
@@ -7,7 +8,7 @@ from ..Paths import ComplexLine, ComplexArc
 class AnnulusSector(Contour):
 	"""
 	A sector of an annulus in the complex plane.
-	
+
 	Parameters
 	----------
 	center : complex
@@ -16,7 +17,7 @@ class AnnulusSector(Contour):
 		Tuple of length two of the form (inner_radius, outer_radius)
 	phiRange : tuple
 		Tuple of length two of the form (phi0, phi1).
-		The segment of the contour containing inner and outer circular 
+		The segment of the contour containing inner and outer circular
 		arcs will be joined, counter clockwise from phi0 to phi1.
 
 	Examples
@@ -35,7 +36,7 @@ class AnnulusSector(Contour):
 		from numpy import pi
 		from cxroots import AnnulusSector
 		annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(pi/4, -pi/4))
-		annulusSector.show()	
+		annulusSector.show()
 	"""
 	def __init__(self, center, radii, phiRange):
 		self.center = center
@@ -51,7 +52,7 @@ class AnnulusSector(Contour):
 		if r0 < 0 or r1 <= 0:
 			raise ValueError('Radius > 0')
 
-		# verticies [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]] 
+		# verticies [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]]
 		self.z1 = z1 = center + r0*exp(1j*phi0)
 		self.z2 = z2 = center + r1*exp(1j*phi0)
 		self.z3 = z3 = center + r1*exp(1j*phi1)
@@ -66,7 +67,7 @@ class AnnulusSector(Contour):
 
 	def __str__(self):
 		return 'Annulus sector: center={center.real:.3f}{center.imag:+.3f}i, r0={radii[0]:.3f}, r1={radii[1]:.3f}, phi0={phiRange[0]:.3f}, phi1={phiRange[1]:.3f}'.format(center=self.center, radii=self.radii, phiRange=self.phiRange)
-	
+
 	@property
 	def centralPoint(self):
 		# get the central point within the contour
@@ -82,7 +83,7 @@ class AnnulusSector(Contour):
 		""" Returns True if the point z lies within the contour, False if otherwise """
 		angle = np.angle(z - self.center)%(2*pi) # np.angle maps to [-pi,pi]
 		radiusCorrect = self.radii[0] < abs(z - self.center) < self.radii[1]
-		
+
 		phi = np.mod(self.phiRange, 2*pi)
 		if phi[0] > phi[1]:
 			angleCorrect = phi[0] < angle <= 2*pi or 0 <= angle < phi[1]
