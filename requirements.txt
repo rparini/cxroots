@@ -6,7 +6,7 @@
 # cxroots as a library.
 #
 
-scipy==1.2.0
+scipy==1.2.1
 numpy==1.16.1
 docrep==0.2.5
 mpmath==1.1.0
