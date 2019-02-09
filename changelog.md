@@ -1,6 +1,6 @@
 ## Changelog
 
-### 1.1.7
+### 1.1.7 - 9/Feb/2019
 - Fix `setup.py test`.
 - Fix invalid escape characters
 
