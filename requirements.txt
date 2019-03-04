@@ -7,7 +7,7 @@
 #
 
 scipy==1.2.1
-numpy==1.16.1
+numpy==1.16.2
 docrep==0.2.5
 mpmath==1.1.0
 
