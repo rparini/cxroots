@@ -205,66 +205,61 @@
 <dl class="function">
 <dt id="cxroots.CountRoots.prod">
 <code class="descclassname">cxroots.CountRoots.</code><code class="descname">prod</code><span class="sig-paren">(</span><em>C</em>, <em>f</em>, <em>df=None</em>, <em>phi=None</em>, <em>psi=None</em>, <em>absTol=1e-12</em>, <em>relTol=1e-12</em>, <em>divMin=3</em>, <em>divMax=15</em>, <em>m=2</em>, <em>intMethod='quad'</em>, <em>integerTol=inf</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/CountRoots.html#prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.CountRoots.prod" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the symmetric bilinear form used in (1.12) of <a class="reference internal" href="#kb" id="id1">[KB]</a>.</p>
+<dd><p>Compute the symmetric bilinear form used in (1.12) of <a class="reference internal" href="#kb" id="id1"><span>[KB]</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[&lt;\phi,\psi&gt; = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.\]</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>C</strong> (<a class="reference internal" href="contours.html#cxroots.Contour.Contour" title="cxroots.Contour.Contour"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contour</span></code></a>) – A contour in the complex plane for.  No roots or poles of f
-should lie on C.</li>
-<li><strong>f</strong> (<em>function</em>) – Function of a single variable f(x)</li>
-<li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable, df(x), providing the derivative
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>C</strong> (<a class="reference internal" href="contours.html#cxroots.Contour.Contour" title="cxroots.Contour.Contour"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contour</span></code></a>) – A contour in the complex plane for.  No roots or poles of f
+should lie on C.</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – Function of a single variable f(x)</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable, df(x), providing the derivative
 of the function f(x) at the point x.  If not provided then df is
-approximated using a finite difference method.</li>
-<li><strong>phi</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable phi(x).  If not provided then
-phi(z)=1.</li>
-<li><strong>psi</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable psi(x).  If not provided then
-psi(z)=1.</li>
-<li><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance for integration.</li>
-<li><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance for integration.</li>
-<li><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’. Minimum number of divisions before
-the Romberg integration routine is allowed to exit.</li>
-<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’.  The maximum number of divisions
-before the Romberg integration routine of a path exits.</li>
-<li><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and intMethod=’quad’.  Must be even.  The
+approximated using a finite difference method.</p></li>
+<li><p><strong>phi</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable phi(x).  If not provided then
+phi(z)=1.</p></li>
+<li><p><strong>psi</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable psi(x).  If not provided then
+psi(z)=1.</p></li>
+<li><p><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance for integration.</p></li>
+<li><p><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance for integration.</p></li>
+<li><p><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’. Minimum number of divisions before
+the Romberg integration routine is allowed to exit.</p></li>
+<li><p><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’.  The maximum number of divisions
+before the Romberg integration routine of a path exits.</p></li>
+<li><p><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and intMethod=’quad’.  Must be even.  The
 argument order=m is passed to numdifftools.Derivative and is the
-order of the error term in the Taylor approximation.</li>
-<li><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then scipy.integrate.quad is used to perform the
+order of the error term in the Taylor approximation.</p></li>
+<li><p><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then scipy.integrate.quad is used to perform the
 integral.  If ‘romb’ then Romberg integraion, using
-scipy.integrate.romb, is performed instead.</li>
-<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Only used when intMethod is ‘romb’.  The integration routine will
+scipy.integrate.romb, is performed instead.</p></li>
+<li><p><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Only used when intMethod is ‘romb’.  The integration routine will
 not exit unless the result is within integerTol of an integer.
 This is useful when computing the number of roots in a contour,
-which must be an integer.  By default integerTol is inf.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True runtime information will be printed.  False be default.</li>
-<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – Only used when intMethod is ‘romb’.  A function that at each
+which must be an integer.  By default integerTol is inf.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True runtime information will be printed.  False be default.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – Only used when intMethod is ‘romb’.  A function that at each
 step in the iteration is passed the current approximation for
 the integral, the estimated error of that approximation and the
 number of iterations.  If the return of callback evaluates to
-True then the integration will end.</li>
+True then the integration will end.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>complex</em> – The value of the integral &lt;phi, psi&gt;.</li>
-<li><em>float</em> – An estimate of the error for the integration.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>complex</em> – The value of the integral &lt;phi, psi&gt;.</p></li>
+<li><p><em>float</em> – An estimate of the error for the integration.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="kb" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[KB]</a></td><td>“Computing the zeros of analytic functions” by Peter Kravanja,
-Marc Van Barel, Springer 2000</td></tr>
-</tbody>
-</table>
+<dl class="citation">
+<dt class="label" id="kb"><span class="brackets"><a class="fn-backref" href="#id1">KB</a></span></dt>
+<dd><p>“Computing the zeros of analytic functions” by Peter Kravanja,
+Marc Van Barel, Springer 2000</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

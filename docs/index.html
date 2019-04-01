@@ -198,10 +198,10 @@
 <h1>cxroots: rootfinding for complex analytic functions<a class="headerlink" href="#cxroots-rootfinding-for-complex-analytic-functions" title="Permalink to this headline">¶</a></h1>
 <p>cxroots is a Python package for finding all the roots of a function, <em>f(z)</em>, of a single complex variable within a given contour, <em>C</em>, in the complex plane.  It requires only that:</p>
 <ul class="simple">
-<li><em>f(z)</em> has no roots or poles on <em>C</em></li>
-<li><em>f(z)</em> is analytic in the interior of <em>C</em></li>
+<li><p><em>f(z)</em> has no roots or poles on <em>C</em></p></li>
+<li><p><em>f(z)</em> is analytic in the interior of <em>C</em></p></li>
 </ul>
-<p>The implementation is primarily based on <a class="reference internal" href="prod.html#kb" id="id1">[KB]</a> and evaluates contour integrals involving <em>f(z)</em> and its derivative <em>f’(z)</em> to determine the roots.  If <em>f’(z)</em> is not provided then it is approximated using a finite difference method.  The roots are further refined using Newton-Raphson if <em>f’(z)</em> is given or Muller’s method if not.</p>
+<p>The implementation is primarily based on <a class="reference internal" href="prod.html#kb" id="id1"><span>[KB]</span></a> and evaluates contour integrals involving <em>f(z)</em> and its derivative <em>f’(z)</em> to determine the roots.  If <em>f’(z)</em> is not provided then it is approximated using a finite difference method.  The roots are further refined using Newton-Raphson if <em>f’(z)</em> is given or Muller’s method if not.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">+</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
 
@@ -268,12 +268,11 @@
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<table class="docutils citation" frame="void" id="kb" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[KB]</a></td><td>P. Kravanja and M. Van Barel.  <em>Computing the Zeros of Analytic Functions</em>. Springer, Berlin, Heidelberg, 2000.</td></tr>
-</tbody>
-</table>
+<dl class="citation">
+<dt class="label" id="kb"><span class="brackets"><a class="fn-backref" href="#id1">KB</a></span></dt>
+<dd><p>P. Kravanja and M. Van Barel.  <em>Computing the Zeros of Analytic Functions</em>. Springer, Berlin, Heidelberg, 2000.</p>
+</dd>
+</dl>
 </div>
 </div>
 

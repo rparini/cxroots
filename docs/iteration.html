@@ -204,87 +204,79 @@
 is called during the rootfinding process to refine any roots found.
 If df is given then the Newton-Raphson method, <a class="reference internal" href="#cxroots.IterativeMethods.newton" title="cxroots.IterativeMethods.newton"><code class="xref py py-func docutils literal notranslate"><span class="pre">newton()</span></code></a>,
 will be used, otherwise Muller’s method, <a class="reference internal" href="#cxroots.IterativeMethods.muller" title="cxroots.IterativeMethods.muller"><code class="xref py py-func docutils literal notranslate"><span class="pre">muller()</span></code></a>, will be used instead.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x0</strong> (<em>complex</em>) – An initial point for the iteration.</li>
-<li><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</li>
-<li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – The derivative of f.</li>
-<li><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</li>
-<li><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</li>
-<li><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</li>
-<li><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> (<em>complex</em>) – An initial point for the iteration.</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – The derivative of f.</p></li>
+<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
+<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
+<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
+<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
 x0, was at least as good as the current iteration, x, in the
 sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
 satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
 this case the previous iteration is returned as the approximation
-of the root.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</li>
-<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
+of the root.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and
 ‘iteration’ the number of iterations that have been taken.  If
-the callback function evaluates to True then the routine will end.</li>
+the callback function evaluates to True then the routine will end.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An approximation for a root of f.  If the rootfinding was
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An approximation for a root of f.  If the rootfinding was
 unsucessful then None will be returned instead.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="cxroots.IterativeMethods.muller">
 <code class="descclassname">cxroots.IterativeMethods.</code><code class="descname">muller</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>x3</em>, <em>f</em>, <em>steptol=1e-12</em>, <em>roottol=1e-12</em>, <em>maxIter=20</em>, <em>attemptBest=False</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#muller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.muller" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper for mpmath’s implementation of Muller’s method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x1</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.</li>
-<li><strong>x2</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
-Should not equal x1.</li>
-<li><strong>x3</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
-Should not equal x1 or x2.</li>
-<li><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</li>
-<li><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</li>
-<li><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</li>
-<li><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</li>
-<li><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x1</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.</p></li>
+<li><p><strong>x2</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
+Should not equal x1.</p></li>
+<li><p><strong>x3</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
+Should not equal x1 or x2.</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
+<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
+<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
+<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
+<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
 x0, was at least as good as the current iteration, x, in the
 sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
 satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
 this case the previous iteration is returned as the approximation
-of the root.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</li>
-<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
+of the root.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and
 ‘iteration’ the number of iterations that have been taken.  If
-the callback function evaluates to True then the routine will end.</li>
+the callback function evaluates to True then the routine will end.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>complex</em> – The approximation to a root of f.</li>
-<li><em>float</em> – abs(f(x)) where x is the final approximation for the root of f.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>complex</em> – The approximation to a root of f.</p></li>
+<li><p><em>float</em> – abs(f(x)) where x is the final approximation for the root of f.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -293,44 +285,40 @@ the callback function evaluates to True then the routine will end.</li>
 <dd><p>Find an approximation to a point xf such that f(xf)=0 for a
 scalar function f using Newton-Raphson iteration starting at
 the point x0.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x0</strong> (<em>float</em><em> or </em><em>complex</em>) – Initial point for Newton iteration, should be as close as
-possible to a root of f</li>
-<li><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</li>
-<li><strong>df</strong> (<em>function</em>) – Function of a single variable, df(x), providing the
-derivative of the function f(x) at the point x</li>
-<li><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</li>
-<li><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</li>
-<li><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</li>
-<li><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> (<em>float</em><em> or </em><em>complex</em>) – Initial point for Newton iteration, should be as close as
+possible to a root of f</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – Function of a single variable, df(x), providing the
+derivative of the function f(x) at the point x</p></li>
+<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
+<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
+<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
+<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
 x0, was at least as good as the current iteration, x, in the
 sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
 satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
 this case the previous iteration is returned as the approximation
-of the root.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</li>
-<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
+of the root.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and
 ‘iteration’ the number of iterations that have been taken.  If
-the callback function evaluates to True then the routine will end.</li>
+the callback function evaluates to True then the routine will end.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>complex</em> – The approximation to a root of f.</li>
-<li><em>float</em> – abs(f(x)) where x is the final approximation for the root of f.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>complex</em> – The approximation to a root of f.</p></li>
+<li><p><em>float</em> – abs(f(x)) where x is the final approximation for the root of f.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

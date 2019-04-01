@@ -205,10 +205,10 @@
 <h1>Contours<a class="headerlink" href="#contours" title="Permalink to this headline">¶</a></h1>
 <p>The cxroots module allows the user to specify four different types of contours which are all subclasses of <a class="reference internal" href="#cxroots.Contour.Contour" title="cxroots.Contour.Contour"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contour</span></code></a>:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#circle"><span class="std std-ref">Circle</span></a></li>
-<li><a class="reference internal" href="#rectangle"><span class="std std-ref">Rectangle</span></a></li>
-<li><a class="reference internal" href="#annulus"><span class="std std-ref">Annulus</span></a></li>
-<li><a class="reference internal" href="#annulus-sector"><span class="std std-ref">Annulus Sector</span></a></li>
+<li><p><a class="reference internal" href="#circle"><span class="std std-ref">Circle</span></a></p></li>
+<li><p><a class="reference internal" href="#rectangle"><span class="std std-ref">Rectangle</span></a></p></li>
+<li><p><a class="reference internal" href="#annulus"><span class="std std-ref">Annulus</span></a></p></li>
+<li><p><a class="reference internal" href="#annulus-sector"><span class="std std-ref">Annulus Sector</span></a></p></li>
 </ul>
 <dl class="class">
 <dt id="cxroots.Contour.Contour">
@@ -218,28 +218,22 @@
 <dt id="cxroots.Contour.Contour.centralPoint">
 <code class="descname">centralPoint</code><a class="headerlink" href="#cxroots.Contour.Contour.centralPoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>The point at the center of the contour.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">complex</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>complex</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="cxroots.Contour.Contour.area">
 <code class="descname">area</code><a class="headerlink" href="#cxroots.Contour.Contour.area" title="Permalink to this definition">¶</a></dt>
 <dd><p>The surface area of the contour.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -247,19 +241,18 @@
 <code class="descname">__call__</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contour.html#Contour.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Contour.Contour.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>The point on the contour corresponding the value of the
 parameter t.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t</strong> (<em>float</em>) – A real number <span class="math notranslate nohighlight">\(0\leq t \leq 1\)</span> which parameterises
-the contour.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A point on the contour.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">complex</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>float</em>) – A real number <span class="math notranslate nohighlight">\(0\leq t \leq 1\)</span> which parameterises
+the contour.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A point on the contour.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex</p>
+</dd>
+</dl>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cxroots.Paths</span> <span class="k">import</span> <span class="n">Circle</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># Circle |z|=1 parameterised by e^{it}</span>
@@ -275,95 +268,86 @@ the contour.</td>
 <dt id="cxroots.Contour.Contour.approximate_roots">
 <code class="descname">approximate_roots</code><span class="sig-paren">(</span><em>N</em>, <em>f</em>, <em>df=None</em>, <em>absTol=1e-12</em>, <em>relTol=1e-12</em>, <em>errStop=1e-10</em>, <em>divMin=3</em>, <em>divMax=15</em>, <em>m=2</em>, <em>rootTol=1e-08</em>, <em>intMethod='quad'</em>, <em>callback=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#cxroots.Contour.Contour.approximate_roots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Approximate the roots and multiplcities of the function f within the
-contour C using the method of <a class="reference internal" href="prod.html#kb" id="id1">[KB]</a>.  The multiplicites are computed
-using eq. (21) in <a class="reference internal" href="#slv" id="id2">[SLV]</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>N</strong> (<em>int</em>) – The number of roots (counting multiplicties) of f within C.
-This is the result of calling <a class="reference internal" href="#cxroots.Contour.Contour.count_roots" title="cxroots.Contour.Contour.count_roots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_roots()</span></code></a>.</li>
-<li><strong>f</strong> (<em>function</em>) – The function for which the roots are sought.  Must be a function
+contour C using the method of <a class="reference internal" href="prod.html#kb" id="id1"><span>[KB]</span></a>.  The multiplicites are computed
+using eq. (21) in <a class="reference internal" href="#slv" id="id2"><span>[SLV]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int</em>) – The number of roots (counting multiplicties) of f within C.
+This is the result of calling <a class="reference internal" href="#cxroots.Contour.Contour.count_roots" title="cxroots.Contour.Contour.count_roots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_roots()</span></code></a>.</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – The function for which the roots are sought.  Must be a function
 of a single complex variable, z, which is analytic within C and
-has no poles or roots on the C.</li>
-<li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – A function of a single complex variable which is the derivative
+has no poles or roots on the C.</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – A function of a single complex variable which is the derivative
 of the function f(z). If df is not given then it will be
-approximated with a finite difference formula.</li>
-<li><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance for integration.</li>
-<li><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance for integration.</li>
-<li><strong>errStop</strong> (<em>float</em><em>, </em><em>optional</em>) – The number of distinct roots within a contour, n, is determined
+approximated with a finite difference formula.</p></li>
+<li><p><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance for integration.</p></li>
+<li><p><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance for integration.</p></li>
+<li><p><strong>errStop</strong> (<em>float</em><em>, </em><em>optional</em>) – The number of distinct roots within a contour, n, is determined
 by checking if all the elements of a list of contour integrals
 involving formal orthogonal polynomials are sufficently close to
 zero, ie. that the absolute value of each element is &lt; errStop.
 If errStop is too large/small then n may be smaller/larger than
-it actually is.</li>
-<li><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMin is the
+it actually is.</p></li>
+<li><p><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMin is the
 minimum number of divisions before the Romberg integration
-routine is allowed to exit.</li>
-<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
+routine is allowed to exit.</p></li>
+<li><p><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
 maximum number of divisions before the Romberg integration
-routine exits.</li>
-<li><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and method=’quad’.  The argument order=m is
+routine exits.</p></li>
+<li><p><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and method=’quad’.  The argument order=m is
 passed to numdifftools.Derivative and is the order of the error
-term in the Taylor approximation.  m must be even.</li>
-<li><strong>rootTol</strong> (<em>float</em><em>, </em><em>optional</em>) – If any roots are within rootTol of one another then they will be
+term in the Taylor approximation.  m must be even.</p></li>
+<li><p><strong>rootTol</strong> (<em>float</em><em>, </em><em>optional</em>) – If any roots are within rootTol of one another then they will be
 treated as duplicates and removed.  This helps to alleviate the
-problem of errStop being too small.</li>
-<li><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to perform
+problem of errStop being too small.</p></li>
+<li><p><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to perform
 integration.  If ‘romb’ then Romberg integraion is performed
-instead.</li>
-<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – Only used if intMethod is ‘romb’.  Passed to <a class="reference internal" href="prod.html#cxroots.CountRoots.prod" title="cxroots.CountRoots.prod"><code class="xref py py-func docutils literal notranslate"><span class="pre">~</span></code></a>.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True certain information regarding the rootfinding process
-will be printed.</li>
+instead.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – Only used if intMethod is ‘romb’.  Passed to <a class="reference internal" href="prod.html#cxroots.CountRoots.prod" title="cxroots.CountRoots.prod"><code class="xref py py-func docutils literal notranslate"><span class="pre">~</span></code></a>.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True certain information regarding the rootfinding process
+will be printed.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>tuple of complex</em> – The distinct roots of f within the contour C.</li>
-<li><em>tuple of float</em> – The corresponding multiplicites of the roots within C.  Should
-be integers but will not be automatically rounded here.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>tuple of complex</em> – The distinct roots of f within the contour C.</p></li>
+<li><p><em>tuple of float</em> – The corresponding multiplicites of the roots within C.  Should
+be integers but will not be automatically rounded here.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="kb" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[KB]</a></td><td>P. Kravanja and M. Van Barel. “Computing the Zeros of
-Anayltic Functions”. Springer (2000)</td></tr>
-</tbody>
-</table>
-<table class="docutils citation" frame="void" id="slv" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[SLV]</a></td><td>E. Strakova, D. Lukas, P. Vodstrcil. “Finding Zeros of
+<dl class="citation">
+<dt class="label" id="kb"><span class="brackets"><a class="fn-backref" href="#id1">KB</a></span></dt>
+<dd><p>P. Kravanja and M. Van Barel. “Computing the Zeros of
+Anayltic Functions”. Springer (2000)</p>
+</dd>
+<dt class="label" id="slv"><span class="brackets"><a class="fn-backref" href="#id2">SLV</a></span></dt>
+<dd><p>E. Strakova, D. Lukas, P. Vodstrcil. “Finding Zeros of
 Analytic Functions and Local Eigenvalue Analysis Using Contour
 Integral Method in Examples”. Mathematical Analysis and Numerical
-Mathematics, Vol. 15, 2, (2017)</td></tr>
-</tbody>
-</table>
+Mathematics, Vol. 15, 2, (2017)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="cxroots.Contour.Contour.contains">
 <code class="descname">contains</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contour.html#Contour.contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Contour.Contour.contains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests whether the point z is within the contour.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>z</strong> (<em>complex</em>) – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if z lies within the contour and false otherwise.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>z</strong> (<em>complex</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if z lies within the contour and false otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -381,71 +365,63 @@ approximated using a finite difference method.</p>
 <p>The number of roots is taken to be the closest integer to the
 computed value of the integral and the result is only accepted
 if the integral is within integerTol of the closest integer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>f</strong> (<em>function</em>) – Function of a single variable f(z).</li>
-<li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single complex variable, df(z), providing the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>function</em>) – Function of a single variable f(z).</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single complex variable, df(z), providing the
 derivative of the function f(z) at the point z.  If not
 provided, df will be approximated using a finite difference
-method.</li>
-<li><strong>NIntAbsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Required absolute error tolerance for the contour integration.
+method.</p></li>
+<li><p><strong>NIntAbsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Required absolute error tolerance for the contour integration.
 Since the Cauchy integral must be an integer it is only
 necessary to distinguish which integer the integral is
-converging towards.  Therefore, NIntAbsTol can be fairly large.</li>
-<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The evaluation of the Cauchy integral will be accepted if its
-value is within integerTol of the closest integer.</li>
-<li><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’. Minimum number of divisions
-before the Romberg integration routine is allowed to exit.</li>
-<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’.  The maximum number of divisions
-before the Romberg integration routine of a path exits.</li>
-<li><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and intMethod=’quad’.  The argument order=m
+converging towards.  Therefore, NIntAbsTol can be fairly large.</p></li>
+<li><p><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The evaluation of the Cauchy integral will be accepted if its
+value is within integerTol of the closest integer.</p></li>
+<li><p><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’. Minimum number of divisions
+before the Romberg integration routine is allowed to exit.</p></li>
+<li><p><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’.  The maximum number of divisions
+before the Romberg integration routine of a path exits.</p></li>
+<li><p><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and intMethod=’quad’.  The argument order=m
 is passed to numdifftools.Derivative and is the order of the
-error term in the Taylor approximation.  m must be even.</li>
-<li><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then scipy.integrate.quad is used to perform the
+error term in the Taylor approximation.  m must be even.</p></li>
+<li><p><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then scipy.integrate.quad is used to perform the
 integral.  If ‘romb’ then Romberg integraion, using
-scipy.integrate.romb, is performed instead.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True certain messages regarding the integration will be
-printed.</li>
+scipy.integrate.romb, is performed instead.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True certain messages regarding the integration will be
+printed.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The number of zeros of f (counting multiplicities) which lie
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number of zeros of f (counting multiplicities) which lie
 within the contour C.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="cxroots.Contour.Contour.demo_roots">
 <code class="descname">demo_roots</code><span class="sig-paren">(</span><em>f</em>, <em>df=None</em>, <em>saveFile=None</em>, <em>automaticAnim=False</em>, <em>returnAnim=False</em>, <em>writer=None</em>, <em>**rootsKwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cxroots.Contour.Contour.demo_roots" title="Permalink to this definition">¶</a></dt>
 <dd><p>An animated demonstration of the root finding process using matplotlib.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>saveFile</strong> (<em>str</em><em>, </em><em>optional</em>) – If given then the animation will be saved to disk with filename
-equal to saveFile instead of being shown.</li>
-<li><strong>automaticAnim</strong> (<em>bool</em><em>, </em><em>optional</em>) – If False (default) then press SPACE to step the animation forward
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>saveFile</strong> (<em>str</em><em>, </em><em>optional</em>) – If given then the animation will be saved to disk with filename
+equal to saveFile instead of being shown.</p></li>
+<li><p><strong>automaticAnim</strong> (<em>bool</em><em>, </em><em>optional</em>) – If False (default) then press SPACE to step the animation forward
 If True then the animation will play automatically until all the
-roots have been found.</li>
-<li><strong>returnAnim</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then the matplotlib animation object will be returned
-instead of being shown.  Defaults to False.</li>
-<li><strong>writer</strong> (<em>str</em><em>, </em><em>optional</em>) – Passed to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.animation.FuncAnimation.html#matplotlib.animation.FuncAnimation.save" title="(in Matplotlib v3.0.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.animation.FuncAnimation.save()</span></code></a>.</li>
-<li><strong>**rootsKwargs</strong> – Additional key word arguments passed to <a class="reference internal" href="#cxroots.Contour.Contour.roots" title="cxroots.Contour.Contour.roots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">roots()</span></code></a>.</li>
+roots have been found.</p></li>
+<li><p><strong>returnAnim</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then the matplotlib animation object will be returned
+instead of being shown.  Defaults to False.</p></li>
+<li><p><strong>writer</strong> (<em>str</em><em>, </em><em>optional</em>) – Passed to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.animation.FuncAnimation.html#matplotlib.animation.FuncAnimation.save" title="(in Matplotlib v3.0.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.animation.FuncAnimation.save()</span></code></a>.</p></li>
+<li><p><strong>**rootsKwargs</strong> – Additional key word arguments passed to <a class="reference internal" href="#cxroots.Contour.Contour.roots" title="cxroots.Contour.Contour.roots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">roots()</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -453,20 +429,19 @@ instead of being shown.  Defaults to False.</li>
 <code class="descname">distance</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contour.html#Contour.distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Contour.Contour.distance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the distance from the point z in the complex plane to the
 nearest point on the contour.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>z</strong> (<em>complex</em>) – The point from which to measure the distance to the closest
-point on the contour to z.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The distance from z to the point on the contour which is
-closest to z.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>z</strong> (<em>complex</em>) – The point from which to measure the distance to the closest
+point on the contour to z.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The distance from z to the point on the contour which is
+closest to z.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -475,32 +450,28 @@ closest to z.</td>
 <dd><p>Integrate the function f along the path.  The value of the
 integral is cached and will be reused if the method is called
 with same arguments (ignoring verbose).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>f</strong> (<em>function</em>) – A function of a single complex variable.</li>
-<li><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute tolerance for the integration.</li>
-<li><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The realative tolerance for the integration.</li>
-<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>function</em>) – A function of a single complex variable.</p></li>
+<li><p><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute tolerance for the integration.</p></li>
+<li><p><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The realative tolerance for the integration.</p></li>
+<li><p><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
 maximum number of divisions before the Romberg integration
-routine of a path exits.</li>
-<li><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to
+routine of a path exits.</p></li>
+<li><p><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to
 compute the integral.  If ‘romb’ then Romberg integraion,
-using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>, is used instead.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Passed ass the <cite>show</cite> argument of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>.</li>
+using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>, is used instead.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Passed ass the <cite>show</cite> argument of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The integral of the function f along the path.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The integral of the function f along the path.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>This function is only used when checking the
 multiplicity of roots.  The bulk of the integration for
@@ -512,26 +483,22 @@ rootfinding is done with <a class="reference internal" href="prod.html#cxroots.C
 <code class="descname">plot</code><span class="sig-paren">(</span><em>N=100</em>, <em>linecolor='C0'</em>, <em>linestyle='-'</em><span class="sig-paren">)</span><a class="headerlink" href="#cxroots.Contour.Contour.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses matplotlib to plot, but not show, the path as a 2D plot in
 the Complex plane.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>N</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points to use when plotting the path.</li>
-<li><strong>linecolor</strong> (<em>optional</em>) – The colour of the plotted path, passed to the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points to use when plotting the path.</p></li>
+<li><p><strong>linecolor</strong> (<em>optional</em>) – The colour of the plotted path, passed to the
 <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.0.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
 argument of ‘color’.  See the matplotlib tutorial on
-<a class="reference external" href="https://matplotlib.org/users/colors.html#">specifying colours</a>.</li>
-<li><strong>linestyle</strong> (<em>str</em><em>, </em><em>optional</em>) – The line style of the plotted path, passed to the
+<a class="reference external" href="https://matplotlib.org/users/colors.html#">specifying colours</a>.</p></li>
+<li><p><strong>linestyle</strong> (<em>str</em><em>, </em><em>optional</em>) – The line style of the plotted path, passed to the
 <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.0.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
 argument of ‘linestyle’.  The default corresponds to a solid
 line.  See <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle" title="(in Matplotlib v3.0.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.lines.Line2D.set_linestyle()</span></code></a> for
-other acceptable arguments.</li>
+other acceptable arguments.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -539,55 +506,53 @@ other acceptable arguments.</li>
 <code class="descname">roots</code><span class="sig-paren">(</span><em>f</em>, <em>df=None</em>, <em>guessRoots=[]</em>, <em>guessRootSymmetry=None</em>, <em>newtonStepTol=1e-14</em>, <em>attemptIterBest=True</em>, <em>newtonMaxIter=50</em>, <em>rootErrTol=1e-10</em>, <em>absTol=0</em>, <em>relTol=1e-12</em>, <em>integerTol=0.1</em>, <em>NIntAbsTol=0.07</em>, <em>M=5</em>, <em>errStop=1e-10</em>, <em>intMethod='quad'</em>, <em>divMin=3</em>, <em>divMax=15</em>, <em>m=2</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#cxroots.Contour.Contour.roots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find all the roots of the complex analytic function f within the
 given contour.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>f</strong> (<em>function</em>) – A function of a single complex variable, z, which is analytic
-within the contour and has no poles or roots on the contour.</li>
-<li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – A function of a single complex variable which is the derivative
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>function</em>) – A function of a single complex variable, z, which is analytic
+within the contour and has no poles or roots on the contour.</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – A function of a single complex variable which is the derivative
 of the function f(z). If df is not given then it will be
-approximated with a finite difference formula.</li>
-<li><strong>guessRoots</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of known roots or guesses for roots (they are checked
-before being accepted).</li>
-<li><strong>guessRootSymmetry</strong> (<em>function</em><em>, </em><em>optional</em>) – A function of a single complex variable, z, which returns a list
+approximated with a finite difference formula.</p></li>
+<li><p><strong>guessRoots</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of known roots or guesses for roots (they are checked
+before being accepted).</p></li>
+<li><p><strong>guessRootSymmetry</strong> (<em>function</em><em>, </em><em>optional</em>) – A function of a single complex variable, z, which returns a list
 of all points which are expected to be roots of f, given that z
-is a root of f.</li>
-<li><strong>newtonStepTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The required accuracy of the root.  The iterative method used to
+is a root of f.</p></li>
+<li><p><strong>newtonStepTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The required accuracy of the root.  The iterative method used to
 give a final value for each root will exit if the step size, dx,
 between sucessive iterations satisfies abs(dx) &lt; newtonStepTol
-and iterBestAttempt is False.</li>
-<li><strong>attemptIterBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then the iterative method used to refine the roots will
+and iterBestAttempt is False.</p></li>
+<li><p><strong>attemptIterBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then the iterative method used to refine the roots will
 exit when error of the previous iteration, x0, was at least as
 good as the current iteration, x, in the sense that
 abs(f(x)) &gt;= abs(f(x0)) and the previous iteration satisfied
 abs(dx0) &lt; newtonStepTol.  In this case the preivous iteration
-is returned as the approximation of the root.</li>
-<li><strong>newtonMaxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The iterative method used to give a final value for each root
-will exit if the number of iterations exceeds newtonMaxIter.</li>
-<li><strong>rootErrTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A complex value z is considered a root if abs(f(z)) &lt; rootErrTol</li>
-<li><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance used by the contour integration.</li>
-<li><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance used by the contour integration.</li>
-<li><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A number is considered an integer if it is within integerTol of
+is returned as the approximation of the root.</p></li>
+<li><p><strong>newtonMaxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The iterative method used to give a final value for each root
+will exit if the number of iterations exceeds newtonMaxIter.</p></li>
+<li><p><strong>rootErrTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A complex value z is considered a root if abs(f(z)) &lt; rootErrTol</p></li>
+<li><p><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance used by the contour integration.</p></li>
+<li><p><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance used by the contour integration.</p></li>
+<li><p><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – A number is considered an integer if it is within integerTol of
 an integer.  Used when determing if the value for the number of
 roots within a contour and the values of the computed
-multiplicities of roots are acceptably close to integers.</li>
-<li><strong>NIntAbsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute error tolerance used for the contour integration
+multiplicities of roots are acceptably close to integers.</p></li>
+<li><p><strong>NIntAbsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute error tolerance used for the contour integration
 when determining the number of roots within a contour.  Since
 the result of this integration must be an integer it can be much
-less accurate than usual.</li>
-<li><strong>M</strong> (<em>int</em><em>, </em><em>optional</em>) – If the number of roots (including multiplicites) within a
+less accurate than usual.</p></li>
+<li><p><strong>M</strong> (<em>int</em><em>, </em><em>optional</em>) – If the number of roots (including multiplicites) within a
 contour is greater than M then the contour is subdivided
 further.  M must be greater than or equal to the largest
-multiplcity of any root.</li>
-<li><strong>errStop</strong> (<em>float</em><em>, </em><em>optional</em>) – The number of distinct roots within a contour, n, is determined
+multiplcity of any root.</p></li>
+<li><p><strong>errStop</strong> (<em>float</em><em>, </em><em>optional</em>) – The number of distinct roots within a contour, n, is determined
 by checking if all the elements of a list of contour integrals
 involving formal orthogonal polynomials are sufficently close to
 zero, ie. that the absolute value of each element is &lt; errStop.
 If errStop is too large/small then n may be smaller/larger than
-it actually is.</li>
-<li><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to perform the
+it actually is.</p></li>
+<li><p><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to perform the
 integral.  If ‘romb’ then Romberg integraion, using
 <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romb.html#scipy.integrate.romb" title="(in SciPy v1.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romb()</span></code></a>, is performed instead.  Typically, quad is
 the better choice but it requires that the real and imaginary
@@ -598,29 +563,27 @@ at.  If evaluating f is expensive then ‘romb’ may be more
 efficient since it computes the real and imaginary parts
 simultaniously and if df is not provided it will approximate it
 using only the values of f that would be required by the
-integration routine in any case.</li>
-<li><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMin is the
+integration routine in any case.</p></li>
+<li><p><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMin is the
 minimum number of divisions before the Romberg integration
-routine is allowed to exit.</li>
-<li><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
+routine is allowed to exit.</p></li>
+<li><p><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
 maximum number of divisions before the Romberg integration
-routine exits.</li>
-<li><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and method=’quad’.  The argument order=m is
+routine exits.</p></li>
+<li><p><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and method=’quad’.  The argument order=m is
 passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">numdifftools.Derivative()</span></code> and is the order of the error
-term in the Taylor approximation.  m must be even.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True certain messages concerning the rootfinding process will
-be printed.</li>
+term in the Taylor approximation.  m must be even.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True certain messages concerning the rootfinding process will
+be printed.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result</strong> – A container for the roots and their multiplicities.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="result.html#cxroots.RootResult.RootResult" title="cxroots.RootResult.RootResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootResult</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>result</strong> – A container for the roots and their multiplicities.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="result.html#cxroots.RootResult.RootResult" title="cxroots.RootResult.RootResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootResult</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -628,41 +591,35 @@ be printed.</li>
 <code class="descname">show</code><span class="sig-paren">(</span><em>saveFile=None</em>, <em>**plotKwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contour.html#Contour.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Contour.Contour.show" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shows the contour as a 2D plot in the complex plane.  Requires
 Matplotlib.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>saveFile</strong> (<em>str</em><em> (</em><em>optional</em><em>)</em>) – If given then the plot will be saved to disk with name
-‘saveFile’.  If saveFile=None the plot is shown on-screen.</li>
-<li><strong>**plotKwargs</strong> – Key word arguments are as in <a class="reference internal" href="#cxroots.Contour.Contour.plot" title="cxroots.Contour.Contour.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>saveFile</strong> (<em>str</em><em> (</em><em>optional</em><em>)</em>) – If given then the plot will be saved to disk with name
+‘saveFile’.  If saveFile=None the plot is shown on-screen.</p></li>
+<li><p><strong>**plotKwargs</strong> – Key word arguments are as in <a class="reference internal" href="#cxroots.Contour.Contour.plot" title="cxroots.Contour.Contour.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="cxroots.Contour.Contour.subdivisions">
 <code class="descname">subdivisions</code><span class="sig-paren">(</span><em>axis='alternating'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/Contour.html#Contour.subdivisions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Contour.Contour.subdivisions" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator for possible subdivisions of the contour.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axis</strong> (<em>str</em><em>, </em><em>'alternating'</em><em> or </em><em>any element of self.axisName.</em>) – The axis along which the line subdividing the contour is a
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>str</em><em>, </em><em>'alternating'</em><em> or </em><em>any element of self.axisName.</em>) – The axis along which the line subdividing the contour is a
 constant (eg. subdividing a circle along the radial axis
 will give an outer annulus and an inner circle).  If
 alternating then the dividing axis will always be different
 to the dividing axis used to create the contour which is now
-being divided.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><em>tuple</em> – A tuple with two contours which subdivide the original
-contour.</td>
-</tr>
-</tbody>
-</table>
+being divided.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>tuple</em> – A tuple with two contours which subdivide the original
+contour.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -673,18 +630,14 @@ contour.</td>
 <dt id="cxroots.Circle">
 <em class="property">class </em><code class="descclassname">cxroots.</code><code class="descname">Circle</code><span class="sig-paren">(</span><em>center</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/contours/Circle.html#Circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Circle" title="Permalink to this definition">¶</a></dt>
 <dd><p>A positively oriented circle in the complex plane.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>center</strong> (<em>complex</em>) – The center of the circle.</li>
-<li><strong>radius</strong> (<em>float</em>) – The radius of the circle.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> (<em>complex</em>) – The center of the circle.</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – The radius of the circle.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
 <span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
@@ -692,7 +645,7 @@ contour.</td>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//contours-1.py">Source code</a>, <a class="reference external" href=".//contours-1.png">png</a>, <a class="reference external" href=".//contours-1.hires.png">hires.png</a>, <a class="reference external" href=".//contours-1.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/contours-1.png" src="_images/contours-1.png" />
 </div>
 </dd></dl>
@@ -704,20 +657,16 @@ contour.</td>
 <dt id="cxroots.Rectangle">
 <em class="property">class </em><code class="descclassname">cxroots.</code><code class="descname">Rectangle</code><span class="sig-paren">(</span><em>xRange</em>, <em>yRange</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/contours/Rectangle.html#Rectangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Rectangle" title="Permalink to this definition">¶</a></dt>
 <dd><p>A positively oriented rectangle in the complex plane.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>xRange</strong> (<em>tuple</em>) – Tuple of length two giving the range of the rectangle along the
-real axis.</li>
-<li><strong>yRange</strong> (<em>tuple</em>) – Tuple of length two giving the range of the rectangle along the
-imaginary axis.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xRange</strong> (<em>tuple</em>) – Tuple of length two giving the range of the rectangle along the
+real axis.</p></li>
+<li><p><strong>yRange</strong> (<em>tuple</em>) – Tuple of length two giving the range of the rectangle along the
+imaginary axis.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Rectangle</span>
 <span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="n">xRange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">yRange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
@@ -725,7 +674,7 @@ imaginary axis.</li>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//contours-2.py">Source code</a>, <a class="reference external" href=".//contours-2.png">png</a>, <a class="reference external" href=".//contours-2.hires.png">hires.png</a>, <a class="reference external" href=".//contours-2.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/contours-2.png" src="_images/contours-2.png" />
 </div>
 </dd></dl>
@@ -738,18 +687,14 @@ imaginary axis.</li>
 <em class="property">class </em><code class="descclassname">cxroots.</code><code class="descname">Annulus</code><span class="sig-paren">(</span><em>center</em>, <em>radii</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/contours/Annulus.html#Annulus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.Annulus" title="Permalink to this definition">¶</a></dt>
 <dd><p>An annulus in the complex plane with the outer circle positively oriented
 and the inner circle negatively oriented.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>center</strong> (<em>complex</em>) – The center of the annulus in the complex plane.</li>
-<li><strong>radii</strong> (<em>tuple</em>) – A tuple of length two of the form (inner_radius, outer_radius).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> (<em>complex</em>) – The center of the annulus in the complex plane.</p></li>
+<li><p><strong>radii</strong> (<em>tuple</em>) – A tuple of length two of the form (inner_radius, outer_radius).</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Annulus</span>
 <span class="n">annulus</span> <span class="o">=</span> <span class="n">Annulus</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.75</span><span class="p">))</span>
@@ -757,7 +702,7 @@ and the inner circle negatively oriented.</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//contours-3.py">Source code</a>, <a class="reference external" href=".//contours-3.png">png</a>, <a class="reference external" href=".//contours-3.hires.png">hires.png</a>, <a class="reference external" href=".//contours-3.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/contours-3.png" src="_images/contours-3.png" />
 </div>
 </dd></dl>
@@ -769,21 +714,17 @@ and the inner circle negatively oriented.</p>
 <dt id="cxroots.AnnulusSector">
 <em class="property">class </em><code class="descclassname">cxroots.</code><code class="descname">AnnulusSector</code><span class="sig-paren">(</span><em>center</em>, <em>radii</em>, <em>phiRange</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/contours/AnnulusSector.html#AnnulusSector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.AnnulusSector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A sector of an annulus in the complex plane.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>center</strong> (<em>complex</em>) – The center of the annulus sector.</li>
-<li><strong>radii</strong> (<em>tuple</em>) – Tuple of length two of the form (inner_radius, outer_radius)</li>
-<li><strong>phiRange</strong> (<em>tuple</em>) – Tuple of length two of the form (phi0, phi1).
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> (<em>complex</em>) – The center of the annulus sector.</p></li>
+<li><p><strong>radii</strong> (<em>tuple</em>) – Tuple of length two of the form (inner_radius, outer_radius)</p></li>
+<li><p><strong>phiRange</strong> (<em>tuple</em>) – Tuple of length two of the form (phi0, phi1).
 The segment of the contour containing inner and outer circular
-arcs will be joined, counter clockwise from phi0 to phi1.</li>
+arcs will be joined, counter clockwise from phi0 to phi1.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
 <span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">AnnulusSector</span>
@@ -792,7 +733,7 @@ arcs will be joined, counter clockwise from phi0 to phi1.</li>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//contours-4.py">Source code</a>, <a class="reference external" href=".//contours-4.png">png</a>, <a class="reference external" href=".//contours-4.hires.png">hires.png</a>, <a class="reference external" href=".//contours-4.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/contours-4.png" src="_images/contours-4.png" />
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
@@ -802,7 +743,7 @@ arcs will be joined, counter clockwise from phi0 to phi1.</li>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//contours-5.py">Source code</a>, <a class="reference external" href=".//contours-5.png">png</a>, <a class="reference external" href=".//contours-5.hires.png">hires.png</a>, <a class="reference external" href=".//contours-5.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/contours-5.png" src="_images/contours-5.png" />
 </div>
 </dd></dl>

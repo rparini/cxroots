@@ -200,7 +200,7 @@
 </style>
 <div class="section" id="stability-of-an-annular-combustion-chamber">
 <h1>Stability of an Annular Combustion Chamber<a class="headerlink" href="#stability-of-an-annular-combustion-chamber" title="Permalink to this headline">¶</a></h1>
-<p>In section 4.2 of <a class="reference internal" href="#dsz" id="id1">[DSZ]</a> the problem of stability of an annular combustion chamber was used as a test case for their rootfinding algorthim.  The problem consisted of finding all the zeros of the holomorphic function</p>
+<p>In section 4.2 of <a class="reference internal" href="#dsz" id="id1"><span>[DSZ]</span></a> the problem of stability of an annular combustion chamber was used as a test case for their rootfinding algorthim.  The problem consisted of finding all the zeros of the holomorphic function</p>
 <div class="math notranslate nohighlight">
 \[f(z)=z^2+Az+Be^{-Tz}+C\]</div>
 <p>with constants</p>
@@ -227,18 +227,17 @@ T=0.005\,.\]</div>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//ex_annular_combustion-1.py">Source code</a>, <a class="reference external" href=".//ex_annular_combustion-1.png">png</a>, <a class="reference external" href=".//ex_annular_combustion-1.hires.png">hires.png</a>, <a class="reference external" href=".//ex_annular_combustion-1.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/ex_annular_combustion-1.png" src="_images/ex_annular_combustion-1.png" />
 </div>
 <p>Note that if <code class="code docutils literal notranslate"><span class="pre">rootErrTol=1e-6</span></code> is omitted then the Newton-Raphson method used to refine the roots is sometimes unable to converge to a point where <span class="math notranslate nohighlight">\(|f(z)|&lt;\text{rootErrTol}\)</span>.  In this case the contour bounding the root is continually subdivided until it has area less than <code class="code docutils literal notranslate"><span class="pre">newtonStepTol</span></code> at which point the best approximation to the root within the contour will be taken to be ‘good enough’ and a warning message will be printed to inform the user.</p>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<table class="docutils citation" frame="void" id="dsz" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[DSZ]</a></td><td>“Locating all the Zeros of an Analytic Function in one Complex Variable” M. Dellnitz, O. Schütze, Q. Zheng, J. Compu. and App. Math. (2002), Vol. 138, Issue 2</td></tr>
-</tbody>
-</table>
+<dl class="citation">
+<dt class="label" id="dsz"><span class="brackets"><a class="fn-backref" href="#id1">DSZ</a></span></dt>
+<dd><p>“Locating all the Zeros of an Analytic Function in one Complex Variable” M. Dellnitz, O. Schütze, Q. Zheng, J. Compu. and App. Math. (2002), Vol. 138, Issue 2</p>
+</dd>
+</dl>
 </div>
 </div>
 
