@@ -5,10 +5,11 @@ import functools
 
 from .CountRoots import count_roots
 from .ApproximateRoots import approximate_roots
-from .RootFinder import find_roots, MultiplicityError
+from .RootFinder import find_roots
 from .DemoRootFinder import demo_find_roots
-from .Misc import doc_tab_to_space, docstrings, remove_para
+from .Misc import remove_para
 from .Paths import ComplexPath
+
 
 class Contour(object):
 	"""
@@ -54,7 +55,6 @@ class Contour(object):
 		N = len(self.segments)
 		segmentIndex = np.array(N*t, dtype=int)
 		segmentIndex = np.mod(segmentIndex, N)
-		segment = self.segments[segmentIndex]
 
 		if hasattr(segmentIndex, '__iter__'):
 			return np.array([self.segments[i](N*t[ti]%1) for ti, i in enumerate(segmentIndex)])
@@ -63,11 +63,11 @@ class Contour(object):
 
 	@property
 	def centralPoint(self):
-		raise NotImplemented('centralPoint needs to be implemented in the subclass.')
+		raise NotImplementedError('centralPoint needs to be implemented in the subclass.')
 
 	@property
 	def area(self):
-		raise NotImplemented('area needs to be implemented in the subclass.')
+		raise NotImplementedError('area needs to be implemented in the subclass.')
 
 	def contains(self, z):
 		"""
@@ -82,7 +82,7 @@ class Contour(object):
 		bool
 			True if z lies within the contour and false otherwise.
 		"""
-		raise NotImplemented('contains() needs to be implemented in the subclass.')
+		raise NotImplementedError('contains() needs to be implemented in the subclass.')
 
 	@functools.wraps(ComplexPath.plot)
 	def plot(self, *args, **kwargs):
