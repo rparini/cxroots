@@ -1,6 +1,9 @@
 ## Changelog
 
-### 1.1.7
+### Unreleased
+- Fix NotImplementedError in `Contour` base ([#31](https://github.com/rparini/cxroots/issues/31) thanks [@fchapoton](https://github.com/fchapoton))
+
+### 1.1.7 - 10/Feb/2019
 - Fix `setup.py test`.
 - Fix invalid escape characters
 
