@@ -175,10 +175,11 @@
 
 <span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">count_roots</span>
 <span class="kn">from</span> <span class="nn">.ApproximateRoots</span> <span class="k">import</span> <span class="n">approximate_roots</span>
-<span class="kn">from</span> <span class="nn">.RootFinder</span> <span class="k">import</span> <span class="n">find_roots</span><span class="p">,</span> <span class="n">MultiplicityError</span>
+<span class="kn">from</span> <span class="nn">.RootFinder</span> <span class="k">import</span> <span class="n">find_roots</span>
 <span class="kn">from</span> <span class="nn">.DemoRootFinder</span> <span class="k">import</span> <span class="n">demo_find_roots</span>
-<span class="kn">from</span> <span class="nn">.Misc</span> <span class="k">import</span> <span class="n">doc_tab_to_space</span><span class="p">,</span> <span class="n">docstrings</span><span class="p">,</span> <span class="n">remove_para</span>
+<span class="kn">from</span> <span class="nn">.Misc</span> <span class="k">import</span> <span class="n">remove_para</span>
 <span class="kn">from</span> <span class="nn">.Paths</span> <span class="k">import</span> <span class="n">ComplexPath</span>
+
 
 <div class="viewcode-block" id="Contour"><a class="viewcode-back" href="../../contours.html#cxroots.Contour.Contour">[docs]</a><span class="k">class</span> <span class="nc">Contour</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -224,7 +225,6 @@
 		<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
 		<span class="n">segmentIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 		<span class="n">segmentIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">segmentIndex</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-		<span class="n">segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">segmentIndex</span><span class="p">]</span>
 
 		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">segmentIndex</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">):</span>
 			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">N</span><span class="o">*</span><span class="n">t</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span><span class="o">%</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">ti</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segmentIndex</span><span class="p">)])</span>
@@ -233,11 +233,11 @@
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">centralPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;centralPoint needs to be implemented in the subclass.&#39;</span><span class="p">)</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;centralPoint needs to be implemented in the subclass.&#39;</span><span class="p">)</span>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;area needs to be implemented in the subclass.&#39;</span><span class="p">)</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;area needs to be implemented in the subclass.&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Contour.contains"><a class="viewcode-back" href="../../contours.html#cxroots.Contour.Contour.contains">[docs]</a>	<span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -252,7 +252,7 @@
 <span class="sd">		bool</span>
 <span class="sd">			True if z lies within the contour and false otherwise.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;contains() needs to be implemented in the subclass.&#39;</span><span class="p">)</span></div>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;contains() needs to be implemented in the subclass.&#39;</span><span class="p">)</span></div>
 
 	<span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">ComplexPath</span><span class="o">.</span><span class="n">plot</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
