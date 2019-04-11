@@ -86,4 +86,4 @@ stages:
     if: commit_message =~ \[docs\]
   - name: deploy
     if: branch = master
-    if: tags = true
+    if: tag =~ ^v
