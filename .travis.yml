@@ -83,6 +83,7 @@ stages:
   - test
   - name: document
     if: branch IN (master, dev)
+    if: commit_message =~ \[docs\]
   - name: deploy
     if: branch = master
     if: tags = true
