@@ -10,7 +10,7 @@ exec(open('cxroots/version.py').read())
 try:
     with open('README.rst') as file:
         long_description = file.read()
-except:
+except IOError:
     long_description = None
 
 setup(
