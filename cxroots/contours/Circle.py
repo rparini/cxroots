@@ -3,7 +3,7 @@ import numpy as np
 from scipy import pi
 
 from ..Contour import Contour
-from ..Paths import ComplexLine, ComplexArc
+from ..Paths import ComplexArc
 from .Annulus import Annulus
 
 class Circle(Contour):

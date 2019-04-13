@@ -4,8 +4,7 @@ import functools
 import numpy as np
 import scipy.linalg
 
-from .CountRoots import count_roots, prod
-from .Misc import NumberOfRootsChanged
+from .CountRoots import prod
 
 def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 	errStop=1e-10, divMin=3, divMax=15, m=2, rootTol=1e-8,

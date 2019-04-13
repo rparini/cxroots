@@ -2,7 +2,7 @@ from __future__ import division
 import math
 
 import numpy as np
-from numpy import inf, pi
+from numpy import pi
 
 import numdifftools.fornberg as ndf
 
