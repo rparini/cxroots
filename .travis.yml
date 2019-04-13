@@ -68,7 +68,7 @@ jobs:
 
     - stage: deploy
       python: "3.6"
-      env: TEST="setup.py test"
+      install: skip
       script: skip
       deploy:
         provider: pypi
@@ -76,8 +76,9 @@ jobs:
         password:
           secure: "AFQ14GLuGieZ7CSurZwuqvqFRtjXWmZZnH9UtAxuoi6ITm+k/m+7108ii3xXxVA3gegUc7qjZUK9CE8/VOR5W8nLmydllHZZDMOF/L86sPUuOTz8RiGxOfBIPbHVrglY8AnPtbRvZ4/WGCfY+V0Qz8GhwKV4mef+mKuniHko7MSOfOmXWy5tYlEhBiDYV5CgEoq4MB7HaqS144HRMNs0Kzim1JdGIx0Yba4ykODziOuvG33DIfMIrXbebFAoPtCqPZPv/pYuyEHy7VkzWYVs4u0Hwh+SPY68WkvS+xmSBgLSOiNby3A5sjkb4aqyLiF71JfkrqmYfieAnfis0Q1B81LzBIi40hmSmF5c7K54tAVgzRnUgDMAs6wpQxcJ++NX8fMC6LREbprfEE0Vt/hCihBgI594l8MrjtXvjViG3+JS7bM2wtmtetzR/VfiE8xW4qfyjPjjczFAPjyfy4IqJmi0slf5h7GFV+cMCvJQ1PNiwxj+nIrKE5tArEeU9RY372mJzejJWYu9i3uXC93cpo1yIAw7tSLZyjtenQa0rVxEN8z0qskigLHUKPJS1BVcJ0ZtqZDgv/lJYZa8QPfPoZ8NwWv74Ht453ZzhXmz2w7V9Ic9CsW2z5AxpO0KyIUKQNL2DwWpjx7gN76fVJIIIggih+ePmiz0RWWab38+uak="
         on:
-          branch: master
           tags: true
+      after_deploy:
+        - pip install cxroots
 
 stages:
   - test
