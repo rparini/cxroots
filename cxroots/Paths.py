@@ -10,6 +10,24 @@ class ComplexPath(object):
 		self._integralCache = {}
 		self._trapValuesCache = {}
 
+
+	def __call__(self, t):
+		r"""
+		The parameterization of the path in the varaible :math:`t\in[0,1]`.
+
+		Parameters
+		----------
+		t : float
+			A real number :math:`0\leq t \leq 1`.
+
+		Returns
+		-------
+		complex
+			A point on the path in the complex plane.
+		"""
+		raise NotImplementedError('__call__ must be implemented in a subclass')
+
+
 	def trap_values(self, f, k, useCache=True):
 		"""
 		Compute or retrieve (if cached) the values of the functions f
