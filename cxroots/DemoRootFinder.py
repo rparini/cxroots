@@ -51,7 +51,7 @@ def demo_find_roots(originalContour, f, df=None, saveFile=None, automaticAnim=Fa
 			box.plot(linecolor=box._color)
 
 		plt.scatter(np.real(roots), np.imag(roots), color='k', marker='x')
-		rootsLabel = ax.text(0.02, 0.95, 'Zeros remaining: %i'%numberOfRemainingRoots, transform=ax.transAxes)
+		ax.text(0.02, 0.95, 'Zeros remaining: %i'%numberOfRemainingRoots, transform=ax.transAxes)
 		originalContour._sizePlot()
 		fig.canvas.draw()
 
