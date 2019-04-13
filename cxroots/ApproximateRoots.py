@@ -115,8 +115,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 
 	r, t = 1, 0
 	while r+t<N:
-		k = r+t+1	# define FOP of degree r+t+1
-
+		### define FOP of degree r+t+1
 		p = r+t
 		G[p, 0:p+1] = [product(phi(p), phi(q))[0] for q in range(r+t+1)]
 		G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
