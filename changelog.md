@@ -1,7 +1,7 @@
 ## Changelog
 
 ### 1.1.8 - 20/Apr/2019
-- Fix NotImplementedError in `Contour` base ([#31](https://github.com/rparini/cxroots/issues/31) thanks [@fchapoton](https://github.com/fchapoton))
+- Fix NotImplementedError in Contour base ([#31](https://github.com/rparini/cxroots/issues/31) thanks [@fchapoton](https://github.com/fchapoton))
 - Added `__call__` placeholder to ComplexPath
 
 ### 1.1.7 - 10/Feb/2019
