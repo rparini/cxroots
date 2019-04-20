@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cxroots.Paths &mdash; cxroots 1.1.7 documentation</title>
+  <title>cxroots.Paths &mdash; cxroots 1.1.8 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.1.7
+                1.1.8
               </div>
             
           
@@ -179,6 +179,24 @@
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_integralCache</span> <span class="o">=</span> <span class="p">{}</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+		<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		The parameterization of the path in the varaible :math:`t\in[0,1]`.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		t : float</span>
+<span class="sd">			A real number :math:`0\leq t \leq 1`.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		complex</span>
+<span class="sd">			A point on the path in the complex plane.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;__call__ must be implemented in a subclass&#39;</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="ComplexPath.trap_values"><a class="viewcode-back" href="../../paths.html#cxroots.Contour.ComplexPath.trap_values">[docs]</a>	<span class="k">def</span> <span class="nf">trap_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">useCache</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
