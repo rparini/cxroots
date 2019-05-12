@@ -38,7 +38,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Using Known Roots or Symmetries" href="guesses.html" />
-    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
+    <link rel="prev" title="Count Roots" href="countroots.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -93,6 +93,7 @@
 </ul>
 <p class="caption"><span class="caption-text">User Guides</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="countroots.html">Count Roots</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
 </ul>
@@ -208,6 +209,14 @@
 </div>
 <p>This will create a matplotlib window and pressing the space bar will move the rootfinding process forward one step by either subdividing a contour or finding the roots within it.</p>
 <p>We can also save this process as an animation (in this case a gif) using</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">+</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">C</span><span class="o">.</span><span class="n">demo_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="s1">&#39;rootsDemo.gif&#39;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>(<a class="reference external" href=".//demo-1.py">Source code</a>)</p>
 <a class="reference internal image-reference" href="_images/rootsDemo.gif"><img alt="_images/rootsDemo.gif" src="_images/rootsDemo.gif" style="width: 400px;" /></a>
 </div>
@@ -223,7 +232,7 @@
         <a href="guesses.html" class="btn btn-neutral float-right" title="Using Known Roots or Symmetries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="countroots.html" class="btn btn-neutral float-left" title="Count Roots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
