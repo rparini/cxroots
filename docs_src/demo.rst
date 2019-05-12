@@ -17,6 +17,7 @@ This will create a matplotlib window and pressing the space bar will move the ro
 We can also save this process as an animation (in this case a gif) using
 
 .. plot:: 
+	:include-source:
 
 	from cxroots import Circle
 	from numpy import exp, cos, sin
