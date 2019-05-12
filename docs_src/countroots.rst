@@ -6,7 +6,7 @@ We can use the :meth:`~cxroots.Contour.Contour.count_roots` method to just count
 
 The example below counts all the roots of :math:`f(z)=z^2(z+2)^2(z+4)^2` within the circle :math:`|z|<3`.
 
-.. literalinclude:: numroots.py
+.. literalinclude:: countroots.py
 	:language: python
 
-.. program-output:: python3 numroots.py
+.. program-output:: python3 countroots.py
