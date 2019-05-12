@@ -32,6 +32,7 @@ Documentation
 .. toctree::
 	:caption: User Guides
 
+	countroots.rst
 	demo.rst
 	guesses.rst
 
