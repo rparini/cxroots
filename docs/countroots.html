@@ -201,7 +201,16 @@
 <p>Sometimes we don’t need to know the precise location of every root, just how many there are.
 We can use the <a class="reference internal" href="contours.html#cxroots.Contour.Contour.count_roots" title="cxroots.Contour.Contour.count_roots"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_roots()</span></code></a> method to just count the number of roots of an analytic function within a given contour.</p>
 <p>The example below counts all the roots of <span class="math notranslate nohighlight">\(f(z)=z^2(z+2)^2(z+4)^2\)</span> within the circle <span class="math notranslate nohighlight">\(|z|&lt;3\)</span>.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python3: can&#39;t open file &#39;numroots.py&#39;: [Errno 2] No such file or directory
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">num_roots</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">count_roots</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">num_roots</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>4
 </pre></div>
 </div>
 </div>
