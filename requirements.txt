@@ -1,7 +1,7 @@
 #
-# requirements.txt used for concrete testing enviroment.
+# requirements.txt used for concrete testing environment.
 #
-# install_requires in setup.py gives the abstract requiments
+# install_requires in setup.py gives the abstract requirements
 # used by 'pip install' and 'setup.py install' to install
 # cxroots as a library.
 #
