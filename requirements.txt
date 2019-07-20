@@ -6,7 +6,9 @@
 # cxroots as a library.
 #
 
-scipy==1.3.0
+scipy==1.3.0; python_version > '2.7'
+scipy==1.2.1; python_version <= '2.7'  # pyup: ignore
+
 numpy==1.16.4
 docrep==0.2.7
 mpmath==1.1.0
@@ -17,7 +19,6 @@ git+https://github.com/rparini/numdifftools.git@fix_vstack_futurewarning#egg=num
 matplotlib==3.1.0; python_version > '2.7'
 matplotlib==2.2.3; python_version <= '2.7'  # pyup: ignore
 
-
-pytest==5.0.0
+pytest==5.0.0; python_version > '2.7'
+pytest==4.6.4; python_version <= '2.7'  # pyup: ignore
 pytest-xdist==1.29.0
-
