@@ -66,6 +66,22 @@ See also
 
 The Fortran 90 package `ZEAL <http://cpc.cs.qub.ac.uk/summaries/ADKW>`_ is a direct implementation of [KB]_.
 
+Citing cxroots
+--------------
+
+  \R. Parini. *cxroots: A Python module to find all the roots of a complex analytic function within a given contour* (2018), https://github.com/rparini/cxroots 
+
+BibTex:
+
+.. code::
+
+	@misc{cxroots,
+	  author = {Robert Parini},
+	  title = {{cxroots: A Python module to find all the roots of a complex analytic function within a given contour}},
+	  url = {https://github.com/rparini/cxroots},
+	  year = {2018--}
+	}
+
 ----------
 
 References
