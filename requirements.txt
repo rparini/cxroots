@@ -25,3 +25,4 @@ matplotlib==2.2.3; python_version <= '2.7'  # pyup: ignore
 pytest==5.2.0; python_version > '2.7'
 pytest==4.6.4; python_version <= '2.7'  # pyup: ignore
 pytest-xdist==1.29.0
+hypothesis==4.38.0
