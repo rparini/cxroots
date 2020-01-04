@@ -4,6 +4,7 @@ import functools
 import logging
 
 import numpy as np
+from tqdm import tqdm
 
 from .IterativeMethods import iterateToRoot
 from .CountRoots import RootError
@@ -410,7 +411,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 @docstrings.dedent
 @doc_tab_to_space
 @functools.wraps(find_roots_gen, assigned=('__module__', '__name__'))
-def find_roots(originalContour, f, df=None, verbose=True, **kwargs):
+def find_roots(originalContour, f, df=None, verbose=False, **kwargs):
 	"""
 	Find all the roots of the complex analytic function f within the
 	given contour.
@@ -418,14 +419,22 @@ def find_roots(originalContour, f, df=None, verbose=True, **kwargs):
 	Parameters
 	----------
 	%(find_roots_gen.parameters)s
+	verbose : bool, optional
+		If True print a progress bar showing the rootfinding progress.
 
 	Returns
 	-------
 	result : :class:`RootResult <cxroots.RootResult.RootResult>`
 		A container for the roots and their multiplicities.
 	"""
+	if verbose:
+		pbar = tqdm(unit=' roots')
+
 	rootFinder = find_roots_gen(originalContour, f, df, **kwargs)
 	for roots, multiplicities, contours, numberOfRemainingRoots in rootFinder:
-		pass
+		if verbose:
+			totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
+			pbar.total = totFoundRoots + numberOfRemainingRoots
+			pbar.update(totFoundRoots - pbar.n)
 	return RootResult(roots, multiplicities, originalContour)
 
