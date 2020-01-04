@@ -18,7 +18,7 @@ def test_count_roots(useDerivative):
 
 	if not useDerivative: df = None
 
-	assert C.count_roots(f, df, verbose=True) == 424
+	assert C.count_roots(f, df) == 424
 
 
 @pytest.mark.xfail(reason='Possibly lack of high precision arithmetic')
