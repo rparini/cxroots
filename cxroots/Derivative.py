@@ -1,5 +1,6 @@
 from __future__ import division
 import math
+import logging
 
 import numpy as np
 from numpy import pi
@@ -30,7 +31,7 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
 	absIntegrationTol : float, optional
 		The absolute tolerance required of the integration routine.
 	verbose : bool, optional
-		If True runtime information will be printed.  False be default.
+		If True runtime information will be printed.  False is default.
 
 	Returns
 	-------
@@ -48,7 +49,7 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
 	return integral * math.factorial(n)/(2j*pi)
 
 
-def find_multiplicity(root, f, df=None, rootErrTol=1e-10, verbose=False):
+def find_multiplicity(root, f, df=None, rootErrTol=1e-10):
 	"""
 	Find the multiplicity of a given root of f by computing the
 	derivatives of f, f^{(1)}, f^{(2)}, ... until
@@ -69,14 +70,13 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10, verbose=False):
 		The integration contour used to evaluate the derivatives.
 	rootErrTol : float, optional
 		It will be assumed that f(z)=0 if numerically |f(z)|<rootErrTol.
-	verbose : bool, optional
-		If True runtime information will be printed.  False be default.
 
 	Returns
 	-------
 	multiplicity : int
 		The multiplicity of the given root.
 	"""
+	logger = logging.getLogger(__name__)
 	if abs(f(root)) > rootErrTol:
 		raise ValueError("""
 			The provided 'root' is not a root of the given function f.
@@ -94,9 +94,7 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10, verbose=False):
 		else:
 			err = abs(ndf.derivative(f, root, n)[n])
 
-		if verbose:
-			print('n', n, '|df^(n)|', err)
-
+		logger.debug('n=%i |df^(n)|=%f', n, err)
 		if err > rootErrTol:
 			break
 

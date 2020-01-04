@@ -1,5 +1,6 @@
 from __future__ import division
 import warnings
+import logging
 
 import numpy as np
 from numpy import inf, pi
@@ -9,7 +10,7 @@ import numdifftools.fornberg as ndf
 import numdifftools
 
 def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3,
-	divMax=15, m=2, intMethod='quad', integerTol=inf, verbose=False, callback=None):
+	divMax=15, m=2, intMethod='quad', integerTol=inf, callback=None):
 	r"""
 	Compute the symmetric bilinear form used in (1.12) of [KB]_.
 
@@ -57,8 +58,6 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 		not exit unless the result is within integerTol of an integer.
 		This is useful when computing the number of roots in a contour,
 		which must be an integer.  By default integerTol is inf.
-	verbose : bool, optional
-		If True runtime information will be printed.  False be default.
 	callback : function, optional
 		Only used when intMethod is 'romb'.  A function that at each
 		step in the iteration is passed the current approximation for
@@ -78,7 +77,8 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 	.. [KB] "Computing the zeros of analytic functions" by Peter Kravanja,
 		Marc Van Barel, Springer 2000
 	"""
-	if intMethod == 'romb':
+	logger = logging.getLogger(__name__)
+	if intMethod == 'romb':		
 		N = 1
 		k = 0
 		I = []
@@ -115,12 +115,10 @@ def prod(C, f, df=None, phi=None, psi=None, absTol=1e-12, relTol=1e-12, divMin=3
 				integrals.append(segment_integral)
 
 			I.append(sum(integrals))
-
-			if verbose:
-				if k > 1:
-					print(k, 'I', I[-1], 'err', I[-2] - I[-1])
-				else:
-					print(k, 'I', I[-1])
+			if k > 1:
+				logger.debug('Iteration=%i, integral=%f, err=%f'%(k, I[-1], I[-2]-I[-1]))
+			else:
+				logger.debug('Iteration=%i, integral=%f'%(k, I[-1]))
 
 			if callback is not None:
 				err = abs(I[-2] - I[-1]) if k > 1 else None
@@ -176,7 +174,7 @@ class RootError(RuntimeError):
 	pass
 
 def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3,
-	divMax=15, m=2, intMethod='quad', verbose=False):
+	divMax=15, m=2, intMethod='quad'):
 	r"""
 	For a function of one complex variable, f(z), which is analytic in
 	and within the contour C, return the number of zeros (counting
@@ -229,9 +227,6 @@ def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3,
 		If 'quad' then scipy.integrate.quad is used to perform the
 		integral.  If 'romb' then Romberg integraion, using
 		scipy.integrate.romb, is performed instead.
-	verbose : bool, optional
-		If True certain messages regarding the integration will be
-		printed.
 
 	Returns
 	-------
@@ -239,14 +234,14 @@ def count_roots(C, f, df=None, NIntAbsTol=0.07, integerTol=0.1, divMin=3,
 		The number of zeros of f (counting multiplicities) which lie
 		within the contour C.
 	"""
-	if verbose:
-		print('Computing number of roots within', C)
+	logger = logging.getLogger(__name__)
+	logger.info('Computing number of roots within '+str(C))
 
 	with warnings.catch_warnings():
 		# ignore warnings and catch if I is NaN later
 		warnings.simplefilter("ignore")
 		I, err = prod(C, f, df, absTol=NIntAbsTol, relTol=0, divMin=divMin,
-			divMax=divMax, m=m, intMethod=intMethod, verbose=verbose, integerTol=integerTol)
+			divMax=divMax, m=m, intMethod=intMethod, integerTol=integerTol)
 
 	if intMethod == 'romb':
 		C._numberOfDivisionsForN = int(np.log2(len(C.segments[0]._trapValuesCache[f])-1))

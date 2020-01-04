@@ -1,6 +1,7 @@
 from __future__ import division
 import warnings
 import functools
+import logging
 
 import numpy as np
 
@@ -35,7 +36,7 @@ class countCalls:
 def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None,
 	newtonStepTol=1e-14, attemptIterBest=True, newtonMaxIter=50, rootErrTol=1e-10,
 	absTol=0, relTol=1e-12, integerTol=0.1, NIntAbsTol=0.07, M=5, errStop=1e-10,
-	intMethod='quad', divMin=3, divMax=15, m=2, verbose=False):
+	intMethod='quad', divMin=3, divMax=15, m=2):
 	"""
 	A generator which at each step takes a contour and either finds all
 	the zeros of f within it or subdivides it further.  Based on the
@@ -128,9 +129,6 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		Only used if df=None and method='quad'.  The argument order=m is
 		passed to :func:`numdifftools.Derivative` and is the order of the error
 		term in the Taylor approximation.  m must be even.
-	verbose : bool, optional
-		If True certain messages concerning the rootfinding process will
-		be printed.
 
 	Yields
 	------
@@ -154,7 +152,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 	f = countCalls(f)
 
 	countKwargs = {'f':f, 'df':df, 'NIntAbsTol':NIntAbsTol, 'integerTol':integerTol,
-		'divMin':divMin, 'divMax':divMax, 'm':m, 'intMethod':intMethod, 'verbose':verbose}
+		'divMin':divMin, 'divMax':divMax, 'm':m, 'intMethod':intMethod}
 
 	try:
 		# compute the total number of zeros, including multiplicities, within the originally given contour
@@ -165,8 +163,8 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			There is likely a root on or close to the initial contour.
 			Try changing the initial contour, if possible.""")
 
-	if verbose:
-		print('Total number of roots (counting multiplicities) within the original contour =', originalContour._numberOfRoots)
+	logger = logging.getLogger(__name__)
+	logger.info('Counted '+str(originalContour._numberOfRoots)+' roots (including multiplicities) within the original contour')
 
 	roots = []
 	multiplicities = []
@@ -176,8 +174,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 
 	def subdivide(parentContour):
 		"""Given a contour, parentContour, subdivide it into multiple contours."""
-		if verbose:
-			print('Subdividing', parentContour)
+		logger.info('Subdividing '+str(parentContour))
 
 		numberOfRoots = None
 		for subcontours in parentContour.subdivisions():
@@ -194,10 +191,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			try:
 				numberOfRoots = [contour.count_roots(**countKwargs) for contour in np.array(subcontours)]
 				while parentContour._numberOfRoots != sum(numberOfRoots):
-					if verbose:
-						print('Number of roots in sub contours not adding up to parent contour.')
-						print('Recomputing number of roots in parent and child contours with NIntAbsTol = ', .5*NIntAbsTol)
-
+					logger.warning('Number of roots in sub contours not adding up to parent contour.  Recomputing number of roots in parent and child contours with NIntAbsTol='+str(.5*NIntAbsTol))
 					tempCountKwargs = countKwargs.copy()
 					tempCountKwargs['NIntAbsTol'] *= 0.5
 					parentContour._numberOfRoots = parentContour.count_roots(**tempCountKwargs)
@@ -211,10 +205,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 				# likely that the introduced line which subdivides 'parentContour' lies on a zero.
 				# To avoid this we will try to place the subdividing line at a different point along
 				# the division axis
-				if verbose:
-					print('RootError encountered when subdivding', parentContour, 'into:')
-					print(subcontours[0])
-					print(subcontours[1])
+				logger.warning('RootError encountered when subdivding '+str(parentContour)+' into:\n'+str(subcontours[0])+'\n'+subcontours[1])
 				continue
 
 		if numberOfRoots is None or parentContour._numberOfRoots != sum(numberOfRoots):
@@ -262,23 +253,22 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			if originalContour.contains(root):
 				roots.append(root)
 				multiplicities.append(multiplicity)
-				if verbose: print('Recorded root', root, 'multiplicity', multiplicity)
-			elif verbose: print('Root', root, 'ignored as not within original contour.')
+				logger.info('Recorded root '+str(root)+' with multiplicity '+str(multiplicity))
+			else:
+				logger.debug('Root '+str(root)+' ignored as not within original contour')
 
 			# check to see if there are any other roots implied by the given symmetry
 			if guessRootSymmetry is not None:
 				for x0 in guessRootSymmetry(root):
 					# first check that x0 is distinct from the roots we already have
 					if np.all(abs(np.array(roots) - x0) > newtonStepTol):
-						if verbose:
-							print(root, 'is a root so guessRootSymmetry suggests that', x0, 'might also be a root.')
-						root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
+						logger.info(str(root)+' is a root so checking '+str(x0))
+						root = iterateToRoot(x0, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
 						if root is not None:
 							contours.append(Circle(root, 1e-3))
 							contours[-1]._numberOfRoots = contours[-1].count_roots(**countKwargs)
-
-		elif verbose:
-			print('Already recorded root', root)
+		else:
+			logger.debug('Already recorded root '+str(root))
 
 	# Add contours surrounding known roots so that they will be checked
 	for root in guessRoots:
@@ -289,10 +279,7 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		# yield the initial state here so that the animation in demo_find_roots shows the first frame
 		totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
 		yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
-
 		contour = contours.pop()
-
-		if verbose: print(contour._numberOfRoots, 'roots in', contour)
 
 		# if a known root is too near to this contour then reverse the subdivision that created it
 		if np.any([contour.distance(root) < newtonStepTol for root in roots]):
@@ -309,14 +296,15 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		# if the contour is smaller than the newtonStepTol then just assume that
 		# the root is at the center of the contour, print a warning and move on
 		if contour.area < newtonStepTol:
-			root = iterateToRoot(contour.centralPoint, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
+			root = iterateToRoot(contour.centralPoint, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
 			if root is None or abs(f(root)) > abs(f(contour.centralPoint)) or not contour.contains(root):
 				root = contour.centralPoint
 
-			warnings.warn("The area of the interior of this contour with is smaller than newtonStepTol!  Try increasing rootTol" \
+			msg = "The area of the interior of this contour with is smaller than newtonStepTol!  Try increasing rootTol" \
 				"The point z = %f + %fi has been recorded as a root of multiplicity %i." \
-				"The error |f(z)| = "%(root.real, contour.centralPoint.imag, contour._numberOfRoots) + str(abs(f(root))) \
-				)
+				"The error |f(z)| = "%(root.real, contour.centralPoint.imag, contour._numberOfRoots) + str(abs(f(root)))
+			warnings.warn(msg)
+			logger.warning(msg)
 			addRoot(root,  contour._numberOfRoots)
 			continue
 
@@ -337,14 +325,12 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			# Check to see if the number of roots has changed after new values of f have been sampled
 			def callback(I, err, numberOfDiv):
 				if numberOfDiv > contour._numberOfDivisionsForN:
-					if verbose: print('--- Checking N using the newly sampled values of f ---')
+					logger.info('Checking N using the newly sampled values of f')
 					new_N = contour.count_roots(f, df, NIntAbsTol=NIntAbsTol, integerTol=integerTol,
-						divMin=numberOfDiv, divMax=divMax, m=m, intMethod=intMethod, verbose=verbose)
-					if verbose: print('------------------------------------------------------')
+						divMin=numberOfDiv, divMax=divMax, m=m, intMethod=intMethod)
 
 					if new_N != contour._numberOfRoots:
-						if verbose:
-							print('N has been recalculated using more samples of f')
+						logger.info('N has been recalculated using more samples of f')
 						contour._numberOfRoots = new_N
 						raise NumberOfRootsChanged("""The additional function evaluations of f taken while
 							approximating the roots within the contour have been shown that the number of roots
@@ -355,9 +341,9 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		try:
 			approxRoots, approxMultiplicities = contour.approximate_roots(contour._numberOfRoots, f, df,
 				absTol=absTol, relTol=relTol, errStop=errStop, divMin=divMin, divMax=divMax,
-				m=m, rootTol=newtonStepTol, intMethod=intMethod, callback=callback, verbose=verbose)
+				m=m, rootTol=newtonStepTol, intMethod=intMethod, callback=callback)
 		except NumberOfRootsChanged:
-			if verbose: print('The number of roots within the contour have been reevaluated.')
+			logger.debug('The number of roots within the contour has been reevaluated')
 			if contour._numberOfRoots > M:
 				subdivide(contour)
 			else:
@@ -365,15 +351,13 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 			continue
 
 		for approxRoot, approxMultiplicity in list(zip(approxRoots, approxMultiplicities)):
-			if verbose: print('approxRoot', approxRoot, 'approxMultiplicity', approxMultiplicity)
-
 			# check that the multiplicity is close to an integer
 			multiplicity = round(approxMultiplicity.real)
 			if abs(multiplicity - approxMultiplicity.real) > integerTol or abs(approxMultiplicity.imag) > integerTol or multiplicity < 1:
 				continue
 
 			# attempt to refine the root
-			root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest, verbose)
+			root = iterateToRoot(approxRoot, f, df, newtonStepTol, rootErrTol, newtonMaxIter, attemptIterBest)
 
 			if root is None or abs(f(approxRoot)) < abs(f(root)):
 				# stick with the original approximation
@@ -416,17 +400,17 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
 		segment._integralCache = {}
 		segment._trapValuesCache = {}
 
-	if verbose:
-		print('Completed rootfinding with', f.calls, 'evaluations of f at', f.points, 'points')
-		print(RootResult(roots, multiplicities, originalContour))
+	result = RootResult(roots, multiplicities, originalContour)
+	logger.info('Completed rootfinding with '+str(f.calls)+' evaluations of f at '+str(f.points)+' points\n'+str(result))
 
 	totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
 	yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
+
 @docstrings.dedent
 @doc_tab_to_space
 @functools.wraps(find_roots_gen, assigned=('__module__', '__name__'))
-def find_roots(originalContour, f, df=None, **kwargs):
+def find_roots(originalContour, f, df=None, verbose=True, **kwargs):
 	"""
 	Find all the roots of the complex analytic function f within the
 	given contour.
