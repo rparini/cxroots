@@ -7,7 +7,7 @@ jobs:
       - image: circleci/python:2.7
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
   test_python35_pytest:
@@ -15,7 +15,7 @@ jobs:
       - image: circleci/python:3.5
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
   test_python36_pytest:
@@ -23,7 +23,7 @@ jobs:
       - image: circleci/python:3.6
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
   test_python37_pytest:
@@ -31,7 +31,7 @@ jobs:
       - image: circleci/python:3.7
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo python setup.py install
       - run: pytest -v -n 2 --durations=10 -m 'not slow'
 
@@ -41,28 +41,28 @@ jobs:
       - image: circleci/python:2.7
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo python setup.py test --addopts "-v -k quad_df"
   test_python35_setup:
     docker:
       - image: circleci/python:3.5
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo python setup.py test --addopts "-v -k quad_df"
   test_python36_setup:
     docker:
       - image: circleci/python:3.6
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo python setup.py test --addopts "-v -k quad_df"
   test_python37_setup:
     docker:
       - image: circleci/python:3.7
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo python setup.py test --addopts "-v -k quad_df"
 
 
@@ -71,8 +71,8 @@ jobs:
       - image: circleci/python:3.6
     steps:
       - checkout
-      - run: sudo pip install -r requirements.txt
-      - run: sudo pip install -r requirements_doc.txt
+      - run: sudo pip install --upgrade -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements_doc.txt
       - run: sudo python setup.py install
       - run:
           name: Build documentation
@@ -101,8 +101,8 @@ jobs:
     steps:
       # Build resources (eg. images) that README uses
       - checkout
-      - run: sudo pip install -r requirements.txt
-      - run: sudo pip install -r requirements_doc.txt
+      - run: sudo pip install --upgrade -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements_doc.txt
       - run: sudo python setup.py install
       - run:
           name: Build resources
@@ -130,7 +130,7 @@ jobs:
     docker:
       - image: circleci/python:3.6
     steps:
-      - run: sudo pip install twine
+      - run: sudo pip install --upgrade twine
       - checkout
       - run: python setup.py sdist
       - run: python setup.py bdist_wheel
@@ -142,7 +142,7 @@ jobs:
     docker:
       - image: circleci/python:3.6
     steps:
-      - run: sudo pip install twine
+      - run: sudo pip install --upgrade twine
       - checkout
       - run: python setup.py sdist
       - run: python setup.py bdist_wheel
