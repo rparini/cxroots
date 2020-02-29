@@ -11,7 +11,7 @@ References
 import unittest
 import pytest
 import numpy as np
-from scipy import pi, sqrt, exp, sin, cos
+from numpy import sqrt, exp, sin, cos
 
 from cxroots import Circle, Rectangle, Annulus
 from cxroots.tests.ApproxEqual import roots_approx_equal

@@ -2,7 +2,7 @@ from __future__ import division
 
 import numpy as np
 import scipy.integrate
-from scipy import exp, pi
+from numpy import exp, pi
 
 class ComplexPath(object):
 	"""A base class for paths in the complex plane."""

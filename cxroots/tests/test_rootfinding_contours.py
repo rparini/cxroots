@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from scipy import pi
+from numpy import pi
 
 from cxroots import Circle, Rectangle, AnnulusSector, Annulus
 from cxroots.tests.ApproxEqual import roots_approx_equal
