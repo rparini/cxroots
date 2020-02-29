@@ -24,6 +24,7 @@ jobs:
     - name: Download and unzip cxroots
       run: |
         pip download cxroots --no-deps
+        ls
         tar -xzf cxroots-*.tar.gz
         cd cxroots-*
     - name: Test with pytest
