@@ -24,7 +24,7 @@ install:
 script:
   - |
     if [ "${TEST}" == "pytest" ]; then
-      pytest -n 2 --durations=10 -m 'not slow'
+      pytest -n 2 -v --durations=10 -m 'not slow'
     fi
 
   # Do a quick test to make sure 'setup.py test' works
