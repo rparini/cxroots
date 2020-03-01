@@ -23,4 +23,4 @@ jobs:
         pip install cxroots
     - name: Test that we can import cxroots
       run: |
-        python3 -c "import cxroots"
+        python -c "import cxroots"
