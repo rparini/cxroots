@@ -26,6 +26,7 @@ jobs:
         pip download cxroots --no-deps
         ls
         tar -xzf cxroots-*.tar.gz
+        ls
         cd cxroots-*
     - name: Test with pytest
       run: python setup.py test --addopts "-v -m 'not slow'"
