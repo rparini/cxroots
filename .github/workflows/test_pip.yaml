@@ -24,9 +24,6 @@ jobs:
     - name: Download and unzip cxroots
       run: |
         pip download cxroots --no-deps
-        ls
         tar -xzf cxroots-*.tar.gz
-        ls
-        cd cxroots-*
-    - name: Test with pytest
-      run: python setup.py test --addopts "-v -m 'not slow'"
+    - name: Test via pytest
+      run: pytest --durations=10 -m 'not slow'
