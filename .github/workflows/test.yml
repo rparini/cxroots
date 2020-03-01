@@ -47,5 +47,5 @@ jobs:
           git config --global user.name 'GitHub CI'
           git config --global user.email 'ci@github.com'
           git add .
-          git commit -am "Update documentation"
+          git commit -am "Update documentation [skip ci]"
           git push
