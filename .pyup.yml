@@ -1,5 +1,2 @@
-### For pyup
-schedule: every week
-
-# set the default branch
-branch: dev
+schedule: every week  # How often pyup runs
+branch: master        # Pull requests are created against this branch
