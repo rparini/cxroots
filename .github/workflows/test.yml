@@ -26,11 +26,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           pip install -r requirements_doc.txt
-
       - name: Create documentation
         run: |
           cd docs_src
@@ -38,7 +41,6 @@ jobs:
           cd ../README_resources
           bash create_resources
           cd ..
-          
       - name: Commit documentation
         run: |
           git config --global user.name 'GitHub CI'
