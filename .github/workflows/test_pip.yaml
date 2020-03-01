@@ -21,9 +21,6 @@ jobs:
     - name: Install cxroots from pip
       run: |
         pip install cxroots
-    - name: Download and unzip cxroots
+    - name: Test that we can import cxroots
       run: |
-        pip download cxroots --no-deps
-        tar -xzf cxroots-*.tar.gz
-    - name: Test via pytest
-      run: pytest --durations=10 -m 'not slow'
+        python3 -c "import cxroots"
