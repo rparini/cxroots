@@ -40,6 +40,6 @@ jobs:
     - name: Get the version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
     - name: Install cxroots from pip
-      run: pip install cxroots == $VERSION
+      run: pip install cxroots==$VERSION
     - name: Test import cxroots
       run: python -c "import cxroots"
