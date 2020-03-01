@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -91,7 +92,7 @@
 </ul>
 <p class="caption"><span class="caption-text">User Guides</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../countroots.html">Count Roots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guesses.html">Using Known Roots or Symmetries</a></li>
 </ul>
@@ -169,13 +170,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cxroots.contours.Annulus</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
 
-<span class="kn">from</span> <span class="nn">..Contour</span> <span class="k">import</span> <span class="n">Contour</span>
-<span class="kn">from</span> <span class="nn">..Paths</span> <span class="k">import</span> <span class="n">ComplexArc</span>
-<span class="kn">from</span> <span class="nn">.AnnulusSector</span> <span class="k">import</span> <span class="n">AnnulusSector</span>
+<span class="kn">from</span> <span class="nn">..Contour</span> <span class="kn">import</span> <span class="n">Contour</span>
+<span class="kn">from</span> <span class="nn">..Paths</span> <span class="kn">import</span> <span class="n">ComplexArc</span>
+<span class="kn">from</span> <span class="nn">.AnnulusSector</span> <span class="kn">import</span> <span class="n">AnnulusSector</span>
 
 <div class="viewcode-block" id="Annulus"><a class="viewcode-back" href="../../../contours.html#cxroots.Annulus">[docs]</a><span class="k">class</span> <span class="nc">Annulus</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -198,7 +199,7 @@
 <span class="sd">		annulus = Annulus(center=0, radii=(0.5,0.75))</span>
 <span class="sd">		annulus.show()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">radii</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">axisName</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;phi&#39;</span><span class="p">)</span>
@@ -206,7 +207,7 @@
 		<span class="n">segments</span> <span class="o">=</span> <span class="p">[</span><span class="n">ComplexArc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="n">ComplexArc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)]</span>
 		<span class="nb">super</span><span class="p">(</span><span class="n">Annulus</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="s1">&#39;Annulus: center=</span><span class="si">{center.real:.3f}{center.imag:+.3f}</span><span class="s1">i, inner radius=</span><span class="si">{radii[0]:.3f}</span><span class="s1">, outer radius=</span><span class="si">{radii[1]:.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">)</span>
 
 	<span class="nd">@property</span>

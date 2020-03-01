@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -93,7 +94,7 @@
 </ul>
 <p class="caption"><span class="caption-text">User Guides</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="countroots.html">Count Roots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
 </ul>
@@ -177,13 +178,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -205,7 +206,7 @@
 <p>In <cite>cxroots</cite> the left hand side is computed using the function <a class="reference internal" href="#cxroots.CountRoots.prod" title="cxroots.CountRoots.prod"><code class="xref py py-func docutils literal notranslate"><span class="pre">prod()</span></code></a>.</p>
 <dl class="function">
 <dt id="cxroots.CountRoots.prod">
-<code class="descclassname">cxroots.CountRoots.</code><code class="descname">prod</code><span class="sig-paren">(</span><em>C</em>, <em>f</em>, <em>df=None</em>, <em>phi=None</em>, <em>psi=None</em>, <em>absTol=1e-12</em>, <em>relTol=1e-12</em>, <em>divMin=3</em>, <em>divMax=15</em>, <em>m=2</em>, <em>intMethod='quad'</em>, <em>integerTol=inf</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/CountRoots.html#prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.CountRoots.prod" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cxroots.CountRoots.</code><code class="sig-name descname">prod</code><span class="sig-paren">(</span><em class="sig-param">C</em>, <em class="sig-param">f</em>, <em class="sig-param">df=None</em>, <em class="sig-param">phi=None</em>, <em class="sig-param">psi=None</em>, <em class="sig-param">absTol=1e-12</em>, <em class="sig-param">relTol=1e-12</em>, <em class="sig-param">divMin=3</em>, <em class="sig-param">divMax=15</em>, <em class="sig-param">m=2</em>, <em class="sig-param">intMethod='quad'</em>, <em class="sig-param">integerTol=inf</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/CountRoots.html#prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.CountRoots.prod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the symmetric bilinear form used in (1.12) of <a class="reference internal" href="#kb" id="id1"><span>[KB]</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[&lt;\phi,\psi&gt; = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.\]</div>

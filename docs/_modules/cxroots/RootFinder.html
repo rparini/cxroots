@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -91,7 +92,7 @@
 </ul>
 <p class="caption"><span class="caption-text">User Guides</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../countroots.html">Count Roots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
 </ul>
@@ -169,16 +170,16 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cxroots.RootFinder</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.IterativeMethods</span> <span class="k">import</span> <span class="n">iterateToRoot</span>
-<span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="k">import</span> <span class="n">RootError</span>
-<span class="kn">from</span> <span class="nn">.RootResult</span> <span class="k">import</span> <span class="n">RootResult</span>
-<span class="kn">from</span> <span class="nn">.Misc</span> <span class="k">import</span> <span class="n">doc_tab_to_space</span><span class="p">,</span> <span class="n">docstrings</span><span class="p">,</span> <span class="n">NumberOfRootsChanged</span>
+<span class="kn">from</span> <span class="nn">.IterativeMethods</span> <span class="kn">import</span> <span class="n">iterateToRoot</span>
+<span class="kn">from</span> <span class="nn">.CountRoots</span> <span class="kn">import</span> <span class="n">RootError</span>
+<span class="kn">from</span> <span class="nn">.RootResult</span> <span class="kn">import</span> <span class="n">RootResult</span>
+<span class="kn">from</span> <span class="nn">.Misc</span> <span class="kn">import</span> <span class="n">doc_tab_to_space</span><span class="p">,</span> <span class="n">docstrings</span><span class="p">,</span> <span class="n">NumberOfRootsChanged</span>
 
 <span class="k">class</span> <span class="nc">MultiplicityError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
 	<span class="k">pass</span>
@@ -187,12 +188,12 @@
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Count how many times a given function is called.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">=</span> <span class="mi">0</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="mi">0</span>
 
-	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">+=</span> <span class="mi">1</span>
 		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
@@ -319,7 +320,7 @@
 <span class="sd">	.. [KB] Peter Kravanja, Marc Van Barel, &quot;Computing the Zeros of</span>
 <span class="sd">		Anayltic Functions&quot;, Springer (2000)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="kn">from</span> <span class="nn">.contours.Circle</span> <span class="k">import</span> <span class="n">Circle</span>
+	<span class="kn">from</span> <span class="nn">.contours.Circle</span> <span class="kn">import</span> <span class="n">Circle</span>
 
 	<span class="c1"># wrap f to record the number of function calls</span>
 	<span class="n">f</span> <span class="o">=</span> <span class="n">countCalls</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>

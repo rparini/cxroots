@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -93,7 +94,7 @@
 </ul>
 <p class="caption"><span class="caption-text">User Guides</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="countroots.html">Count Roots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
 </ul>
@@ -177,13 +178,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -200,7 +201,7 @@
 <h1>Iterative Methods<a class="headerlink" href="#iterative-methods" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="cxroots.IterativeMethods.iterateToRoot">
-<code class="descclassname">cxroots.IterativeMethods.</code><code class="descname">iterateToRoot</code><span class="sig-paren">(</span><em>x0</em>, <em>f</em>, <em>df=None</em>, <em>steptol=1e-12</em>, <em>roottol=1e-12</em>, <em>maxIter=20</em>, <em>attemptBest=False</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#iterateToRoot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.iterateToRoot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cxroots.IterativeMethods.</code><code class="sig-name descname">iterateToRoot</code><span class="sig-paren">(</span><em class="sig-param">x0</em>, <em class="sig-param">f</em>, <em class="sig-param">df=None</em>, <em class="sig-param">steptol=1e-12</em>, <em class="sig-param">roottol=1e-12</em>, <em class="sig-param">maxIter=20</em>, <em class="sig-param">attemptBest=False</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#iterateToRoot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.iterateToRoot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Starting with initial point x0 iterate to a root of f. This function
 is called during the rootfinding process to refine any roots found.
 If df is given then the Newton-Raphson method, <a class="reference internal" href="#cxroots.IterativeMethods.newton" title="cxroots.IterativeMethods.newton"><code class="xref py py-func docutils literal notranslate"><span class="pre">newton()</span></code></a>,
@@ -241,7 +242,7 @@ unsucessful then None will be returned instead.</p>
 
 <dl class="function">
 <dt id="cxroots.IterativeMethods.muller">
-<code class="descclassname">cxroots.IterativeMethods.</code><code class="descname">muller</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>x3</em>, <em>f</em>, <em>steptol=1e-12</em>, <em>roottol=1e-12</em>, <em>maxIter=20</em>, <em>attemptBest=False</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#muller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.muller" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cxroots.IterativeMethods.</code><code class="sig-name descname">muller</code><span class="sig-paren">(</span><em class="sig-param">x1</em>, <em class="sig-param">x2</em>, <em class="sig-param">x3</em>, <em class="sig-param">f</em>, <em class="sig-param">steptol=1e-12</em>, <em class="sig-param">roottol=1e-12</em>, <em class="sig-param">maxIter=20</em>, <em class="sig-param">attemptBest=False</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#muller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.muller" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper for mpmath’s implementation of Muller’s method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -282,7 +283,7 @@ the callback function evaluates to True then the routine will end.</p></li>
 
 <dl class="function">
 <dt id="cxroots.IterativeMethods.newton">
-<code class="descclassname">cxroots.IterativeMethods.</code><code class="descname">newton</code><span class="sig-paren">(</span><em>x0</em>, <em>f</em>, <em>df</em>, <em>steptol=1e-12</em>, <em>roottol=1e-12</em>, <em>maxIter=20</em>, <em>attemptBest=False</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#newton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.newton" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cxroots.IterativeMethods.</code><code class="sig-name descname">newton</code><span class="sig-paren">(</span><em class="sig-param">x0</em>, <em class="sig-param">f</em>, <em class="sig-param">df</em>, <em class="sig-param">steptol=1e-12</em>, <em class="sig-param">roottol=1e-12</em>, <em class="sig-param">maxIter=20</em>, <em class="sig-param">attemptBest=False</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#newton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.newton" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find an approximation to a point xf such that f(xf)=0 for a
 scalar function f using Newton-Raphson iteration starting at
 the point x0.</p>
