@@ -1,2 +1,5 @@
-schedule: every week  # How often pyup runs
-branch: master        # Pull requests are created against this branch
+# How often pyup runs
+schedule: every month
+
+# Pull requests are created against this branch
+branch: master
