@@ -1,7 +1,7 @@
-|pkg_img| |travis| |pyup|
+|pkg_img| |tests| |pyup|
 
-.. |travis| image:: https://travis-ci.org/rparini/cxroots.svg?branch=master 
-    :target: https://travis-ci.org/rparini/cxroots/branches
+.. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
+    :target: https://github.com/rparini/cxroots/actions
     
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
