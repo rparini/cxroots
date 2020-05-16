@@ -31,11 +31,11 @@ setup(
     tests_require=['pytest'],
     keywords='roots zeros complex analytic functions',
     classifiers=[
-	    'Development Status :: 4 - Beta',
-	    'Intended Audience :: Science/Research',
-	    'Topic :: Scientific/Engineering :: Mathematics',
-	    'License :: OSI Approved :: BSD License',
-	    'Programming Language :: Python :: 2.7',
-	    'Programming Language :: Python :: 3',
-	],
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Mathematics',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+    ],
 )
