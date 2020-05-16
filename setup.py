@@ -27,7 +27,7 @@ setup(
     zip_safe = False,   # prevent cxroots from installing as a .egg zip file
     platforms = ['all'],
     setup_requires = ['pytest-runner'],
-    install_requires = ['numpy', 'scipy', 'docrep', 'mpmath', 'numdifftools>=0.9.39'],
+    install_requires = ['numpy', 'scipy', 'numpydoc', 'mpmath', 'numdifftools>=0.9.39'],
     tests_require=['pytest'],
     keywords='roots zeros complex analytic functions',
     classifiers=[
