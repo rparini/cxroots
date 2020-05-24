@@ -3,11 +3,12 @@ import warnings
 import functools
 
 import numpy as np
+from numpydoc.docscrape import FunctionDoc
 
 from .IterativeMethods import iterateToRoot
 from .CountRoots import RootError
 from .RootResult import RootResult
-from .Misc import docstrings, NumberOfRootsChanged
+from .Misc import NumberOfRootsChanged, update_docstring
 
 class MultiplicityError(RuntimeError):
     pass
@@ -29,8 +30,6 @@ class countCalls:
             self.points += 1
         return self.func(z)
 
-@docstrings.get_sectionsf('find_roots_gen')
-@docstrings.dedent
 def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry=None,
     newtonStepTol=1e-14, attemptIterBest=True, newtonMaxIter=50, rootErrTol=1e-10,
     absTol=0, relTol=1e-12, integerTol=0.1, NIntAbsTol=0.07, M=5, errStop=1e-10,
@@ -422,7 +421,9 @@ def find_roots_gen(originalContour, f, df=None, guessRoots=[], guessRootSymmetry
     totFoundRoots = sum(int(round(multiplicity.real)) for root, multiplicity in zip(roots, multiplicities))
     yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
-@docstrings.dedent
+
+
+@update_docstring(Parameters=FunctionDoc(find_roots_gen)['Parameters'])
 @functools.wraps(find_roots_gen, assigned=('__module__', '__name__'))
 def find_roots(originalContour, f, df=None, **kwargs):
     """
@@ -431,7 +432,7 @@ def find_roots(originalContour, f, df=None, **kwargs):
 
     Parameters
     ----------
-    %(find_roots_gen.parameters)s
+    %s
 
     Returns
     -------
@@ -442,4 +443,3 @@ def find_roots(originalContour, f, df=None, **kwargs):
     for roots, multiplicities, contours, numberOfRemainingRoots in rootFinder:
         pass
     return RootResult(roots, multiplicities, originalContour)
-
