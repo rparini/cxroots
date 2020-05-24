@@ -1,20 +1,26 @@
-import docrep
-docstrings = docrep.DocstringProcessor()
+from numpydoc.docscrape import FunctionDoc
 
-def doc_tab_to_space(func):
-	"""
-	docrep doesn't like tabs
-	"""
-	func.__doc__ = func.__doc__.replace('\t', '    ')
-	return func
 
 def remove_para(*paras):
-	def wrapper(func):
-		func = doc_tab_to_space(func)
-		func = docstrings.dedent(func)
-		func.__doc__ = docstrings.delete_params_s(func.__doc__, paras)
-		return func
-	return wrapper
+    def wrapper(func):
+        doc = FunctionDoc(func)
+        for i, p in enumerate(doc['Parameters'][:]):
+            if p.name.split(':')[0].rstrip() in paras:
+                del doc['Parameters'][i]
+        func.__doc__ = doc
+        return func
+    return wrapper
+
+
+def update_docstring(**dic):
+    def wrapper(func):
+        doc = FunctionDoc(func)
+        for k, v in dic.items():
+            doc[k] = v
+        func.__doc__ = doc
+        return func
+    return wrapper
+
 
 class NumberOfRootsChanged(Exception):
     pass
