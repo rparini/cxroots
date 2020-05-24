@@ -17,3 +17,4 @@ dist/*
 .cache/v/cache/lastfailed
 .pytest_cache
 
+.vscode/settings.json
