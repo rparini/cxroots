@@ -1,4 +1,6 @@
 ## Changelog
+### Unreleased
+- Replaced docrep with numpydoc
 
 ### 1.1.9 - 1/Mar/2020
 - Fix depreciation warning from scipy
