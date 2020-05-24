@@ -4,7 +4,7 @@ from numpydoc.docscrape import FunctionDoc
 def remove_para(*paras):
     def wrapper(func):
         doc = FunctionDoc(func)
-        for i, p in enumerate(doc['Parameters'].copy()):
+        for i, p in enumerate(doc['Parameters'][:]):
             if p.name.split(':')[0].rstrip() in paras:
                 del doc['Parameters'][i]
         func.__doc__ = doc
