@@ -12,7 +12,7 @@ scipy==1.2.1; python_version <= '2.7'  # pyup: ignore
 numpy==1.18.4; python_version > '2.7'
 numpy==1.16.4; python_version <= '2.7'  # pyup: ignore
 
-numpydoc==0.9.2
+numpydoc==1.0.0
 mpmath==1.1.0
 numdifftools==0.9.39
 
