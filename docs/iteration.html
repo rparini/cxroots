@@ -1,54 +1,60 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Iterative Methods &mdash; cxroots dev documentation</title>
+  <title>Iterative Methods &mdash; cxroots  documentation</title>
   
 
   
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Rootfinding Result" href="result.html" />
     <link rel="prev" title="Symmetric Bilinear Form" href="prod.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> cxroots
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> cxroots
           
 
           
@@ -56,10 +62,6 @@
 
           
             
-            
-              <div class="version">
-                dev
-              </div>
             
           
 
@@ -75,6 +77,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -109,6 +112,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -147,7 +151,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Iterative Methods</li>
     
@@ -173,13 +177,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -194,140 +198,128 @@
 </style>
 <div class="section" id="iterative-methods">
 <h1>Iterative Methods<a class="headerlink" href="#iterative-methods" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="cxroots.IterativeMethods.iterateToRoot">
-<code class="descclassname">cxroots.IterativeMethods.</code><code class="descname">iterateToRoot</code><span class="sig-paren">(</span><em>x0</em>, <em>f</em>, <em>df=None</em>, <em>steptol=1e-12</em>, <em>roottol=1e-12</em>, <em>maxIter=20</em>, <em>attemptBest=False</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#iterateToRoot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.iterateToRoot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cxroots.IterativeMethods.</code><code class="sig-name descname">iterateToRoot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">df</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">steptol</span><span class="o">=</span><span class="default_value">1e-12</span></em>, <em class="sig-param"><span class="n">roottol</span><span class="o">=</span><span class="default_value">1e-12</span></em>, <em class="sig-param"><span class="n">maxIter</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">attemptBest</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">callback</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#iterateToRoot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.iterateToRoot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Starting with initial point x0 iterate to a root of f. This function
 is called during the rootfinding process to refine any roots found.
 If df is given then the Newton-Raphson method, <a class="reference internal" href="#cxroots.IterativeMethods.newton" title="cxroots.IterativeMethods.newton"><code class="xref py py-func docutils literal notranslate"><span class="pre">newton()</span></code></a>,
 will be used, otherwise Muller’s method, <a class="reference internal" href="#cxroots.IterativeMethods.muller" title="cxroots.IterativeMethods.muller"><code class="xref py py-func docutils literal notranslate"><span class="pre">muller()</span></code></a>, will be used instead.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x0</strong> (<em>complex</em>) – An initial point for the iteration.</li>
-<li><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</li>
-<li><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – The derivative of f.</li>
-<li><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</li>
-<li><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</li>
-<li><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</li>
-<li><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> (<em>complex</em>) – An initial point for the iteration.</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – The derivative of f.</p></li>
+<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
+<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
+<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
+<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
 x0, was at least as good as the current iteration, x, in the
 sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
 satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
 this case the previous iteration is returned as the approximation
-of the root.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</li>
-<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
+of the root.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and
 ‘iteration’ the number of iterations that have been taken.  If
-the callback function evaluates to True then the routine will end.</li>
+the callback function evaluates to True then the routine will end.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An approximation for a root of f.  If the rootfinding was
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An approximation for a root of f.  If the rootfinding was
 unsucessful then None will be returned instead.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="cxroots.IterativeMethods.muller">
-<code class="descclassname">cxroots.IterativeMethods.</code><code class="descname">muller</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>x3</em>, <em>f</em>, <em>steptol=1e-12</em>, <em>roottol=1e-12</em>, <em>maxIter=20</em>, <em>attemptBest=False</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#muller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.muller" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cxroots.IterativeMethods.</code><code class="sig-name descname">muller</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x1</span></em>, <em class="sig-param"><span class="n">x2</span></em>, <em class="sig-param"><span class="n">x3</span></em>, <em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">steptol</span><span class="o">=</span><span class="default_value">1e-12</span></em>, <em class="sig-param"><span class="n">roottol</span><span class="o">=</span><span class="default_value">1e-12</span></em>, <em class="sig-param"><span class="n">maxIter</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">attemptBest</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">callback</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#muller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.muller" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper for mpmath’s implementation of Muller’s method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x1</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.</li>
-<li><strong>x2</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
-Should not equal x1.</li>
-<li><strong>x3</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
-Should not equal x1 or x2.</li>
-<li><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</li>
-<li><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</li>
-<li><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</li>
-<li><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</li>
-<li><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x1</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.</p></li>
+<li><p><strong>x2</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
+Should not equal x1.</p></li>
+<li><p><strong>x3</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
+Should not equal x1 or x2.</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
+<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
+<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
+<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
+<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
 x0, was at least as good as the current iteration, x, in the
 sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
 satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
 this case the previous iteration is returned as the approximation
-of the root.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</li>
-<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
+of the root.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and
 ‘iteration’ the number of iterations that have been taken.  If
-the callback function evaluates to True then the routine will end.</li>
+the callback function evaluates to True then the routine will end.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>complex</em> – The approximation to a root of f.</li>
-<li><em>float</em> – abs(f(x)) where x is the final approximation for the root of f.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>complex</em> – The approximation to a root of f.</p></li>
+<li><p><em>float</em> – abs(f(x)) where x is the final approximation for the root of f.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="cxroots.IterativeMethods.newton">
-<code class="descclassname">cxroots.IterativeMethods.</code><code class="descname">newton</code><span class="sig-paren">(</span><em>x0</em>, <em>f</em>, <em>df</em>, <em>steptol=1e-12</em>, <em>roottol=1e-12</em>, <em>maxIter=20</em>, <em>attemptBest=False</em>, <em>verbose=False</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#newton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.newton" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cxroots.IterativeMethods.</code><code class="sig-name descname">newton</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">steptol</span><span class="o">=</span><span class="default_value">1e-12</span></em>, <em class="sig-param"><span class="n">roottol</span><span class="o">=</span><span class="default_value">1e-12</span></em>, <em class="sig-param"><span class="n">maxIter</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">attemptBest</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">callback</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#newton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cxroots.IterativeMethods.newton" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find an approximation to a point xf such that f(xf)=0 for a
 scalar function f using Newton-Raphson iteration starting at
 the point x0.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x0</strong> (<em>float</em><em> or </em><em>complex</em>) – Initial point for Newton iteration, should be as close as
-possible to a root of f</li>
-<li><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</li>
-<li><strong>df</strong> (<em>function</em>) – Function of a single variable, df(x), providing the
-derivative of the function f(x) at the point x</li>
-<li><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</li>
-<li><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</li>
-<li><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</li>
-<li><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> (<em>float</em><em> or </em><em>complex</em>) – Initial point for Newton iteration, should be as close as
+possible to a root of f</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – Function of a single variable, df(x), providing the
+derivative of the function f(x) at the point x</p></li>
+<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
+<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
+<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
+<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
 x0, was at least as good as the current iteration, x, in the
 sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
 satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
 this case the previous iteration is returned as the approximation
-of the root.</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</li>
-<li><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
+of the root.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and
 ‘iteration’ the number of iterations that have been taken.  If
-the callback function evaluates to True then the routine will end.</li>
+the callback function evaluates to True then the routine will end.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>complex</em> – The approximation to a root of f.</li>
-<li><em>float</em> – abs(f(x)) where x is the final approximation for the root of f.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>complex</em> – The approximation to a root of f.</p></li>
+<li><p><em>float</em> – abs(f(x)) where x is the final approximation for the root of f.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -343,7 +335,7 @@ the callback function evaluates to True then the routine will end.</li>
         <a href="result.html" class="btn btn-neutral float-right" title="Rootfinding Result" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="prod.html" class="btn btn-neutral" title="Symmetric Bilinear Form" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="prod.html" class="btn btn-neutral float-left" title="Symmetric Bilinear Form" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -352,11 +344,19 @@ the callback function evaluates to True then the routine will end.</li>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2017, Robert Parini
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -368,29 +368,16 @@ the callback function evaluates to True then the routine will end.</li>
   </div>
   
 
-
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
