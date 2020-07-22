@@ -17,6 +17,7 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install -r requirements_doc.txt
+        pip install .
     - name: Get the version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
     - name: Update version.py
