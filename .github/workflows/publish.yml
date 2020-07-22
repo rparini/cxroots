@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.head_ref }} 
+        ref: master
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
