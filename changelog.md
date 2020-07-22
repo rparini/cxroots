@@ -1,5 +1,5 @@
 ## Changelog
-### Unreleased
+### 1.1.10
 - Replaced docrep with numpydoc
 
 ### 1.1.9 - 1/Mar/2020
