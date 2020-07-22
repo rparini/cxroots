@@ -84,6 +84,10 @@ BibTex:
 
 ----------
 
+Release Procedure
+-----------------
+Making a release on GitHub with the tag vX.Y.Z will update the documentation on `master` and push cxroots at the tagged commit to PyPI 
+
 References
 ----------
 
