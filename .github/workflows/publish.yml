@@ -34,7 +34,7 @@ jobs:
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Update documentation
-        file_pattern: docs/*
+        file_pattern: docs/* cxroots/version.py
         branch: master
     - name: Build and publish
       env:
