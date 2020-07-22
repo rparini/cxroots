@@ -8,11 +8,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Get the version
+    - name: Get tag name
+      id: get_tag_name
       run: |
         echo "GITHUB_REF: $GITHUB_REF"
+        echo "VERSION: ${GITHUB_REF/refs\/tags\/v/}"
         echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
-        echo "Version: $VERSION"
     - uses: actions/checkout@v2
       with:
         ref: master
