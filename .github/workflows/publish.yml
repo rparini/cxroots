@@ -21,12 +21,12 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements_doc.txt
         pip install .
-    - name: Get the version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
     - name: Update version.py
       run: |
+        echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+        echo "Updating version.py to ${VERSION}"
         echo "# __version__ is set by CI based on release tag on GitHub" > cxroots/version.py
-        echo "__version__ = '${VERSION}'" >> cxroots/version.py
+        echo "__version__ = '$VERSION'" >> cxroots/version.py
     - name: Update documentation
       run: |
         cd docs_src
