@@ -8,6 +8,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Get the version
+      run: |
+        echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+        echo "Version: $VERSION"
     - uses: actions/checkout@v2
       with:
         ref: master
@@ -23,8 +27,8 @@ jobs:
         pip install .
     - name: Update version.py
       run: |
-        echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
-        echo "Updating version.py to ${VERSION}"
+        VERSION=${{ steps.get_tag_name.outputs.VERSION }}
+        echo "Updating version.py to $VERSION"
         echo "# __version__ is set by CI based on release tag on GitHub" > cxroots/version.py
         echo "__version__ = '$VERSION'" >> cxroots/version.py
     - name: Update documentation
