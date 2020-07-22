@@ -39,7 +39,7 @@ jobs:
         bash create_docs
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Update documentation
+        commit_message: Autoupdate documentation for ${{ steps.get_tag_name.outputs.VERSION }}
         file_pattern: docs/* cxroots/version.py
         branch: master
     - name: Build and publish
