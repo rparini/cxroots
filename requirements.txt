@@ -10,7 +10,7 @@ scipy==1.5.3; python_version > '3.5'
 scipy==1.4.1; python_version > '2.7' and python_version <= '3.5' # pyup: ignore
 scipy==1.2.1; python_version <= '2.7'  # pyup: ignore
 
-numpy==1.19.2; python_version > '3.5'
+numpy==1.19.3; python_version > '3.5'
 numpy==1.18.5; python_version > '2.7' and python_version <= '3.5' # pyup: ignore
 numpy==1.16.4; python_version <= '2.7'  # pyup: ignore
 
