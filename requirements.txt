@@ -6,7 +6,7 @@
 # cxroots as a library.
 #
 
-scipy==1.5.4; python_version > '3.5'
+scipy==1.6.0; python_version > '3.5'
 scipy==1.4.1; python_version > '2.7' and python_version <= '3.5' # pyup: ignore
 scipy==1.2.1; python_version <= '2.7'  # pyup: ignore
 
