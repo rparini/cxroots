@@ -20,7 +20,7 @@ mpmath==1.1.0; python_version <= '2.7'  # pyup: ignore
 
 numdifftools==0.9.39
 
-matplotlib==3.3.4; python_version > '2.7'
+matplotlib==3.4.1; python_version > '2.7'
 matplotlib==2.2.3; python_version <= '2.7'  # pyup: ignore
 
 pytest==6.2.2; python_version > '2.7'
