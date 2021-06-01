@@ -9,7 +9,7 @@
 scipy==1.6.3; python_version > '2.7'
 scipy==1.2.1; python_version <= '2.7'  # pyup: ignore
 
-numpy==1.20.2; python_version > '2.7'
+numpy==1.20.3; python_version > '2.7'
 numpy==1.16.4; python_version <= '2.7'  # pyup: ignore
 
 numpydoc==1.1.0; python_version > '2.7'
