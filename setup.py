@@ -21,7 +21,7 @@ setup(
     author = 'Robert Parini',
     author_email = 'robert.parini@gmail.com',
     url = 'https://rparini.github.io/cxroots/',
-    license = 'BSD',
+    license = 'BSD-3-Clause',
     data_files = [("", ["LICENSE"])],
     packages = packages,
     zip_safe = False,   # prevent cxroots from installing as a .egg zip file
