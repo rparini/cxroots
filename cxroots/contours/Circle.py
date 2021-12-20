@@ -6,8 +6,9 @@ from ..Contour import Contour
 from ..Paths import ComplexArc
 from .Annulus import Annulus
 
+
 class Circle(Contour):
-	"""
+    """
 	A positively oriented circle in the complex plane.
 
 	Parameters
@@ -26,31 +27,34 @@ class Circle(Contour):
 		circle = Circle(center=1, radius=0.5)
 		circle.show()
 	"""
-	def __init__(self, center, radius):
-		self.center = center
-		self.radius = radius
-		self.axisName = ('r')
 
-		segments = [ComplexArc(center, radius, 0, 2*pi)]
-		super(Circle, self).__init__(segments)
+    def __init__(self, center, radius):
+        self.center = center
+        self.radius = radius
+        self.axisName = "r"
 
-	def __str__(self):
-		return 'Circle: center={center.real:.3f}{center.imag:+.3f}i, radius={radius:.3f}'.format(center=self.center, radius=self.radius)
+        segments = [ComplexArc(center, radius, 0, 2 * pi)]
+        super(Circle, self).__init__(segments)
 
-	def contains(self, z):
-		""" Returns True if the point z lies within the contour, False if otherwise """
-		return abs(z - self.center) < self.radius
+    def __str__(self):
+        return "Circle: center={center.real:.3f}{center.imag:+.3f}i, radius={radius:.3f}".format(
+            center=self.center, radius=self.radius
+        )
 
-	@property
-	def centralPoint(self):
-		return self.center
+    def contains(self, z):
+        """ Returns True if the point z lies within the contour, False if otherwise """
+        return abs(z - self.center) < self.radius
 
-	@property
-	def area(self):
-		return pi*self.radius**2
+    @property
+    def centralPoint(self):
+        return self.center
 
-	def subdivide(self, axis='r', divisionFactor=0.5):
-		"""
+    @property
+    def area(self):
+        return pi * self.radius ** 2
+
+    def subdivide(self, axis="r", divisionFactor=0.5):
+        """
 		Subdivide the contour
 
 		Parameters
@@ -67,22 +71,22 @@ class Circle(Contour):
 		box2 : Circle
 			With radius equal to the inner radius of box1
 		"""
-		if axis == 'r' or self.axisName[axis] == 'r':
-			box1 = Annulus(self.center, [self.radius*divisionFactor, self.radius])
-			box2 = Circle(self.center, self.radius*divisionFactor)
-			box1.segments[0] = self.segments[0]
-			box1.segments[1]._reversePath = box2.segments[0]
-			box2.segments[0]._reversePath = box1.segments[1]
+        if axis == "r" or self.axisName[axis] == "r":
+            box1 = Annulus(self.center, [self.radius * divisionFactor, self.radius])
+            box2 = Circle(self.center, self.radius * divisionFactor)
+            box1.segments[0] = self.segments[0]
+            box1.segments[1]._reversePath = box2.segments[0]
+            box2.segments[0]._reversePath = box1.segments[1]
 
-		for box in [box1, box2]:
-			box._createdBySubdivisionAxis = axis
-			box._parentBox = self
-			self._childBoxes = [box1, box2]
+        for box in [box1, box2]:
+            box._createdBySubdivisionAxis = axis
+            box._parentBox = self
+            self._childBoxes = [box1, box2]
 
-		return box1, box2
+        return box1, box2
 
-	def randomPoint(self):
-		""" Returns a random point inside the Circle """
-		r   = np.random.uniform(0,self.radius)
-		phi = np.random.uniform(0,2*pi)
-		return r*exp(1j*phi) + self.center
+    def randomPoint(self):
+        """ Returns a random point inside the Circle """
+        r = np.random.uniform(0, self.radius)
+        phi = np.random.uniform(0, 2 * pi)
+        return r * exp(1j * phi) + self.center

@@ -3,6 +3,7 @@ from collections import namedtuple
 
 import numpy as np
 
+
 class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
     """
     A class which stores the roots and their multiplicites as attributes
@@ -18,6 +19,7 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
     originalContour : Contour
         The contour bounding the region in which the roots were found.
     """
+
     def __new__(cls, roots, multiplicities, originalContour):
         obj = super(RootResult, cls).__new__(cls, roots, multiplicities)
         obj.originalContour = originalContour
@@ -47,8 +49,9 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
             r.show()
         """
         import matplotlib.pyplot as plt
-        self.originalContour.plot(linecolor='k', linestyle='--')
-        plt.scatter(np.real(self.roots), np.imag(self.roots), color='k', marker='x')
+
+        self.originalContour.plot(linecolor="k", linestyle="--")
+        plt.scatter(np.real(self.roots), np.imag(self.roots), color="k", marker="x")
 
         if saveFile is not None:
             plt.savefig(saveFile)
@@ -63,13 +66,17 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
         sortargs = np.argsort(roots)
         roots, multiplicities = roots[sortargs], multiplicities[sortargs]
 
-        s =  ' Multiplicity |               Root              '
-        s+='\n------------------------------------------------'
+        s = " Multiplicity |               Root              "
+        s += "\n------------------------------------------------"
 
         for i, root in np.ndenumerate(roots):
             if root.real < 0:
-                s += '\n{: ^14d}| {:.12f} {:+.12f}i'.format(int(multiplicities[i]), root.real, root.imag)
+                s += "\n{: ^14d}| {:.12f} {:+.12f}i".format(
+                    int(multiplicities[i]), root.real, root.imag
+                )
             else:
-                s += '\n{: ^14d}|  {:.12f} {:+.12f}i'.format(int(multiplicities[i]), root.real, root.imag)
+                s += "\n{: ^14d}|  {:.12f} {:+.12f}i".format(
+                    int(multiplicities[i]), root.real, root.imag
+                )
 
         return s

@@ -6,6 +6,7 @@ from numpy import pi
 
 import numdifftools.fornberg as ndf
 
+
 @np.vectorize
 def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=False):
     r"""
@@ -39,13 +40,14 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
     """
     if contour is None:
         from .contours.Circle import Circle
+
         C = lambda z0: Circle(z0, 1e-3)
     else:
         C = lambda z0: contour
 
-    integrand = lambda z: f(z)/(z-z0)**(n+1)
+    integrand = lambda z: f(z) / (z - z0) ** (n + 1)
     integral = C(z0).integrate(integrand, absTol=absIntegrationTol, verbose=verbose)
-    return integral * math.factorial(n)/(2j*pi)
+    return integral * math.factorial(n) / (2j * pi)
 
 
 def find_multiplicity(root, f, df=None, rootErrTol=1e-10, verbose=False):
@@ -78,24 +80,27 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10, verbose=False):
         The multiplicity of the given root.
     """
     if abs(f(root)) > rootErrTol:
-        raise ValueError("""
+        raise ValueError(
+            """
             The provided 'root' is not a root of the given function f.
             Specifically, %f = abs(f(root)) > rootErrTol = %f
-            """%(abs(f(root)), rootErrTol))
+            """
+            % (abs(f(root)), rootErrTol)
+        )
 
     n = 1
     while True:
         if df is not None:
-            if n==1:
+            if n == 1:
                 err = abs(df(root))
             else:
                 # ndf.derivative returns an array [f, f', f'', ...]
-                err = abs(ndf.derivative(df, root, n-1)[n-1])
+                err = abs(ndf.derivative(df, root, n - 1)[n - 1])
         else:
             err = abs(ndf.derivative(f, root, n)[n])
 
         if verbose:
-            print('n', n, '|df^(n)|', err)
+            print("n", n, "|df^(n)|", err)
 
         if err > rootErrTol:
             break
@@ -103,4 +108,3 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10, verbose=False):
         n += 1
 
     return n
-

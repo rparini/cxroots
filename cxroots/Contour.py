@@ -22,6 +22,7 @@ class Contour(object):
     area : float
         The surface area of the contour.
     """
+
     def __init__(self, segments):
         self.segments = np.array(segments, dtype=object)
 
@@ -53,21 +54,25 @@ class Contour(object):
         """
         t = np.array(t)
         N = len(self.segments)
-        segmentIndex = np.array(N*t, dtype=int)
+        segmentIndex = np.array(N * t, dtype=int)
         segmentIndex = np.mod(segmentIndex, N)
 
-        if hasattr(segmentIndex, '__iter__'):
-            return np.array([self.segments[i](N*t[ti]%1) for ti, i in enumerate(segmentIndex)])
+        if hasattr(segmentIndex, "__iter__"):
+            return np.array(
+                [self.segments[i](N * t[ti] % 1) for ti, i in enumerate(segmentIndex)]
+            )
         else:
-            return self.segments[segmentIndex](N*t%1)
+            return self.segments[segmentIndex](N * t % 1)
 
     @property
     def centralPoint(self):
-        raise NotImplementedError('centralPoint needs to be implemented in the subclass.')
+        raise NotImplementedError(
+            "centralPoint needs to be implemented in the subclass."
+        )
 
     @property
     def area(self):
-        raise NotImplementedError('area needs to be implemented in the subclass.')
+        raise NotImplementedError("area needs to be implemented in the subclass.")
 
     def contains(self, z):
         """
@@ -82,7 +87,7 @@ class Contour(object):
         bool
             True if z lies within the contour and false otherwise.
         """
-        raise NotImplementedError('contains() needs to be implemented in the subclass.')
+        raise NotImplementedError("contains() needs to be implemented in the subclass.")
 
     @functools.wraps(ComplexPath.plot)
     def plot(self, *args, **kwargs):
@@ -92,15 +97,16 @@ class Contour(object):
 
     def _sizePlot(self):
         import matplotlib.pyplot as plt
-        t = np.linspace(0,1,1000)
-        z = self(t)
-        xpad = (max(np.real(z))-min(np.real(z)))*0.1
-        ypad = (max(np.imag(z))-min(np.imag(z)))*0.1
 
-        xmin = min(np.real(z))-xpad
-        xmax = max(np.real(z))+xpad
-        ymin = min(np.imag(z))-ypad
-        ymax = max(np.imag(z))+ypad
+        t = np.linspace(0, 1, 1000)
+        z = self(t)
+        xpad = (max(np.real(z)) - min(np.real(z))) * 0.1
+        ypad = (max(np.imag(z)) - min(np.imag(z))) * 0.1
+
+        xmin = min(np.real(z)) - xpad
+        xmax = max(np.real(z)) + xpad
+        ymin = min(np.imag(z)) - ypad
+        ymax = max(np.imag(z)) + ypad
         plt.xlim([xmin, xmax])
         plt.ylim([ymin, ymax])
 
@@ -118,15 +124,16 @@ class Contour(object):
             Key word arguments are as in :meth:`~cxroots.Contour.Contour.plot`.
         """
         import matplotlib.pyplot as plt
+
         self.plot(**plotKwargs)
 
         if saveFile is not None:
-            plt.savefig(saveFile, bbox_inches='tight')
+            plt.savefig(saveFile, bbox_inches="tight")
             plt.close()
         else:
             plt.show()
 
-    def subdivisions(self, axis='alternating'):
+    def subdivisions(self, axis="alternating"):
         """
         A generator for possible subdivisions of the contour.
 
@@ -146,9 +153,9 @@ class Contour(object):
             A tuple with two contours which subdivide the original
             contour.
         """
-        if axis == 'alternating':
-            if hasattr(self,'_createdBySubdivisionAxis'):
-                axis = (self._createdBySubdivisionAxis + 1)%len(self.axisName)
+        if axis == "alternating":
+            if hasattr(self, "_createdBySubdivisionAxis"):
+                axis = (self._createdBySubdivisionAxis + 1) % len(self.axisName)
             else:
                 axis = 0
 
@@ -176,34 +183,37 @@ class Contour(object):
 
     @functools.wraps(ComplexPath.integrate)
     def integrate(self, f, **integrationKwargs):
-        return sum([segment.integrate(f, **integrationKwargs) for segment in self.segments])
+        return sum(
+            [segment.integrate(f, **integrationKwargs) for segment in self.segments]
+        )
 
-    @remove_para('C')
+    @remove_para("C")
     @functools.wraps(count_roots)
     def count_roots(self, f, df=None, **kwargs):
         return count_roots(self, f, df, **kwargs)
 
-    @remove_para('C')
+    @remove_para("C")
     @functools.wraps(approximate_roots)
     def approximate_roots(self, N, f, df=None, **kwargs):
         return approximate_roots(self, N, f, df, **kwargs)
 
-    @remove_para('originalContour')
+    @remove_para("originalContour")
     @functools.wraps(find_roots)
     def roots(self, f, df=None, **kwargs):
         return find_roots(self, f, df, **kwargs)
 
-    @remove_para('C')
+    @remove_para("C")
     @functools.wraps(demo_find_roots)
     def demo_roots(self, *args, **kwargs):
         return demo_find_roots(self, *args, **kwargs)
 
+
 def divisionFactorGen():
     """A generator for divisionFactors."""
-    yield 0.3   # being off-center is a better first choice for certain problems
+    yield 0.3  # being off-center is a better first choice for certain problems
 
     x = 0.5
     yield x
-    for diff in np.linspace(0, 0.5, int(1+10/2.))[1:-1]:
+    for diff in np.linspace(0, 0.5, int(1 + 10 / 2.0))[1:-1]:
         yield x + diff
         yield x - diff

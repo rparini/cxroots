@@ -6,8 +6,9 @@ from ..Contour import Contour
 from ..Paths import ComplexArc
 from .AnnulusSector import AnnulusSector
 
+
 class Annulus(Contour):
-	"""
+    """
 	An annulus in the complex plane with the outer circle positively oriented
 	and the inner circle negatively oriented.
 
@@ -27,33 +28,39 @@ class Annulus(Contour):
 		annulus = Annulus(center=0, radii=(0.5,0.75))
 		annulus.show()
 	"""
-	def __init__(self, center, radii):
-		self.center = center
-		self.radii = radii
-		self.axisName = ('r', 'phi')
 
-		segments = [ComplexArc(center, radii[1], 0, 2*pi), ComplexArc(center, radii[0], 0, -2*pi)]
-		super(Annulus, self).__init__(segments)
+    def __init__(self, center, radii):
+        self.center = center
+        self.radii = radii
+        self.axisName = ("r", "phi")
 
-	def __str__(self):
-		return 'Annulus: center={center.real:.3f}{center.imag:+.3f}i, inner radius={radii[0]:.3f}, outer radius={radii[1]:.3f}'.format(center=self.center, radii=self.radii)
+        segments = [
+            ComplexArc(center, radii[1], 0, 2 * pi),
+            ComplexArc(center, radii[0], 0, -2 * pi),
+        ]
+        super(Annulus, self).__init__(segments)
 
-	@property
-	def centralPoint(self):
-		# get the central point within the contour
-		r = (self.radii[0] + self.radii[1])/2
-		return r
+    def __str__(self):
+        return "Annulus: center={center.real:.3f}{center.imag:+.3f}i, inner radius={radii[0]:.3f}, outer radius={radii[1]:.3f}".format(
+            center=self.center, radii=self.radii
+        )
 
-	@property
-	def area(self):
-		return pi*(self.radii[1]**2 - self.radii[0]**2)
+    @property
+    def centralPoint(self):
+        # get the central point within the contour
+        r = (self.radii[0] + self.radii[1]) / 2
+        return r
 
-	def contains(self, z):
-		""" Returns True if the point z lies within the contour, False if otherwise """
-		return self.radii[0] < abs(z - self.center) < self.radii[1]
+    @property
+    def area(self):
+        return pi * (self.radii[1] ** 2 - self.radii[0] ** 2)
 
-	def subdivide(self, axis, divisionFactor=0.5):
-		"""
+    def contains(self, z):
+        """ Returns True if the point z lies within the contour, False if otherwise """
+        return self.radii[0] < abs(z - self.center) < self.radii[1]
+
+    def subdivide(self, axis, divisionFactor=0.5):
+        """
 		Subdivide the contour
 
 		Parameters
@@ -69,45 +76,45 @@ class Annulus(Contour):
 			Two annuluses if axis is 'r'.
 			Two half-annuluses oriented according to divisionFactor if axis is 'phi'.
 		"""
-		if axis == 'r' or self.axisName[axis] == 'r':
-			midpoint = self.radii[0] + divisionFactor*(self.radii[1]-self.radii[0])
-			box1 = Annulus(self.center, [self.radii[0], midpoint])
-			box2 = Annulus(self.center, [midpoint, self.radii[1]])
+        if axis == "r" or self.axisName[axis] == "r":
+            midpoint = self.radii[0] + divisionFactor * (self.radii[1] - self.radii[0])
+            box1 = Annulus(self.center, [self.radii[0], midpoint])
+            box2 = Annulus(self.center, [midpoint, self.radii[1]])
 
-			box1.segments[1] = self.segments[1]
-			box2.segments[0] = self.segments[0]
-			box1.segments[0]._reversePath = box2.segments[1]
-			box2.segments[1]._reversePath = box1.segments[0]
+            box1.segments[1] = self.segments[1]
+            box2.segments[0] = self.segments[0]
+            box1.segments[0]._reversePath = box2.segments[1]
+            box2.segments[1]._reversePath = box1.segments[0]
 
-			box1._createdBySubdivisionAxis = axis
-			box2._createdBySubdivisionAxis = axis
+            box1._createdBySubdivisionAxis = axis
+            box2._createdBySubdivisionAxis = axis
 
-		elif axis == 'phi' or self.axisName[axis] == 'phi':
-			# Subdividing into two radial boxes rather than one to
-			# ensure that an error is raised if one of the new paths
-			# is too close to a root
-			# XXX: introduce another parameter for phi1
+        elif axis == "phi" or self.axisName[axis] == "phi":
+            # Subdividing into two radial boxes rather than one to
+            # ensure that an error is raised if one of the new paths
+            # is too close to a root
+            # XXX: introduce another parameter for phi1
 
-			phi0 = 2*pi*divisionFactor
-			phi1 = phi0 + pi
+            phi0 = 2 * pi * divisionFactor
+            phi1 = phi0 + pi
 
-			box1 = AnnulusSector(self.center, self.radii, [phi0, phi1])
-			box2 = AnnulusSector(self.center, self.radii, [phi1, phi0])
+            box1 = AnnulusSector(self.center, self.radii, [phi0, phi1])
+            box2 = AnnulusSector(self.center, self.radii, [phi1, phi0])
 
-			box1.segments[0]._reversePath = box2.segments[2]
-			box2.segments[2]._reversePath = box1.segments[0]
-			box1.segments[2]._reversePath = box2.segments[0]
-			box2.segments[0]._reversePath = box1.segments[2]
+            box1.segments[0]._reversePath = box2.segments[2]
+            box2.segments[2]._reversePath = box1.segments[0]
+            box1.segments[2]._reversePath = box2.segments[0]
+            box2.segments[0]._reversePath = box1.segments[2]
 
-		for box in [box1, box2]:
-			box._createdBySubdivisionAxis = axis
-			box._parentBox = self
-		self._childBoxes = [box1, box2]
+        for box in [box1, box2]:
+            box._createdBySubdivisionAxis = axis
+            box._parentBox = self
+        self._childBoxes = [box1, box2]
 
-		return box1, box2
+        return box1, box2
 
-	def randomPoint(self):
-		""" Returns a random point inside the Annulus """
-		r   = np.random.uniform(*self.radii)
-		phi = np.random.uniform(0,2*pi)
-		return r*exp(1j*phi) + self.center
+    def randomPoint(self):
+        """ Returns a random point inside the Annulus """
+        r = np.random.uniform(*self.radii)
+        phi = np.random.uniform(0, 2 * pi)
+        return r * exp(1j * phi) + self.center

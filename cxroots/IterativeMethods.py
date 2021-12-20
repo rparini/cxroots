@@ -1,8 +1,18 @@
 from __future__ import division
 from numpy import inf
 
-def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20, 
-    attemptBest=False, verbose=False, callback=None):
+
+def iterateToRoot(
+    x0,
+    f,
+    df=None,
+    steptol=1e-12,
+    roottol=1e-12,
+    maxIter=20,
+    attemptBest=False,
+    verbose=False,
+    callback=None,
+):
     """
     Starting with initial point x0 iterate to a root of f. This function 
     is called during the rootfinding process to refine any roots found.
@@ -46,24 +56,40 @@ def iterateToRoot(x0, f, df=None, steptol=1e-12, roottol=1e-12, maxIter=20,
         An approximation for a root of f.  If the rootfinding was 
         unsucessful then None will be returned instead.
     """
-    if verbose: print('Refining root:', x0)
+    if verbose:
+        print("Refining root:", x0)
 
     if df is not None:
         try:
-            root, err = newton(x0, f, df, steptol, 0, maxIter, attemptBest, verbose, callback)
+            root, err = newton(
+                x0, f, df, steptol, 0, maxIter, attemptBest, verbose, callback
+            )
         except (RuntimeError, OverflowError):
             return None
     else:
         # Muller's method:
         f_muller = lambda z: complex(f(z))
-        x1, x2, x3 = x0, x0*(1 + 1e-8) + 1e-8, x0*(1 - 1e-8) - 1e-8
-        root, err = muller(x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, verbose, callback)
+        x1, x2, x3 = x0, x0 * (1 + 1e-8) + 1e-8, x0 * (1 - 1e-8) - 1e-8
+        root, err = muller(
+            x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, verbose, callback
+        )
 
     if err < roottol:
         return root
 
-def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20, 
-    attemptBest=False, verbose=False, callback=None):
+
+def muller(
+    x1,
+    x2,
+    x3,
+    f,
+    steptol=1e-12,
+    roottol=1e-12,
+    maxIter=20,
+    attemptBest=False,
+    verbose=False,
+    callback=None,
+):
     """
     A wrapper for mpmath's implementation of Muller's method.  
 
@@ -125,16 +151,21 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20,
         for x, dx in mull:
             err = abs(f_mpmath(x))
 
-            if verbose: print(iteration, 'x', x, '|f(x)|', err, 'dx', dx)
+            if verbose:
+                print(iteration, "x", x, "|f(x)|", err, "dx", dx)
 
-            if callback is not None and callback(x, dx, err, iteration+1):
+            if callback is not None and callback(x, dx, err, iteration + 1):
                 break
 
-            if not attemptBest and (abs(dx) < steptol or err < roottol) or iteration > maxIter:
+            if (
+                not attemptBest
+                and (abs(dx) < steptol or err < roottol)
+                or iteration > maxIter
+            ):
                 break
 
             if attemptBest and (abs(dx0) < steptol or err0 < roottol) and err >= err0:
-                # The previous iteration was a better appproximation the current one so  
+                # The previous iteration was a better appproximation the current one so
                 # assume that that was as close to the root as we are going to get.
                 x, err = x0, err0
                 break
@@ -150,14 +181,24 @@ def muller(x1, x2, x3, f, steptol=1e-12, roottol=1e-12, maxIter=20,
         # ZeroDivisionError comes up if the error is evaluated to be zero
         pass
 
-    if verbose: print('Final approximation: x=', complex(x), '|f(x)|=', float(err))
+    if verbose:
+        print("Final approximation: x=", complex(x), "|f(x)|=", float(err))
 
     # cast mpc and mpf back to regular complex and float
     return complex(x), float(err)
 
 
-def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20, 
-    attemptBest=False, verbose=False, callback=None):
+def newton(
+    x0,
+    f,
+    df,
+    steptol=1e-12,
+    roottol=1e-12,
+    maxIter=20,
+    attemptBest=False,
+    verbose=False,
+    callback=None,
+):
     """
     Find an approximation to a point xf such that f(xf)=0 for a 
     scalar function f using Newton-Raphson iteration starting at 
@@ -202,32 +243,39 @@ def newton(x0, f, df, steptol=1e-12, roottol=1e-12, maxIter=20,
         The approximation to a root of f.
     float
         abs(f(x)) where x is the final approximation for the root of f.
-    """ 
+    """
     x, y = x0, f(x0)
     dx0, y0 = inf, y
     for iteration in range(maxIter):
-        dx = -y/df(x)
+        dx = -y / df(x)
         x += dx
-        y  = f(x)
+        y = f(x)
 
-        if verbose: print('x', x, 'f(x)', y, 'dx', dx)
+        if verbose:
+            print("x", x, "f(x)", y, "dx", dx)
 
-        if callback is not None and callback(x, dx, y, iteration+1):
+        if callback is not None and callback(x, dx, y, iteration + 1):
             break
 
         if not attemptBest and (abs(dx) < steptol or abs(y) < roottol):
             break
 
-        if attemptBest and (abs(dx0) < steptol or abs(y0) < roottol) and abs(y) > abs(y0):
+        if (
+            attemptBest
+            and (abs(dx0) < steptol or abs(y0) < roottol)
+            and abs(y) > abs(y0)
+        ):
             break
 
         if attemptBest:
             # store previous dx and y
             dx0, y0 = dx, y
 
-    if verbose: print('Final approximation: x=', x, '|f(x)|=', abs(y))
+    if verbose:
+        print("Final approximation: x=", x, "|f(x)|=", abs(y))
 
     return x, abs(y)
+
 
 def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
     """
@@ -267,7 +315,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
     float
         abs(f(x)) where x is the final approximation for the root of f.
     """
-    # As in "Numerical Recipies 3rd Edition" pick the bound with the 
+    # As in "Numerical Recipies 3rd Edition" pick the bound with the
     # smallest function value as the most recent guess
     y1, y2 = f(x1), f(x2)
     if abs(y1) < abs(y2):
@@ -275,11 +323,11 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
         y1, y2 = y2, y1
 
     for iteration in range(maxIter):
-        dx =  -(x2-x1)*y2/(y2-y1)
+        dx = -(x2 - x1) * y2 / (y2 - y1)
         x1, x2 = x2, x2 + dx
         y1, y2 = y2, f(x2)
 
-        if callback is not None and callback(x2, dx, y2, iteration+1):
+        if callback is not None and callback(x2, dx, y2, iteration + 1):
             break
 
         if abs(dx) < steptol or abs(y2) < roottol:

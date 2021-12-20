@@ -6,9 +6,23 @@ import scipy.linalg
 
 from .CountRoots import prod
 
-def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
-    errStop=1e-10, divMin=3, divMax=15, m=2, rootTol=1e-8,
-    intMethod='quad', callback=None, verbose=False):
+
+def approximate_roots(
+    C,
+    N,
+    f,
+    df=None,
+    absTol=1e-12,
+    relTol=1e-12,
+    errStop=1e-10,
+    divMin=3,
+    divMax=15,
+    m=2,
+    rootTol=1e-8,
+    intMethod="quad",
+    callback=None,
+    verbose=False,
+):
     """
     Approximate the roots and multiplcities of the function f within the
     contour C using the method of [KB]_.  The multiplicites are computed
@@ -84,19 +98,30 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
         Mathematics, Vol. 15, 2, (2017)
     """
     if verbose:
-        print('Approximating roots in: ' + str(C))
-        print('The number of roots, counting multiplcities, within this contour is', N)
+        print("Approximating roots in: " + str(C))
+        print("The number of roots, counting multiplcities, within this contour is", N)
 
     if N == 0:
         return (), ()
 
-    product = functools.partial(prod, C, f, df,
-        absTol=absTol, relTol=relTol, divMin=divMin, divMax=divMax,
-        m=m, intMethod=intMethod, verbose=verbose, callback=callback)
+    product = functools.partial(
+        prod,
+        C,
+        f,
+        df,
+        absTol=absTol,
+        relTol=relTol,
+        divMin=divMin,
+        divMax=divMax,
+        m=m,
+        intMethod=intMethod,
+        verbose=verbose,
+        callback=callback,
+    )
 
-    s = [N, product(lambda z: z)[0]]    # ordinary moments
-    mu = s[1]/N
-    phiZeros = [[],[mu]]
+    s = [N, product(lambda z: z)[0]]  # ordinary moments
+    mu = s[1] / N
+    phiZeros = [[], [mu]]
 
     def phi(i):
         if len(phiZeros[i]) == 0:
@@ -106,68 +131,78 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
             return lambda z: np.polyval(coeff, z)
 
     # initialize G_{pq} = <phi_p, phi_q>
-    G = np.zeros((N,N), dtype=np.complex128)
-    G[0,0] = N # = <phi_0, phi_0> = <1,1>
+    G = np.zeros((N, N), dtype=np.complex128)
+    G[0, 0] = N  # = <phi_0, phi_0> = <1,1>
 
     # initialize G1_{pq} = <phi_p, phi_1 phi_q>
-    G1 = np.zeros((N,N), dtype=np.complex128)
-    G1[0,0] = 0 # = <phi_0, phi_1 phi_0> = <1, z-mu> = s1-mu*N = 0
+    G1 = np.zeros((N, N), dtype=np.complex128)
+    G1[0, 0] = 0  # = <phi_0, phi_1 phi_0> = <1, z-mu> = s1-mu*N = 0
 
     r, t = 1, 0
-    while r+t<N:
+    while r + t < N:
         ### define FOP of degree r+t+1
-        p = r+t
-        G[p, 0:p+1] = [product(phi(p), phi(q))[0] for q in range(r+t+1)]
-        G[0:p+1, p] = G[p, 0:p+1] # G is symmetric
-        if verbose: print('G ', G[:p+1,:p+1])
+        p = r + t
+        G[p, 0 : p + 1] = [product(phi(p), phi(q))[0] for q in range(r + t + 1)]
+        G[0 : p + 1, p] = G[p, 0 : p + 1]  # G is symmetric
+        if verbose:
+            print("G ", G[: p + 1, : p + 1])
 
-        G1[p, 0:p+1] = [product(phi(p), lambda z: phi(1)(z)*phi(q)(z))[0] for q in range(r+t+1)]
-        G1[0:p+1, p] = G1[p, 0:p+1] # G1 is symmetric
-        if verbose: print('G1', G1[:p+1,:p+1])
+        G1[p, 0 : p + 1] = [
+            product(phi(p), lambda z: phi(1)(z) * phi(q)(z))[0]
+            for q in range(r + t + 1)
+        ]
+        G1[0 : p + 1, p] = G1[p, 0 : p + 1]  # G1 is symmetric
+        if verbose:
+            print("G1", G1[: p + 1, : p + 1])
 
         """
         If any of the zeros of the FOP are outside of the interior
         of the contour then we assume that they are 'arbitary' and
         instead define the FOP as an inner polynomial. [KB]
         """
-        polyRoots = scipy.linalg.eig(G1[:p+1,:p+1], G[:p+1,:p+1])[0]+mu
+        polyRoots = scipy.linalg.eig(G1[: p + 1, : p + 1], G[: p + 1, : p + 1])[0] + mu
         if np.all([C.contains(z) for z in polyRoots]):
-            r, t = r+t+1, 0
+            r, t = r + t + 1, 0
             phiZeros.append(polyRoots)
 
-            if verbose: print('Regular poly', r+t, 'roots:', phiZeros[-1])
+            if verbose:
+                print("Regular poly", r + t, "roots:", phiZeros[-1])
 
             # is the number of distinct roots, n=r?
             phiFuncLast = phi(-1)
-            for j in range(N-r):
-                ip, err = product(lambda z: phiFuncLast(z)*(z-mu)**j, phiFuncLast)
+            for j in range(N - r):
+                ip, err = product(lambda z: phiFuncLast(z) * (z - mu) ** j, phiFuncLast)
 
-                if verbose: print(j, 'of', N-r, 'err', err, 'abs(ip)', abs(ip))
+                if verbose:
+                    print(j, "of", N - r, "err", err, "abs(ip)", abs(ip))
                 if abs(ip) > errStop:
                     # n != r so carry on
-                    if verbose: print('n !=', r)
+                    if verbose:
+                        print("n !=", r)
                     break
             else:
                 # the for loop did not break
-                if verbose: print('n =', r)
+                if verbose:
+                    print("n =", r)
                 break
 
         else:
             # define an inner polynomial as phi_{r+t+1} = phi_{t+1} phi_{r}
             t += 1
-            phiZeros.append(np.append(phiZeros[t],phiZeros[r]))
-            if verbose: print('Inner poly', r+t, 'roots:', phiZeros[-1])
+            phiZeros.append(np.append(phiZeros[t], phiZeros[r]))
+            if verbose:
+                print("Inner poly", r + t, "roots:", phiZeros[-1])
 
     roots = np.array(phiZeros[-1])
 
     if verbose:
-        print('Computed Roots:')
+        print("Computed Roots:")
         print(roots)
 
     # remove any roots which are not distinct
     rootsToRemove = []
     for i, root in enumerate(roots):
-        if len(roots[i+1:]) > 0 and np.any(np.abs(root-roots[i+1:]) < rootTol):
+        if len(roots[i + 1 :]) > 0 and np.any(np.abs(root - roots[i + 1 :]) < rootTol):
             rootsToRemove.append(i)
     roots = np.delete(roots, rootsToRemove)
     n = len(roots)
@@ -180,7 +215,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
 
     ### compute the multiplicities, eq. (21) in [SLV]
     V = np.array([[phi(j)(root) for root in roots] for j in range(n)])
-    multiplicities = np.dot(np.linalg.inv(V), G[:n,0])
+    multiplicities = np.dot(np.linalg.inv(V), G[:n, 0])
 
     ### The method used in the vandermonde module doesn't seem significantly
     ### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
@@ -195,8 +230,7 @@ def approximate_roots(C, N, f, df=None, absTol=1e-12, relTol=1e-12,
     # print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
 
     if verbose:
-        print('Approximations for roots:\n', roots)
-        print('Approximations for multiplicities:\n', multiplicities)
+        print("Approximations for roots:\n", roots)
+        print("Approximations for multiplicities:\n", multiplicities)
 
     return tuple(roots), tuple(multiplicities)
-
