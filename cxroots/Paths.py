@@ -75,10 +75,13 @@ class ComplexPath(object):
         else:
             t = np.linspace(0, 1, 2 ** k + 1)
             vals = f(self(t))
+            print("vals", vals)
+            print("isinstance(vals, np.ndarray)", isinstance(vals, np.ndarray))
             if not isinstance(vals, np.ndarray):
                 # Handle case when f does not return a vector, perhaps
                 # because the function is actually a constant
                 vals = vals * np.ones(len(t), dtype=np.complex128)
+            print("vals2", vals)
 
             if useCache:
                 self._trapValuesCache[f] = vals
