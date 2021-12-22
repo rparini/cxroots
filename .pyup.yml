@@ -1,5 +1,0 @@
-# How often pyup runs
-schedule: every month
-
-# Pull requests are created against this branch
-branch: master
