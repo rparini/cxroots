@@ -1,5 +1,5 @@
-# How often pyup runs
-schedule: every month
+# see https://pyup.io/docs/configuration/ for all available options
 
-# Pull requests are created against this branch
+schedule: every week
 branch: master
+assignees: rparini
