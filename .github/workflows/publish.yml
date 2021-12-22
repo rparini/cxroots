@@ -62,9 +62,15 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Get the version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+    - name: Get tag name
+      id: get_tag_name
+      run: |
+        echo "GITHUB_REF: $GITHUB_REF"
+        echo "VERSION: ${GITHUB_REF/refs\/tags\/v/}"
+        echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
     - name: Install cxroots from pip
-      run: pip install cxroots==$VERSION
+      run: |
+        VERSION=${{ steps.get_tag_name.outputs.VERSION }}
+        pip install cxroots==$VERSION
     - name: Test import cxroots
       run: python -c "import cxroots"
