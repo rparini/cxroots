@@ -360,17 +360,8 @@ def test_annular_combustion():
 def test_const_df(intMethod):
     from cxroots import Circle
 
-    def f(z):
-        F = z - 1 / 2
-        print("f", z, F)
-        return F
-
-    def df(z):
-        print("df", z, 1)
-        return 1
-
-    # f = lambda z: (z - 1 / 2)
-    # df = lambda z: 1
+    f = lambda z: z - 0.5
+    df = lambda z: 1
 
     C = Circle(0, 1)
     roots = C.roots(f, df, intMethod=intMethod)
