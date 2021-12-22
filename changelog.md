@@ -1,6 +1,6 @@
 ## Changelog
 ### 1.1.11 - 22/Dec/2021
-- Fixed error when using `romb` integration method with a constant derivative
+- Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value
 
 ### 1.1.10 - 22/Jul/2020
 - Replaced docrep with numpydoc
