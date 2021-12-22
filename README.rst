@@ -1,10 +1,13 @@
-|pkg_img| |tests|
+|pkg_img| |tests| |pyup|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
     
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
+
+.. |pyup| image:: https://pyup.io/repos/github/rparini/cxroots/shield.svg
+    :target: https://pyup.io/repos/github/rparini/cxroots/
 
 cxroots
 =======
