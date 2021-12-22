@@ -356,5 +356,19 @@ def test_annular_combustion():
     assert len(roots.roots) == 24
 
 
+@pytest.mark.parametrize("intMethod", ["quad", "romb"])
+def test_const_df(intMethod):
+    from cxroots import Circle
+
+    f = lambda z: z - 0.5
+    df = lambda z: 1
+
+    C = Circle(0, 1)
+    roots = C.roots(f, df, intMethod=intMethod)
+
+    assert roots.roots == [0.5]
+    assert roots.multiplicities == [1]
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=3)
