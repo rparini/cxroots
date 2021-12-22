@@ -1,73 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>cxroots.CountRoots &mdash; cxroots 1.1.10 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cxroots.CountRoots &mdash; cxroots 1.1.11 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> cxroots
-          
-
-          
+            <a href="../../index.html" class="icon icon-home"> cxroots
           </a>
-
-          
-            
-            
               <div class="version">
-                1.1.10
+                1.1.11
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,34 +38,23 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guides</span></p>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../paths.html">Paths</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contours.html">Contours</a></li>
@@ -111,67 +63,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../../result.html">Rootfinding Result</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">cxroots</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../index.html">Module code</a> &raquo;</li>
-        
       <li>cxroots.CountRoots</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for cxroots.CountRoots</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -183,8 +98,23 @@
 <span class="kn">import</span> <span class="nn">numdifftools.fornberg</span> <span class="k">as</span> <span class="nn">ndf</span>
 <span class="kn">import</span> <span class="nn">numdifftools</span>
 
-<div class="viewcode-block" id="prod"><a class="viewcode-back" href="../../prod.html#cxroots.CountRoots.prod">[docs]</a><span class="k">def</span> <span class="nf">prod</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">divMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">divMax</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">intMethod</span><span class="o">=</span><span class="s1">&#39;quad&#39;</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="prod"><a class="viewcode-back" href="../../prod.html#cxroots.CountRoots.prod">[docs]</a><span class="k">def</span> <span class="nf">prod</span><span class="p">(</span>
+    <span class="n">C</span><span class="p">,</span>
+    <span class="n">f</span><span class="p">,</span>
+    <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">psi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">absTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
+    <span class="n">relTol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
+    <span class="n">divMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">divMax</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">intMethod</span><span class="o">=</span><span class="s2">&quot;quad&quot;</span><span class="p">,</span>
+    <span class="n">integerTol</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the symmetric bilinear form used in (1.12) of [KB]_.</span>
 
@@ -253,49 +183,57 @@
 <span class="sd">    .. [KB] &quot;Computing the zeros of analytic functions&quot; by Peter Kravanja,</span>
 <span class="sd">        Marc Van Barel, Springer 2000</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s1">&#39;romb&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s2">&quot;romb&quot;</span><span class="p">:</span>
         <span class="n">N</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">I</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">divMax</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">divMin</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">absTol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">relTol</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">absTol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">relTol</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">divMax</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">divMin</span>
+            <span class="ow">or</span> <span class="p">(</span>
+                <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">absTol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">relTol</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span>
+                <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">absTol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">relTol</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+            <span class="p">)</span>
             <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span>
-            <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span><span class="p">):</span>
-            <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">N</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integerTol</span>
+        <span class="p">):</span>
+            <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">N</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">dt</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="n">integrals</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
                 <span class="c1"># compute/retrieve function evaluations</span>
-                <span class="n">fVal</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">trap_values</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+                <span class="n">fVal</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">trap_values</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="c1"># approximate df/dz with finite difference</span>
                     <span class="n">dfdt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">fVal</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-                    <span class="n">dfVal</span> <span class="o">=</span> <span class="n">dfdt</span><span class="o">/</span><span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="n">dfVal</span> <span class="o">=</span> <span class="n">dfdt</span> <span class="o">/</span> <span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">dfVal</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">trap_values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+                    <span class="n">dfVal</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">trap_values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 
-                <span class="n">segment_integrand</span> <span class="o">=</span> <span class="n">dfVal</span><span class="o">/</span><span class="n">fVal</span><span class="o">*</span><span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                <span class="n">segment_integrand</span> <span class="o">=</span> <span class="n">dfVal</span> <span class="o">/</span> <span class="n">fVal</span> <span class="o">*</span> <span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">phi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">segment_integrand</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">trap_values</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">segment_integrand</span>
+                    <span class="n">segment_integrand</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">trap_values</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment_integrand</span>
                 <span class="k">if</span> <span class="n">psi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">segment_integrand</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">trap_values</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">segment_integrand</span>
+                    <span class="n">segment_integrand</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">trap_values</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment_integrand</span>
 
-                <span class="n">segment_integral</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">romb</span><span class="p">(</span><span class="n">segment_integrand</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span>
+                <span class="n">segment_integral</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">romb</span><span class="p">(</span>
+                    <span class="n">segment_integrand</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+                <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
                 <span class="n">integrals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment_integral</span><span class="p">)</span>
 
             <span class="n">I</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">integrals</span><span class="p">))</span>
 
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;err&#39;</span><span class="p">,</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;err&quot;</span><span class="p">,</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
             <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">err</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">None</span>
@@ -304,7 +242,7 @@
 
         <span class="k">return</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="k">elif</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s1">&#39;quad&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s2">&quot;quad&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">numdifftools</span><span class="o">.</span><span class="n">Derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
             <span class="c1"># df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)</span>
@@ -316,42 +254,59 @@
         <span class="n">I</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
             <span class="n">integrand_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
             <span class="k">def</span> <span class="nf">integrand</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">integrand_cache</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                     <span class="n">i</span> <span class="o">=</span> <span class="n">integrand_cache</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">z</span> <span class="o">=</span> <span class="n">segment</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-                    <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">/</span><span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment</span><span class="o">.</span><span class="n">dzdt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">phi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">i</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">i</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span>
                     <span class="k">if</span> <span class="n">psi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">i</span> <span class="o">=</span> <span class="n">psi</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">i</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">psi</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span>
                     <span class="n">integrand_cache</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
                 <span class="k">return</span> <span class="n">i</span>
 
             <span class="c1"># integrate real part</span>
             <span class="n">integrand_real</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">integrand</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
-            <span class="n">result_real</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="n">integrand_real</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsabs</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">epsrel</span><span class="o">=</span><span class="n">relTol</span><span class="p">)</span>
+            <span class="n">result_real</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span>
+                <span class="n">integrand_real</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsabs</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">epsrel</span><span class="o">=</span><span class="n">relTol</span>
+            <span class="p">)</span>
             <span class="n">I_real</span><span class="p">,</span> <span class="n">abserr_real</span><span class="p">,</span> <span class="n">infodict_real</span> <span class="o">=</span> <span class="n">result_real</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
 
             <span class="c1"># integrate imaginary part</span>
             <span class="n">integrand_imag</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">integrand</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
-            <span class="n">result_imag</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="n">integrand_imag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsabs</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">epsrel</span><span class="o">=</span><span class="n">relTol</span><span class="p">)</span>
+            <span class="n">result_imag</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span>
+                <span class="n">integrand_imag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsabs</span><span class="o">=</span><span class="n">absTol</span><span class="p">,</span> <span class="n">epsrel</span><span class="o">=</span><span class="n">relTol</span>
+            <span class="p">)</span>
             <span class="n">I_imag</span><span class="p">,</span> <span class="n">abserr_imag</span><span class="p">,</span> <span class="n">infodict_imag</span> <span class="o">=</span> <span class="n">result_imag</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
 
-            <span class="n">I</span>   <span class="o">+=</span> <span class="n">I_real</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">I_imag</span>
-            <span class="n">err</span> <span class="o">+=</span> <span class="n">abserr_real</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">abserr_imag</span>
+            <span class="n">I</span> <span class="o">+=</span> <span class="n">I_real</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">I_imag</span>
+            <span class="n">err</span> <span class="o">+=</span> <span class="n">abserr_real</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">abserr_imag</span>
 
         <span class="k">return</span> <span class="n">I</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;intMethod must be either &#39;romb&#39; or &#39;quad&#39;&quot;</span><span class="p">)</span></div>
 
+
 <span class="k">class</span> <span class="nc">RootError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span>
 
-<span class="k">def</span> <span class="nf">count_roots</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NIntAbsTol</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">divMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">divMax</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">intMethod</span><span class="o">=</span><span class="s1">&#39;quad&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">count_roots</span><span class="p">(</span>
+    <span class="n">C</span><span class="p">,</span>
+    <span class="n">f</span><span class="p">,</span>
+    <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">NIntAbsTol</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span>
+    <span class="n">integerTol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">divMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">divMax</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">intMethod</span><span class="o">=</span><span class="s2">&quot;quad&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For a function of one complex variable, f(z), which is analytic in</span>
 <span class="sd">    and within the contour C, return the number of zeros (counting</span>
@@ -415,20 +370,35 @@
 <span class="sd">        within the contour C.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing number of roots within&#39;</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing number of roots within&quot;</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
         <span class="c1"># ignore warnings and catch if I is NaN later</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
-        <span class="n">I</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="n">NIntAbsTol</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">divMin</span><span class="o">=</span><span class="n">divMin</span><span class="p">,</span>
-            <span class="n">divMax</span><span class="o">=</span><span class="n">divMax</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">intMethod</span><span class="o">=</span><span class="n">intMethod</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">integerTol</span><span class="o">=</span><span class="n">integerTol</span><span class="p">)</span>
+        <span class="n">I</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span>
+            <span class="n">C</span><span class="p">,</span>
+            <span class="n">f</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">,</span>
+            <span class="n">absTol</span><span class="o">=</span><span class="n">NIntAbsTol</span><span class="p">,</span>
+            <span class="n">relTol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">divMin</span><span class="o">=</span><span class="n">divMin</span><span class="p">,</span>
+            <span class="n">divMax</span><span class="o">=</span><span class="n">divMax</span><span class="p">,</span>
+            <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">intMethod</span><span class="o">=</span><span class="n">intMethod</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">integerTol</span><span class="o">=</span><span class="n">integerTol</span><span class="p">,</span>
+        <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s1">&#39;romb&#39;</span><span class="p">:</span>
-        <span class="n">C</span><span class="o">.</span><span class="n">_numberOfDivisionsForN</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">intMethod</span> <span class="o">==</span> <span class="s2">&quot;romb&quot;</span><span class="p">:</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">_numberOfDivisionsForN</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">RootError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Result of integral is an invalid value.</span>
-<span class="s2">                           Most likely because of a divide by zero error.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">RootError</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;Result of integral is an invalid value.</span>
+<span class="sd">                           Most likely because of a divide by zero error.&quot;&quot;&quot;</span>
+        <span class="p">)</span>
 
     <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">I</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="o">-</span> <span class="n">I</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">integerTol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">integerTol</span><span class="p">:</span>
         <span class="c1"># integral is sufficiently close to an integer</span>
@@ -437,53 +407,33 @@
 
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">RootError</span><span class="p">(</span><span class="s2">&quot;The number of enclosed roots has not converged to an integer&quot;</span><span class="p">)</span>
-
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; Copyright 2017, Robert Parini
-
-    </p>
+    <p>&#169; Copyright 2017, Robert Parini.</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
