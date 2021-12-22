@@ -2,7 +2,7 @@
   "extends": ["config:base", "group:allNonMajor"],
   "schedule": ["before 3am on Saturday"],
   "ignorePaths": ["docs/**"],
-  "python": {
+  "pip_requirements": {
     "fileMatch": ["requirements.*\\.txt$"]
   }
 }
