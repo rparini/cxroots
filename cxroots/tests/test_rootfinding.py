@@ -370,5 +370,19 @@ def test_const_df(intMethod):
     assert roots.multiplicities == [1]
 
 
+@pytest.mark.parametrize("intMethod", ["quad", "romb"])
+def test_df(intMethod):
+    from cxroots import Circle
+
+    f = lambda z: (z - 0.5) ** 2
+    df = lambda z: 2 * (z - 0.5)
+
+    C = Circle(0, 1)
+    roots = C.roots(f, df, intMethod=intMethod)
+
+    assert roots.roots == pytest.approx([0.5])
+    assert roots.multiplicities == [2]
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=3)
