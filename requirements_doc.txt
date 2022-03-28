@@ -1,5 +1,5 @@
 nbsphinx==0.8.8
-sphinx==4.4.0
+sphinx==4.5.0
 sphinxcontrib-programoutput==0.16
 sphinx_rtd_theme==1.0.0
 ipython==8.1.1
