@@ -9,25 +9,25 @@ from .AnnulusSector import AnnulusSector
 
 class Annulus(Contour):
     """
-	An annulus in the complex plane with the outer circle positively oriented
-	and the inner circle negatively oriented.
+    An annulus in the complex plane with the outer circle positively oriented
+    and the inner circle negatively oriented.
 
-	Parameters
-	----------
-	center : complex
-		The center of the annulus in the complex plane.
-	radii : tuple
-		A tuple of length two of the form (inner_radius, outer_radius).
+    Parameters
+    ----------
+    center : complex
+            The center of the annulus in the complex plane.
+    radii : tuple
+            A tuple of length two of the form (inner_radius, outer_radius).
 
-	Examples
-	--------
-	.. plot::
-		:include-source:
+    Examples
+    --------
+    .. plot::
+            :include-source:
 
-		from cxroots import Annulus
-		annulus = Annulus(center=0, radii=(0.5,0.75))
-		annulus.show()
-	"""
+            from cxroots import Annulus
+            annulus = Annulus(center=0, radii=(0.5,0.75))
+            annulus.show()
+    """
 
     def __init__(self, center, radii):
         self.center = center
@@ -56,26 +56,26 @@ class Annulus(Contour):
         return pi * (self.radii[1] ** 2 - self.radii[0] ** 2)
 
     def contains(self, z):
-        """ Returns True if the point z lies within the contour, False if otherwise """
+        """Returns True if the point z lies within the contour, False if otherwise"""
         return self.radii[0] < abs(z - self.center) < self.radii[1]
 
     def subdivide(self, axis, divisionFactor=0.5):
         """
-		Subdivide the contour
+        Subdivide the contour
 
-		Parameters
-		----------
-		axis : str, can be either 'r' or 'phi'
-			The axis along which the line subdividing the contour is a constant.
-		divisionFactor : float in range (0,1), optional
-			Determines the point along 'axis' at which the line dividing the box is placed
+        Parameters
+        ----------
+        axis : str, can be either 'r' or 'phi'
+                The axis along which the line subdividing the contour is a constant.
+        divisionFactor : float in range (0,1), optional
+                Determines the point along 'axis' at which the line dividing the box is placed
 
-		Returns
-		-------
-		boxes : list of contours
-			Two annuluses if axis is 'r'.
-			Two half-annuluses oriented according to divisionFactor if axis is 'phi'.
-		"""
+        Returns
+        -------
+        boxes : list of contours
+                Two annuluses if axis is 'r'.
+                Two half-annuluses oriented according to divisionFactor if axis is 'phi'.
+        """
         if axis == "r" or self.axisName[axis] == "r":
             midpoint = self.radii[0] + divisionFactor * (self.radii[1] - self.radii[0])
             box1 = Annulus(self.center, [self.radii[0], midpoint])
@@ -114,7 +114,7 @@ class Annulus(Contour):
         return box1, box2
 
     def randomPoint(self):
-        """ Returns a random point inside the Annulus """
+        """Returns a random point inside the Annulus"""
         r = np.random.uniform(*self.radii)
         phi = np.random.uniform(0, 2 * pi)
         return r * exp(1j * phi) + self.center
