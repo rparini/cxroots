@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from scipy import cos, sin
+from numpy import cos, sin
 
 from cxroots import Circle, Rectangle
 from cxroots import CxDerivative

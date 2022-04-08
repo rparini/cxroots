@@ -2,7 +2,7 @@ from __future__ import division
 
 import numpy as np
 import scipy.integrate
-from scipy import exp, pi
+from numpy import exp, pi
 
 
 class ComplexPath(object):
@@ -19,12 +19,12 @@ class ComplexPath(object):
         Parameters
         ----------
         t : float
-                A real number :math:`0\leq t \leq 1`.
+            A real number :math:`0\leq t \leq 1`.
 
         Returns
         -------
         complex
-                A point on the path in the complex plane.
+            A point on the path in the complex plane.
         """
         raise NotImplementedError("__call__ must be implemented in a subclass")
 
@@ -37,21 +37,21 @@ class ComplexPath(object):
         Parameters
         ----------
         f : function
-                A function of a single complex variable.
+            A function of a single complex variable.
         k : int
-                Defines the number of points along the curve that f is to be
-                evaluated at as :math:`2^k+1`.
+            Defines the number of points along the curve that f is to be
+            evaluated at as :math:`2^k+1`.
         useCache : bool, optional
-                If True then use, if available, the results of any previous
-                calls to this function for the same f and save any new
-                results so that they can be reused later.
+            If True then use, if available, the results of any previous
+            calls to this function for the same f and save any new
+            results so that they can be reused later.
 
         Returns
         -------
         :class:`numpy.ndarray`
-                The values of f at :math:`2^k+1` points along the contour
-                which are evenly spaced with respect to the parameterisation
-                of the contour.
+            The values of f at :math:`2^k+1` points along the contour
+            which are evenly spaced with respect to the parameterisation
+            of the contour.
         """
         if f in self._trapValuesCache.keys() and useCache:
             vals = self._trapValuesCache[f]
@@ -75,6 +75,11 @@ class ComplexPath(object):
         else:
             t = np.linspace(0, 1, 2 ** k + 1)
             vals = f(self(t))
+            if not isinstance(vals, np.ndarray):
+                # Handle case when f does not return a vector, perhaps
+                # because the function is actually a constant
+                vals = vals * np.ones(len(t), dtype=np.complex128)
+
             if useCache:
                 self._trapValuesCache[f] = vals
             return vals
@@ -87,18 +92,18 @@ class ComplexPath(object):
         Parameters
         ----------
         N : int, optional
-                The number of points to use when plotting the path.
+            The number of points to use when plotting the path.
         linecolor : optional
-                The colour of the plotted path, passed to the
-                :func:`matplotlib.pyplot.plot` function as the keyword
-                argument of 'color'.  See the matplotlib tutorial on
-                `specifying colours <https://matplotlib.org/users/colors.html#>`_.
+            The colour of the plotted path, passed to the
+            :func:`matplotlib.pyplot.plot` function as the keyword
+            argument of 'color'.  See the matplotlib tutorial on
+            `specifying colours <https://matplotlib.org/users/colors.html#>`_.
         linestyle : str, optional
-                The line style of the plotted path, passed to the
-                :func:`matplotlib.pyplot.plot` function as the keyword
-                argument of 'linestyle'.  The default corresponds to a solid
-                line.  See :meth:`matplotlib.lines.Line2D.set_linestyle` for
-                other acceptable arguments.
+            The line style of the plotted path, passed to the
+            :func:`matplotlib.pyplot.plot` function as the keyword
+            argument of 'linestyle'.  The default corresponds to a solid
+            line.  See :meth:`matplotlib.lines.Line2D.set_linestyle` for
+            other acceptable arguments.
         """
         import matplotlib.pyplot as plt
 
@@ -134,10 +139,10 @@ class ComplexPath(object):
         Parameters
         ----------
         saveFile : str (optional)
-                If given then the plot will be saved to disk with name
-                'saveFile'.  If saveFile=None the plot is shown on-screen.
+            If given then the plot will be saved to disk with name
+            'saveFile'.  If saveFile=None the plot is shown on-screen.
         **plotKwargs
-                Other key word arguments are passed to :meth:`~cxroots.Paths.ComplexPath.plot`.
+            Other key word arguments are passed to :meth:`~cxroots.Paths.ComplexPath.plot`.
         """
         import matplotlib.pyplot as plt
 
@@ -160,26 +165,26 @@ class ComplexPath(object):
         Parameters
         ----------
         f : function
-                A function of a single complex variable.
+            A function of a single complex variable.
         absTol : float, optional
-                The absolute tolerance for the integration.
+            The absolute tolerance for the integration.
         relTol : float, optional
-                The realative tolerance for the integration.
+            The realative tolerance for the integration.
         divMax : int, optional
-                If the Romberg integration method is used then divMax is the
-                maximum number of divisions before the Romberg integration
-                routine of a path exits.
+            If the Romberg integration method is used then divMax is the
+            maximum number of divisions before the Romberg integration
+            routine of a path exits.
         intMethod : {'quad', 'romb'}, optional
-                If 'quad' then :func:`scipy.integrate.quad` is used to
-                compute the integral.  If 'romb' then Romberg integraion,
-                using :func:`scipy.integrate.romberg`, is used instead.
+            If 'quad' then :func:`scipy.integrate.quad` is used to
+            compute the integral.  If 'romb' then Romberg integraion,
+            using :func:`scipy.integrate.romberg`, is used instead.
         verbose : bool, optional
-                Passed ass the `show` argument of :func:`scipy.integrate.romberg`.
+            Passed as the `show` argument of :func:`scipy.integrate.romberg`.
 
         Returns
         -------
         complex
-                The integral of the function f along the path.
+            The integral of the function f along the path.
 
         Notes
         -----
@@ -225,8 +230,8 @@ class ComplexPath(object):
 
             if np.isnan(integral):
                 raise RuntimeError(
-                    "The integral along the segment %s is NaN.\
-					\nThis is most likely due to a root being on or very close to the path of integration."
+                    "The integral along the segment %s is NaN. "
+                    "This is most likely due to a root being on or very close to the path of integration."
                     % self
                 )
 
@@ -242,7 +247,7 @@ class ComplexLine(ComplexPath):
 
     ..math::
 
-            z(t) = a + (b-a)t, \quad 0\leq t \leq 1
+        z(t) = a + (b-a)t, \quad 0\leq t \leq 1
 
 
     Parameters
@@ -271,12 +276,12 @@ class ComplexLine(ComplexPath):
         Parameters
         ----------
         t : float
-                A real number :math:`0\leq t \leq 1`.
+            A real number :math:`0\leq t \leq 1`.
 
         Returns
         -------
         complex
-                A point on the line in the complex plane.
+            A point on the line in the complex plane.
         """
         return self.a + t * (self.b - self.a)
 
@@ -291,8 +296,8 @@ class ComplexLine(ComplexPath):
         Returns
         -------
         float
-                The distance from z to the point on the line which is
-                closest to z.
+            The distance from z to the point on the line which is
+            closest to z.
         """
         # convert complex numbers to vectors
         A = np.array([self.a.real, self.a.imag])
@@ -318,7 +323,7 @@ class ComplexArc(ComplexPath):
 
     ..math::
 
-            z(t) = R e^{i(t0 + t dt)} + z0, \quad 0\leq t \leq 1
+        z(t) = R e^{i(t0 + t dt)} + z0, \quad 0\leq t \leq 1
 
     Parameters
     ----------
@@ -348,12 +353,12 @@ class ComplexArc(ComplexPath):
         Parameters
         ----------
         t : float
-                A real number :math:`0\leq t \leq 1`.
+            A real number :math:`0\leq t \leq 1`.
 
         Returns
         -------
         complex
-                A point on the arc in the complex plane.
+            A point on the arc in the complex plane.
         """
         return self.R * exp(1j * (self.t0 + t * self.dt)) + self.z0
 
@@ -368,8 +373,8 @@ class ComplexArc(ComplexPath):
         Returns
         -------
         float
-                The distance from z to the point on the arc which is closest
-                to z.
+            The distance from z to the point on the arc which is closest
+            to z.
         """
         theta = np.angle(z - self.z0)  # np.angle maps to (-pi,pi]
         theta = (theta - self.t0) % (2 * pi) + self.t0  # put theta in [t0,t0+2pi)

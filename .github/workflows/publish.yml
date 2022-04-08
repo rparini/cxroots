@@ -1,0 +1,76 @@
+name: publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get tag name
+      id: get_tag_name
+      run: |
+        echo "GITHUB_REF: $GITHUB_REF"
+        echo "VERSION: ${GITHUB_REF/refs\/tags\/v/}"
+        echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+    - uses: actions/checkout@v2
+      with:
+        ref: master
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        pip install setuptools wheel twine
+        pip install -r requirements.txt
+        pip install -r requirements_doc.txt
+        pip install .
+    - name: Update version.py
+      run: |
+        VERSION=${{ steps.get_tag_name.outputs.VERSION }}
+        echo "Updating version.py to $VERSION"
+        echo "# __version__ is set by CI based on release tag on GitHub" > cxroots/version.py
+        echo "__version__ = '$VERSION'" >> cxroots/version.py
+    - name: Update documentation
+      run: |
+        cd docs_src
+        bash create_docs
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Autoupdate documentation for ${{ steps.get_tag_name.outputs.VERSION }}
+        file_pattern: docs/* cxroots/version.py
+        branch: master
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        python setup.py sdist bdist_wheel
+        twine upload dist/*
+
+  test:
+    needs: deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get tag name
+      id: get_tag_name
+      run: |
+        echo "GITHUB_REF: $GITHUB_REF"
+        echo "VERSION: ${GITHUB_REF/refs\/tags\/v/}"
+        echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+    - name: Install cxroots from pip
+      run: |
+        VERSION=${{ steps.get_tag_name.outputs.VERSION }}
+        pip install cxroots==$VERSION
+    - name: Test import cxroots
+      run: python -c "import cxroots"

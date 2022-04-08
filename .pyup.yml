@@ -1,5 +1,5 @@
-### For pyup
-schedule: every week
+# see https://pyup.io/docs/configuration/ for all available options
 
-# set the default branch
-branch: dev
+schedule: every week
+branch: master
+assignees: rparini

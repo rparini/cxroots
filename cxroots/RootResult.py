@@ -12,12 +12,12 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
     Attributes
     ----------
     roots : list
-            List of roots
+        List of roots
     multiplicities : list
-            List of multiplicities where the ith element of the list is the
-            multiplicity of the ith element of roots.
+        List of multiplicities where the ith element of the list is the
+        multiplicity of the ith element of roots.
     originalContour : Contour
-            The contour bounding the region in which the roots were found.
+        The contour bounding the region in which the roots were found.
     """
 
     def __new__(cls, roots, multiplicities, originalContour):
@@ -33,20 +33,20 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
         Parameters
         ----------
         saveFile : str, optional
-                If provided the plot of the roots will be saved with
-                file name saveFile instead of being shown.
+            If provided the plot of the roots will be saved with
+            file name saveFile instead of being shown.
 
         Example
         -------
         .. plot::
-                :include-source:
+            :include-source:
 
-                from cxroots import Circle
-                C = Circle(0, 2)
-                f = lambda z: z**6 + z**3
-                df = lambda z: 6*z**5 + 3*z**2
-                r = C.roots(f, df)
-                r.show()
+            from cxroots import Circle
+            C = Circle(0, 2)
+            f = lambda z: z**6 + z**3
+            df = lambda z: 6*z**5 + 3*z**2
+            r = C.roots(f, df)
+            r.show()
         """
         import matplotlib.pyplot as plt
 

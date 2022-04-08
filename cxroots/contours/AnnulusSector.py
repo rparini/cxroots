@@ -1,6 +1,6 @@
 from __future__ import division
 import numpy as np
-from scipy import pi, exp
+from numpy import pi, exp
 
 from ..Contour import Contour
 from ..Paths import ComplexLine, ComplexArc

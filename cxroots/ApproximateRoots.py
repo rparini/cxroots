@@ -31,68 +31,68 @@ def approximate_roots(
     Parameters
     ----------
     C : :class:`~<cxroots.Contour.Contour>`
-            The contour which encloses the roots of f the user wishes to find.
+        The contour which encloses the roots of f the user wishes to find.
     N : int
-            The number of roots (counting multiplicties) of f within C.
-            This is the result of calling :meth:`~cxroots.Contour.Contour.count_roots`.
+        The number of roots (counting multiplicties) of f within C.
+        This is the result of calling :meth:`~cxroots.Contour.Contour.count_roots`.
     f : function
-            The function for which the roots are sought.  Must be a function
-            of a single complex variable, z, which is analytic within C and
-            has no poles or roots on the C.
+        The function for which the roots are sought.  Must be a function
+        of a single complex variable, z, which is analytic within C and
+        has no poles or roots on the C.
     df : function, optional
-            A function of a single complex variable which is the derivative
-            of the function f(z). If df is not given then it will be
-            approximated with a finite difference formula.
+        A function of a single complex variable which is the derivative
+        of the function f(z). If df is not given then it will be
+        approximated with a finite difference formula.
     absTol : float, optional
-            Absolute error tolerance for integration.
+        Absolute error tolerance for integration.
     relTol : float, optional
-            Relative error tolerance for integration.
+        Relative error tolerance for integration.
     errStop : float, optional
-            The number of distinct roots within a contour, n, is determined
-            by checking if all the elements of a list of contour integrals
-            involving formal orthogonal polynomials are sufficently close to
-            zero, ie. that the absolute value of each element is < errStop.
-            If errStop is too large/small then n may be smaller/larger than
-            it actually is.
+        The number of distinct roots within a contour, n, is determined
+        by checking if all the elements of a list of contour integrals
+        involving formal orthogonal polynomials are sufficently close to
+        zero, ie. that the absolute value of each element is < errStop.
+        If errStop is too large/small then n may be smaller/larger than
+        it actually is.
     divMin : int, optional
-            If the Romberg integration method is used then divMin is the
-            minimum number of divisions before the Romberg integration
-            routine is allowed to exit.
+        If the Romberg integration method is used then divMin is the
+        minimum number of divisions before the Romberg integration
+        routine is allowed to exit.
     divMax : int, optional
-            If the Romberg integration method is used then divMax is the
-            maximum number of divisions before the Romberg integration
-            routine exits.
+        If the Romberg integration method is used then divMax is the
+        maximum number of divisions before the Romberg integration
+        routine exits.
     m : int, optional
-            Only used if df=None and method='quad'.  The argument order=m is
-            passed to numdifftools.Derivative and is the order of the error
-            term in the Taylor approximation.  m must be even.
+        Only used if df=None and method='quad'.  The argument order=m is
+        passed to numdifftools.Derivative and is the order of the error
+        term in the Taylor approximation.  m must be even.
     rootTol : float, optional
-            If any roots are within rootTol of one another then they will be
-            treated as duplicates and removed.  This helps to alleviate the
-            problem of errStop being too small.
+        If any roots are within rootTol of one another then they will be
+        treated as duplicates and removed.  This helps to alleviate the
+        problem of errStop being too small.
     intMethod : {'quad', 'romb'}, optional
-            If 'quad' then :func:`scipy.integrate.quad` is used to perform
-            integration.  If 'romb' then Romberg integraion is performed
-            instead.
+        If 'quad' then :func:`scipy.integrate.quad` is used to perform
+        integration.  If 'romb' then Romberg integraion is performed
+        instead.
     callback : function, optional
-            Only used if intMethod is 'romb'.  Passed to :func:`~<cxroots.CountRoots.prod>`.
+        Only used if intMethod is 'romb'.  Passed to :func:`~<cxroots.CountRoots.prod>`.
 
     Returns
     -------
     tuple of complex
-            The distinct roots of f within the contour C.
+        The distinct roots of f within the contour C.
     tuple of float
-            The corresponding multiplicites of the roots within C.  Should
-            be integers but will not be automatically rounded here.
+        The corresponding multiplicites of the roots within C.  Should
+        be integers but will not be automatically rounded here.
 
     References
     ----------
     .. [KB] P. Kravanja and M. Van Barel. "Computing the Zeros of
-            Anayltic Functions". Springer (2000)
+        Anayltic Functions". Springer (2000)
     .. [SLV] E. Strakova, D. Lukas, P. Vodstrcil. "Finding Zeros of
-            Analytic Functions and Local Eigenvalue Analysis Using Contour
-            Integral Method in Examples". Mathematical Analysis and Numerical
-            Mathematics, Vol. 15, 2, (2017)
+        Analytic Functions and Local Eigenvalue Analysis Using Contour
+        Integral Method in Examples". Mathematical Analysis and Numerical
+        Mathematics, Vol. 15, 2, (2017)
     """
     logger = logging.getLogger(__name__)
     logger.info("Approximating the " + str(N) + " roots in: " + str(C))

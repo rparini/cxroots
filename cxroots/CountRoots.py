@@ -30,66 +30,66 @@ def prod(
 
     .. math::
 
-            <\phi,\psi> = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
+        <\phi,\psi> = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.
 
     Parameters
     ----------
     C : :class:`Contour <cxroots.Contour.Contour>`
-            A contour in the complex plane for.  No roots or poles of f
-            should lie on C.
+        A contour in the complex plane for.  No roots or poles of f
+        should lie on C.
     f : function
-            Function of a single variable f(x)
+        Function of a single variable f(x)
     df : function, optional
-            Function of a single variable, df(x), providing the derivative
-            of the function f(x) at the point x.  If not provided then df is
-            approximated using a finite difference method.
+        Function of a single variable, df(x), providing the derivative
+        of the function f(x) at the point x.  If not provided then df is
+        approximated using a finite difference method.
     phi : function, optional
-            Function of a single variable phi(x).  If not provided then
-            phi(z)=1.
+        Function of a single variable phi(x).  If not provided then
+        phi(z)=1.
     psi : function, optional
-            Function of a single variable psi(x).  If not provided then
-            psi(z)=1.
+        Function of a single variable psi(x).  If not provided then
+        psi(z)=1.
     absTol : float, optional
-            Absolute error tolerance for integration.
+        Absolute error tolerance for integration.
     relTol : float, optional
-            Relative error tolerance for integration.
+        Relative error tolerance for integration.
     divMin : int, optional
-            Only used if intMethod='romb'. Minimum number of divisions before
-            the Romberg integration routine is allowed to exit.
+        Only used if intMethod='romb'. Minimum number of divisions before
+        the Romberg integration routine is allowed to exit.
     divMax : int, optional
-            Only used if intMethod='romb'.  The maximum number of divisions
-            before the Romberg integration routine of a path exits.
+        Only used if intMethod='romb'.  The maximum number of divisions
+        before the Romberg integration routine of a path exits.
     m : int, optional
-            Only used if df=None and intMethod='quad'.  Must be even.  The
-            argument order=m is passed to numdifftools.Derivative and is the
-            order of the error term in the Taylor approximation.
+        Only used if df=None and intMethod='quad'.  Must be even.  The
+        argument order=m is passed to numdifftools.Derivative and is the
+        order of the error term in the Taylor approximation.
     intMethod : {'quad', 'romb'}, optional
-            If 'quad' then scipy.integrate.quad is used to perform the
-            integral.  If 'romb' then Romberg integraion, using
-            scipy.integrate.romb, is performed instead.
+        If 'quad' then scipy.integrate.quad is used to perform the
+        integral.  If 'romb' then Romberg integraion, using
+        scipy.integrate.romb, is performed instead.
     integerTol : float, optional
-            Only used when intMethod is 'romb'.  The integration routine will
-            not exit unless the result is within integerTol of an integer.
-            This is useful when computing the number of roots in a contour,
-            which must be an integer.  By default integerTol is inf.
+        Only used when intMethod is 'romb'.  The integration routine will
+        not exit unless the result is within integerTol of an integer.
+        This is useful when computing the number of roots in a contour,
+        which must be an integer.  By default integerTol is inf.
     callback : function, optional
-            Only used when intMethod is 'romb'.  A function that at each
-            step in the iteration is passed the current approximation for
-            the integral, the estimated error of that approximation and the
-            number of iterations.  If the return of callback evaluates to
-            True then the integration will end.
+        Only used when intMethod is 'romb'.  A function that at each
+        step in the iteration is passed the current approximation for
+        the integral, the estimated error of that approximation and the
+        number of iterations.  If the return of callback evaluates to
+        True then the integration will end.
 
     Returns
     -------
     complex
-            The value of the integral <phi, psi>.
+        The value of the integral <phi, psi>.
     float
-            An estimate of the error for the integration.
+        An estimate of the error for the integration.
 
     References
     ----------
     .. [KB] "Computing the zeros of analytic functions" by Peter Kravanja,
-            Marc Van Barel, Springer 2000
+        Marc Van Barel, Springer 2000
     """
     logger = logging.getLogger(__name__)
     if intMethod == "romb":
@@ -223,7 +223,7 @@ def count_roots(
 
     .. math::
 
-            N = \frac{1}{2i\pi} \oint_C \frac{f'(z)}{f(z)} dz.
+        N = \frac{1}{2i\pi} \oint_C \frac{f'(z)}{f(z)} dz.
 
     If df(z), the derivative of f(z), is provided then the above
     integral is computed directly.  Otherwise the derivative is
@@ -236,43 +236,43 @@ def count_roots(
     Parameters
     ----------
     C : :class:`Contour <cxroots.Contour.Contour>`
-            The contour which encloses the roots of f(z) that are to be
-            counted.
+        The contour which encloses the roots of f(z) that are to be
+        counted.
     f : function
-            Function of a single variable f(z).
+        Function of a single variable f(z).
     df : function, optional
-            Function of a single complex variable, df(z), providing the
-            derivative of the function f(z) at the point z.  If not
-            provided, df will be approximated using a finite difference
-            method.
+        Function of a single complex variable, df(z), providing the
+        derivative of the function f(z) at the point z.  If not
+        provided, df will be approximated using a finite difference
+        method.
     NIntAbsTol : float, optional
-            Required absolute error tolerance for the contour integration.
-            Since the Cauchy integral must be an integer it is only
-            necessary to distinguish which integer the integral is
-            converging towards.  Therefore, NIntAbsTol can be fairly large.
+        Required absolute error tolerance for the contour integration.
+        Since the Cauchy integral must be an integer it is only
+        necessary to distinguish which integer the integral is
+        converging towards.  Therefore, NIntAbsTol can be fairly large.
     integerTol : float, optional
-            The evaluation of the Cauchy integral will be accepted if its
-            value is within integerTol of the closest integer.
+        The evaluation of the Cauchy integral will be accepted if its
+        value is within integerTol of the closest integer.
     divMin : int, optional
-            Only used if intMethod='romb'. Minimum number of divisions
-            before the Romberg integration routine is allowed to exit.
+        Only used if intMethod='romb'. Minimum number of divisions
+        before the Romberg integration routine is allowed to exit.
     divMax : int, optional
-            Only used if intMethod='romb'.  The maximum number of divisions
-            before the Romberg integration routine of a path exits.
+        Only used if intMethod='romb'.  The maximum number of divisions
+        before the Romberg integration routine of a path exits.
     m : int, optional
-            Only used if df=None and intMethod='quad'.  The argument order=m
-            is passed to numdifftools.Derivative and is the order of the
-            error term in the Taylor approximation.  m must be even.
+        Only used if df=None and intMethod='quad'.  The argument order=m
+        is passed to numdifftools.Derivative and is the order of the
+        error term in the Taylor approximation.  m must be even.
     intMethod : {'quad', 'romb'}, optional
-            If 'quad' then scipy.integrate.quad is used to perform the
-            integral.  If 'romb' then Romberg integraion, using
-            scipy.integrate.romb, is performed instead.
+        If 'quad' then scipy.integrate.quad is used to perform the
+        integral.  If 'romb' then Romberg integraion, using
+        scipy.integrate.romb, is performed instead.
 
     Returns
     -------
     int
-            The number of zeros of f (counting multiplicities) which lie
-            within the contour C.
+        The number of zeros of f (counting multiplicities) which lie
+        within the contour C.
     """
     logger = logging.getLogger(__name__)
     logger.info("Computing number of roots within " + str(C))
@@ -300,8 +300,8 @@ def count_roots(
 
     if np.isnan(I):
         raise RootError(
-            """Result of integral is an invalid value.
-						   Most likely because of a divide by zero error."""
+            "Result of integral is an invalid value. "
+            "Most likely because of a divide by zero error."
         )
 
     elif abs(int(round(I.real)) - I.real) < integerTol and abs(I.imag) < integerTol:

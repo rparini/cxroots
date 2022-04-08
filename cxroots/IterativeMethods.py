@@ -23,37 +23,37 @@ def iterateToRoot(
     Parameters
     ----------
     x0 : complex
-            An initial point for the iteration.
+        An initial point for the iteration.
     f : function
-            Function of a single variable which we seek to find a root of.
+        Function of a single variable which we seek to find a root of.
     df : function, optional
-            The derivative of f.
+        The derivative of f.
     steptol: float, optional
-            The routine ends if the step size, dx, between sucessive
-            iterations satisfies abs(dx) < steptol and attemptBest is False.
+        The routine ends if the step size, dx, between sucessive
+        iterations satisfies abs(dx) < steptol and attemptBest is False.
     roottol: float, optional
-            The routine ends if abs(f(x)) < roottol and attemptBest is False.
+        The routine ends if abs(f(x)) < roottol and attemptBest is False.
     maxIter : int, optional
-            The routine ends after maxIter iterations.
+        The routine ends after maxIter iterations.
     attemptBest : bool, optional
-            If True then routine ends if the error of the previous iteration,
-            x0, was at least as good as the current iteration, x, in the
-            sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-            satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
-            this case the previous iteration is returned as the approximation
-            of the root.
+        If True then routine ends if the error of the previous iteration,
+        x0, was at least as good as the current iteration, x, in the
+        sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
+        satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
+        this case the previous iteration is returned as the approximation
+        of the root.
     callback : function, optional
-            After each iteration callback(x, dx, f(x), iteration) will be
-            called where 'x' is the current iteration of the estimated root,
-            'dx' is the step size between the previous and current 'x' and
-            'iteration' the number of iterations that have been taken.  If
-            the callback function evaluates to True then the routine will end.
+        After each iteration callback(x, dx, f(x), iteration) will be
+        called where 'x' is the current iteration of the estimated root,
+        'dx' is the step size between the previous and current 'x' and
+        'iteration' the number of iterations that have been taken.  If
+        the callback function evaluates to True then the routine will end.
 
     Returns
     -------
     complex
-            An approximation for a root of f.  If the rootfinding was
-            unsucessful then None will be returned instead.
+        An approximation for a root of f.  If the rootfinding was
+        unsucessful then None will be returned instead.
     """
     logger = logging.getLogger(__name__)
     logger.debug("Refining root: " + str(x0))
@@ -92,42 +92,42 @@ def muller(
     Parameters
     ----------
     x1 : float or complex
-            An initial point for iteration, should be close to a root of f.
+        An initial point for iteration, should be close to a root of f.
     x2 : float or complex
-            An initial point for iteration, should be close to a root of f.
-            Should not equal x1.
+        An initial point for iteration, should be close to a root of f.
+        Should not equal x1.
     x3 : float or complex
-            An initial point for iteration, should be close to a root of f.
-            Should not equal x1 or x2.
+        An initial point for iteration, should be close to a root of f.
+        Should not equal x1 or x2.
     f : function
-            Function of a single variable which we seek to find a root of.
+        Function of a single variable which we seek to find a root of.
     steptol: float, optional
-            The routine ends if the step size, dx, between sucessive
-            iterations satisfies abs(dx) < steptol and attemptBest is False.
+        The routine ends if the step size, dx, between sucessive
+        iterations satisfies abs(dx) < steptol and attemptBest is False.
     roottol: float, optional
-            The routine ends if abs(f(x)) < roottol and attemptBest is False.
+        The routine ends if abs(f(x)) < roottol and attemptBest is False.
     maxIter : int, optional
-            The routine ends after maxIter iterations.
+        The routine ends after maxIter iterations.
     attemptBest : bool, optional
-            If True then routine ends if the error of the previous iteration,
-            x0, was at least as good as the current iteration, x, in the
-            sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-            satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
-            this case the previous iteration is returned as the approximation
-            of the root.
+        If True then routine ends if the error of the previous iteration,
+        x0, was at least as good as the current iteration, x, in the
+        sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
+        satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
+        this case the previous iteration is returned as the approximation
+        of the root.
     callback : function, optional
-            After each iteration callback(x, dx, f(x), iteration) will be
-            called where 'x' is the current iteration of the estimated root,
-            'dx' is the step size between the previous and current 'x' and
-            'iteration' the number of iterations that have been taken.  If
-            the callback function evaluates to True then the routine will end.
+        After each iteration callback(x, dx, f(x), iteration) will be
+        called where 'x' is the current iteration of the estimated root,
+        'dx' is the step size between the previous and current 'x' and
+        'iteration' the number of iterations that have been taken.  If
+        the callback function evaluates to True then the routine will end.
 
     Returns
     -------
     complex
-            The approximation to a root of f.
+        The approximation to a root of f.
     float
-            abs(f(x)) where x is the final approximation for the root of f.
+        abs(f(x)) where x is the final approximation for the root of f.
     """
     from mpmath import mp, mpmathify
     from mpmath.calculus.optimization import Muller
@@ -208,40 +208,40 @@ def newton(
     Parameters
     ----------
     x0 : float or complex
-            Initial point for Newton iteration, should be as close as
-            possible to a root of f
+        Initial point for Newton iteration, should be as close as
+        possible to a root of f
     f : function
-            Function of a single variable which we seek to find a root of.
+        Function of a single variable which we seek to find a root of.
     df : function
-            Function of a single variable, df(x), providing the
-            derivative of the function f(x) at the point x
+        Function of a single variable, df(x), providing the
+        derivative of the function f(x) at the point x
     steptol: float, optional
-            The routine ends if the step size, dx, between sucessive
-            iterations satisfies abs(dx) < steptol and attemptBest is False.
+        The routine ends if the step size, dx, between sucessive
+        iterations satisfies abs(dx) < steptol and attemptBest is False.
     roottol: float, optional
-            The routine ends if abs(f(x)) < roottol and attemptBest is False.
+        The routine ends if abs(f(x)) < roottol and attemptBest is False.
     maxIter : int, optional
-            The routine ends after maxIter iterations.
+        The routine ends after maxIter iterations.
     attemptBest : bool, optional
-            If True then routine ends if the error of the previous iteration,
-            x0, was at least as good as the current iteration, x, in the
-            sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-            satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
-            this case the previous iteration is returned as the approximation
-            of the root.
+        If True then routine ends if the error of the previous iteration,
+        x0, was at least as good as the current iteration, x, in the
+        sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
+        satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
+        this case the previous iteration is returned as the approximation
+        of the root.
     callback : function, optional
-            After each iteration callback(x, dx, f(x), iteration) will be
-            called where 'x' is the current iteration of the estimated root,
-            'dx' is the step size between the previous and current 'x' and
-            'iteration' the number of iterations that have been taken.  If
-            the callback function evaluates to True then the routine will end.
+        After each iteration callback(x, dx, f(x), iteration) will be
+        called where 'x' is the current iteration of the estimated root,
+        'dx' is the step size between the previous and current 'x' and
+        'iteration' the number of iterations that have been taken.  If
+        the callback function evaluates to True then the routine will end.
 
     Returns
     -------
     complex
-            The approximation to a root of f.
+        The approximation to a root of f.
     float
-            abs(f(x)) where x is the final approximation for the root of f.
+        abs(f(x)) where x is the final approximation for the root of f.
     """
     logger = logging.getLogger(__name__)
     x, y = x0, f(x0)
@@ -284,33 +284,33 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
     Parameters
     ----------
     x1 : float or complex
-            An initial point for iteration, should be close to a
-            root of f.
+        An initial point for iteration, should be close to a
+        root of f.
     x2 : float or complex
-            An initial point for iteration, should be close to a
-            root of f.  Should not equal x1.
+        An initial point for iteration, should be close to a
+        root of f.  Should not equal x1.
     f : function
-            Function of a single variable which we seek to find a root of.
+        Function of a single variable which we seek to find a root of.
     steptol: float, optional
-            The routine ends if the step size, dx, between sucessive
-            iterations satisfies abs(dx) < steptol and attemptBest is False.
+        The routine ends if the step size, dx, between sucessive
+        iterations satisfies abs(dx) < steptol and attemptBest is False.
     roottol: float, optional
-            The routine ends if abs(f(x)) < roottol and attemptBest is False.
+        The routine ends if abs(f(x)) < roottol and attemptBest is False.
     maxIter : int, optional
-            The routine ends after maxIter iterations.
+        The routine ends after maxIter iterations.
     callback : function, optional
-            After each iteration callback(x, dx, f(x), iteration) will be
-            called where 'x' is the current iteration of the estimated root,
-            'dx' is the step size between the previous and current 'x' and
-            'iteration' the number of iterations that have been taken.  If
-            the callback function evaluates to True then the routine will end.
+        After each iteration callback(x, dx, f(x), iteration) will be
+        called where 'x' is the current iteration of the estimated root,
+        'dx' is the step size between the previous and current 'x' and
+        'iteration' the number of iterations that have been taken.  If
+        the callback function evaluates to True then the routine will end.
 
     Returns
     -------
     complex
-            The approximation to a root of f.
+        The approximation to a root of f.
     float
-            abs(f(x)) where x is the final approximation for the root of f.
+        abs(f(x)) where x is the final approximation for the root of f.
     """
     # As in "Numerical Recipies 3rd Edition" pick the bound with the
     # smallest function value as the most recent guess

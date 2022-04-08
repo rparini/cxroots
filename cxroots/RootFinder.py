@@ -5,11 +5,12 @@ import logging
 
 import numpy as np
 from tqdm import tqdm
+from numpydoc.docscrape import FunctionDoc
 
 from .IterativeMethods import iterateToRoot
 from .CountRoots import RootError
 from .RootResult import RootResult
-from .Misc import doc_tab_to_space, docstrings, NumberOfRootsChanged
+from .Misc import NumberOfRootsChanged, update_docstring
 
 
 class MultiplicityError(RuntimeError):
@@ -35,9 +36,6 @@ class countCalls:
         return self.func(z)
 
 
-@docstrings.get_sectionsf("find_roots_gen")
-@docstrings.dedent
-@doc_tab_to_space
 def find_roots_gen(
     originalContour,
     f,
@@ -67,106 +65,106 @@ def find_roots_gen(
     Parameters
     ----------
     originalContour : :class:`Contour <cxroots.Contour.Contour>`
-            The contour which bounds the region in which all the roots of
-            f(z) are sought.
+        The contour which bounds the region in which all the roots of
+        f(z) are sought.
     f : function
-            A function of a single complex variable, z, which is analytic
-            within the contour and has no poles or roots on the contour.
+        A function of a single complex variable, z, which is analytic
+        within the contour and has no poles or roots on the contour.
     df : function, optional
-            A function of a single complex variable which is the derivative
-            of the function f(z). If df is not given then it will be
-            approximated with a finite difference formula.
+        A function of a single complex variable which is the derivative
+        of the function f(z). If df is not given then it will be
+        approximated with a finite difference formula.
     guessRoots : list, optional
-            A list of known roots or guesses for roots (they are checked
-            before being accepted).
+        A list of known roots or guesses for roots (they are checked
+        before being accepted).
     guessRootSymmetry : function, optional
-            A function of a single complex variable, z, which returns a list
-            of all points which are expected to be roots of f, given that z
-            is a root of f.
+        A function of a single complex variable, z, which returns a list
+        of all points which are expected to be roots of f, given that z
+        is a root of f.
     newtonStepTol : float, optional
-            The required accuracy of the root.  The iterative method used to
-            give a final value for each root will exit if the step size, dx,
-            between sucessive iterations satisfies abs(dx) < newtonStepTol
-            and iterBestAttempt is False.
+        The required accuracy of the root.  The iterative method used to
+        give a final value for each root will exit if the step size, dx,
+        between sucessive iterations satisfies abs(dx) < newtonStepTol
+        and iterBestAttempt is False.
     attemptIterBest : bool, optional
-            If True then the iterative method used to refine the roots will
-            exit when error of the previous iteration, x0, was at least as
-            good as the current iteration, x, in the sense that
-            abs(f(x)) >= abs(f(x0)) and the previous iteration satisfied
-            abs(dx0) < newtonStepTol.  In this case the preivous iteration
-            is returned as the approximation of the root.
+        If True then the iterative method used to refine the roots will
+        exit when error of the previous iteration, x0, was at least as
+        good as the current iteration, x, in the sense that
+        abs(f(x)) >= abs(f(x0)) and the previous iteration satisfied
+        abs(dx0) < newtonStepTol.  In this case the preivous iteration
+        is returned as the approximation of the root.
     newtonMaxIter : int, optional
-            The iterative method used to give a final value for each root
-            will exit if the number of iterations exceeds newtonMaxIter.
+        The iterative method used to give a final value for each root
+        will exit if the number of iterations exceeds newtonMaxIter.
     rootErrTol : float, optional
-            A complex value z is considered a root if abs(f(z)) < rootErrTol
+        A complex value z is considered a root if abs(f(z)) < rootErrTol
     absTol : float, optional
-            Absolute error tolerance used by the contour integration.
+        Absolute error tolerance used by the contour integration.
     relTol : float, optional
-            Relative error tolerance used by the contour integration.
+        Relative error tolerance used by the contour integration.
     integerTol : float, optional
-            A number is considered an integer if it is within integerTol of
-            an integer.  Used when determing if the value for the number of
-            roots within a contour and the values of the computed
-            multiplicities of roots are acceptably close to integers.
+        A number is considered an integer if it is within integerTol of
+        an integer.  Used when determing if the value for the number of
+        roots within a contour and the values of the computed
+        multiplicities of roots are acceptably close to integers.
     NIntAbsTol : float, optional
-            The absolute error tolerance used for the contour integration
-            when determining the number of roots within a contour.  Since
-            the result of this integration must be an integer it can be much
-            less accurate than usual.
+        The absolute error tolerance used for the contour integration
+        when determining the number of roots within a contour.  Since
+        the result of this integration must be an integer it can be much
+        less accurate than usual.
     M : int, optional
-            If the number of roots (including multiplicites) within a
-            contour is greater than M then the contour is subdivided
-            further.  M must be greater than or equal to the largest
-            multiplcity of any root.
+        If the number of roots (including multiplicites) within a
+        contour is greater than M then the contour is subdivided
+        further.  M must be greater than or equal to the largest
+        multiplcity of any root.
     errStop : float, optional
-            The number of distinct roots within a contour, n, is determined
-            by checking if all the elements of a list of contour integrals
-            involving formal orthogonal polynomials are sufficently close to
-            zero, ie. that the absolute value of each element is < errStop.
-            If errStop is too large/small then n may be smaller/larger than
-            it actually is.
+        The number of distinct roots within a contour, n, is determined
+        by checking if all the elements of a list of contour integrals
+        involving formal orthogonal polynomials are sufficently close to
+        zero, ie. that the absolute value of each element is < errStop.
+        If errStop is too large/small then n may be smaller/larger than
+        it actually is.
     intMethod : {'quad', 'romb'}, optional
-            If 'quad' then :func:`scipy.integrate.quad` is used to perform the
-            integral.  If 'romb' then Romberg integraion, using
-            :func:`scipy.integrate.romb`, is performed instead.  Typically, quad is
-            the better choice but it requires that the real and imaginary
-            parts of each integral are calculated sepeartely, in addition,
-            if df is not provided, 'quad' will require additional function
-            evaluations to approximate df at each point that f is evaluated
-            at.  If evaluating f is expensive then 'romb' may be more
-            efficient since it computes the real and imaginary parts
-            simultaniously and if df is not provided it will approximate it
-            using only the values of f that would be required by the
-            integration routine in any case.
+        If 'quad' then :func:`scipy.integrate.quad` is used to perform the
+        integral.  If 'romb' then Romberg integraion, using
+        :func:`scipy.integrate.romb`, is performed instead.  Typically, quad is
+        the better choice but it requires that the real and imaginary
+        parts of each integral are calculated sepeartely, in addition,
+        if df is not provided, 'quad' will require additional function
+        evaluations to approximate df at each point that f is evaluated
+        at.  If evaluating f is expensive then 'romb' may be more
+        efficient since it computes the real and imaginary parts
+        simultaniously and if df is not provided it will approximate it
+        using only the values of f that would be required by the
+        integration routine in any case.
     divMin : int, optional
-            If the Romberg integration method is used then divMin is the
-            minimum number of divisions before the Romberg integration
-            routine is allowed to exit.
+        If the Romberg integration method is used then divMin is the
+        minimum number of divisions before the Romberg integration
+        routine is allowed to exit.
     divMax : int, optional
-            If the Romberg integration method is used then divMax is the
-            maximum number of divisions before the Romberg integration
-            routine exits.
+        If the Romberg integration method is used then divMax is the
+        maximum number of divisions before the Romberg integration
+        routine exits.
     m : int, optional
-            Only used if df=None and method='quad'.  The argument order=m is
-            passed to :func:`numdifftools.Derivative` and is the order of the error
-            term in the Taylor approximation.  m must be even.
+        Only used if df=None and method='quad'.  The argument order=m is
+        passed to :func:`numdifftools.Derivative` and is the order of the error
+        term in the Taylor approximation.  m must be even.
 
     Yields
     ------
     list
-            Roots of f(z) within the contour originalContour
+        Roots of f(z) within the contour originalContour
     list
-            Multiplicites of roots
+        Multiplicites of roots
     deque
-            The contours which still contain roots
+        The contours which still contain roots
     int
-            Remaining number of roots to be found within the contour
+        Remaining number of roots to be found within the contour
 
     References
     ----------
     .. [KB] Peter Kravanja, Marc Van Barel, "Computing the Zeros of
-            Anayltic Functions", Springer (2000)
+        Anayltic Functions", Springer (2000)
     """
     from .contours.Circle import Circle
 
@@ -273,8 +271,8 @@ def find_roots_gen(
             # The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up
             raise RuntimeError(
                 """Unable to subdivide contour:
-				\t%s
-				"""
+                \t%s
+                """
                 % parentContour
             )
 
@@ -396,15 +394,13 @@ def find_roots_gen(
             ):
                 root = contour.centralPoint
 
-            msg = (
+            warnings.warn(
                 "The area of the interior of this contour with is smaller than newtonStepTol!  Try increasing rootTol"
                 "The point z = %f + %fi has been recorded as a root of multiplicity %i."
                 "The error |f(z)| = "
                 % (root.real, contour.centralPoint.imag, contour._numberOfRoots)
                 + str(abs(f(root)))
             )
-            warnings.warn(msg)
-            logger.warning(msg)
             addRoot(root, contour._numberOfRoots)
             continue
 
@@ -574,10 +570,9 @@ def find_roots_gen(
     yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
 
 
-@docstrings.dedent
-@doc_tab_to_space
+@update_docstring(Parameters=FunctionDoc(find_roots_gen)["Parameters"])
 @functools.wraps(find_roots_gen, assigned=("__module__", "__name__"))
-def find_roots(originalContour, f, df=None, verbose=False, **kwargs):
+def find_roots(originalContour, f, df=None, **kwargs):
     """
     Find all the roots of the complex analytic function f within the
     given contour.

@@ -18,9 +18,9 @@ class Contour(object):
     Attributes
     ----------
     centralPoint : complex
-            The point at the center of the contour.
+        The point at the center of the contour.
     area : float
-            The surface area of the contour.
+        The surface area of the contour.
     """
 
     def __init__(self, segments):
@@ -34,19 +34,19 @@ class Contour(object):
         Parameters
         ----------
         t : float
-                A real number :math:`0\leq t \leq 1` which parameterises
-                the contour.
+            A real number :math:`0\leq t \leq 1` which parameterises
+            the contour.
 
         Returns
         -------
         complex
-                A point on the contour.
+            A point on the contour.
 
         Example
         -------
 
         >>> from cxroots.Paths import Circle
-        >>> c = Circle(0,1)	# Circle |z|=1 parameterised by e^{it}
+        >>> c = Circle(0,1) # Circle |z|=1 parameterised by e^{it}
         >>> c(0.25)
         (6.123233995736766e-17+1j)
         >>> c(0) == c(1)
@@ -85,7 +85,7 @@ class Contour(object):
         Returns
         -------
         bool
-                True if z lies within the contour and false otherwise.
+            True if z lies within the contour and false otherwise.
         """
         raise NotImplementedError("contains() needs to be implemented in the subclass.")
 
@@ -118,10 +118,10 @@ class Contour(object):
         Parameters
         ----------
         saveFile : str (optional)
-                If given then the plot will be saved to disk with name
-                'saveFile'.  If saveFile=None the plot is shown on-screen.
+            If given then the plot will be saved to disk with name
+            'saveFile'.  If saveFile=None the plot is shown on-screen.
         **plotKwargs
-                Key word arguments are as in :meth:`~cxroots.Contour.Contour.plot`.
+            Key word arguments are as in :meth:`~cxroots.Contour.Contour.plot`.
         """
         import matplotlib.pyplot as plt
 
@@ -140,18 +140,18 @@ class Contour(object):
         Parameters
         ----------
         axis : str, 'alternating' or any element of self.axisName.
-                The axis along which the line subdividing the contour is a
-                constant (eg. subdividing a circle along the radial axis
-                will give an outer annulus and an inner circle).  If
-                alternating then the dividing axis will always be different
-                to the dividing axis used to create the contour which is now
-                being divided.
+            The axis along which the line subdividing the contour is a
+            constant (eg. subdividing a circle along the radial axis
+            will give an outer annulus and an inner circle).  If
+            alternating then the dividing axis will always be different
+            to the dividing axis used to create the contour which is now
+            being divided.
 
         Yields
         ------
         tuple
-                A tuple with two contours which subdivide the original
-                contour.
+            A tuple with two contours which subdivide the original
+            contour.
         """
         if axis == "alternating":
             if hasattr(self, "_createdBySubdivisionAxis"):
@@ -170,14 +170,14 @@ class Contour(object):
         Parameters
         ----------
         z : complex
-                The point from which to measure the distance to the closest
-                point on the contour to z.
+            The point from which to measure the distance to the closest
+            point on the contour to z.
 
         Returns
         -------
         float
-                The distance from z to the point on the contour which is
-                closest to z.
+            The distance from z to the point on the contour which is
+            closest to z.
         """
         return min(segment.distance(z) for segment in self.segments)
 

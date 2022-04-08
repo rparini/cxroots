@@ -30,8 +30,9 @@ def roots_approx_equal(a, b, decimal=10):
     b_roots, b_multiplicities = b
 
     a_roots, b_roots = np.array(a_roots), np.array(b_roots)
-    a_multiplicities, b_multiplicities = np.array(a_multiplicities), np.array(
-        b_multiplicities
+    a_multiplicities, b_multiplicities = (
+        np.array(a_multiplicities),
+        np.array(b_multiplicities),
     )
 
     for ai, a_element in np.ndenumerate(a_roots):

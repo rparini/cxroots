@@ -2,16 +2,16 @@
 References
 ----------
 [DSZ] "Locating all the Zeros of an Analytic Function in one Complex Variable"
-	M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
+    M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
 [DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
-	L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
+    L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
 [KB] "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
 """
 
 import unittest
 import pytest
 import numpy as np
-from scipy import pi, sqrt, exp, sin, cos
+from numpy import sqrt, exp, sin, cos
 
 from cxroots import Circle, Rectangle, Annulus
 from cxroots.tests.ApproxEqual import roots_approx_equal
@@ -52,12 +52,18 @@ class MultiplicityTests(object):
     def test_multiplicity_f(self):
         # Check that if only the root is given then the multiplcity could be computed
         for i, root in enumerate(self.roots):
-            assert find_multiplicity(root, self.f, df=None) == self.multiplicities[i]
+            assert (
+                find_multiplicity(root, self.f, df=None, verbose=True)
+                == self.multiplicities[i]
+            )
 
     def test_multiplicity_df(self):
         # Check that if only the root is given then the multiplcity could be computed
         for i, root in enumerate(self.roots):
-            assert find_multiplicity(root, self.f, df=self.df) == self.multiplicities[i]
+            assert (
+                find_multiplicity(root, self.f, df=self.df, verbose=True)
+                == self.multiplicities[i]
+            )
 
 
 class TestRootfinding_noRoots(unittest.TestCase, RootfindingTests):
@@ -348,6 +354,34 @@ def test_annular_combustion():
     warnings.filterwarnings("error")
     roots = rectangle.roots(f, df, verbose=True, rootErrTol=1e-6)
     assert len(roots.roots) == 24
+
+
+@pytest.mark.parametrize("intMethod", ["quad", "romb"])
+def test_const_df(intMethod):
+    from cxroots import Circle
+
+    f = lambda z: z - 0.5
+    df = lambda z: 1
+
+    C = Circle(0, 1)
+    roots = C.roots(f, df, intMethod=intMethod)
+
+    assert roots.roots == [0.5]
+    assert roots.multiplicities == [1]
+
+
+@pytest.mark.parametrize("intMethod", ["quad", "romb"])
+def test_df(intMethod):
+    from cxroots import Circle
+
+    f = lambda z: (z - 0.5) ** 2
+    df = lambda z: 2 * (z - 0.5)
+
+    C = Circle(0, 1)
+    roots = C.roots(f, df, intMethod=intMethod)
+
+    assert roots.roots == pytest.approx([0.5])
+    assert roots.multiplicities == [2]
 
 
 if __name__ == "__main__":

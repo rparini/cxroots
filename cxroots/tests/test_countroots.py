@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from scipy import cos, sin
+from numpy import cos, sin
 
 from cxroots import Rectangle
 
@@ -79,8 +79,8 @@ def test_RingOscillator():
     # roots_f = findRoots(box, f)
 
     # XXX: No roots are recorded within the initial contour.
-    # 	Perhaps because the coefficents of z are very small?
-    # 	Perhaps need higher precision?
+    #   Perhaps because the coefficents of z are very small?
+    #   Perhaps need higher precision?
     assert box.count_enclosed_roots(f, df) != 0
     assert box.count_enclosed_roots(f) != 0
 

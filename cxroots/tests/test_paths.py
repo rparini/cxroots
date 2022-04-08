@@ -1,7 +1,7 @@
 import pytest
 
 import numpy as np
-from scipy import pi
+from numpy import pi
 from numpy.random import uniform
 
 from cxroots.Paths import ComplexArc, ComplexLine

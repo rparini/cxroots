@@ -1,7 +1,8 @@
 import pytest
 
 from cxroots.IterativeMethods import newton
-from scipy import pi, cos, sin
+from numpy import pi, cos, sin
+
 
 
 def test_newton():

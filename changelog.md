@@ -1,4 +1,12 @@
 ## Changelog
+### 1.1.11 - 22/Dec/2021
+- Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value
+
+### 1.1.10 - 22/Jul/2020
+- Replaced docrep with numpydoc
+
+### 1.1.9 - 1/Mar/2020
+- Fix depreciation warning from scipy
 
 ### 1.1.8 - 20/Apr/2019
 - Fix NotImplementedError in Contour base ([#31](https://github.com/rparini/cxroots/issues/31) thanks [@fchapoton](https://github.com/fchapoton))

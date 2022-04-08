@@ -21,19 +21,19 @@ def demo_find_roots(
     Parameters
     ----------
     saveFile : str, optional
-            If given then the animation will be saved to disk with filename
-            equal to saveFile instead of being shown.
+        If given then the animation will be saved to disk with filename
+        equal to saveFile instead of being shown.
     automaticAnim : bool, optional
-            If False (default) then press SPACE to step the animation forward
-            If True then the animation will play automatically until all the
-            roots have been found.
+        If False (default) then press SPACE to step the animation forward
+        If True then the animation will play automatically until all the
+        roots have been found.
     returnAnim : bool, optional
-            If True then the matplotlib animation object will be returned
-            instead of being shown.  Defaults to False.
+        If True then the matplotlib animation object will be returned
+        instead of being shown.  Defaults to False.
     writer : str, optional
-            Passed to :meth:`matplotlib.animation.FuncAnimation.save`.
+        Passed to :meth:`matplotlib.animation.FuncAnimation.save`.
     **rootsKwargs
-            Additional key word arguments passed to :meth:`~cxroots.Contour.Contour.roots`.
+        Additional key word arguments passed to :meth:`~cxroots.Contour.Contour.roots`.
     """
     import matplotlib.pyplot as plt
     from matplotlib import animation
