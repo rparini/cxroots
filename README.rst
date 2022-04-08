@@ -87,7 +87,7 @@ BibTex:
 Development
 -----------
 - Install the `pre-commit <https://pre-commit.com/>`_ and then run `pre-commit install`.  The pre-commit scripts can also be run manually with `pre-commit run --all-files`
-- Uses `Black <https://github.com/psf/black/>`_ to maintain consistent formatting. It is run as part of the pre-commit hook and is recommended to be run on save in the developer's editor.
+- The project uses `Black <https://github.com/psf/black/>`_ to maintain consistent formatting. It is run as part of the pre-commit hook and is recommended to be run on save in the developer's editor.
 
 Release Procedure
 -----------------
