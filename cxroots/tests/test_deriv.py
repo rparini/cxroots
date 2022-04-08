@@ -15,9 +15,9 @@ from cxroots import CxDerivative
     ],
 )
 def test_CxDerivative(C):
-    f = lambda z: z ** 10 - 2 * z ** 5 + sin(z) * cos(z / 2)
+    f = lambda z: z**10 - 2 * z**5 + sin(z) * cos(z / 2)
     df = (
-        lambda z: 10 * (z ** 9 - z ** 4)
+        lambda z: 10 * (z**9 - z**4)
         + cos(z) * cos(z / 2)
         - 0.5 * sin(z) * sin(z / 2)
     )

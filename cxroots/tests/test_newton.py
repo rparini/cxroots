@@ -4,7 +4,6 @@ from cxroots.IterativeMethods import newton
 from numpy import pi, cos, sin
 
 
-
 def test_newton():
     # result from keisan online calculator: http://keisan.casio.com/exec/system/1244946907
     f = lambda x: cos(x) - x

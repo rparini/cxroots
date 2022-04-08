@@ -4,7 +4,6 @@ from cxroots.IterativeMethods import secant
 from numpy import pi, cos, sin
 
 
-
 def test_secant():
     # example from Table 2.5 of "Numerical Analysis" by Richard L. Burden, J. Douglas Faires
     f = lambda x: cos(x) - x

@@ -51,7 +51,7 @@ class Circle(Contour):
 
     @property
     def area(self):
-        return pi * self.radius ** 2
+        return pi * self.radius**2
 
     def subdivide(self, axis="r", divisionFactor=0.5):
         """

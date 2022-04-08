@@ -1,0 +1,10 @@
+[tool.black]
+exclude = '''
+/(
+    | \.eggs
+    | build
+    | docs
+    | docs_src
+    | README_resources
+)/
+'''
