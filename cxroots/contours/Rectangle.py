@@ -7,26 +7,26 @@ from ..Paths import ComplexLine
 
 class Rectangle(Contour):
     """
-	A positively oriented rectangle in the complex plane.
+    A positively oriented rectangle in the complex plane.
 
-	Parameters
-	----------
-	xRange : tuple
-		Tuple of length two giving the range of the rectangle along the
-		real axis.
-	yRange : tuple
-		Tuple of length two giving the range of the rectangle along the
-		imaginary axis.
+    Parameters
+    ----------
+    xRange : tuple
+            Tuple of length two giving the range of the rectangle along the
+            real axis.
+    yRange : tuple
+            Tuple of length two giving the range of the rectangle along the
+            imaginary axis.
 
-	Examples
-	--------
-	.. plot::
-		:include-source:
+    Examples
+    --------
+    .. plot::
+            :include-source:
 
-		from cxroots import Rectangle
-		rect = Rectangle(xRange=(-2, 2), yRange=(-1, 1))
-		rect.show()
-	"""
+            from cxroots import Rectangle
+            rect = Rectangle(xRange=(-2, 2), yRange=(-1, 1))
+            rect.show()
+    """
 
     def __init__(self, xRange, yRange):
         self.xRange = xRange
@@ -63,7 +63,7 @@ class Rectangle(Contour):
         return (self.xRange[1] - self.xRange[0]) * (self.yRange[1] - self.yRange[0])
 
     def contains(self, z):
-        """ Returns True if the point z lies within the contour, False if otherwise """
+        """Returns True if the point z lies within the contour, False if otherwise"""
         return (
             self.xRange[0] < z.real < self.xRange[1]
             and self.yRange[0] < z.imag < self.yRange[1]
@@ -71,30 +71,30 @@ class Rectangle(Contour):
 
     def subdivide(self, axis, divisionFactor=0.5):
         """
-		Subdivide the contour
+        Subdivide the contour
 
-		Parameters
-		----------
-		axis : str, can be either 'x' or 'y'
-			The axis along which the line subdividing the contour is a
-			constant.
-		divisionFactor : float in range (0,1), optional
-			Determines the point along 'axis' at which the line dividing
-			the contour is placed.
+        Parameters
+        ----------
+        axis : str, can be either 'x' or 'y'
+                The axis along which the line subdividing the contour is a
+                constant.
+        divisionFactor : float in range (0,1), optional
+                Determines the point along 'axis' at which the line dividing
+                the contour is placed.
 
-		Returns
-		-------
-		box1 : Rectangle
-			If axis is 'x' then box1 has the same yRange and minimum value of xRange as the
-			original Rectangle but the maximum xRange is determined by the divisionFactor.
-			If axis is 'y' then box1 has the same xRange and minimum value of yRange as the
-			original Rectangle but the maximum yRange is determined by the divisionFactor.
-		box2 : Rectangle
-			If axis is 'x' then box2 has the same yRange and maximum value of xRange as the
-			original Rectangle but the minimum xRange is equal to the maximum xRange of box1.
-			If axis is 'x' then box2 has the same xRange and maximum value of yRange as the
-			original Rectangle but the minimum yRange is equal to the maximum yRange of box1.
-		"""
+        Returns
+        -------
+        box1 : Rectangle
+                If axis is 'x' then box1 has the same yRange and minimum value of xRange as the
+                original Rectangle but the maximum xRange is determined by the divisionFactor.
+                If axis is 'y' then box1 has the same xRange and minimum value of yRange as the
+                original Rectangle but the maximum yRange is determined by the divisionFactor.
+        box2 : Rectangle
+                If axis is 'x' then box2 has the same yRange and maximum value of xRange as the
+                original Rectangle but the minimum xRange is equal to the maximum xRange of box1.
+                If axis is 'x' then box2 has the same xRange and maximum value of yRange as the
+                original Rectangle but the minimum yRange is equal to the maximum yRange of box1.
+        """
         if axis == "x" or self.axisName[axis] == "x":
             midpoint = self.xRange[0] + divisionFactor * (
                 self.xRange[1] - self.xRange[0]

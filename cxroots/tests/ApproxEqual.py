@@ -5,7 +5,7 @@ def sets_approx_equal(a, b, decimal=10):
     """
     Test if iterables a and b are approximately the same, up to reordering.
 
-    Works by greedily reordering a and b so that they are the closest to 
+    Works by greedily reordering a and b so that they are the closest to
     each other element-wise and then using np.testing.assert_almost_equal
 
     .. np.testing.assert_almost_equal:
