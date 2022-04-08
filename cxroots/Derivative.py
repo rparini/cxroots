@@ -68,8 +68,6 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10):
         f(root)=0.
     df : function, optional
         The first derivative of f.  If not known then df=None.
-    contour : Contour, optional
-        The integration contour used to evaluate the derivatives.
     rootErrTol : float, optional
         It will be assumed that f(z)=0 if numerically |f(z)|<rootErrTol.
 
