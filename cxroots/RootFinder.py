@@ -572,7 +572,7 @@ def find_roots_gen(
 
 @update_docstring(Parameters=FunctionDoc(find_roots_gen)["Parameters"])
 @functools.wraps(find_roots_gen, assigned=("__module__", "__name__"))
-def find_roots(originalContour, f, df=None, **kwargs):
+def find_roots(originalContour, f, df=None, verbose=False, **kwargs):
     """
     Find all the roots of the complex analytic function f within the
     given contour.
