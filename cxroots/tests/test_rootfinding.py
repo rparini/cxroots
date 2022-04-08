@@ -52,18 +52,12 @@ class MultiplicityTests(object):
     def test_multiplicity_f(self):
         # Check that if only the root is given then the multiplcity could be computed
         for i, root in enumerate(self.roots):
-            assert (
-                find_multiplicity(root, self.f, df=None, verbose=True)
-                == self.multiplicities[i]
-            )
+            assert find_multiplicity(root, self.f, df=None) == self.multiplicities[i]
 
     def test_multiplicity_df(self):
         # Check that if only the root is given then the multiplcity could be computed
         for i, root in enumerate(self.roots):
-            assert (
-                find_multiplicity(root, self.f, df=self.df, verbose=True)
-                == self.multiplicities[i]
-            )
+            assert find_multiplicity(root, self.f, df=self.df) == self.multiplicities[i]
 
 
 class TestRootfinding_noRoots(unittest.TestCase, RootfindingTests):
