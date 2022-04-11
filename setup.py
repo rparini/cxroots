@@ -33,7 +33,7 @@ setup(
         "numpydoc",
         "mpmath",
         "numdifftools>=0.9.39",
-        "tqdm",
+        "progress",
     ],
     tests_require=["pytest"],
     keywords="roots zeros complex analytic functions",

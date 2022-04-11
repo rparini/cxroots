@@ -4,8 +4,8 @@ import functools
 import logging
 
 import numpy as np
-from tqdm import tqdm
 from numpydoc.docscrape import FunctionDoc
+from progress.bar import Bar
 
 from .IterativeMethods import iterateToRoot
 from .CountRoots import RootError
@@ -581,7 +581,7 @@ def find_roots(originalContour, f, df=None, verbose=False, **kwargs):
     ----------
     %(find_roots_gen.parameters)s
     verbose : bool, optional
-            If True print a progress bar showing the rootfinding progress.
+        If True print a progress bar showing the rootfinding progress.
 
     Returns
     -------
@@ -589,15 +589,23 @@ def find_roots(originalContour, f, df=None, verbose=False, **kwargs):
             A container for the roots and their multiplicities.
     """
     if verbose:
-        pbar = tqdm(unit=" roots")
+        bar = Bar()
+        bar.suffix = "%(index)d/%(max)d roots found"
+        bar.start()
 
     rootFinder = find_roots_gen(originalContour, f, df, **kwargs)
-    for roots, multiplicities, contours, numberOfRemainingRoots in rootFinder:
+    for roots, multiplicities, contours, num_remaining_roots in rootFinder:
         if verbose:
-            totFoundRoots = sum(
+            num_found_roots = sum(
                 int(round(multiplicity.real))
                 for root, multiplicity in zip(roots, multiplicities)
             )
-            pbar.total = totFoundRoots + numberOfRemainingRoots
-            pbar.update(totFoundRoots - pbar.n)
+            total_roots = num_found_roots + num_remaining_roots
+            bar.index = num_found_roots
+            bar.max = total_roots
+            bar.update()
+
+    if verbose:
+        bar.finish()
+
     return RootResult(roots, multiplicities, originalContour)
