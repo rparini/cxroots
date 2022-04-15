@@ -5,7 +5,7 @@ import logging
 
 import numpy as np
 from numpydoc.docscrape import FunctionDoc
-from progress.bar import Bar
+from rich.progress import Progress, BarColumn, TextColumn
 
 from .IterativeMethods import iterateToRoot
 from .CountRoots import RootError
@@ -589,9 +589,16 @@ def find_roots(originalContour, f, df=None, verbose=False, **kwargs):
             A container for the roots and their multiplicities.
     """
     if verbose:
-        bar = Bar()
-        bar.suffix = "%(index)d/%(max)d roots found"
-        bar.start()
+        text_column = TextColumn("{task.description}")
+        bar_column = BarColumn(bar_width=None)
+        progress_text_column = TextColumn(
+            "{task.completed} of {task.total} roots found"
+        )
+        progress = Progress(text_column, bar_column, progress_text_column, expand=True)
+        # Set visible=False here so that we don't show the progress bar before the
+        # total number of roots in the contour have been determined
+        task = progress.add_task("Rootfinding", visible=False)
+        progress.start()
 
     rootFinder = find_roots_gen(originalContour, f, df, **kwargs)
     for roots, multiplicities, contours, num_remaining_roots in rootFinder:
@@ -601,11 +608,11 @@ def find_roots(originalContour, f, df=None, verbose=False, **kwargs):
                 for root, multiplicity in zip(roots, multiplicities)
             )
             total_roots = num_found_roots + num_remaining_roots
-            bar.index = num_found_roots
-            bar.max = total_roots
-            bar.update()
+            progress.update(
+                task, completed=num_found_roots, total=total_roots, visible=True
+            )
 
     if verbose:
-        bar.finish()
+        progress.stop()
 
     return RootResult(roots, multiplicities, originalContour)
