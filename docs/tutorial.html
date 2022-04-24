@@ -17,8 +17,8 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -58,6 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -200,7 +201,7 @@ The method <code class="xref py py-meth docutils literal notranslate"><span clas
 <span class="nb">print</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (3.4502541281020263e-29+5.968842083644921e-29j)]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (3.0431159183652267e-29+6.224605580259547e-29j)]
 [1, 1, 1, 2]
 </pre></div>
 </div>
@@ -208,7 +209,7 @@ The method <code class="xref py py-meth docutils literal notranslate"><span clas
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">roots</span>
 </pre></div>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (3.4502541281020263e-29+5.968842083644921e-29j)]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (3.0431159183652267e-29+6.224605580259547e-29j)]
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">multiplicities</span>

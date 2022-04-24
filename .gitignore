@@ -4,6 +4,7 @@
 
 scrapbook/*
 *.mov
+*.gif
 .ipynb_checkpoints
 
 upload

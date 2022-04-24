@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -98,37 +99,37 @@
 
 <div class="viewcode-block" id="AnnulusSector"><a class="viewcode-back" href="../../../contours.html#cxroots.AnnulusSector">[docs]</a><span class="k">class</span> <span class="nc">AnnulusSector</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	A sector of an annulus in the complex plane.</span>
+<span class="sd">    A sector of an annulus in the complex plane.</span>
 
-<span class="sd">	Parameters</span>
-<span class="sd">	----------</span>
-<span class="sd">	center : complex</span>
-<span class="sd">		The center of the annulus sector.</span>
-<span class="sd">	radii : tuple</span>
-<span class="sd">		Tuple of length two of the form (inner_radius, outer_radius)</span>
-<span class="sd">	phiRange : tuple</span>
-<span class="sd">		Tuple of length two of the form (phi0, phi1).</span>
-<span class="sd">		The segment of the contour containing inner and outer circular</span>
-<span class="sd">		arcs will be joined, counter clockwise from phi0 to phi1.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    center : complex</span>
+<span class="sd">            The center of the annulus sector.</span>
+<span class="sd">    radii : tuple</span>
+<span class="sd">            Tuple of length two of the form (inner_radius, outer_radius)</span>
+<span class="sd">    phiRange : tuple</span>
+<span class="sd">            Tuple of length two of the form (phi0, phi1).</span>
+<span class="sd">            The segment of the contour containing inner and outer circular</span>
+<span class="sd">            arcs will be joined, counter clockwise from phi0 to phi1.</span>
 
-<span class="sd">	Examples</span>
-<span class="sd">	--------</span>
-<span class="sd">	.. plot::</span>
-<span class="sd">		:include-source:</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">            :include-source:</span>
 
-<span class="sd">		from numpy import pi</span>
-<span class="sd">		from cxroots import AnnulusSector</span>
-<span class="sd">		annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(-pi/4, pi/4))</span>
-<span class="sd">		annulusSector.show()</span>
+<span class="sd">            from numpy import pi</span>
+<span class="sd">            from cxroots import AnnulusSector</span>
+<span class="sd">            annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(-pi/4, pi/4))</span>
+<span class="sd">            annulusSector.show()</span>
 
-<span class="sd">	.. plot::</span>
-<span class="sd">		:include-source:</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">            :include-source:</span>
 
-<span class="sd">		from numpy import pi</span>
-<span class="sd">		from cxroots import AnnulusSector</span>
-<span class="sd">		annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(pi/4, -pi/4))</span>
-<span class="sd">		annulusSector.show()</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">            from numpy import pi</span>
+<span class="sd">            from cxroots import AnnulusSector</span>
+<span class="sd">            annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(pi/4, -pi/4))</span>
+<span class="sd">            annulusSector.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">phiRange</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
@@ -181,7 +182,7 @@
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns True if the point z lies within the contour, False if otherwise &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if the point z lies within the contour, False if otherwise&quot;&quot;&quot;</span>
         <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>  <span class="c1"># np.angle maps to [-pi,pi]</span>
         <span class="n">radiusCorrect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
@@ -195,28 +196,28 @@
 
     <span class="k">def</span> <span class="nf">subdivide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">divisionFactor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Subdivide the contour</span>
+<span class="sd">        Subdivide the contour</span>
 
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		axis : str, can be either &#39;r&#39; or &#39;phi&#39;</span>
-<span class="sd">			The axis along which the line subdividing the contour is a constant.</span>
-<span class="sd">		divisionFactor : float in range (0,1), optional</span>
-<span class="sd">			Determines the point along &#39;axis&#39; at which the line dividing the box is placed</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis : str, can be either &#39;r&#39; or &#39;phi&#39;</span>
+<span class="sd">                The axis along which the line subdividing the contour is a constant.</span>
+<span class="sd">        divisionFactor : float in range (0,1), optional</span>
+<span class="sd">                Determines the point along &#39;axis&#39; at which the line dividing the box is placed</span>
 
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		box1 : AnnulusSector</span>
-<span class="sd">			If axis is &#39;r&#39; then phiRange and the inner radius is the same as original AnnulusSector</span>
-<span class="sd">			with the outer radius determined by the divisionFactor.</span>
-<span class="sd">			If axis is &#39;phi&#39; then the radii and phiRange[0] is the same as the original AnnulusSector</span>
-<span class="sd">			with phiRange[1] determined by the divisionFactor.</span>
-<span class="sd">		box2 : AnnulusSector</span>
-<span class="sd">			If axis is &#39;r&#39; then phiRange and the outer radius is the same as original AnnulusSector</span>
-<span class="sd">			with the inner radius determined equal to the outer radius of box1.</span>
-<span class="sd">			If axis is &#39;phi&#39; then the radii and phiRange[1] is the same as the original AnnulusSector</span>
-<span class="sd">			with phiRange[0] equal to phiRange[1] of box1.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        box1 : AnnulusSector</span>
+<span class="sd">                If axis is &#39;r&#39; then phiRange and the inner radius is the same as original AnnulusSector</span>
+<span class="sd">                with the outer radius determined by the divisionFactor.</span>
+<span class="sd">                If axis is &#39;phi&#39; then the radii and phiRange[0] is the same as the original AnnulusSector</span>
+<span class="sd">                with phiRange[1] determined by the divisionFactor.</span>
+<span class="sd">        box2 : AnnulusSector</span>
+<span class="sd">                If axis is &#39;r&#39; then phiRange and the outer radius is the same as original AnnulusSector</span>
+<span class="sd">                with the inner radius determined equal to the outer radius of box1.</span>
+<span class="sd">                If axis is &#39;phi&#39; then the radii and phiRange[1] is the same as the original AnnulusSector</span>
+<span class="sd">                with phiRange[0] equal to phiRange[1] of box1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span>
         <span class="n">phi0</span><span class="p">,</span> <span class="n">phi1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phiRange</span>
         <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">axis</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">axisName</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>

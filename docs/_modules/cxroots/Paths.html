@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -152,8 +153,8 @@
             <span class="k">elif</span> <span class="n">vals_k</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">vals</span><span class="p">[::</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">vals_k</span> <span class="o">-</span> <span class="n">k</span><span class="p">)]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
                 <span class="n">vals</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
                 <span class="n">vals</span><span class="p">[::</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">vals_k</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trapValuesCache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
                 <span class="n">vals</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)]))</span>
@@ -163,7 +164,7 @@
                 <span class="k">return</span> <span class="n">vals</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">vals</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
                 <span class="c1"># Handle case when f does not return a vector, perhaps</span>
@@ -269,7 +270,7 @@
 <span class="sd">            compute the integral.  If &#39;romb&#39; then Romberg integraion,</span>
 <span class="sd">            using :func:`scipy.integrate.romberg`, is used instead.</span>
 <span class="sd">        verbose : bool, optional</span>
-<span class="sd">            Passed ass the `show` argument of :func:`scipy.integrate.romberg`.</span>
+<span class="sd">            Passed as the `show` argument of :func:`scipy.integrate.romberg`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -320,8 +321,8 @@
 
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">integral</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s2">&quot;The integral along the segment </span><span class="si">%s</span><span class="s2"> is NaN.</span><span class="se">\</span>
-<span class="s2">                    </span><span class="se">\n</span><span class="s2">This is most likely due to a root being on or very close to the path of integration.&quot;</span>
+                    <span class="s2">&quot;The integral along the segment </span><span class="si">%s</span><span class="s2"> is NaN. &quot;</span>
+                    <span class="s2">&quot;This is most likely due to a root being on or very close to the path of integration.&quot;</span>
                     <span class="o">%</span> <span class="bp">self</span>
                 <span class="p">)</span>
 

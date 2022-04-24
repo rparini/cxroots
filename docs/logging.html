@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viewing Progress &mdash; cxroots 1.1.11 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stability of an Annular Combustion Chamber" href="ex_annular_combustion.html" />
+    <link rel="prev" title="Using Known Roots or Symmetries" href="guesses.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> cxroots
+          </a>
+              <div class="version">
+                1.1.11
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Viewing Progress</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#progress-bar">Progress Bar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logging-with-progress-bar">Logging with Progress Bar</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cxroots</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Viewing Progress</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/logging.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="viewing-progress">
+<h1>Viewing Progress<a class="headerlink" href="#viewing-progress" title="Permalink to this headline"></a></h1>
+<section id="progress-bar">
+<h2>Progress Bar<a class="headerlink" href="#progress-bar" title="Permalink to this headline"></a></h2>
+<p>Passing the <cite>verbose=True</cite> argument to the <cite>Contour.roots</cite> method or <cite>find_roots</cite> function will cause a progress bar to be printed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="cxroots_progress.gif" src="cxroots_progress.gif" />
+</section>
+<section id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline"></a></h2>
+<p>More detailed runtime information is available using Python’s standard logging module, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>INFO:cxroots.CountRoots:Computing number of roots within Circle: center=0.000+0.000i, radius=3.000
+INFO:cxroots.RootFinder:Counted 6 roots (including multiplicities) within the original contour
+INFO:cxroots.RootFinder:Subdividing Circle: center=0.000+0.000i, radius=3.000
+INFO:cxroots.CountRoots:Computing number of roots within Annulus: center=0.000+0.000i, inner radius=0.900, outer radius=3.000
+INFO:cxroots.CountRoots:Computing number of roots within Circle: center=0.000+0.000i, radius=0.900
+INFO:cxroots.RootFinder:Subdividing Annulus: center=0.000+0.000i, inner radius=0.900, outer radius=3.000
+INFO:cxroots.CountRoots:Computing number of roots within Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=1.885, phi1=5.027
+INFO:cxroots.CountRoots:Computing number of roots within Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=5.027, phi1=8.168
+INFO:cxroots.ApproximateRoots:Approximating the 3 roots in: Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=5.027, phi1=8.168
+INFO:cxroots.RootFinder:Recorded root (2.5-2.1341334669886852e-166j) with multiplicity 2
+INFO:cxroots.RootFinder:Recorded root (1.440251130166703-3.682534688290642e-31j) with multiplicity 1
+INFO:cxroots.ApproximateRoots:Approximating the 3 roots in: Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=1.885, phi1=5.027
+INFO:cxroots.RootFinder:Recorded root (-0.9746510351110598-1.3810477682471562j) with multiplicity 1
+INFO:cxroots.RootFinder:Recorded root (-0.9746510351110598+1.3810477682471562j) with multiplicity 1
+INFO:cxroots.RootFinder:Recorded root (-1.2+0j) with multiplicity 1
+INFO:cxroots.RootFinder:Completed rootfinding with 323021 evaluations of f at 323021 points
+ Multiplicity |               Root              
+------------------------------------------------
+      1       | -1.200000000000 +0.000000000000i
+      1       | -0.974651035111 -1.381047768247i
+      1       | -0.974651035111 +1.381047768247i
+      1       |  1.440251130167 -0.000000000000i
+      2       |  2.500000000000 -0.000000000000i
+</pre></div>
+</div>
+</section>
+<section id="logging-with-progress-bar">
+<h2>Logging with Progress Bar<a class="headerlink" href="#logging-with-progress-bar" title="Permalink to this headline"></a></h2>
+<p>To get logs to stream above the progress bar the logging config needs to be passed the <cite>RichHandler</cite> like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">rich.logging</span> <span class="kn">import</span> <span class="n">RichHandler</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">handlers</span><span class="o">=</span><span class="p">[</span><span class="n">RichHandler</span><span class="p">()])</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="cxroots_logging_progress.gif" src="cxroots_logging_progress.gif" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="guesses.html" class="btn btn-neutral float-left" title="Using Known Roots or Symmetries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ex_annular_combustion.html" class="btn btn-neutral float-right" title="Stability of an Annular Combustion Chamber" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Robert Parini.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

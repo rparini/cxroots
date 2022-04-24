@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -99,24 +100,24 @@
 
 <div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../../../contours.html#cxroots.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	A positively oriented circle in the complex plane.</span>
+<span class="sd">    A positively oriented circle in the complex plane.</span>
 
-<span class="sd">	Parameters</span>
-<span class="sd">	----------</span>
-<span class="sd">	center : complex</span>
-<span class="sd">		The center of the circle.</span>
-<span class="sd">	radius : float</span>
-<span class="sd">		The radius of the circle.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    center : complex</span>
+<span class="sd">        The center of the circle.</span>
+<span class="sd">    radius : float</span>
+<span class="sd">        The radius of the circle.</span>
 
-<span class="sd">	Examples</span>
-<span class="sd">	--------</span>
-<span class="sd">	.. plot::</span>
-<span class="sd">		:include-source:</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
 
-<span class="sd">		from cxroots import Circle</span>
-<span class="sd">		circle = Circle(center=1, radius=0.5)</span>
-<span class="sd">		circle.show()</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">        from cxroots import Circle</span>
+<span class="sd">        circle = Circle(center=1, radius=0.5)</span>
+<span class="sd">        circle.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
@@ -132,7 +133,7 @@
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns True if the point z lies within the contour, False if otherwise &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if the point z lies within the contour, False if otherwise&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
 
     <span class="nd">@property</span>
@@ -141,26 +142,26 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
 
     <span class="k">def</span> <span class="nf">subdivide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">divisionFactor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Subdivide the contour</span>
+<span class="sd">        Subdivide the contour</span>
 
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		axis : str, can only be &#39;r&#39; (argument kept for consistency with &#39;subdivisions&#39; method in parent Contour class)</span>
-<span class="sd">			The axis along which the line subdividing the contour is a constant.</span>
-<span class="sd">		divisionFactor : float in range (0,1), optional</span>
-<span class="sd">			Determines the point along &#39;axis&#39; at which the line dividing the box is placed</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis : str, can only be &#39;r&#39; (argument kept for consistency with &#39;subdivisions&#39; method in parent Contour class)</span>
+<span class="sd">            The axis along which the line subdividing the contour is a constant.</span>
+<span class="sd">        divisionFactor : float in range (0,1), optional</span>
+<span class="sd">            Determines the point along &#39;axis&#39; at which the line dividing the box is placed</span>
 
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		box1 : Annulus</span>
-<span class="sd">			With inner radius determined by the divisionFactor and outer radius equal to that of the original circle</span>
-<span class="sd">		box2 : Circle</span>
-<span class="sd">			With radius equal to the inner radius of box1</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        box1 : Annulus</span>
+<span class="sd">            With inner radius determined by the divisionFactor and outer radius equal to that of the original circle</span>
+<span class="sd">        box2 : Circle</span>
+<span class="sd">            With radius equal to the inner radius of box1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">axisName</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
             <span class="n">box1</span> <span class="o">=</span> <span class="n">Annulus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">divisionFactor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">])</span>
             <span class="n">box2</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">divisionFactor</span><span class="p">)</span>
@@ -176,7 +177,7 @@
         <span class="k">return</span> <span class="n">box1</span><span class="p">,</span> <span class="n">box2</span>
 
     <span class="k">def</span> <span class="nf">randomPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns a random point inside the Circle &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Returns a random point inside the Circle&quot;&quot;&quot;</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span></div>

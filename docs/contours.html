@@ -17,8 +17,8 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -54,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -237,10 +238,10 @@ with same arguments (ignoring verbose).</p>
 <li><p><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then divMax is the
 maximum number of divisions before the Romberg integration
 routine of a path exits.</p></li>
-<li><p><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.7.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to
+<li><p><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to
 compute the integral.  If ‘romb’ then Romberg integraion,
-using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.7.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>, is used instead.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Passed ass the <cite>show</cite> argument of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.7.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>.</p></li>
+using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>, is used instead.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Passed as the <cite>show</cite> argument of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.romberg.html#scipy.integrate.romberg" title="(in SciPy v1.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -266,13 +267,13 @@ the Complex plane.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>N</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points to use when plotting the path.</p></li>
 <li><p><strong>linecolor</strong> (<em>optional</em>) – The colour of the plotted path, passed to the
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.5.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.5.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
 argument of ‘color’.  See the matplotlib tutorial on
 <a class="reference external" href="https://matplotlib.org/users/colors.html#">specifying colours</a>.</p></li>
 <li><p><strong>linestyle</strong> (<em>str</em><em>, </em><em>optional</em>) – The line style of the plotted path, passed to the
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.5.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.5.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
 argument of ‘linestyle’.  The default corresponds to a solid
-line.  See <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle" title="(in Matplotlib v3.5.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.lines.Line2D.set_linestyle()</span></code></a> for
+line.  See <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle" title="(in Matplotlib v3.5.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.lines.Line2D.set_linestyle()</span></code></a> for
 other acceptable arguments.</p></li>
 </ul>
 </dd>
