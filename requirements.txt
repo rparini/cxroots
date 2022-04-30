@@ -7,9 +7,10 @@
 #
 
 scipy; python_version < '3.8' # pyup: ignore
-scipy==1.8.0; python_version >= '3.8'
+numpy; python_version < '3.8' # pyup: ignore
 
-numpy==1.22.3
+scipy==1.8.0; python_version >= '3.8'
+numpy==1.22.3; python_version >= '3.8'
 numpydoc==1.2.1
 mpmath==1.2.1
 numdifftools==0.9.40
