@@ -36,6 +36,6 @@ setup(
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Mathematics",
         "License :: OSI Approved :: BSD License",
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
     ],
 )
