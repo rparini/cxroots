@@ -26,6 +26,7 @@ setup(
     packages=packages,
     zip_safe=False,  # prevent cxroots from installing as a .egg zip file
     platforms=["all"],
+    python_requires=">=3.6",
     setup_requires=["pytest-runner"],
     install_requires=["numpy", "scipy", "numpydoc", "mpmath", "numdifftools>=0.9.39"],
     tests_require=["pytest"],
@@ -36,7 +37,6 @@ setup(
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Mathematics",
         "License :: OSI Approved :: BSD License",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
     ],
 )
