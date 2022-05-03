@@ -37,6 +37,7 @@ setup(
         "rich",
     ],
     tests_require=["pytest"],
+    extras_require={"plot": ["matplotlib"]},
     keywords="roots zeros complex analytic functions",
     classifiers=[
         "Development Status :: 4 - Beta",
