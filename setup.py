@@ -30,6 +30,7 @@ setup(
     setup_requires=["pytest-runner"],
     install_requires=["numpy", "scipy", "numpydoc", "mpmath", "numdifftools>=0.9.39"],
     tests_require=["pytest"],
+    extras_require={"plot": ["matplotlib"]},
     keywords="roots zeros complex analytic functions",
     classifiers=[
         "Development Status :: 4 - Beta",
