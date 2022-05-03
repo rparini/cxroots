@@ -43,7 +43,9 @@ For example, to define a rectangle whose verticies are the points :math:`0, i, 2
 To check that this is what we want we can plot this contour:
 
 .. note::
-	Getting cxroots to plot roots and contours requires additional optional dependencies that can be installed with `pip install cxroots[plot]`
+	Getting cxroots to plot roots and contours requires additional optional dependencies that can be installed with::
+		
+		pip install cxroots[plot]
 
 .. code-block:: python
 
