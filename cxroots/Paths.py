@@ -106,7 +106,6 @@ class ComplexPath(object):
             other acceptable arguments.
         """
         import matplotlib.pyplot as plt
-        from matplotlib.patches import FancyArrowPatch
 
         t = np.linspace(0, 1, N)
         path = self(t)
