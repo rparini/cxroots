@@ -62,8 +62,8 @@ class ComplexPath(object):
             elif vals_k > k:
                 return vals[:: 2 ** (vals_k - k)]
             else:
-                t = np.linspace(0, 1, 2 ** k + 1)
-                vals = np.empty(2 ** k + 1, dtype=np.complex128)
+                t = np.linspace(0, 1, 2**k + 1)
+                vals = np.empty(2**k + 1, dtype=np.complex128)
                 vals.fill(np.nan)
                 vals[:: 2 ** (k - vals_k)] = self._trapValuesCache[f]
                 vals[np.isnan(vals)] = f(self(t[np.isnan(vals)]))
@@ -73,7 +73,7 @@ class ComplexPath(object):
                 return vals
 
         else:
-            t = np.linspace(0, 1, 2 ** k + 1)
+            t = np.linspace(0, 1, 2**k + 1)
             vals = f(self(t))
             if not isinstance(vals, np.ndarray):
                 # Handle case when f does not return a vector, perhaps
@@ -115,20 +115,14 @@ class ComplexPath(object):
         plt.gca().set_aspect(1)
 
         # add arrow to indicate direction of path
-        arrow_direction = (self(0.51) - self(0.5)) / abs(self(0.51) - self(0.5))
-        arrow_extent = 1e-6 * arrow_direction
-        ymin, ymax = plt.gca().get_ylim()
-        xmin, xmax = plt.gca().get_xlim()
-        head_length = max(abs(ymax - ymin), abs(xmax - xmin)) / 40.0
-        plt.arrow(
-            self(0.5).real,
-            self(0.5).imag,
-            arrow_extent.real,
-            arrow_extent.imag,
-            head_width=head_length * 2 / 3.0,
-            head_length=head_length,
-            fc=linecolor,
-            ec=linecolor,
+        arrow_start = self(0.5)
+        arrow_end = self(0.51)
+
+        plt.annotate(
+            "",
+            (arrow_end.real, arrow_end.imag),
+            (arrow_start.real, arrow_start.imag),
+            arrowprops=dict(arrowstyle="->", fc=linecolor, ec=linecolor),
         )
 
     def show(self, saveFile=None, **plotKwargs):
