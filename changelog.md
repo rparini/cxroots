@@ -1,6 +1,7 @@
 ## Changelog
 ### Unreleased
 - Drop support for Python 2
+- Removes `verbose` argument in favour of logging, see the [documentation](https://rparini.github.io/cxroots/logging.html) for examples of how to view rootfinding progress
 - Use [Black](https://github.com/psf/black) formatting and added pre-commit hook
 - Add `cxroots[plot]` install option that will install dependencies for plotting contours and roots
 - Contour arrows to are now scale-independent ([#153](https://github.com/rparini/cxroots/issues/153), thanks [@llohse](https://github.com/llohse))
