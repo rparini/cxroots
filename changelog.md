@@ -1,4 +1,10 @@
 ## Changelog
+### Unreleased
+- Drop support for Python 2
+- Use [Black](https://github.com/psf/black) formatting and added pre-commit hook
+- Add `cxroots[plot]` install option that will install dependencies for plotting contours and roots
+- Contour arrows to are now scale-independent ([#153](https://github.com/rparini/cxroots/issues/153), thanks [@llohse](https://github.com/llohse))
+
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value
 
@@ -9,7 +15,7 @@
 - Fix depreciation warning from scipy
 
 ### 1.1.8 - 20/Apr/2019
-- Fix NotImplementedError in Contour base ([#31](https://github.com/rparini/cxroots/issues/31) thanks [@fchapoton](https://github.com/fchapoton))
+- Fix NotImplementedError in Contour base ([#31](https://github.com/rparini/cxroots/issues/31), thanks [@fchapoton](https://github.com/fchapoton))
 - Added `__call__` placeholder to ComplexPath
 
 ### 1.1.7 - 10/Feb/2019
