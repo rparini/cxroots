@@ -586,7 +586,7 @@ def find_roots(originalContour, f, df=None, verbose=False, **kwargs):
     Returns
     -------
     result : :class:`RootResult <cxroots.RootResult.RootResult>`
-            A container for the roots and their multiplicities.
+        A container for the roots and their multiplicities.
     """
     if verbose:
         text_column = TextColumn("{task.description}")

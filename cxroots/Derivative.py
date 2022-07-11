@@ -72,7 +72,7 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10):
     Returns
     -------
     multiplicity : int
-            The multiplicity of the given root.
+        The multiplicity of the given root.
     """
     logger = logging.getLogger(__name__)
     if abs(f(root)) > rootErrTol:
