@@ -1,5 +1,4 @@
 from __future__ import division
-import numpy as np
 from numpy import pi
 
 from ..Contour import Contour
@@ -84,9 +83,3 @@ class Circle(Contour):
             self._childBoxes = [box1, box2]
 
         return box1, box2
-
-    def randomPoint(self):
-        """Returns a random point inside the Circle"""
-        r = np.random.uniform(0, self.radius)
-        phi = np.random.uniform(0, 2 * pi)
-        return r * exp(1j * phi) + self.center
