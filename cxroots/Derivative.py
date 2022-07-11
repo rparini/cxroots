@@ -78,9 +78,9 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10):
     if abs(f(root)) > rootErrTol:
         raise ValueError(
             """
-			The provided 'root' is not a root of the given function f.
-			Specifically, %f = abs(f(root)) > rootErrTol = %f
-			"""
+            The provided 'root' is not a root of the given function f.
+            Specifically, %f = abs(f(root)) > rootErrTol = %f
+            """
             % (abs(f(root)), rootErrTol)
         )
 

@@ -149,10 +149,10 @@ def approximate_roots(
         logger.debug("G1=\n" + str(G1[: p + 1, : p + 1]))
 
         """
-		If any of the zeros of the FOP are outside of the interior
-		of the contour then we assume that they are 'arbitary' and
-		instead define the FOP as an inner polynomial. [KB]
-		"""
+        If any of the zeros of the FOP are outside of the interior
+        of the contour then we assume that they are 'arbitary' and
+        instead define the FOP as an inner polynomial. [KB]
+        """
         polyRoots = scipy.linalg.eig(G1[: p + 1, : p + 1], G[: p + 1, : p + 1])[0] + mu
         if np.all([C.contains(z) for z in polyRoots]):
             r, t = r + t + 1, 0

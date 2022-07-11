@@ -188,9 +188,9 @@ def find_roots_gen(
     except RuntimeError:
         raise RuntimeError(
             """
-			Integration along the initial contour has failed.
-			There is likely a root on or close to the initial contour.
-			Try changing the initial contour, if possible."""
+            Integration along the initial contour has failed.
+            There is likely a root on or close to the initial contour.
+            Try changing the initial contour, if possible."""
         )
 
     logger = logging.getLogger(__name__)
@@ -444,8 +444,8 @@ def find_roots_gen(
                         contour._numberOfRoots = new_N
                         raise NumberOfRootsChanged(
                             """The additional function evaluations of f taken while
-							approximating the roots within the contour have been shown that the number of roots
-							of f within the contour is %i rather than the supplied %i."""
+                            approximating the roots within the contour have been shown that the number of roots
+                            of f within the contour is %i rather than the supplied %i."""
                             % (new_N, contour._numberOfRoots)
                         )
 
