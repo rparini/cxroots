@@ -112,9 +112,3 @@ class Annulus(Contour):
         self._childBoxes = [box1, box2]
 
         return box1, box2
-
-    def randomPoint(self):
-        """Returns a random point inside the Annulus"""
-        r = np.random.uniform(*self.radii)
-        phi = np.random.uniform(0, 2 * pi)
-        return r * exp(1j * phi) + self.center

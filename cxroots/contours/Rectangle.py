@@ -125,9 +125,3 @@ class Rectangle(Contour):
         self._childBoxes = [box1, box2]
 
         return box1, box2
-
-    def randomPoint(self):
-        """Returns a random point inside the contour of the Rectangle."""
-        x = np.random.uniform(*self.xRange)
-        y = np.random.uniform(*self.yRange)
-        return x + 1j * y

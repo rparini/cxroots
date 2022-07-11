@@ -157,19 +157,3 @@ class AnnulusSector(Contour):
         self._childBoxes = [box1, box2]
 
         return box1, box2
-
-    def randomPoint(self):
-        """Returns a random point inside the contour of the AnnulusSector."""
-        r = np.random.uniform(*self.radii)
-        phiRange = np.mod(self.phiRange, 2 * pi)
-        if phiRange[0] > phiRange[1]:
-            phi = random.choice(
-                [
-                    np.random.uniform(phiRange[0], 2 * pi),
-                    np.random.uniform(0, phiRange[1]),
-                ]
-            )
-        else:
-            phi = np.random.uniform(*phiRange)
-
-        return r * exp(1j * phi) + self.center
