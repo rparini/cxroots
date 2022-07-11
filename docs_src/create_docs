@@ -3,6 +3,13 @@ rm -rf ../docs
 python3 docex_contour.py
 python3 docex_tutorial.py
 
+# Render terminal GIFs
+mkdir ../docs
+npm install -g terminalizer
+terminalizer render cxroots_progress -o ../docs/cxroots_progress.gif
+terminalizer render cxroots_logging_progress -o ../docs/cxroots_logging_progress.gif
+
+# Build documentation
 sphinx-build -b html . ../docs -T -E -a
 
 # clean up

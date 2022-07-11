@@ -1,4 +1,6 @@
 from __future__ import division
+import logging
+
 from numpy import inf
 
 
@@ -10,7 +12,6 @@ def iterateToRoot(
     roottol=1e-12,
     maxIter=20,
     attemptBest=False,
-    verbose=False,
     callback=None,
 ):
     """
@@ -41,8 +42,6 @@ def iterateToRoot(
         satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
         this case the previous iteration is returned as the approximation
         of the root.
-    verbose : bool, optional
-        Print x, dx and f(x) at each step of the iteration.
     callback : function, optional
         After each iteration callback(x, dx, f(x), iteration) will be
         called where 'x' is the current iteration of the estimated root,
@@ -56,14 +55,12 @@ def iterateToRoot(
         An approximation for a root of f.  If the rootfinding was
         unsucessful then None will be returned instead.
     """
-    if verbose:
-        print("Refining root:", x0)
+    logger = logging.getLogger(__name__)
+    logger.debug("Refining root: " + str(x0))
 
     if df is not None:
         try:
-            root, err = newton(
-                x0, f, df, steptol, 0, maxIter, attemptBest, verbose, callback
-            )
+            root, err = newton(x0, f, df, steptol, 0, maxIter, attemptBest, callback)
         except (RuntimeError, OverflowError):
             return None
     else:
@@ -71,7 +68,7 @@ def iterateToRoot(
         f_muller = lambda z: complex(f(z))
         x1, x2, x3 = x0, x0 * (1 + 1e-8) + 1e-8, x0 * (1 - 1e-8) - 1e-8
         root, err = muller(
-            x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, verbose, callback
+            x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, callback
         )
 
     if err < roottol:
@@ -87,7 +84,6 @@ def muller(
     roottol=1e-12,
     maxIter=20,
     attemptBest=False,
-    verbose=False,
     callback=None,
 ):
     """
@@ -119,8 +115,6 @@ def muller(
         satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
         this case the previous iteration is returned as the approximation
         of the root.
-    verbose : bool, optional
-        Print x, dx and f(x) at each step of the iteration.
     callback : function, optional
         After each iteration callback(x, dx, f(x), iteration) will be
         called where 'x' is the current iteration of the estimated root,
@@ -138,6 +132,8 @@ def muller(
     from mpmath import mp, mpmathify
     from mpmath.calculus.optimization import Muller
 
+    logger = logging.getLogger(__name__)
+
     # mpmath insists on functions accepting mpc
     f_mpmath = lambda z: mpmathify(f(complex(z)))
 
@@ -150,9 +146,15 @@ def muller(
     try:
         for x, dx in mull:
             err = abs(f_mpmath(x))
-
-            if verbose:
-                print(iteration, "x", x, "|f(x)|", err, "dx", dx)
+            logger.debug(
+                str(iteration)
+                + " x="
+                + str(x)
+                + " |f(x)|="
+                + str(err)
+                + " dx="
+                + str(dx)
+            )
 
             if callback is not None and callback(x, dx, err, iteration + 1):
                 break
@@ -181,10 +183,10 @@ def muller(
         # ZeroDivisionError comes up if the error is evaluated to be zero
         pass
 
-    if verbose:
-        print("Final approximation: x=", complex(x), "|f(x)|=", float(err))
-
     # cast mpc and mpf back to regular complex and float
+    logger.debug(
+        "Final approximation: x=" + str(complex(x)) + " |f(x)|=" + str(float(err))
+    )
     return complex(x), float(err)
 
 
@@ -196,7 +198,6 @@ def newton(
     roottol=1e-12,
     maxIter=20,
     attemptBest=False,
-    verbose=False,
     callback=None,
 ):
     """
@@ -228,8 +229,6 @@ def newton(
         satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
         this case the previous iteration is returned as the approximation
         of the root.
-    verbose : bool, optional
-        Print x, dx and f(x) at each step of the iteration.
     callback : function, optional
         After each iteration callback(x, dx, f(x), iteration) will be
         called where 'x' is the current iteration of the estimated root,
@@ -244,6 +243,7 @@ def newton(
     float
         abs(f(x)) where x is the final approximation for the root of f.
     """
+    logger = logging.getLogger(__name__)
     x, y = x0, f(x0)
     dx0, y0 = inf, y
     for iteration in range(maxIter):
@@ -251,8 +251,7 @@ def newton(
         x += dx
         y = f(x)
 
-        if verbose:
-            print("x", x, "f(x)", y, "dx", dx)
+        logger.debug("x=" + str(x) + " f(x)=" + str(y) + " dx=" + str(dx))
 
         if callback is not None and callback(x, dx, y, iteration + 1):
             break
@@ -271,9 +270,7 @@ def newton(
             # store previous dx and y
             dx0, y0 = dx, y
 
-    if verbose:
-        print("Final approximation: x=", x, "|f(x)|=", abs(y))
-
+    logger.debug("Final approximation: x=" + str(x) + " |f(x)|=" + str(abs(y)))
     return x, abs(y)
 
 

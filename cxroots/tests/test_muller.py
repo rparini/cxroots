@@ -5,7 +5,7 @@ from numpy import pi, cos
 
 
 def test_muller():
-    f = lambda x: cos(x) - x ** 2 + 1j * x ** 3
+    f = lambda x: cos(x) - x**2 + 1j * x**3
 
     iterations = []
     callback = lambda x, dx, y, iteration: iterations.append(x)

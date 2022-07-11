@@ -1,5 +1,6 @@
 from __future__ import division
 import warnings
+import logging
 
 import numpy as np
 from numpy import inf, pi
@@ -22,7 +23,6 @@ def prod(
     m=2,
     intMethod="quad",
     integerTol=inf,
-    verbose=False,
     callback=None,
 ):
     r"""
@@ -72,8 +72,6 @@ def prod(
         not exit unless the result is within integerTol of an integer.
         This is useful when computing the number of roots in a contour,
         which must be an integer.  By default integerTol is inf.
-    verbose : bool, optional
-        If True runtime information will be printed.  False be default.
     callback : function, optional
         Only used when intMethod is 'romb'.  A function that at each
         step in the iteration is passed the current approximation for
@@ -93,6 +91,7 @@ def prod(
     .. [KB] "Computing the zeros of analytic functions" by Peter Kravanja,
         Marc Van Barel, Springer 2000
     """
+    logger = logging.getLogger(__name__)
     if intMethod == "romb":
         N = 1
         k = 0
@@ -138,12 +137,12 @@ def prod(
                 integrals.append(segment_integral)
 
             I.append(sum(integrals))
-
-            if verbose:
-                if k > 1:
-                    print(k, "I", I[-1], "err", I[-2] - I[-1])
-                else:
-                    print(k, "I", I[-1])
+            if k > 1:
+                logger.debug(
+                    "Iteration=%i, integral=%f, err=%f" % (k, I[-1], I[-2] - I[-1])
+                )
+            else:
+                logger.debug("Iteration=%i, integral=%f" % (k, I[-1]))
 
             if callback is not None:
                 err = abs(I[-2] - I[-1]) if k > 1 else None
@@ -215,7 +214,6 @@ def count_roots(
     divMax=15,
     m=2,
     intMethod="quad",
-    verbose=False,
 ):
     r"""
     For a function of one complex variable, f(z), which is analytic in
@@ -269,9 +267,6 @@ def count_roots(
         If 'quad' then scipy.integrate.quad is used to perform the
         integral.  If 'romb' then Romberg integraion, using
         scipy.integrate.romb, is performed instead.
-    verbose : bool, optional
-        If True certain messages regarding the integration will be
-        printed.
 
     Returns
     -------
@@ -279,8 +274,8 @@ def count_roots(
         The number of zeros of f (counting multiplicities) which lie
         within the contour C.
     """
-    if verbose:
-        print("Computing number of roots within", C)
+    logger = logging.getLogger(__name__)
+    logger.info("Computing number of roots within " + str(C))
 
     with warnings.catch_warnings():
         # ignore warnings and catch if I is NaN later
@@ -295,7 +290,6 @@ def count_roots(
             divMax=divMax,
             m=m,
             intMethod=intMethod,
-            verbose=verbose,
             integerTol=integerTol,
         )
 
@@ -306,8 +300,8 @@ def count_roots(
 
     if np.isnan(I):
         raise RootError(
-            """Result of integral is an invalid value.
-                           Most likely because of a divide by zero error."""
+            "Result of integral is an invalid value. "
+            "Most likely because of a divide by zero error."
         )
 
     elif abs(int(round(I.real)) - I.real) < integerTol and abs(I.imag) < integerTol:

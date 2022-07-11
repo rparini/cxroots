@@ -14,18 +14,18 @@ class Circle(Contour):
     Parameters
     ----------
     center : complex
-            The center of the circle.
+        The center of the circle.
     radius : float
-            The radius of the circle.
+        The radius of the circle.
 
     Examples
     --------
     .. plot::
-            :include-source:
+        :include-source:
 
-            from cxroots import Circle
-            circle = Circle(center=1, radius=0.5)
-            circle.show()
+        from cxroots import Circle
+        circle = Circle(center=1, radius=0.5)
+        circle.show()
     """
 
     def __init__(self, center, radius):
@@ -60,16 +60,16 @@ class Circle(Contour):
         Parameters
         ----------
         axis : str, can only be 'r' (argument kept for consistency with 'subdivisions' method in parent Contour class)
-                The axis along which the line subdividing the contour is a constant.
+            The axis along which the line subdividing the contour is a constant.
         divisionFactor : float in range (0,1), optional
-                Determines the point along 'axis' at which the line dividing the box is placed
+            Determines the point along 'axis' at which the line dividing the box is placed
 
         Returns
         -------
         box1 : Annulus
-                With inner radius determined by the divisionFactor and outer radius equal to that of the original circle
+            With inner radius determined by the divisionFactor and outer radius equal to that of the original circle
         box2 : Circle
-                With radius equal to the inner radius of box1
+            With radius equal to the inner radius of box1
         """
         if axis == "r" or self.axisName[axis] == "r":
             box1 = Annulus(self.center, [self.radius * divisionFactor, self.radius])

@@ -14,10 +14,10 @@ def test_count_roots(useDerivative):
     There should be 424 roots inside this contour
     """
     C = Rectangle([-20.3, 20.7], [-20.3, 20.7])
-    f = lambda z: z ** 50 + z ** 12 - 5 * sin(20 * z) * cos(12 * z) - 1
+    f = lambda z: z**50 + z**12 - 5 * sin(20 * z) * cos(12 * z) - 1
     df = (
-        lambda z: 50 * z ** 49
-        + 12 * z ** 11
+        lambda z: 50 * z**49
+        + 12 * z**11
         + 60 * sin(12 * z) * sin(20 * z)
         - 100 * cos(12 * z) * cos(20 * z)
     )
@@ -25,7 +25,7 @@ def test_count_roots(useDerivative):
     if not useDerivative:
         df = None
 
-    assert C.count_roots(f, df, verbose=True) == 424
+    assert C.count_roots(f, df) == 424
 
 
 @pytest.mark.xfail(reason="Possibly lack of high precision arithmetic")

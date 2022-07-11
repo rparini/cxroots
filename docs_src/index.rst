@@ -35,6 +35,7 @@ Documentation
 	countroots.rst
 	demo.rst
 	guesses.rst
+	logging.rst
 
 .. toctree::
 	:caption: Examples

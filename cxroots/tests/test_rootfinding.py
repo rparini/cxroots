@@ -52,18 +52,12 @@ class MultiplicityTests(object):
     def test_multiplicity_f(self):
         # Check that if only the root is given then the multiplcity could be computed
         for i, root in enumerate(self.roots):
-            assert (
-                find_multiplicity(root, self.f, df=None, verbose=True)
-                == self.multiplicities[i]
-            )
+            assert find_multiplicity(root, self.f, df=None) == self.multiplicities[i]
 
     def test_multiplicity_df(self):
         # Check that if only the root is given then the multiplcity could be computed
         for i, root in enumerate(self.roots):
-            assert (
-                find_multiplicity(root, self.f, df=self.df, verbose=True)
-                == self.multiplicities[i]
-            )
+            assert find_multiplicity(root, self.f, df=self.df) == self.multiplicities[i]
 
 
 class TestRootfinding_noRoots(unittest.TestCase, RootfindingTests):
@@ -79,8 +73,8 @@ class TestRootfinding_noRoots(unittest.TestCase, RootfindingTests):
 class TestRootfinding_poly1(unittest.TestCase, RootfindingTests, MultiplicityTests):
     def setUp(self):
         self.C = Rectangle([-2, 2], [-2, 2])
-        self.f = lambda z: z ** 3 * (z - 1.2) ** 2
-        self.df = lambda z: 3 * (z) ** 2 * (z - 1.2) ** 2 + 2 * z ** 3 * (z - 1.2)
+        self.f = lambda z: z**3 * (z - 1.2) ** 2
+        self.df = lambda z: 3 * (z) ** 2 * (z - 1.2) ** 2 + 2 * z**3 * (z - 1.2)
 
         self.roots = [0, 1.2]
         self.multiplicities = [3, 2]
@@ -144,9 +138,9 @@ class TestRootfinding_143(unittest.TestCase, RootfindingTests, MultiplicityTests
     def setUp(self):
         # Ex 1.4.3 from [KB]
         self.C = Circle(0, 5)
-        self.f = lambda z: z ** 2 * (z - 1) * (z - 2) * (z - 3) * (z - 4) + z * sin(z)
+        self.f = lambda z: z**2 * (z - 1) * (z - 2) * (z - 3) * (z - 4) + z * sin(z)
         self.df = (
-            lambda z: 2 * z * (3 * z ** 4 - 25 * z ** 3 + 70 * z ** 2 - 75 * z + 24)
+            lambda z: 2 * z * (3 * z**4 - 25 * z**3 + 70 * z**2 - 75 * z + 24)
             + sin(z)
             + z * cos(z)
         )
@@ -166,13 +160,13 @@ class TestRootfinding_144(unittest.TestCase, RootfindingTests, MultiplicityTests
         # Ex 1.4.4 from [KB]
         self.C = Circle(0, 3)
         self.f = lambda z: (z * (z - 2)) ** 2 * (
-            exp(2 * z) * cos(z) + z ** 3 - 1 - sin(z)
+            exp(2 * z) * cos(z) + z**3 - 1 - sin(z)
         )
         self.df = (
-            lambda z: 2 * z * (z - 2) ** 2 * (exp(2 * z) * cos(z) + z ** 3 - 1 - sin(z))
-            + 2 * (z - 2) * z ** 2 * (exp(2 * z) * cos(z) + z ** 3 - 1 - sin(z))
+            lambda z: 2 * z * (z - 2) ** 2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
+            + 2 * (z - 2) * z**2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
             + (z * (z - 2)) ** 2
-            * (2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) + 3 * z ** 2 - cos(z))
+            * (2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) + 3 * z**2 - cos(z))
         )
 
         self.roots = [
@@ -256,9 +250,9 @@ class TestRootfinding_152(unittest.TestCase, RootfindingTests, MultiplicityTests
     def setUp(self):
         # Ex 1.5.2 from [KB]
         self.C = Rectangle([-0.5, 5.5], [-0.5, 1.5])
-        self.f = lambda z: z ** 2 * (z - 1) * (z - 2) * (z - 3) * (z - 4) + z * sin(z)
+        self.f = lambda z: z**2 * (z - 1) * (z - 2) * (z - 3) * (z - 4) + z * sin(z)
         self.df = (
-            lambda z: 2 * z * (3 * z ** 4 - 25 * z ** 3 + 70 * z ** 2 - 75 * z + 24)
+            lambda z: 2 * z * (3 * z**4 - 25 * z**3 + 70 * z**2 - 75 * z + 24)
             + sin(z)
             + z * cos(z)
         )
@@ -278,13 +272,13 @@ class TestRootfinding_153(unittest.TestCase, RootfindingTests, MultiplicityTests
         # Ex 1.5.3 from [KB]
         self.C = Rectangle([-1, 3], [-1, 1])
         self.f = lambda z: (z * (z - 2)) ** 2 * (
-            exp(2 * z) * cos(z) + z ** 3 - 1 - sin(z)
+            exp(2 * z) * cos(z) + z**3 - 1 - sin(z)
         )
         self.df = (
-            lambda z: 2 * z * (z - 2) ** 2 * (exp(2 * z) * cos(z) + z ** 3 - 1 - sin(z))
-            + 2 * z ** 2 * (z - 2) * (exp(2 * z) * cos(z) + z ** 3 - 1 - sin(z))
+            lambda z: 2 * z * (z - 2) ** 2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
+            + 2 * z**2 * (z - 2) * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
             + (z * (z - 2)) ** 2
-            * (2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) + 3 * z ** 2 - cos(z))
+            * (2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) + 3 * z**2 - cos(z))
         )
 
         self.roots = [
@@ -315,12 +309,12 @@ class TestIntroduction(unittest.TestCase, RootfindingTests, MultiplicityTests):
     def setUp(self):
         self.C = Circle(0, 3)
         self.f = lambda z: (z * (z + 2)) ** 2 * (
-            exp(2 * z) * cos(z) - 1 - sin(z) + z ** 5
+            exp(2 * z) * cos(z) - 1 - sin(z) + z**5
         )
-        self.df = lambda z: 2 * (exp(2 * z) * cos(z) - 1 - sin(z) + z ** 5) * (
-            z ** 2 * (z + 2) + (z + 2) ** 2 * z
+        self.df = lambda z: 2 * (exp(2 * z) * cos(z) - 1 - sin(z) + z**5) * (
+            z**2 * (z + 2) + (z + 2) ** 2 * z
         ) + (z * (z + 2)) ** 2 * (
-            2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) - cos(z) + 5 * z ** 4
+            2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) - cos(z) + 5 * z**4
         )
 
         self.roots = [
@@ -344,7 +338,7 @@ def test_annular_combustion():
     C = 522463
     T = 0.005
 
-    f = lambda z: z ** 2 + A * z + B * exp(-T * z) + C
+    f = lambda z: z**2 + A * z + B * exp(-T * z) + C
     df = lambda z: 2 * z + A - B * T * exp(-T * z)
 
     rectangle = Rectangle([-15000, 5000], [-15000, 15000])

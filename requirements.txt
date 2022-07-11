@@ -17,6 +17,7 @@ numpy==1.23.0; python_version >= '3.8'
 numpydoc==1.4.0; python_version >= '3.8'
 mpmath==1.2.1
 numdifftools==0.9.40
+rich==12.2.0
 matplotlib==3.5.2; python_version >= '3.8'
 pytest==7.1.2; python_version >= '3.8'
 pytest-xdist==2.5.0
