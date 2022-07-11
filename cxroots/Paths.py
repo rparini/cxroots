@@ -148,9 +148,7 @@ class ComplexPath(object):
         else:
             plt.show()
 
-    def integrate(
-        self, f, absTol=0, relTol=1e-12, divMax=15, intMethod="quad", verbose=False
-    ):
+    def integrate(self, f, absTol=0, relTol=1e-12, divMax=15, intMethod="quad"):
         """
         Integrate the function f along the path.  The value of the
         integral is cached and will be reused if the method is called
@@ -172,8 +170,6 @@ class ComplexPath(object):
             If 'quad' then :func:`scipy.integrate.quad` is used to
             compute the integral.  If 'romb' then Romberg integraion,
             using :func:`scipy.integrate.romberg`, is used instead.
-        verbose : bool, optional
-            Passed as the `show` argument of :func:`scipy.integrate.romberg`.
 
         Returns
         -------
@@ -206,7 +202,6 @@ class ComplexPath(object):
                     tol=absTol,
                     rtol=relTol,
                     divmax=divMax,
-                    show=verbose,
                 )
             elif intMethod == "quad":
                 integrand_real = lambda t: np.real(integrand(t))

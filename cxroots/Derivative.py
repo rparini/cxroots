@@ -9,7 +9,7 @@ import numdifftools.fornberg as ndf
 
 
 @np.vectorize
-def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=False):
+def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10):
     r"""
     Compute the derivaive of an analytic function using Cauchy's
     Integral Formula for Derivatives.
@@ -31,8 +31,6 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
         By default the contour is the circle |z-z_0|=1e-3.
     absIntegrationTol : float, optional
         The absolute tolerance required of the integration routine.
-    verbose : bool, optional
-        If True runtime information will be printed.  False be default.
 
     Returns
     -------
@@ -47,7 +45,7 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10, verbose=Fals
         C = lambda z0: contour
 
     integrand = lambda z: f(z) / (z - z0) ** (n + 1)
-    integral = C(z0).integrate(integrand, absTol=absIntegrationTol, verbose=verbose)
+    integral = C(z0).integrate(integrand, absTol=absIntegrationTol)
     return integral * math.factorial(n) / (2j * pi)
 
 
