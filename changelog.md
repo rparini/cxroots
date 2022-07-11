@@ -2,7 +2,7 @@
 ### Unreleased
 - Drop support for Python 2
 - cxroots now logs rootfinding progress which can be accessed using the standard library [logging module](https://docs.python.org/3/library/logging.html). See the [documentation](https://rparini.github.io/cxroots/logging.html) for examples.
-- The `verbose` argument has been removed from some functions and for the `Contour.roots` method or `find_roots` function it will now create a progres bar, rather than printing debugging information to the console.
+- The `verbose` argument has been removed from some functions and for the `Contour.roots` method or `find_roots` function it will now create a progress bar, rather than printing debugging information to the console.
 - Use [Black](https://github.com/psf/black) formatting and added pre-commit hook
 - Add `cxroots[plot]` install option that will install dependencies for plotting contours and roots
 - Contour arrows to are now scale-independent ([#153](https://github.com/rparini/cxroots/issues/153), thanks [@llohse](https://github.com/llohse))
