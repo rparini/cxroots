@@ -26,7 +26,7 @@ More detailed runtime information is available using Python's standard logging m
 Logging with Progress Bar
 -------------------------
 
-To get logs to stream above the progress bar the logging config needs to be passed the `RichHandler` like so:
+To get the logs to neatly stream above the progress bar the logging config needs to be passed the `RichHandler` like so:
 
 .. literalinclude:: docex_logging_progress.py
 	:language: python
