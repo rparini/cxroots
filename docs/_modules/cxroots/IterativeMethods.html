@@ -49,7 +49,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -90,8 +89,6 @@
              
   <h1>Source code for cxroots.IterativeMethods</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">inf</span>
 
 
@@ -103,10 +100,11 @@
     <span class="n">roottol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
     <span class="n">maxIter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">attemptBest</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Starting with initial point x0 iterate to a root of f. This function</span>
+<span class="sd">    Starting with initial point x0 iterate to a root of f. This function </span>
 <span class="sd">    is called during the rootfinding process to refine any roots found.</span>
 <span class="sd">    If df is given then the Newton-Raphson method, :func:`~cxroots.IterativeMethods.newton`,</span>
 <span class="sd">    will be used, otherwise Muller&#39;s method, :func:`~cxroots.IterativeMethods.muller`, will be used instead.</span>
@@ -127,31 +125,35 @@
 <span class="sd">    maxIter : int, optional</span>
 <span class="sd">        The routine ends after maxIter iterations.</span>
 <span class="sd">    attemptBest : bool, optional</span>
-<span class="sd">        If True then routine ends if the error of the previous iteration,</span>
-<span class="sd">        x0, was at least as good as the current iteration, x, in the</span>
-<span class="sd">        sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration</span>
-<span class="sd">        satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In</span>
-<span class="sd">        this case the previous iteration is returned as the approximation</span>
+<span class="sd">        If True then routine ends if the error of the previous iteration, </span>
+<span class="sd">        x0, was at least as good as the current iteration, x, in the </span>
+<span class="sd">        sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration </span>
+<span class="sd">        satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In </span>
+<span class="sd">        this case the previous iteration is returned as the approximation </span>
 <span class="sd">        of the root.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Print x, dx and f(x) at each step of the iteration.</span>
 <span class="sd">    callback : function, optional</span>
-<span class="sd">        After each iteration callback(x, dx, f(x), iteration) will be</span>
-<span class="sd">        called where &#39;x&#39; is the current iteration of the estimated root,</span>
-<span class="sd">        &#39;dx&#39; is the step size between the previous and current &#39;x&#39; and</span>
-<span class="sd">        &#39;iteration&#39; the number of iterations that have been taken.  If</span>
+<span class="sd">        After each iteration callback(x, dx, f(x), iteration) will be </span>
+<span class="sd">        called where &#39;x&#39; is the current iteration of the estimated root, </span>
+<span class="sd">        &#39;dx&#39; is the step size between the previous and current &#39;x&#39; and </span>
+<span class="sd">        &#39;iteration&#39; the number of iterations that have been taken.  If </span>
 <span class="sd">        the callback function evaluates to True then the routine will end.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    complex</span>
-<span class="sd">        An approximation for a root of f.  If the rootfinding was</span>
+<span class="sd">        An approximation for a root of f.  If the rootfinding was </span>
 <span class="sd">        unsucessful then None will be returned instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Refining root: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x0</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Refining root:&quot;</span><span class="p">,</span> <span class="n">x0</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">root</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">newton</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">steptol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxIter</span><span class="p">,</span> <span class="n">attemptBest</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+            <span class="n">root</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">newton</span><span class="p">(</span>
+                <span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">steptol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxIter</span><span class="p">,</span> <span class="n">attemptBest</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">callback</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
@@ -159,7 +161,7 @@
         <span class="n">f_muller</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="nb">complex</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span> <span class="o">=</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">x0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-8</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1e-8</span>
         <span class="n">root</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">muller</span><span class="p">(</span>
-            <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">f_muller</span><span class="p">,</span> <span class="n">steptol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxIter</span><span class="p">,</span> <span class="n">attemptBest</span><span class="p">,</span> <span class="n">callback</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">f_muller</span><span class="p">,</span> <span class="n">steptol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxIter</span><span class="p">,</span> <span class="n">attemptBest</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">callback</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">err</span> <span class="o">&lt;</span> <span class="n">roottol</span><span class="p">:</span>
@@ -175,20 +177,21 @@
     <span class="n">roottol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
     <span class="n">maxIter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">attemptBest</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A wrapper for mpmath&#39;s implementation of Muller&#39;s method.</span>
+<span class="sd">    A wrapper for mpmath&#39;s implementation of Muller&#39;s method.  </span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    x1 : float or complex</span>
 <span class="sd">        An initial point for iteration, should be close to a root of f.</span>
 <span class="sd">    x2 : float or complex</span>
-<span class="sd">        An initial point for iteration, should be close to a root of f.</span>
+<span class="sd">        An initial point for iteration, should be close to a root of f.  </span>
 <span class="sd">        Should not equal x1.</span>
 <span class="sd">    x3 : float or complex</span>
-<span class="sd">        An initial point for iteration, should be close to a root of f.</span>
+<span class="sd">        An initial point for iteration, should be close to a root of f.  </span>
 <span class="sd">        Should not equal x1 or x2.</span>
 <span class="sd">    f : function</span>
 <span class="sd">        Function of a single variable which we seek to find a root of.</span>
@@ -200,17 +203,19 @@
 <span class="sd">    maxIter : int, optional</span>
 <span class="sd">        The routine ends after maxIter iterations.</span>
 <span class="sd">    attemptBest : bool, optional</span>
-<span class="sd">        If True then routine ends if the error of the previous iteration,</span>
-<span class="sd">        x0, was at least as good as the current iteration, x, in the</span>
-<span class="sd">        sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration</span>
-<span class="sd">        satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In</span>
-<span class="sd">        this case the previous iteration is returned as the approximation</span>
+<span class="sd">        If True then routine ends if the error of the previous iteration, </span>
+<span class="sd">        x0, was at least as good as the current iteration, x, in the </span>
+<span class="sd">        sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration </span>
+<span class="sd">        satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In </span>
+<span class="sd">        this case the previous iteration is returned as the approximation </span>
 <span class="sd">        of the root.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Print x, dx and f(x) at each step of the iteration.</span>
 <span class="sd">    callback : function, optional</span>
-<span class="sd">        After each iteration callback(x, dx, f(x), iteration) will be</span>
-<span class="sd">        called where &#39;x&#39; is the current iteration of the estimated root,</span>
-<span class="sd">        &#39;dx&#39; is the step size between the previous and current &#39;x&#39; and</span>
-<span class="sd">        &#39;iteration&#39; the number of iterations that have been taken.  If</span>
+<span class="sd">        After each iteration callback(x, dx, f(x), iteration) will be </span>
+<span class="sd">        called where &#39;x&#39; is the current iteration of the estimated root, </span>
+<span class="sd">        &#39;dx&#39; is the step size between the previous and current &#39;x&#39; and </span>
+<span class="sd">        &#39;iteration&#39; the number of iterations that have been taken.  If </span>
 <span class="sd">        the callback function evaluates to True then the routine will end.</span>
 
 <span class="sd">    Returns</span>
@@ -222,8 +227,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">mpmath</span> <span class="kn">import</span> <span class="n">mp</span><span class="p">,</span> <span class="n">mpmathify</span>
     <span class="kn">from</span> <span class="nn">mpmath.calculus.optimization</span> <span class="kn">import</span> <span class="n">Muller</span>
-
-    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="c1"># mpmath insists on functions accepting mpc</span>
     <span class="n">f_mpmath</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">mpmathify</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>
@@ -237,15 +240,9 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">dx</span> <span class="ow">in</span> <span class="n">mull</span><span class="p">:</span>
             <span class="n">err</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f_mpmath</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
-                <span class="o">+</span> <span class="s2">&quot; x=&quot;</span>
-                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-                <span class="o">+</span> <span class="s2">&quot; |f(x)|=&quot;</span>
-                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-                <span class="o">+</span> <span class="s2">&quot; dx=&quot;</span>
-                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
-            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;|f(x)|&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">callback</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">iteration</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="k">break</span>
@@ -274,10 +271,10 @@
         <span class="c1"># ZeroDivisionError comes up if the error is evaluated to be zero</span>
         <span class="k">pass</span>
 
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final approximation: x=&quot;</span><span class="p">,</span> <span class="nb">complex</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s2">&quot;|f(x)|=&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+
     <span class="c1"># cast mpc and mpf back to regular complex and float</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="s2">&quot;Final approximation: x=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; |f(x)|=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
-    <span class="p">)</span>
     <span class="k">return</span> <span class="nb">complex</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">err</span><span class="p">)</span></div>
 
 
@@ -289,11 +286,12 @@
     <span class="n">roottol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
     <span class="n">maxIter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">attemptBest</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Find an approximation to a point xf such that f(xf)=0 for a</span>
-<span class="sd">    scalar function f using Newton-Raphson iteration starting at</span>
+<span class="sd">    Find an approximation to a point xf such that f(xf)=0 for a </span>
+<span class="sd">    scalar function f using Newton-Raphson iteration starting at </span>
 <span class="sd">    the point x0.</span>
 
 <span class="sd">    Parameters</span>
@@ -314,17 +312,19 @@
 <span class="sd">    maxIter : int, optional</span>
 <span class="sd">        The routine ends after maxIter iterations.</span>
 <span class="sd">    attemptBest : bool, optional</span>
-<span class="sd">        If True then routine ends if the error of the previous iteration,</span>
-<span class="sd">        x0, was at least as good as the current iteration, x, in the</span>
-<span class="sd">        sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration</span>
-<span class="sd">        satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In</span>
-<span class="sd">        this case the previous iteration is returned as the approximation</span>
+<span class="sd">        If True then routine ends if the error of the previous iteration, </span>
+<span class="sd">        x0, was at least as good as the current iteration, x, in the </span>
+<span class="sd">        sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration </span>
+<span class="sd">        satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In </span>
+<span class="sd">        this case the previous iteration is returned as the approximation </span>
 <span class="sd">        of the root.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Print x, dx and f(x) at each step of the iteration.</span>
 <span class="sd">    callback : function, optional</span>
-<span class="sd">        After each iteration callback(x, dx, f(x), iteration) will be</span>
-<span class="sd">        called where &#39;x&#39; is the current iteration of the estimated root,</span>
-<span class="sd">        &#39;dx&#39; is the step size between the previous and current &#39;x&#39; and</span>
-<span class="sd">        &#39;iteration&#39; the number of iterations that have been taken.  If</span>
+<span class="sd">        After each iteration callback(x, dx, f(x), iteration) will be </span>
+<span class="sd">        called where &#39;x&#39; is the current iteration of the estimated root, </span>
+<span class="sd">        &#39;dx&#39; is the step size between the previous and current &#39;x&#39; and </span>
+<span class="sd">        &#39;iteration&#39; the number of iterations that have been taken.  If </span>
 <span class="sd">        the callback function evaluates to True then the routine will end.</span>
 
 <span class="sd">    Returns</span>
@@ -334,7 +334,6 @@
 <span class="sd">    float</span>
 <span class="sd">        abs(f(x)) where x is the final approximation for the root of f.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x0</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
     <span class="n">dx0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">inf</span><span class="p">,</span> <span class="n">y</span>
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxIter</span><span class="p">):</span>
@@ -342,7 +341,8 @@
         <span class="n">x</span> <span class="o">+=</span> <span class="n">dx</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;x=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; f(x)=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; dx=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dx</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;f(x)&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">callback</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iteration</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">break</span>
@@ -361,13 +361,15 @@
             <span class="c1"># store previous dx and y</span>
             <span class="n">dx0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Final approximation: x=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; |f(x)|=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final approximation: x=&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;|f(x)|=&quot;</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
     <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">secant</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">steptol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">roottol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">maxIter</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Find an approximation to a point xf such that f(xf)=0 for a</span>
+<span class="sd">    Find an approximation to a point xf such that f(xf)=0 for a </span>
 <span class="sd">    scalar function f using the secant method.  The method requires</span>
 <span class="sd">    two initial points x1 and x2, ideally close to a root,</span>
 <span class="sd">    and proceeds iteratively.</span>
@@ -375,10 +377,10 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    x1 : float or complex</span>
-<span class="sd">        An initial point for iteration, should be close to a</span>
+<span class="sd">        An initial point for iteration, should be close to a </span>
 <span class="sd">        root of f.</span>
 <span class="sd">    x2 : float or complex</span>
-<span class="sd">        An initial point for iteration, should be close to a</span>
+<span class="sd">        An initial point for iteration, should be close to a </span>
 <span class="sd">        root of f.  Should not equal x1.</span>
 <span class="sd">    f : function</span>
 <span class="sd">        Function of a single variable which we seek to find a root of.</span>
@@ -390,10 +392,10 @@
 <span class="sd">    maxIter : int, optional</span>
 <span class="sd">        The routine ends after maxIter iterations.</span>
 <span class="sd">    callback : function, optional</span>
-<span class="sd">        After each iteration callback(x, dx, f(x), iteration) will be</span>
-<span class="sd">        called where &#39;x&#39; is the current iteration of the estimated root,</span>
-<span class="sd">        &#39;dx&#39; is the step size between the previous and current &#39;x&#39; and</span>
-<span class="sd">        &#39;iteration&#39; the number of iterations that have been taken.  If</span>
+<span class="sd">        After each iteration callback(x, dx, f(x), iteration) will be </span>
+<span class="sd">        called where &#39;x&#39; is the current iteration of the estimated root, </span>
+<span class="sd">        &#39;dx&#39; is the step size between the previous and current &#39;x&#39; and </span>
+<span class="sd">        &#39;iteration&#39; the number of iterations that have been taken.  If </span>
 <span class="sd">        the callback function evaluates to True then the routine will end.</span>
 
 <span class="sd">    Returns</span>

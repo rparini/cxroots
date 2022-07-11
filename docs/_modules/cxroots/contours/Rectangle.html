@@ -49,7 +49,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guesses.html">Using Known Roots or Symmetries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -98,26 +97,26 @@
 
 <div class="viewcode-block" id="Rectangle"><a class="viewcode-back" href="../../../contours.html#cxroots.Rectangle">[docs]</a><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A positively oriented rectangle in the complex plane.</span>
+<span class="sd">	A positively oriented rectangle in the complex plane.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    xRange : tuple</span>
-<span class="sd">            Tuple of length two giving the range of the rectangle along the</span>
-<span class="sd">            real axis.</span>
-<span class="sd">    yRange : tuple</span>
-<span class="sd">            Tuple of length two giving the range of the rectangle along the</span>
-<span class="sd">            imaginary axis.</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	xRange : tuple</span>
+<span class="sd">		Tuple of length two giving the range of the rectangle along the</span>
+<span class="sd">		real axis.</span>
+<span class="sd">	yRange : tuple</span>
+<span class="sd">		Tuple of length two giving the range of the rectangle along the</span>
+<span class="sd">		imaginary axis.</span>
 
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    .. plot::</span>
-<span class="sd">            :include-source:</span>
+<span class="sd">	Examples</span>
+<span class="sd">	--------</span>
+<span class="sd">	.. plot::</span>
+<span class="sd">		:include-source:</span>
 
-<span class="sd">            from cxroots import Rectangle</span>
-<span class="sd">            rect = Rectangle(xRange=(-2, 2), yRange=(-1, 1))</span>
-<span class="sd">            rect.show()</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">		from cxroots import Rectangle</span>
+<span class="sd">		rect = Rectangle(xRange=(-2, 2), yRange=(-1, 1))</span>
+<span class="sd">		rect.show()</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xRange</span><span class="p">,</span> <span class="n">yRange</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xRange</span> <span class="o">=</span> <span class="n">xRange</span>
@@ -154,7 +153,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yRange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">yRange</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns True if the point z lies within the contour, False if otherwise&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Returns True if the point z lies within the contour, False if otherwise &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">z</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">yRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">yRange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -162,30 +161,30 @@
 
     <span class="k">def</span> <span class="nf">subdivide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">divisionFactor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Subdivide the contour</span>
+<span class="sd">		Subdivide the contour</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        axis : str, can be either &#39;x&#39; or &#39;y&#39;</span>
-<span class="sd">                The axis along which the line subdividing the contour is a</span>
-<span class="sd">                constant.</span>
-<span class="sd">        divisionFactor : float in range (0,1), optional</span>
-<span class="sd">                Determines the point along &#39;axis&#39; at which the line dividing</span>
-<span class="sd">                the contour is placed.</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		axis : str, can be either &#39;x&#39; or &#39;y&#39;</span>
+<span class="sd">			The axis along which the line subdividing the contour is a</span>
+<span class="sd">			constant.</span>
+<span class="sd">		divisionFactor : float in range (0,1), optional</span>
+<span class="sd">			Determines the point along &#39;axis&#39; at which the line dividing</span>
+<span class="sd">			the contour is placed.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        box1 : Rectangle</span>
-<span class="sd">                If axis is &#39;x&#39; then box1 has the same yRange and minimum value of xRange as the</span>
-<span class="sd">                original Rectangle but the maximum xRange is determined by the divisionFactor.</span>
-<span class="sd">                If axis is &#39;y&#39; then box1 has the same xRange and minimum value of yRange as the</span>
-<span class="sd">                original Rectangle but the maximum yRange is determined by the divisionFactor.</span>
-<span class="sd">        box2 : Rectangle</span>
-<span class="sd">                If axis is &#39;x&#39; then box2 has the same yRange and maximum value of xRange as the</span>
-<span class="sd">                original Rectangle but the minimum xRange is equal to the maximum xRange of box1.</span>
-<span class="sd">                If axis is &#39;x&#39; then box2 has the same xRange and maximum value of yRange as the</span>
-<span class="sd">                original Rectangle but the minimum yRange is equal to the maximum yRange of box1.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		box1 : Rectangle</span>
+<span class="sd">			If axis is &#39;x&#39; then box1 has the same yRange and minimum value of xRange as the</span>
+<span class="sd">			original Rectangle but the maximum xRange is determined by the divisionFactor.</span>
+<span class="sd">			If axis is &#39;y&#39; then box1 has the same xRange and minimum value of yRange as the</span>
+<span class="sd">			original Rectangle but the maximum yRange is determined by the divisionFactor.</span>
+<span class="sd">		box2 : Rectangle</span>
+<span class="sd">			If axis is &#39;x&#39; then box2 has the same yRange and maximum value of xRange as the</span>
+<span class="sd">			original Rectangle but the minimum xRange is equal to the maximum xRange of box1.</span>
+<span class="sd">			If axis is &#39;x&#39; then box2 has the same xRange and maximum value of yRange as the</span>
+<span class="sd">			original Rectangle but the minimum yRange is equal to the maximum yRange of box1.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">axisName</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">divisionFactor</span> <span class="o">*</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">xRange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
