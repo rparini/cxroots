@@ -1,5 +1,4 @@
 from __future__ import division
-import numpy as np
 
 from ..Contour import Contour
 from ..Paths import ComplexLine
