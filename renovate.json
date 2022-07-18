@@ -1,6 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ]
+  "extends": ["config:base", "group:allNonMajor"],
+  "schedule": ["before 3am on Saturday"],
+  "ignorePaths": ["docs/**"],
+  "pip_requirements": {
+    "fileMatch": ["requirements.*\\.txt$"]
+  }
 }
