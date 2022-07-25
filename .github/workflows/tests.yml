@@ -1,9 +1,5 @@
 name: tests
 
-on: 
-  - push
-  - pull_request
-
 jobs:
   black:
     runs-on: ubuntu-latest
