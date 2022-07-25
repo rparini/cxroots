@@ -1,6 +1,8 @@
 name: tests
 
-on: [push]
+on: 
+  - push
+  - pull_request
 
 jobs:
   black:
@@ -8,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: psf/black@stable
+        with:
+          version: "22.3.0"
 
   test:
     runs-on: ubuntu-latest
