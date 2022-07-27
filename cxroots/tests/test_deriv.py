@@ -15,12 +15,11 @@ from cxroots import CxDerivative
     ],
 )
 def test_CxDerivative(C):
-    f = lambda z: z**10 - 2 * z**5 + sin(z) * cos(z / 2)
-    df = (
-        lambda z: 10 * (z**9 - z**4)
-        + cos(z) * cos(z / 2)
-        - 0.5 * sin(z) * sin(z / 2)
-    )
+    def f(z):
+        return z**10 - 2 * z**5 + sin(z) * cos(z / 2)
+
+    def df(z):
+        return 10 * (z**9 - z**4) + cos(z) * cos(z / 2) - 0.5 * sin(z) * sin(z / 2)
 
     z = np.array([-1.234, 0.3 + 1j, 0.1j, -0.9 - 0.5j])
 

@@ -5,8 +5,6 @@ import logging
 import numpy as np
 from numpy import inf, pi
 import scipy.integrate
-import scipy.misc
-import numdifftools.fornberg as ndf
 import numdifftools
 
 
@@ -95,18 +93,20 @@ def prod(
     if intMethod == "romb":
         N = 1
         k = 0
-        I = []
+        I_approx = []
 
         while k < divMax and (
-            len(I) < divMin
+            len(I_approx) < divMin
             or (
-                abs(I[-2] - I[-1]) > absTol and abs(I[-2] - I[-1]) > relTol * abs(I[-1])
+                abs(I_approx[-2] - I_approx[-1]) > absTol
+                and abs(I_approx[-2] - I_approx[-1]) > relTol * abs(I_approx[-1])
             )
             or (
-                abs(I[-3] - I[-2]) > absTol and abs(I[-3] - I[-2]) > relTol * abs(I[-2])
+                abs(I_approx[-3] - I_approx[-2]) > absTol
+                and abs(I_approx[-3] - I_approx[-2]) > relTol * abs(I_approx[-2])
             )
-            or abs(int(round(I[-1].real)) - I[-1].real) > integerTol
-            or abs(I[-1].imag) > integerTol
+            or abs(int(round(I_approx[-1].real)) - I_approx[-1].real) > integerTol
+            or abs(I_approx[-1].imag) > integerTol
         ):
             N = 2 * N
             t = np.linspace(0, 1, N + 1)
@@ -136,31 +136,37 @@ def prod(
                 ) / (2j * pi)
                 integrals.append(segment_integral)
 
-            I.append(sum(integrals))
+            I_approx.append(sum(integrals))
             if k > 1:
                 logger.debug(
-                    "Iteration=%i, integral=%f, err=%f" % (k, I[-1], I[-2] - I[-1])
+                    "Iteration=%i, integral=%f, err=%f"
+                    % (
+                        k,
+                        I_approx[-1],
+                        I_approx[-2] - I_approx[-1],
+                    )
                 )
             else:
-                logger.debug("Iteration=%i, integral=%f" % (k, I[-1]))
+                logger.debug("Iteration=%i, integral=%f" % (k, I_approx[-1]))
 
             if callback is not None:
-                err = abs(I[-2] - I[-1]) if k > 1 else None
-                if callback(I[-1], err, k):
+                err = abs(I_approx[-2] - I_approx[-1]) if k > 1 else None
+                if callback(I_approx[-1], err, k):
                     break
 
-        return I[-1], abs(I[-2] - I[-1])
+        return I_approx[-1], abs(I_approx[-2] - I_approx[-1])
 
     elif intMethod == "quad":
         if df is None:
             df = numdifftools.Derivative(f, order=m)
             # df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
 
-            ### Too slow
+            # Too slow
+            # import numdifftools.fornberg as ndf
             # ndf.derivative returns an array [f, f', f'', ...]
             # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
 
-        I, err = 0, 0
+        integral, err = 0, 0
         for segment in C.segments:
             integrand_cache = {}
 
@@ -178,23 +184,27 @@ def prod(
                 return i
 
             # integrate real part
-            integrand_real = lambda t: np.real(integrand(t))
+            def integrand_real(t):
+                return np.real(integrand(t))
+
             result_real = scipy.integrate.quad(
                 integrand_real, 0, 1, full_output=1, epsabs=absTol, epsrel=relTol
             )
-            I_real, abserr_real, infodict_real = result_real[:3]
+            integral_real, abserr_real, infodict_real = result_real[:3]
 
             # integrate imaginary part
-            integrand_imag = lambda t: np.imag(integrand(t))
+            def integrand_imag(t):
+                return np.imag(integrand(t))
+
             result_imag = scipy.integrate.quad(
                 integrand_imag, 0, 1, full_output=1, epsabs=absTol, epsrel=relTol
             )
-            I_imag, abserr_imag, infodict_imag = result_imag[:3]
+            integral_imag, abserr_imag = result_imag[:2]
 
-            I += I_real + 1j * I_imag
+            integral += integral_real + 1j * integral_imag
             err += abserr_real + 1j * abserr_imag
 
-        return I, abs(err)
+        return integral, abs(err)
 
     else:
         raise ValueError("intMethod must be either 'romb' or 'quad'")
@@ -278,9 +288,9 @@ def count_roots(
     logger.info("Computing number of roots within " + str(C))
 
     with warnings.catch_warnings():
-        # ignore warnings and catch if I is NaN later
+        # ignore warnings and catch if I_approx is NaN later
         warnings.simplefilter("ignore")
-        I, err = prod(
+        I_approx, err = prod(
             C,
             f,
             df,
@@ -298,15 +308,18 @@ def count_roots(
             np.log2(len(C.segments[0]._trapValuesCache[f]) - 1)
         )
 
-    if np.isnan(I):
+    if np.isnan(I_approx):
         raise RootError(
             "Result of integral is an invalid value. "
             "Most likely because of a divide by zero error."
         )
 
-    elif abs(int(round(I.real)) - I.real) < integerTol and abs(I.imag) < integerTol:
+    elif (
+        abs(int(round(I_approx.real)) - I_approx.real) < integerTol
+        and abs(I_approx.imag) < integerTol
+    ):
         # integral is sufficiently close to an integer
-        numberOfZeros = int(round(I.real))
+        numberOfZeros = int(round(I_approx.real))
         return numberOfZeros
 
     else:

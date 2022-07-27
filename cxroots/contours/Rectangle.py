@@ -46,8 +46,12 @@ class Rectangle(Contour):
         super(Rectangle, self).__init__(segments)
 
     def __str__(self):
-        return "Rectangle: vertices = {z1.real:.3f}{z1.imag:+.3f}i, {z2.real:.3f}{z2.imag:+.3f}i, {z3.real:.3f}{z3.imag:+.3f}i, {z4.real:.3f}{z4.imag:+.3f}i".format(
-            z1=self.z1, z2=self.z2, z3=self.z3, z4=self.z4
+        return (
+            "Rectangle: vertices = "
+            f"{self.z1.real:.3f}{self.z1.imag:+.3f}i, "
+            f"{self.z2.real:.3f}{self.z2.imag:+.3f}i, "
+            f"{self.z3.real:.3f}{self.z3.imag:+.3f}i, "
+            f"{self.z4.real:.3f}{self.z4.imag:+.3f}i"
         )
 
     @property
@@ -75,24 +79,27 @@ class Rectangle(Contour):
         Parameters
         ----------
         axis : str, can be either 'x' or 'y'
-                The axis along which the line subdividing the contour is a
-                constant.
+            The axis along which the line subdividing the contour is a constant.
         divisionFactor : float in range (0,1), optional
-                Determines the point along 'axis' at which the line dividing
-                the contour is placed.
+            Determines the point along 'axis' at which the line dividing the contour
+            is placed.
 
         Returns
         -------
         box1 : Rectangle
-                If axis is 'x' then box1 has the same yRange and minimum value of xRange as the
-                original Rectangle but the maximum xRange is determined by the divisionFactor.
-                If axis is 'y' then box1 has the same xRange and minimum value of yRange as the
-                original Rectangle but the maximum yRange is determined by the divisionFactor.
+            If axis is 'x' then box1 has the same yRange and minimum value of xRange as
+            the original Rectangle but the maximum xRange is determined by the
+            divisionFactor.
+            If axis is 'y' then box1 has the same xRange and minimum value of yRange as
+            the original Rectangle but the maximum yRange is determined by the
+            divisionFactor.
         box2 : Rectangle
-                If axis is 'x' then box2 has the same yRange and maximum value of xRange as the
-                original Rectangle but the minimum xRange is equal to the maximum xRange of box1.
-                If axis is 'x' then box2 has the same xRange and maximum value of yRange as the
-                original Rectangle but the minimum yRange is equal to the maximum yRange of box1.
+            If axis is 'x' then box2 has the same yRange and maximum value of xRange as
+            the original Rectangle but the minimum xRange is equal to the maximum
+            xRange of box1.
+            If axis is 'x' then box2 has the same xRange and maximum value of yRange as
+            the original Rectangle but the minimum yRange is equal to the maximum
+            yRange of box1.
         """
         if axis == "x" or self.axisName[axis] == "x":
             midpoint = self.xRange[0] + divisionFactor * (

@@ -5,13 +5,23 @@ from numpy import pi, cos, sin
 
 
 def test_secant():
-    # example from Table 2.5 of "Numerical Analysis" by Richard L. Burden, J. Douglas Faires
-    f = lambda x: cos(x) - x
-    df = lambda x: -sin(x) - 1
+    """
+    Example from Table 2.5 of "Numerical Analysis" by Richard L. Burden,
+    J. Douglas Faires
+    """
+
+    def f(x):
+        return cos(x) - x
+
+    def df(x):
+        return -sin(x) - 1
 
     iterations = []
-    callback = lambda x, dx, y, iteration: iterations.append(x)
-    x, err = secant(0.5, pi / 4, f, callback=callback)
+
+    def callback(x, dx, y, iteration):
+        return iterations.append(x)
+
+    x, _ = secant(0.5, pi / 4, f, callback=callback)
     iterations.append(x)
 
     correct_iterations = [

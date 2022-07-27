@@ -15,10 +15,11 @@ def iterateToRoot(
     callback=None,
 ):
     """
-    Starting with initial point x0 iterate to a root of f. This function
-    is called during the rootfinding process to refine any roots found.
-    If df is given then the Newton-Raphson method, :func:`~cxroots.IterativeMethods.newton`,
-    will be used, otherwise Muller's method, :func:`~cxroots.IterativeMethods.muller`, will be used instead.
+    Starting with initial point x0 iterate to a root of f. This function is called
+    during the rootfinding process to refine any roots found. If df is given then
+    the Newton-Raphson method, :func:`~cxroots.IterativeMethods.newton`, will be used,
+    otherwise Muller's method, :func:`~cxroots.IterativeMethods.muller`, will be used
+    instead.
 
     Parameters
     ----------
@@ -65,7 +66,9 @@ def iterateToRoot(
             return None
     else:
         # Muller's method:
-        f_muller = lambda z: complex(f(z))
+        def f_muller(z):
+            return complex(f(z))
+
         x1, x2, x3 = x0, x0 * (1 + 1e-8) + 1e-8, x0 * (1 - 1e-8) - 1e-8
         root, err = muller(
             x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, callback
@@ -135,7 +138,8 @@ def muller(
     logger = logging.getLogger(__name__)
 
     # mpmath insists on functions accepting mpc
-    f_mpmath = lambda z: mpmathify(f(complex(z)))
+    def f_mpmath(z):
+        return mpmathify(f(complex(z)))
 
     mull = Muller(mp, f_mpmath, (x1, x2, x3), verbose=False)
     iteration = 0

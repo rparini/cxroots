@@ -13,31 +13,35 @@ class AnnulusSector(Contour):
     Parameters
     ----------
     center : complex
-            The center of the annulus sector.
+        The center of the annulus sector.
     radii : tuple
-            Tuple of length two of the form (inner_radius, outer_radius)
+        Tuple of length two of the form (inner_radius, outer_radius)
     phiRange : tuple
-            Tuple of length two of the form (phi0, phi1).
-            The segment of the contour containing inner and outer circular
-            arcs will be joined, counter clockwise from phi0 to phi1.
+        Tuple of length two of the form (phi0, phi1).
+        The segment of the contour containing inner and outer circular
+        arcs will be joined, counter clockwise from phi0 to phi1.
 
     Examples
     --------
     .. plot::
-            :include-source:
+        :include-source:
 
-            from numpy import pi
-            from cxroots import AnnulusSector
-            annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(-pi/4, pi/4))
-            annulusSector.show()
+        from numpy import pi
+        from cxroots import AnnulusSector
+        annulusSector = AnnulusSector(
+            center=0.2, radii=(0.5, 1.25), phiRange=(-pi/4, pi/4)
+        )
+        annulusSector.show()
 
     .. plot::
-            :include-source:
+        :include-source:
 
-            from numpy import pi
-            from cxroots import AnnulusSector
-            annulusSector = AnnulusSector(center=0.2, radii=(0.5, 1.25), phiRange=(pi/4, -pi/4))
-            annulusSector.show()
+        from numpy import pi
+        from cxroots import AnnulusSector
+        annulusSector = AnnulusSector(
+            center=0.2, radii=(0.5, 1.25), phiRange=(pi/4, -pi/4)
+        )
+        annulusSector.show()
     """
 
     def __init__(self, center, radii, phiRange):
@@ -70,8 +74,10 @@ class AnnulusSector(Contour):
         super(AnnulusSector, self).__init__(segments)
 
     def __str__(self):
-        return "Annulus sector: center={center.real:.3f}{center.imag:+.3f}i, r0={radii[0]:.3f}, r1={radii[1]:.3f}, phi0={phiRange[0]:.3f}, phi1={phiRange[1]:.3f}".format(
-            center=self.center, radii=self.radii, phiRange=self.phiRange
+        return (
+            f"Annulus sector: center={self.center.real:.3f}{self.center.imag:+.3f}i, "
+            f"r0={self.radii[0]:.3f}, r1={self.radii[1]:.3f}, "
+            f"phi0={self.phiRange[0]:.3f}, phi1={self.phiRange[1]:.3f}"
         )
 
     @property
@@ -110,22 +116,23 @@ class AnnulusSector(Contour):
         Parameters
         ----------
         axis : str, can be either 'r' or 'phi'
-                The axis along which the line subdividing the contour is a constant.
+            The axis along which the line subdividing the contour is a constant.
         divisionFactor : float in range (0,1), optional
-                Determines the point along 'axis' at which the line dividing the box is placed
+            Determines the point along 'axis' at which the line dividing the box is
+            placed
 
         Returns
         -------
         box1 : AnnulusSector
-                If axis is 'r' then phiRange and the inner radius is the same as original AnnulusSector
-                with the outer radius determined by the divisionFactor.
-                If axis is 'phi' then the radii and phiRange[0] is the same as the original AnnulusSector
-                with phiRange[1] determined by the divisionFactor.
+            If axis is 'r' then phiRange and the inner radius is the same as original
+            AnnulusSector with the outer radius determined by the divisionFactor.
+            If axis is 'phi' then the radii and phiRange[0] is the same as the original
+            AnnulusSector with phiRange[1] determined by the divisionFactor.
         box2 : AnnulusSector
-                If axis is 'r' then phiRange and the outer radius is the same as original AnnulusSector
-                with the inner radius determined equal to the outer radius of box1.
-                If axis is 'phi' then the radii and phiRange[1] is the same as the original AnnulusSector
-                with phiRange[0] equal to phiRange[1] of box1.
+            If axis is 'r' then phiRange and the outer radius is the same as original
+            AnnulusSector with the inner radius determined equal to the outer radius
+            of box1. If axis is 'phi' then the radii and phiRange[1] is the same as
+            the original AnnulusSector with phiRange[0] equal to phiRange[1] of box1.
         """
         r0, r1 = self.radii
         phi0, phi1 = self.phiRange
