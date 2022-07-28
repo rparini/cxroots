@@ -3,9 +3,10 @@ References
 ----------
 [DSZ] "Locating all the Zeros of an Analytic Function in one Complex Variable"
     M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
-[DL] "A Numerical Method for Locating the Zeros of an Analytic function", 
+[DL] "A Numerical Method for Locating the Zeros of an Analytic function",
     L.M.Delves, J.N.Lyness, Mathematics of Computation (1967), Vol.21, Issue 100
-[KB] "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel, Springer 2000
+[KB] "Computing the zeros of analytic functions" by Peter Kravanja, Marc Van Barel,
+    Springer 2000
 """
 
 import unittest
@@ -295,7 +296,9 @@ def test_reevaluation_of_N():
     from cxroots import Circle
 
     C = Circle(0, 2)
-    f = lambda z: (z - 1) * (z - 0.2) ** 2
+
+    def f(z):
+        return (z - 1) * (z - 0.2) ** 2
 
     roots = [1, 0.2]
     multiplicities = [1, 2]
@@ -338,8 +341,11 @@ def test_annular_combustion():
     C = 522463
     T = 0.005
 
-    f = lambda z: z**2 + A * z + B * exp(-T * z) + C
-    df = lambda z: 2 * z + A - B * T * exp(-T * z)
+    def f(z):
+        return z**2 + A * z + B * exp(-T * z) + C
+
+    def df(z):
+        return 2 * z + A - B * T * exp(-T * z)
 
     rectangle = Rectangle([-15000, 5000], [-15000, 15000])
 
@@ -354,8 +360,11 @@ def test_annular_combustion():
 def test_const_df(intMethod):
     from cxroots import Circle
 
-    f = lambda z: z - 0.5
-    df = lambda z: 1
+    def f(z):
+        return z - 0.5
+
+    def df(z):
+        return 1
 
     C = Circle(0, 1)
     roots = C.roots(f, df, intMethod=intMethod)
@@ -368,8 +377,11 @@ def test_const_df(intMethod):
 def test_df(intMethod):
     from cxroots import Circle
 
-    f = lambda z: (z - 0.5) ** 2
-    df = lambda z: 2 * (z - 0.5)
+    def f(z):
+        return (z - 0.5) ** 2
+
+    def df(z):
+        return 2 * (z - 0.5)
 
     C = Circle(0, 1)
     roots = C.roots(f, df, intMethod=intMethod)

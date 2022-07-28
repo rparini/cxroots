@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from numpy import cos, sin
+from numpy import cos, sin, exp
 
 from cxroots import Rectangle
 
@@ -8,21 +8,27 @@ from cxroots import Rectangle
 @pytest.mark.parametrize("useDerivative", [True, False])
 def test_count_roots(useDerivative):
     """
-    Example from "Locating all the Zeros of an Analytic Function in one Complex Variable"
+    From "Locating all the Zeros of an Analytic Function in one Complex Variable"
     M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
 
     There should be 424 roots inside this contour
     """
     C = Rectangle([-20.3, 20.7], [-20.3, 20.7])
-    f = lambda z: z**50 + z**12 - 5 * sin(20 * z) * cos(12 * z) - 1
-    df = (
-        lambda z: 50 * z**49
-        + 12 * z**11
-        + 60 * sin(12 * z) * sin(20 * z)
-        - 100 * cos(12 * z) * cos(20 * z)
-    )
 
-    if not useDerivative:
+    def f(z):
+        return z**50 + z**12 - 5 * sin(20 * z) * cos(12 * z) - 1
+
+    if useDerivative:
+
+        def df(z):
+            return (
+                50 * z**49
+                + 12 * z**11
+                + 60 * sin(12 * z) * sin(20 * z)
+                - 100 * cos(12 * z) * cos(20 * z)
+            )
+
+    else:
         df = None
 
     assert C.count_roots(f, df) == 424
@@ -30,8 +36,7 @@ def test_count_roots(useDerivative):
 
 @pytest.mark.xfail(reason="Possibly lack of high precision arithmetic")
 def test_RingOscillator():
-    # problem in section 4.3 of [DSZ]
-    from cxroots import Rectangle, findRoots
+    """Problem in section 4.3 of [DSZ]"""
 
     def A(z):
         t = 2.0

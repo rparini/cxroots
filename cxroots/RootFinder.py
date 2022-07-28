@@ -183,7 +183,8 @@ def find_roots_gen(
     }
 
     try:
-        # compute the total number of zeros, including multiplicities, within the originally given contour
+        # compute the total number of zeros, including multiplicities, within the
+        # originally given contour
         originalContour._numberOfRoots = originalContour.count_roots(**countKwargs)
     except RuntimeError:
         raise RuntimeError(
@@ -236,8 +237,9 @@ def find_roots_gen(
                 ]
                 while parentContour._numberOfRoots != sum(numberOfRoots):
                     logger.warning(
-                        "Number of roots in sub contours not adding up to parent contour.  Recomputing number of roots in parent and child contours with NIntAbsTol="
-                        + str(0.5 * NIntAbsTol)
+                        "Number of roots in sub contours not adding up to parent "
+                        "contour.  Recomputing number of roots in parent and child "
+                        f"contours with NIntAbsTol={0.5 * NIntAbsTol}"
                     )
                     tempCountKwargs = countKwargs.copy()
                     tempCountKwargs["NIntAbsTol"] *= 0.5
@@ -253,10 +255,10 @@ def find_roots_gen(
                     break
 
             except RootError:
-                # If the number of zeros within either of the new contours is not an integer then it is
-                # likely that the introduced line which subdivides 'parentContour' lies on a zero.
-                # To avoid this we will try to place the subdividing line at a different point along
-                # the division axis
+                # If the number of zeros within either of the new contours is not an
+                # integer then it is likely that the introduced line which subdivides
+                # 'parentContour' lies on a zero. To avoid this we will try to place
+                # the subdividing line at a different point along the division axis
                 logger.warning(
                     "RootError encountered when subdivding "
                     + str(parentContour)
@@ -268,7 +270,8 @@ def find_roots_gen(
                 continue
 
         if numberOfRoots is None or parentContour._numberOfRoots != sum(numberOfRoots):
-            # The list of subdivisions has been exhaused and still the number of enclosed zeros does not add up
+            # The list of subdivisions has been exhaused and still the number of
+            # enclosed zeros does not add up
             raise RuntimeError(
                 """Unable to subdivide contour:
                 \t%s
@@ -306,7 +309,7 @@ def find_roots_gen(
 
         # interate over all relations
         for relation in relations:
-            remove_relations(relation)
+            remove_siblings_children(relation)
 
     def addRoot(root, multiplicity):
         # check that the root we have found is distinct from the ones we already have
@@ -355,20 +358,24 @@ def find_roots_gen(
         contours[-1]._numberOfRoots = contours[-1].count_roots(**countKwargs)
 
     while contours:
-        # yield the initial state here so that the animation in demo_find_roots shows the first frame
+        # yield the initial state here so that the animation in demo_find_roots shows
+        # the first frame
         totFoundRoots = sum(
             int(round(multiplicity.real))
             for root, multiplicity in zip(roots, multiplicities)
         )
-        yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
+        remaining_roots = originalContour._numberOfRoots - totFoundRoots
+        yield roots, multiplicities, contours, remaining_roots
         contour = contours.pop()
 
-        # if a known root is too near to this contour then reverse the subdivision that created it
+        # if a known root is too near to this contour then reverse the subdivision that
+        # created it
         if np.any([contour.distance(root) < newtonStepTol for root in roots]):
             # remove the contour together with its children and siblings
             remove_siblings_children(contour)
 
-            # put the parent contour back into the list of contours to be subdivided again
+            # put the parent contour back into the list of contours to be subdivided
+            # again
             contours.append(contour._parentContour)
 
             # do not use this contour again
@@ -395,16 +402,16 @@ def find_roots_gen(
                 root = contour.centralPoint
 
             warnings.warn(
-                "The area of the interior of this contour with is smaller than newtonStepTol!  Try increasing rootTol"
-                "The point z = %f + %fi has been recorded as a root of multiplicity %i."
-                "The error |f(z)| = "
-                % (root.real, contour.centralPoint.imag, contour._numberOfRoots)
-                + str(abs(f(root)))
+                "The area of this contour is smaller than newtonStepTol. Try "
+                f"increasing rootTol. The point z = {root.real} + {root.imag}i has "
+                f"been recorded as a root of multiplicity {contour._numberOfRoots}. "
+                f"The error |f(z)| = {abs(f(root))}"
             )
             addRoot(root, contour._numberOfRoots)
             continue
 
-        # if all the roots within the contour have been located then continue to the next contour
+        # if all the roots within the contour have been located then continue to the
+        # next contour
         numberOfKnownRootsInContour = sum(
             [
                 int(round(multiplicity.real))
@@ -422,10 +429,11 @@ def find_roots_gen(
             subdivide(contour)
             continue
 
-        ### Approximate the roots in this contour
+        # Approximate the roots in this contour
         if intMethod == "romb":
-            # Check to see if the number of roots has changed after new values of f have been sampled
-            def callback(I, err, numberOfDiv):
+            # Check to see if the number of roots has changed after new values of f
+            # have been sampled
+            def callback(integral, err, numberOfDiv):
                 if numberOfDiv > contour._numberOfDivisionsForN:
                     logger.info("Checking N using the newly sampled values of f")
                     new_N = contour.count_roots(
@@ -441,12 +449,13 @@ def find_roots_gen(
 
                     if new_N != contour._numberOfRoots:
                         logger.info("N has been recalculated using more samples of f")
+                        original_N = contour._numberOfRoots
                         contour._numberOfRoots = new_N
                         raise NumberOfRootsChanged(
-                            """The additional function evaluations of f taken while
-                            approximating the roots within the contour have been shown that the number of roots
-                            of f within the contour is %i rather than the supplied %i."""
-                            % (new_N, contour._numberOfRoots)
+                            "The additional function evaluations of f taken while "
+                            "approximating the roots within the contour have been "
+                            "shown that the number of roots of f within the contour "
+                            f"is {new_N} rather than the supplied {original_N}."
                         )
 
         else:
@@ -507,7 +516,8 @@ def find_roots_gen(
                     np.abs(np.round(approxMultiplicities) - approxMultiplicities)
                     > integerTol
                 ):
-                    # the computed multiplicity might be unreliable so make a contour focused on that point instead
+                    # the computed multiplicity might be unreliable so make a contour
+                    # focused on that point instead
                     if hasattr(contour, "_shrinkingRadius"):
                         contour._shrinkingRadius *= 0.5
                         contours.append(Circle(root, contour._shrinkingRadius))
@@ -527,7 +537,8 @@ def find_roots_gen(
                 # remove the contour and any relations
                 remove_siblings_children(contour)
 
-                # put the parent contour back into the list of contours to subdivide again
+                # put the parent contour back into the list of contours to subdivide
+                # again
                 parent = contour._parentContour
                 contours.append(parent)
 
@@ -567,7 +578,8 @@ def find_roots_gen(
         int(round(multiplicity.real))
         for root, multiplicity in zip(roots, multiplicities)
     )
-    yield roots, multiplicities, contours, originalContour._numberOfRoots - totFoundRoots
+    remaining_roots = originalContour._numberOfRoots - totFoundRoots
+    yield roots, multiplicities, contours, remaining_roots
 
 
 @update_docstring(Parameters=FunctionDoc(find_roots_gen)["Parameters"])

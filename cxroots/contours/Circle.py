@@ -36,8 +36,9 @@ class Circle(Contour):
         super(Circle, self).__init__(segments)
 
     def __str__(self):
-        return "Circle: center={center.real:.3f}{center.imag:+.3f}i, radius={radius:.3f}".format(
-            center=self.center, radius=self.radius
+        return (
+            f"Circle: center={self.center.real:.3f}{self.center.imag:+.3f}i, "
+            f"radius={self.radius:.3f}"
         )
 
     def contains(self, z):
@@ -58,15 +59,17 @@ class Circle(Contour):
 
         Parameters
         ----------
-        axis : str, can only be 'r' (argument kept for consistency with 'subdivisions' method in parent Contour class)
+        axis : str, can only be 'r'
             The axis along which the line subdividing the contour is a constant.
         divisionFactor : float in range (0,1), optional
-            Determines the point along 'axis' at which the line dividing the box is placed
+            Determines the point along 'axis' at which the line dividing the box is
+            placed
 
         Returns
         -------
         box1 : Annulus
-            With inner radius determined by the divisionFactor and outer radius equal to that of the original circle
+            With inner radius determined by the divisionFactor and outer radius equal
+            to that of the original circle
         box2 : Circle
             With radius equal to the inner radius of box1
         """
