@@ -13,7 +13,7 @@ jobs:
           python-version: '3.10'
       - run: pip install -r requirements_static_analysis.txt
       - run: black --check .
-          
+
   flake8:
     runs-on: ubuntu-latest
     steps:
