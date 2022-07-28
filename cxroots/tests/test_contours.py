@@ -1,5 +1,3 @@
-import pytest
-
 from cxroots import AnnulusSector
 from cxroots import Rectangle
 

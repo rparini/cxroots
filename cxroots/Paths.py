@@ -136,7 +136,7 @@ class ComplexPath(object):
             If given then the plot will be saved to disk with name
             'saveFile'.  If saveFile=None the plot is shown on-screen.
         **plotKwargs
-            Other key word arguments are passed to :meth:`~cxroots.Paths.ComplexPath.plot`.
+            Other key word args are passed to :meth:`~cxroots.Paths.ComplexPath.plot`
         """
         import matplotlib.pyplot as plt
 
@@ -192,7 +192,9 @@ class ComplexPath(object):
             integral = -self._reversePath._integralCache[args]
 
         else:
-            integrand = lambda t: f(self(t)) * self.dzdt(t)
+
+            def integrand(t):
+                return f(self(t)) * self.dzdt(t)
 
             if intMethod == "romb":
                 integral = scipy.integrate.romberg(
@@ -204,8 +206,12 @@ class ComplexPath(object):
                     divmax=divMax,
                 )
             elif intMethod == "quad":
-                integrand_real = lambda t: np.real(integrand(t))
-                integrand_imag = lambda t: np.imag(integrand(t))
+
+                def integrand_real(t):
+                    return np.real(integrand(t))
+
+                def integrand_imag(t):
+                    return np.imag(integrand(t))
 
                 integral_real, abserr_real = scipy.integrate.quad(
                     integrand_real, 0, 1, epsabs=absTol, epsrel=relTol
@@ -219,9 +225,9 @@ class ComplexPath(object):
 
             if np.isnan(integral):
                 raise RuntimeError(
-                    "The integral along the segment %s is NaN. "
-                    "This is most likely due to a root being on or very close to the path of integration."
-                    % self
+                    f"The integral along the segment {self} is NaN. This is most "
+                    "likely due to a root being on or very close to the path of "
+                    "integration."
                 )
 
             self._integralCache[args] = integral

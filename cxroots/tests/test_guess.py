@@ -15,7 +15,9 @@ from cxroots.tests.ApproxEqual import roots_approx_equal
 )
 def test_guess_symmetry_1(symmetry):
     C = Circle(0, 3)
-    f = lambda z: z**4 + z**3 + z**2 + z
+
+    def f(z):
+        return z**4 + z**3 + z**2 + z
 
     roots = [0, -1, 1j, -1j]
     multiplicities = [1, 1, 1, 1]
@@ -34,7 +36,9 @@ def test_guess_symmetry_1(symmetry):
 )
 def test_guess_root(guesses):
     C = Circle(0, 3)
-    f = lambda z: (z - 2.5) ** 2 * (exp(-z) * sin(z / 2.0) - 1.2 * cos(z))
+
+    def f(z):
+        return (z - 2.5) ** 2 * (exp(-z) * sin(z / 2.0) - 1.2 * cos(z))
 
     roots = [
         2.5,
@@ -54,10 +58,17 @@ def test_guess_root(guesses):
 )
 def test_guess_symmetry_2(usedf):
     C = Circle(0, 1.5)
-    f = lambda z: z**27 - 2 * z**11 + 0.5 * z**6 - 1
-    df = (lambda z: 27 * z**26 - 22 * z**10 + 3 * z**5) if usedf else None
 
-    symmetry = lambda z: [z.conjugate()]
+    def f(z):
+        return z**27 - 2 * z**11 + 0.5 * z**6 - 1
+
+    def derviative(z):
+        return 27 * z**26 - 22 * z**10 + 3 * z**5
+
+    df = derviative if usedf else None
+
+    def symmetry(z):
+        return [z.conjugate()]
 
     roots = [
         -1.03509521179240,

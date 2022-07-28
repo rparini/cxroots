@@ -207,7 +207,9 @@ def approximate_roots(
     ### better than np.dot(s, np.linalg.inv(V)).  Especially since we know
     ### the result must be an integer anyway.
     # import vandermonde
-    # multiplicities_vandermonde = vandermonde.solve_transpose(np.array(roots), np.array(s))
+    # multiplicities_vandermonde = vandermonde.solve_transpose(
+    #     np.array(roots), np.array(s)
+    # )
 
     ### Note that n = rank(H_N) is not used since calculating the
     ### rank of a matrix of floats can be quite unstable

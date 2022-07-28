@@ -40,8 +40,9 @@ class Annulus(Contour):
         super(Annulus, self).__init__(segments)
 
     def __str__(self):
-        return "Annulus: center={center.real:.3f}{center.imag:+.3f}i, inner radius={radii[0]:.3f}, outer radius={radii[1]:.3f}".format(
-            center=self.center, radii=self.radii
+        return (
+            f"Annulus: center={self.center.real:.3f}{self.center.imag:+.3f}i, "
+            f"inner radius={self.radii[0]:.3f}, outer radius={self.radii[1]:.3f}"
         )
 
     @property
@@ -65,15 +66,16 @@ class Annulus(Contour):
         Parameters
         ----------
         axis : str, can be either 'r' or 'phi'
-                The axis along which the line subdividing the contour is a constant.
+            The axis along which the line subdividing the contour is a constant.
         divisionFactor : float in range (0,1), optional
-                Determines the point along 'axis' at which the line dividing the box is placed
+            Determines the point along 'axis' at which the line dividing the box is
+            placed
 
         Returns
         -------
         boxes : list of contours
-                Two annuluses if axis is 'r'.
-                Two half-annuluses oriented according to divisionFactor if axis is 'phi'.
+            Two annuluses if axis is 'r'.
+            Two half-annuluses oriented according to divisionFactor if axis is 'phi'.
         """
         if axis == "r" or self.axisName[axis] == "r":
             midpoint = self.radii[0] + divisionFactor * (self.radii[1] - self.radii[0])
