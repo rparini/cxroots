@@ -12,7 +12,7 @@ numpydoc; python_version < '3.8' # pyup: ignore
 matplotlib; python_version < '3.8' # pyup: ignore
 pytest; python_version < '3.8' # pyup: ignore
 
-scipy==1.8.1; python_version >= '3.8'
+scipy==1.9.0; python_version >= '3.8'
 numpy==1.23.1; python_version >= '3.8'
 numpydoc==1.4.0; python_version >= '3.8'
 mpmath==1.2.1
