@@ -55,7 +55,7 @@ def find_roots_gen(
     int_method="quad",
     div_min=3,
     div_max=15,
-    m=2,  # replace this
+    df_approx_order=2,
 ):
     """
     A generator which at each step takes a contour and either finds all
@@ -144,10 +144,10 @@ def find_roots_gen(
         If the Romberg integration method is used then div_max is the
         maximum number of divisions before the Romberg integration
         routine exits.
-    m : int, optional
-        Only used if df=None and method='quad'.  The argument order=m is
+    df_approx_order : int, optional
+        Only used if df=None and method='quad'.  The argument order=df_approx_order is
         passed to :func:`numdifftools.Derivative` and is the order of the error
-        term in the Taylor approximation.  m must be even.
+        term in the Taylor approximation.  df_approx_order must be even.
 
     Yields
     ------
@@ -177,7 +177,7 @@ def find_roots_gen(
         "integer_tol": integer_tol,
         "div_min": div_min,
         "div_max": div_max,
-        "m": m,
+        "df_approx_order": df_approx_order,
         "int_method": int_method,
     }
 
@@ -444,7 +444,7 @@ def find_roots_gen(
                         integer_tol=integer_tol,
                         div_min=num_div,
                         div_max=div_max,
-                        m=m,
+                        df_approx_order=df_approx_order,
                         int_method=int_method,
                     )
 
@@ -473,7 +473,7 @@ def find_roots_gen(
                 err_stop=err_stop,
                 div_min=div_min,
                 div_max=div_max,
-                m=m,
+                df_approx_order=df_approx_order,
                 root_tol=newton_step_tol,
                 int_method=int_method,
                 callback=callback,

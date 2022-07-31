@@ -18,7 +18,7 @@ def prod(
     rel_tol=1e-12,
     div_min=3,
     div_max=15,
-    m=2,  # XXX what can m be replaced with
+    df_approx_order=2,
     int_method="quad",
     integer_tol=inf,
     callback=None,
@@ -57,9 +57,9 @@ def prod(
     div_max : int, optional
         Only used if int_method='romb'.  The maximum number of divisions
         before the Romberg integration routine of a path exits.
-    m : int, optional
+    df_approx_order : int, optional
         Only used if df=None and int_method='quad'.  Must be even.  The
-        argument order=m is passed to numdifftools.Derivative and is the
+        argument order=df_approx_order is passed to numdifftools.Derivative and is the
         order of the error term in the Taylor approximation.
     int_method : {'quad', 'romb'}, optional
         If 'quad' then scipy.integrate.quad is used to perform the
@@ -158,7 +158,7 @@ def prod(
 
     elif int_method == "quad":
         if df is None:
-            df = numdifftools.Derivative(f, order=m)
+            df = numdifftools.Derivative(f, order=df_approx_order)
             # df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
 
             # Too slow
@@ -222,7 +222,7 @@ def count_roots(
     integer_tol=0.1,
     div_min=3,
     div_max=15,
-    m=2,
+    df_approx_order=2,
     int_method="quad",
 ):
     r"""
@@ -269,10 +269,10 @@ def count_roots(
     div_max : int, optional
         Only used if int_method='romb'.  The maximum number of divisions
         before the Romberg integration routine of a path exits.
-    m : int, optional
-        Only used if df=None and int_method='quad'.  The argument order=m
+    df_approx_order : int, optional
+        Only used if df=None and int_method='quad'.  The argument order=df_approx_order
         is passed to numdifftools.Derivative and is the order of the
-        error term in the Taylor approximation.  m must be even.
+        error term in the Taylor approximation.  df_approx_order must be even.
     int_method : {'quad', 'romb'}, optional
         If 'quad' then scipy.integrate.quad is used to perform the
         integral.  If 'romb' then Romberg integraion, using
@@ -298,7 +298,7 @@ def count_roots(
             rel_tol=0,
             div_min=div_min,
             div_max=div_max,
-            m=m,
+            df_approx_order=df_approx_order,
             int_method=int_method,
             integer_tol=integer_tol,
         )
