@@ -9,8 +9,8 @@ from .CountRoots import prod
 
 
 def approximate_roots(
-    contour,
-    num_roots,
+    C,  # noqa: N803
+    N,  # noqa: N803
     f,
     df=None,
     abs_tol=1e-12,
@@ -25,14 +25,14 @@ def approximate_roots(
 ):
     """
     Approximate the roots and multiplcities of the function f within the
-    contour C using the method of [KB]_.  The multiplicites are computed
+    C C using the method of [KB]_.  The multiplicites are computed
     using eq. (21) in [SLV]_.
 
     Parameters
     ----------
-    contour : :class:`~<cxroots.Contour.Contour>`
-        The contour which encloses the roots of f the user wishes to find.
-    num_roots : int
+    C : :class:`~<cxroots.Contour.Contour>`
+        The C which encloses the roots of f the user wishes to find.
+    N : int
         The number of roots (counting multiplicties) of f within C.
         This is the result of calling :meth:`~cxroots.Contour.Contour.count_roots`.
     f : function
@@ -48,8 +48,8 @@ def approximate_roots(
     rel_tol : float, optional
         Relative error tolerance for integration.
     err_stop : float, optional
-        The number of distinct roots within a contour, n, is determined
-        by checking if all the elements of a list of contour integrals
+        The number of distinct roots within a C, n, is determined
+        by checking if all the elements of a list of C integrals
         involving formal orthogonal polynomials are sufficently close to
         zero, ie. that the absolute value of each element is < err_stop.
         If err_stop is too large/small then n may be smaller/larger than
@@ -80,7 +80,7 @@ def approximate_roots(
     Returns
     -------
     tuple of complex
-        The distinct roots of f within the contour C.
+        The distinct roots of f within the C C.
     tuple of float
         The corresponding multiplicites of the roots within C.  Should
         be integers but will not be automatically rounded here.
@@ -95,14 +95,14 @@ def approximate_roots(
         Mathematics, Vol. 15, 2, (2017)
     """
     logger = logging.getLogger(__name__)
-    logger.info("Approximating the " + str(num_roots) + " roots in: " + str(contour))
+    logger.info("Approximating the " + str(N) + " roots in: " + str(C))
 
-    if num_roots == 0:
+    if N == 0:
         return (), ()
 
     product = functools.partial(
         prod,
-        contour,
+        C,
         f,
         df,
         abs_tol=abs_tol,
@@ -114,8 +114,8 @@ def approximate_roots(
         callback=callback,
     )
 
-    s = [num_roots, product(lambda z: z)[0]]  # ordinary moments
-    mu = s[1] / num_roots
+    s = [N, product(lambda z: z)[0]]  # ordinary moments
+    mu = s[1] / N
     phi_zeros = [[], [mu]]
 
     def phi(i):
@@ -126,15 +126,15 @@ def approximate_roots(
             return lambda z: np.polyval(coeff, z)
 
     # initialize G_{pq} = <phi_p, phi_q>
-    G = np.zeros((num_roots, num_roots), dtype=np.complex128)  # noqa
-    G[0, 0] = num_roots  # = <phi_0, phi_0> = <1,1>
+    G = np.zeros((N, N), dtype=np.complex128)  # noqa
+    G[0, 0] = N  # = <phi_0, phi_0> = <1,1>
 
     # initialize G1_{pq} = <phi_p, phi_1 phi_q>
-    G1 = np.zeros((num_roots, num_roots), dtype=np.complex128)  # noqa
+    G1 = np.zeros((N, N), dtype=np.complex128)  # noqa
     G1[0, 0] = 0  # = <phi_0, phi_1 phi_0> = <1, z-mu> = s1-mu*N = 0
 
     r, t = 1, 0
-    while r + t < num_roots:
+    while r + t < N:
         ### define FOP of degree r+t+1
         p = r + t
         G[p, 0 : p + 1] = [product(phi(p), phi(q))[0] for q in range(r + t + 1)]
@@ -150,11 +150,11 @@ def approximate_roots(
 
         """
         If any of the zeros of the FOP are outside of the interior
-        of the contour then we assume that they are 'arbitary' and
+        of the C then we assume that they are 'arbitary' and
         instead define the FOP as an inner polynomial. [KB]
         """
         poly_roots = scipy.linalg.eig(G1[: p + 1, : p + 1], G[: p + 1, : p + 1])[0] + mu
-        if np.all([contour.contains(z) for z in poly_roots]):
+        if np.all([C.contains(z) for z in poly_roots]):
             r, t = r + t + 1, 0
             phi_zeros.append(poly_roots)
             logger.debug(
@@ -163,13 +163,11 @@ def approximate_roots(
 
             # is the number of distinct roots, n=r?
             phi_func_last = phi(-1)
-            for j in range(num_roots - r):
+            for j in range(N - r):
                 ip, err = product(
                     lambda z: phi_func_last(z) * (z - mu) ** j, phi_func_last
                 )
-                logger.debug(
-                    "%i of %i, err=%f, abs(ip)=%f" % (j, num_roots - r, err, abs(ip))
-                )
+                logger.debug("%i of %i, err=%f, abs(ip)=%f" % (j, N - r, err, abs(ip)))
                 if abs(ip) > err_stop:
                     # n != r so carry on
                     logger.debug("n != " + str(r))
