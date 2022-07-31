@@ -10,7 +10,7 @@ class ComplexPath(object):
 
     def __init__(self):
         self._integralCache = {}
-        self._trapValuesCache = {}
+        self._trap_cache = {}
 
     def __call__(self, t):
         r"""
@@ -53,8 +53,8 @@ class ComplexPath(object):
             which are evenly spaced with respect to the parameterisation
             of the contour.
         """
-        if f in self._trapValuesCache.keys() and use_cache:
-            vals = self._trapValuesCache[f]
+        if f in self._trap_cache.keys() and use_cache:
+            vals = self._trap_cache[f]
             vals_k = int(np.log2(len(vals) - 1))
 
             if vals_k == k:
@@ -65,11 +65,11 @@ class ComplexPath(object):
                 t = np.linspace(0, 1, 2**k + 1)
                 vals = np.empty(2**k + 1, dtype=np.complex128)
                 vals.fill(np.nan)
-                vals[:: 2 ** (k - vals_k)] = self._trapValuesCache[f]
+                vals[:: 2 ** (k - vals_k)] = self._trap_cache[f]
                 vals[np.isnan(vals)] = f(self(t[np.isnan(vals)]))
 
                 # cache values
-                self._trapValuesCache[f] = vals
+                self._trap_cache[f] = vals
                 return vals
 
         else:
@@ -81,7 +81,7 @@ class ComplexPath(object):
                 vals = vals * np.ones(len(t), dtype=np.complex128)
 
             if use_cache:
-                self._trapValuesCache[f] = vals
+                self._trap_cache[f] = vals
             return vals
 
     def plot(self, num_points=100, linecolor="C0", linestyle="-"):

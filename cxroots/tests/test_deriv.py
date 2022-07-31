@@ -7,14 +7,14 @@ from cxroots import cx_derivative
 
 
 @pytest.mark.parametrize(
-    "contour",
+    "C",
     [
         pytest.param(Circle(0, 2), id="circle"),
         pytest.param(Rectangle([-1.5, 1.5], [-2, 2]), id="rect"),
         pytest.param(None, id="default"),
     ],
 )
-def test_cx_derivative(contour):
+def test_cx_derivative(C):
     def f(z):
         return z**10 - 2 * z**5 + sin(z) * cos(z / 2)
 
@@ -23,4 +23,4 @@ def test_cx_derivative(contour):
 
     z = np.array([-1.234, 0.3 + 1j, 0.1j, -0.9 - 0.5j])
 
-    assert cx_derivative(f, z, n=1, contour=contour) == pytest.approx(df(z))
+    assert cx_derivative(f, z, n=1, contour=C) == pytest.approx(df(z))

@@ -34,9 +34,9 @@ contours = [
 ]
 
 
-@pytest.mark.parametrize("contour", contours)
+@pytest.mark.parametrize("C", contours)
 @pytest.mark.parametrize("roots,multiplicities", funcs)
-def test_rootfinding_df(contour, roots, multiplicities):
+def test_rootfinding_df(C, roots, multiplicities):  # noqa: N803
     def f(z):
         return np.prod([z - r for r in roots], axis=0)
 
@@ -49,14 +49,14 @@ def test_rootfinding_df(contour, roots, multiplicities):
             axis=0,
         )
 
-    roots_approx_equal(contour.roots(f, df), (roots, multiplicities))
+    roots_approx_equal(C.roots(f, df), (roots, multiplicities))
 
 
 @pytest.mark.slow
-@pytest.mark.parametrize("contour", contours)
+@pytest.mark.parametrize("C", contours)
 @pytest.mark.parametrize("roots,multiplicities", funcs)
-def test_rootfinding_f(contour, roots, multiplicities):
+def test_rootfinding_f(C, roots, multiplicities):  # noqa: N803
     def f(z):
         return np.prod([z - r for r in roots], axis=0)
 
-    roots_approx_equal(contour.roots(f), (roots, multiplicities))
+    roots_approx_equal(C.roots(f), (roots, multiplicities))

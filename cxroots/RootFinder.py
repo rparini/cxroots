@@ -433,7 +433,7 @@ def find_roots_gen(
             # Check to see if the number of roots has changed after new values of f
             # have been sampled
             def callback(integral, err, num_div):
-                if num_div > contour._numberOfDivisionsForN:
+                if num_div > contour._num_divisions_for_N:
                     logger.info(
                         "Checking root count using the newly sampled values of f"
                     )
@@ -559,7 +559,7 @@ def find_roots_gen(
     # delete cache for original contour incase this contour is being reused
     for segment in original_contour.segments:
         segment._integralCache = {}
-        segment._trapValuesCache = {}
+        segment._trap_cache = {}
 
     result = RootResult(roots, multiplicities, original_contour)
     logger.info(
