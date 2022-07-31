@@ -8,7 +8,7 @@ def iterate_to_root(
     x0,
     f,
     df=None,
-    steptol=1e-12,
+    step_tol=1e-12,
     root_tol=1e-12,
     max_iter=20,
     attempt_best=False,
@@ -29,9 +29,9 @@ def iterate_to_root(
         Function of a single variable which we seek to find a root of.
     df : function, optional
         The derivative of f.
-    steptol: float, optional
+    step_tol: float, optional
         The routine ends if the step size, dx, between sucessive
-        iterations satisfies abs(dx) < steptol and attempt_best is False.
+        iterations satisfies abs(dx) < step_tol and attempt_best is False.
     root_tol: float, optional
         The routine ends if abs(f(x)) < root_tol and attempt_best is False.
     max_iter : int, optional
@@ -40,7 +40,7 @@ def iterate_to_root(
         If True then routine ends if the error of the previous iteration,
         x0, was at least as good as the current iteration, x, in the
         sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-        satisfied either abs(dx0) < steptol or abs(f(x0)) < root_tol.  In
+        satisfied either abs(dx0) < step_tol or abs(f(x0)) < root_tol.  In
         this case the previous iteration is returned as the approximation
         of the root.
     callback : function, optional
@@ -61,7 +61,7 @@ def iterate_to_root(
 
     if df is not None:
         try:
-            root, err = newton(x0, f, df, steptol, 0, max_iter, attempt_best, callback)
+            root, err = newton(x0, f, df, step_tol, 0, max_iter, attempt_best, callback)
         except (RuntimeError, OverflowError):
             return None
     else:
@@ -71,7 +71,7 @@ def iterate_to_root(
 
         x1, x2, x3 = x0, x0 * (1 + 1e-8) + 1e-8, x0 * (1 - 1e-8) - 1e-8
         root, err = muller(
-            x1, x2, x3, f_muller, steptol, 0, max_iter, attempt_best, callback
+            x1, x2, x3, f_muller, step_tol, 0, max_iter, attempt_best, callback
         )
 
     if err < root_tol:
@@ -83,7 +83,7 @@ def muller(
     x2,
     x3,
     f,
-    steptol=1e-12,
+    step_tol=1e-12,
     root_tol=1e-12,
     max_iter=20,
     attempt_best=False,
@@ -104,9 +104,9 @@ def muller(
         Should not equal x1 or x2.
     f : function
         Function of a single variable which we seek to find a root of.
-    steptol: float, optional
+    step_tol: float, optional
         The routine ends if the step size, dx, between sucessive
-        iterations satisfies abs(dx) < steptol and attempt_best is False.
+        iterations satisfies abs(dx) < step_tol and attempt_best is False.
     root_tol: float, optional
         The routine ends if abs(f(x)) < root_tol and attempt_best is False.
     max_iter : int, optional
@@ -115,7 +115,7 @@ def muller(
         If True then routine ends if the error of the previous iteration,
         x0, was at least as good as the current iteration, x, in the
         sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-        satisfied either abs(dx0) < steptol or abs(f(x0)) < root_tol.  In
+        satisfied either abs(dx0) < step_tol or abs(f(x0)) < root_tol.  In
         this case the previous iteration is returned as the approximation
         of the root.
     callback : function, optional
@@ -165,12 +165,16 @@ def muller(
 
             if (
                 not attempt_best
-                and (abs(dx) < steptol or err < root_tol)
+                and (abs(dx) < step_tol or err < root_tol)
                 or iteration > max_iter
             ):
                 break
 
-            if attempt_best and (abs(dx0) < steptol or err0 < root_tol) and err >= err0:
+            if (
+                attempt_best
+                and (abs(dx0) < step_tol or err0 < root_tol)
+                and err >= err0
+            ):
                 # The previous iteration was a better appproximation the current one so
                 # assume that that was as close to the root as we are going to get.
                 x, err = x0, err0
@@ -198,7 +202,7 @@ def newton(
     x0,
     f,
     df,
-    steptol=1e-12,
+    step_tol=1e-12,
     root_tol=1e-12,
     max_iter=20,
     attempt_best=False,
@@ -219,9 +223,9 @@ def newton(
     df : function
         Function of a single variable, df(x), providing the
         derivative of the function f(x) at the point x
-    steptol: float, optional
+    step_tol: float, optional
         The routine ends if the step size, dx, between sucessive
-        iterations satisfies abs(dx) < steptol and attempt_best is False.
+        iterations satisfies abs(dx) < step_tol and attempt_best is False.
     root_tol: float, optional
         The routine ends if abs(f(x)) < root_tol and attempt_best is False.
     max_iter : int, optional
@@ -230,7 +234,7 @@ def newton(
         If True then routine ends if the error of the previous iteration,
         x0, was at least as good as the current iteration, x, in the
         sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-        satisfied either abs(dx0) < steptol or abs(f(x0)) < root_tol.  In
+        satisfied either abs(dx0) < step_tol or abs(f(x0)) < root_tol.  In
         this case the previous iteration is returned as the approximation
         of the root.
     callback : function, optional
@@ -260,12 +264,12 @@ def newton(
         if callback is not None and callback(x, dx, y, iteration + 1):
             break
 
-        if not attempt_best and (abs(dx) < steptol or abs(y) < root_tol):
+        if not attempt_best and (abs(dx) < step_tol or abs(y) < root_tol):
             break
 
         if (
             attempt_best
-            and (abs(dx0) < steptol or abs(y0) < root_tol)
+            and (abs(dx0) < step_tol or abs(y0) < root_tol)
             and abs(y) > abs(y0)
         ):
             break
@@ -278,7 +282,7 @@ def newton(
     return x, abs(y)
 
 
-def secant(x1, x2, f, steptol=1e-12, root_tol=1e-12, max_iter=30, callback=None):
+def secant(x1, x2, f, step_tol=1e-12, root_tol=1e-12, max_iter=30, callback=None):
     """
     Find an approximation to a point xf such that f(xf)=0 for a
     scalar function f using the secant method.  The method requires
@@ -295,9 +299,9 @@ def secant(x1, x2, f, steptol=1e-12, root_tol=1e-12, max_iter=30, callback=None)
         root of f.  Should not equal x1.
     f : function
         Function of a single variable which we seek to find a root of.
-    steptol: float, optional
+    step_tol: float, optional
         The routine ends if the step size, dx, between sucessive
-        iterations satisfies abs(dx) < steptol and attempt_best is False.
+        iterations satisfies abs(dx) < step_tol and attempt_best is False.
     root_tol: float, optional
         The routine ends if abs(f(x)) < root_tol and attempt_best is False.
     max_iter : int, optional
@@ -331,7 +335,7 @@ def secant(x1, x2, f, steptol=1e-12, root_tol=1e-12, max_iter=30, callback=None)
         if callback is not None and callback(x2, dx, y2, iteration + 1):
             break
 
-        if abs(dx) < steptol or abs(y2) < root_tol:
+        if abs(dx) < step_tol or abs(y2) < root_tol:
             break
 
     return x2, abs(y2)
