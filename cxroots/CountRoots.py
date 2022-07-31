@@ -190,7 +190,7 @@ def prod(
             result_real = scipy.integrate.quad(
                 integrand_real, 0, 1, full_output=1, epsabs=abs_tol, epsrel=rel_tol
             )
-            integral_real, abserr_real, infodict_real = result_real[:3]
+            integral_real, abserr_real = result_real[:2]
 
             # integrate imaginary part
             def integrand_imag(t):
