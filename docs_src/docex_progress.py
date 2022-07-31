@@ -1,4 +1,3 @@
-from numpy import exp, cos, sin
 from cxroots import Circle
 
 C = Circle(0, 3)
