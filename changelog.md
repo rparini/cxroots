@@ -7,6 +7,8 @@
 - Add `cxroots[plot]` install option that will install dependencies for plotting contours and roots
 - Contour arrows to are now scale-independent ([#153](https://github.com/rparini/cxroots/issues/153), thanks [@llohse](https://github.com/llohse))
 - Remove unused `randomPoint` contour method
+- All `camelCase` functions and arguments replaced with `snake_case`
+- Most single letter arguments have been replaced with more self-evient alternatives
 
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value
