@@ -433,7 +433,7 @@ def find_roots_gen(
         if int_method == "romb":
             # Check to see if the number of roots has changed after new values of f
             # have been sampled
-            def callback(*, num_div):
+            def callback(integral, err, num_div):
                 if num_div > contour._numberOfDivisionsForN:
                     logger.info(
                         "Checking root count using the newly sampled values of f"
