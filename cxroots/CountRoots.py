@@ -91,9 +91,9 @@ def prod(
     """
     logger = logging.getLogger(__name__)
     if int_method == "romb":
-        N = 1  # noqa
+        N = 1  # noqa: N806
         k = 0
-        I = []  # List of approximations to the integral  # noqa
+        I = []  # List of approximations to the integral # noqa: E741 N806
 
         while k < div_max and (
             len(I) < div_min
