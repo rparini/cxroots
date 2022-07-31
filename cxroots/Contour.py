@@ -190,22 +190,22 @@ class Contour(object):
             [segment.integrate(f, **integration_kwargs) for segment in self.segments]
         )
 
-    @remove_para("contour")
+    @remove_para("C")
     @functools.wraps(count_roots)
     def count_roots(self, f, df=None, **kwargs):
         return count_roots(self, f, df, **kwargs)
 
-    @remove_para("contour")
+    @remove_para("C")
     @functools.wraps(approximate_roots)
-    def approximate_roots(self, num_roots, f, df=None, **kwargs):
-        return approximate_roots(self, num_roots, f, df, **kwargs)
+    def approximate_roots(self, N, f, df=None, **kwargs):  # noqa: N803
+        return approximate_roots(self, N, f, df, **kwargs)
 
     @remove_para("original_contour")
     @functools.wraps(find_roots)
     def roots(self, f, df=None, **kwargs):
         return find_roots(self, f, df, **kwargs)
 
-    @remove_para("contour")
+    @remove_para("C")
     @functools.wraps(demo_find_roots)
     def demo_roots(self, *args, **kwargs):
         return demo_find_roots(self, *args, **kwargs)
