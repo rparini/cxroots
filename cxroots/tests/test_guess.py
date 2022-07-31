@@ -3,7 +3,7 @@ from numpy import exp, sin, cos
 import numpy as np
 
 from cxroots import Circle
-from cxroots.tests.ApproxEqual import roots_approx_equal
+from cxroots.tests.approx_equal import roots_approx_equal
 
 
 @pytest.mark.parametrize(

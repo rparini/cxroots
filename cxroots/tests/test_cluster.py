@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 
 from cxroots import Circle, Rectangle
-from cxroots.tests.ApproxEqual import roots_approx_equal
+from cxroots.tests.approx_equal import roots_approx_equal
 
 funcs = [
     pytest.param(
@@ -34,9 +34,9 @@ contours = [
 ]
 
 
-@pytest.mark.parametrize("C", contours)
+@pytest.mark.parametrize("contour", contours)
 @pytest.mark.parametrize("roots,multiplicities", funcs)
-def test_rootfinding_df(C, roots, multiplicities):
+def test_rootfinding_df(contour, roots, multiplicities):
     def f(z):
         return np.prod([z - r for r in roots], axis=0)
 
@@ -49,7 +49,7 @@ def test_rootfinding_df(C, roots, multiplicities):
             axis=0,
         )
 
-    roots_approx_equal(C.roots(f, df, verbose=True), (roots, multiplicities))
+    roots_approx_equal(contour.roots(f, df, verbose=True), (roots, multiplicities))
 
 
 @pytest.mark.slow
