@@ -50,7 +50,7 @@ def find_roots_gen(
     rel_tol=1e-12,
     integer_tol=0.1,
     int_abs_tol=0.07,
-    M=5,  # replace this
+    M=5,  # noqa: N803
     err_stop=1e-10,
     int_method="quad",
     div_min=3,
@@ -113,10 +113,9 @@ def find_roots_gen(
         the result of this integration must be an integer it can be much
         less accurate than usual.
     M : int, optional
-        If the number of roots (including multiplicites) within a
-        contour is greater than M then the contour is subdivided
-        further.  M must be greater than or equal to the largest
-        multiplcity of any root.
+        If the number of roots (including multiplicites) within a contour
+        is greater than M then the contour is subdivided further.  M must
+        be greater than or equal to the largest multiplcity of any root.
     err_stop : float, optional
         The number of distinct roots within a contour, n, is determined
         by checking if all the elements of a list of contour integrals
