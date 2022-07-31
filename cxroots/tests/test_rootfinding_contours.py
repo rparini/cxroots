@@ -31,60 +31,56 @@ class TestRootfindingContours(unittest.TestCase):
 
     def test_rootfinding_circle_fdf(self):
         roots_approx_equal(
-            self.Circle.roots(self.f, self.df, verbose=True),
+            self.Circle.roots(self.f, self.df),
             (self.roots, self.multiplicities),
             decimal=7,
         )
 
     def test_rootfinding_circle_f(self):
         roots_approx_equal(
-            self.Circle.roots(self.f, self.df, verbose=True),
+            self.Circle.roots(self.f, self.df),
             (self.roots, self.multiplicities),
             decimal=7,
         )
 
     def test_rootfinding_rectangle_fdf(self):
         roots_approx_equal(
-            self.Rectangle.roots(self.f, self.df, verbose=True),
+            self.Rectangle.roots(self.f, self.df),
             (self.roots[:-1], self.multiplicities[:-1]),
             decimal=7,
         )
 
     def test_rootfinding_rectangle_f(self):
         roots_approx_equal(
-            self.Rectangle.roots(self.f, self.df, verbose=True),
+            self.Rectangle.roots(self.f, self.df),
             (self.roots[:-1], self.multiplicities[:-1]),
             decimal=7,
         )
 
     def test_rootfinding_half_annulus_fdf(self):
         roots_approx_equal(
-            self.halfAnnulus.roots(self.f, self.df, verbose=True),
+            self.halfAnnulus.roots(self.f, self.df),
             (self.roots[2:], self.multiplicities[2:]),
             decimal=7,
         )
 
     def test_rootfinding_half_annulus_f(self):
         roots_approx_equal(
-            self.halfAnnulus.roots(self.f, self.df, verbose=True),
+            self.halfAnnulus.roots(self.f, self.df),
             (self.roots[2:], self.multiplicities[2:]),
             decimal=7,
         )
 
     def test_rootfinding_annulus_fdf(self):
         roots_approx_equal(
-            self.Annulus.roots(self.f, self.df, verbose=True),
+            self.Annulus.roots(self.f, self.df),
             (self.roots[1:-1], self.multiplicities[1:-1]),
             decimal=7,
         )
 
     def test_rootfinding_annulus_f(self):
         roots_approx_equal(
-            self.Annulus.roots(self.f, self.df, verbose=True),
+            self.Annulus.roots(self.f, self.df),
             (self.roots[1:-1], self.multiplicities[1:-1]),
             decimal=7,
         )
-
-
-if __name__ == "__main__":
-    unittest.main(verbosity=3)

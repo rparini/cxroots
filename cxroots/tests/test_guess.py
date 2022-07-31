@@ -23,7 +23,7 @@ def test_guess_symmetry_1(symmetry):
     multiplicities = [1, 1, 1, 1]
 
     roots_approx_equal(
-        contour.roots(f, verbose=True, guess_roots_symmetry=symmetry),
+        contour.roots(f, guess_roots_symmetry=symmetry),
         (roots, multiplicities),
     )
 
@@ -49,9 +49,7 @@ def test_guess_root(guesses):
     ]
     multiplicities = [2, 1, 1, 1]
 
-    roots_approx_equal(
-        contour.roots(f, guess_roots=[2.5], verbose=True), (roots, multiplicities)
-    )
+    roots_approx_equal(contour.roots(f, guess_roots=[2.5]), (roots, multiplicities))
 
 
 @pytest.mark.parametrize(
@@ -104,6 +102,6 @@ def test_guess_symmetry_2(usedf):
     multiplicities = np.ones_like(roots)
 
     roots_approx_equal(
-        contour.roots(f, df, verbose=True, guess_roots_symmetry=symmetry),
+        contour.roots(f, df, guess_roots_symmetry=symmetry),
         (roots, multiplicities),
     )

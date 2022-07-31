@@ -22,28 +22,28 @@ from cxroots.Derivative import find_multiplicity
 class RootfindingTests(object):
     def test_rootfinding_romb_df(self):
         roots_approx_equal(
-            self.C.roots(self.f, self.df, int_method="romb", verbose=True),
+            self.C.roots(self.f, self.df, int_method="romb"),
             (self.roots, self.multiplicities),
             decimal=10,
         )
 
     def test_rootfinding_romb_f(self):
         roots_approx_equal(
-            self.C.roots(self.f, int_method="romb", verbose=True),
+            self.C.roots(self.f, int_method="romb"),
             (self.roots, self.multiplicities),
             decimal=10,
         )
 
     def test_rootfinding_quad_df(self):
         roots_approx_equal(
-            self.C.roots(self.f, self.df, int_method="quad", verbose=True),
+            self.C.roots(self.f, self.df, int_method="quad"),
             (self.roots, self.multiplicities),
             decimal=10,
         )
 
     def test_rootfinding_quad_f(self):
         roots_approx_equal(
-            self.C.roots(self.f, int_method="quad", verbose=True),
+            self.C.roots(self.f, int_method="quad"),
             (self.roots, self.multiplicities),
             decimal=10,
         )
@@ -234,14 +234,14 @@ class TestRootfinding151(unittest.TestCase, RootfindingTests, MultiplicityTests)
 
     def test_rootfinding_b_df(self):
         roots_approx_equal(
-            self.C.roots(self.f, self.df, verbose=True, M=2),
+            self.C.roots(self.f, self.df, M=2),
             (self.roots, self.multiplicities),
             decimal=12,
         )
 
     def test_rootfinding_b_f(self):
         roots_approx_equal(
-            self.C.roots(self.f, verbose=True, M=2),
+            self.C.roots(self.f, M=2),
             (self.roots, self.multiplicities),
             decimal=12,
         )
@@ -303,7 +303,7 @@ def test_reevaluation_of_num_roots():
     roots = [1, 0.2]
     multiplicities = [1, 2]
     roots_approx_equal(
-        contour.roots(f, int_abs_tol=10, int_method="romb", verbose=True),
+        contour.roots(f, int_abs_tol=10, int_method="romb"),
         (roots, multiplicities),
     )
 
@@ -352,7 +352,7 @@ def test_annular_combustion():
     import warnings
 
     warnings.filterwarnings("error")
-    roots = rectangle.roots(f, df, verbose=True, root_err_tol=1e-6)
+    roots = rectangle.roots(f, df, root_err_tol=1e-6)
     assert len(roots.roots) == 24
 
 
