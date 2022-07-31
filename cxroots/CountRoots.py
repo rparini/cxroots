@@ -215,7 +215,7 @@ class RootError(RuntimeError):
 
 
 def count_roots(
-    contour,
+    C,  # noqa: N803
     f,
     df=None,
     int_abs_tol=0.07,
@@ -227,7 +227,7 @@ def count_roots(
 ):
     r"""
     For a function of one complex variable, f(z), which is analytic in
-    and within the contour contour, return the number of zeros (counting
+    and within the contour C, return the number of zeros (counting
     multiplicities) within the contour, N, using Cauchy's argument
     principle,
 
@@ -245,7 +245,7 @@ def count_roots(
 
     Parameters
     ----------
-    contour : :class:`Contour <cxroots.Contour.Contour>`
+    C : :class:`Contour <cxroots.Contour.Contour>`
         The contour which encloses the roots of f(z) that are to be
         counted.
     f : function
@@ -282,16 +282,16 @@ def count_roots(
     -------
     int
         The number of zeros of f (counting multiplicities) which lie
-        within the contour contour.
+        within the contour C.
     """
     logger = logging.getLogger(__name__)
-    logger.info("Computing number of roots within " + str(contour))
+    logger.info("Computing number of roots within " + str(C))
 
     with warnings.catch_warnings():
         # ignore warnings and catch if integral is NaN later
         warnings.simplefilter("ignore")
         integral, err = prod(
-            contour,
+            C,
             f,
             df,
             abs_tol=int_abs_tol,
@@ -304,8 +304,8 @@ def count_roots(
         )
 
     if int_method == "romb":
-        contour._numberOfDivisionsForN = int(
-            np.log2(len(contour.segments[0]._trapValuesCache[f]) - 1)
+        C._numberOfDivisionsForN = int(
+            np.log2(len(C.segments[0]._trapValuesCache[f]) - 1)
         )
 
     if np.isnan(integral):

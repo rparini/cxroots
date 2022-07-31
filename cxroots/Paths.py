@@ -295,13 +295,13 @@ class ComplexLine(ComplexPath):
             closest to z.
         """
         # convert complex numbers to vectors
-        a = np.array([self.a.real, self.a.imag])
-        b = np.array([self.b.real, self.b.imag])
-        z = np.array([z.real, z.imag])
+        A = np.array([self.a.real, self.a.imag])  # noqa: N806
+        B = np.array([self.b.real, self.b.imag])  # noqa: N806
+        Z = np.array([z.real, z.imag])  # noqa: N806
 
         # the projection of the point z onto the line a -> b is where
         # the parameter t is
-        t = (z - a).dot(b - a) / abs((b - a).dot(b - a))
+        t = (Z - A).dot(B - A) / abs((B - A).dot(B - A))
 
         # but the line segment only has 0 <= t <= 1
         t = t.clip(0, 1)
@@ -313,37 +313,37 @@ class ComplexLine(ComplexPath):
 
 class ComplexArc(ComplexPath):
     r"""
-    A circular arc :math:`z` with center z0, radius r, initial angle t0
+    A circular arc :math:`z` with center z0, radius R, initial angle t0
     and change of angle dt.  The arc is parameterised by
 
     ..math::
 
-        z(t) = r e^{i(t0 + t dt)} + z0, \quad 0\leq t \leq 1
+        z(t) = R e^{i(t0 + t dt)} + z0, \quad 0\leq t \leq 1
 
     Parameters
     ----------
     z0 : complex
-    r : float
+    R : float
     t0 : float
     dt : float
     """
 
-    def __init__(self, z0, r, t0, dt):
-        self.z0, self.r, self.t0, self.dt = z0, r, t0, dt
-        self.dzdt = lambda t: 1j * self.dt * self.r * exp(1j * (self.t0 + t * self.dt))
+    def __init__(self, z0, R, t0, dt):  # noqa: N803
+        self.z0, self.R, self.t0, self.dt = z0, R, t0, dt
+        self.dzdt = lambda t: 1j * self.dt * self.R * exp(1j * (self.t0 + t * self.dt))
         super(ComplexArc, self).__init__()
 
     def __str__(self):
-        return "ComplexArc: z0=%.3f, r=%.3f, t0=%.3f, dt=%.3f" % (
+        return "ComplexArc: z0=%.3f, R=%.3f, t0=%.3f, dt=%.3f" % (
             self.z0,
-            self.r,
+            self.R,
             self.t0,
             self.dt,
         )
 
     def __call__(self, t):
         r"""
-        The function :math:`z(t) = r e^{i(t_0 + t dt)} + z_0`.
+        The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.
 
         Parameters
         ----------
@@ -355,7 +355,7 @@ class ComplexArc(ComplexPath):
         complex
             A point on the arc in the complex plane.
         """
-        return self.r * exp(1j * (self.t0 + t * self.dt)) + self.z0
+        return self.R * exp(1j * (self.t0 + t * self.dt)) + self.z0
 
     def distance(self, z):
         """
@@ -378,7 +378,7 @@ class ComplexArc(ComplexPath):
             self.dt < 0 and self.t0 + self.dt < theta - 2 * pi < self.t0
         ):
             # the closest point to z lies on the arc
-            return abs(self.r * exp(1j * theta) + self.z0 - z)
+            return abs(self.R * exp(1j * theta) + self.z0 - z)
         else:
             # the closest point to z is one of the endpoints
             return min(abs(self(0) - z), abs(self(1) - z))
