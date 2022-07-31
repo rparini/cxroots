@@ -9,7 +9,7 @@ import numdifftools
 
 
 def prod(
-    contour,
+    C,  # noqa: N803
     f,
     df=None,
     phi=None,
@@ -32,9 +32,9 @@ def prod(
 
     Parameters
     ----------
-    contour : :class:`Contour <cxroots.Contour.Contour>`
+    C : :class:`Contour <cxroots.Contour.Contour>`
         A contour in the complex plane for.  No roots or poles of f
-        should lie on contour.
+        should lie on C.
     f : function
         Function of a single variable f(x)
     df : function, optional
@@ -114,7 +114,7 @@ def prod(
             dt = t[1] - t[0]
 
             integrals = []
-            for segment in contour.segments:
+            for segment in C.segments:
                 # compute/retrieve function evaluations
                 f_val = segment.trap_values(f, k)
 
@@ -167,7 +167,7 @@ def prod(
             # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
 
         integral, err = 0, 0
-        for segment in contour.segments:
+        for segment in C.segments:
             integrand_cache = {}
 
             def integrand(t):
