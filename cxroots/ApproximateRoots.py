@@ -9,18 +9,18 @@ from .CountRoots import prod
 
 
 def approximate_roots(
-    C,
-    N,
+    contour,
+    num_roots,
     f,
     df=None,
-    absTol=1e-12,
-    relTol=1e-12,
-    errStop=1e-10,
-    divMin=3,
-    divMax=15,
-    m=2,
-    rootTol=1e-8,
-    intMethod="quad",
+    abs_tol=1e-12,
+    rel_tol=1e-12,
+    err_stop=1e-10,
+    div_min=3,
+    div_max=15,
+    m=2,  # XXX what's a better name for this?
+    root_tol=1e-8,
+    int_method="quad",
     callback=None,
 ):
     """
@@ -30,9 +30,9 @@ def approximate_roots(
 
     Parameters
     ----------
-    C : :class:`~<cxroots.Contour.Contour>`
+    contour : :class:`~<cxroots.Contour.Contour>`
         The contour which encloses the roots of f the user wishes to find.
-    N : int
+    num_roots : int
         The number of roots (counting multiplicties) of f within C.
         This is the result of calling :meth:`~cxroots.Contour.Contour.count_roots`.
     f : function
@@ -43,39 +43,39 @@ def approximate_roots(
         A function of a single complex variable which is the derivative
         of the function f(z). If df is not given then it will be
         approximated with a finite difference formula.
-    absTol : float, optional
+    abs_tol : float, optional
         Absolute error tolerance for integration.
-    relTol : float, optional
+    rel_tol : float, optional
         Relative error tolerance for integration.
-    errStop : float, optional
+    err_stop : float, optional
         The number of distinct roots within a contour, n, is determined
         by checking if all the elements of a list of contour integrals
         involving formal orthogonal polynomials are sufficently close to
-        zero, ie. that the absolute value of each element is < errStop.
-        If errStop is too large/small then n may be smaller/larger than
+        zero, ie. that the absolute value of each element is < err_stop.
+        If err_stop is too large/small then n may be smaller/larger than
         it actually is.
-    divMin : int, optional
-        If the Romberg integration method is used then divMin is the
+    div_min : int, optional
+        If the Romberg integration method is used then div_min is the
         minimum number of divisions before the Romberg integration
         routine is allowed to exit.
-    divMax : int, optional
-        If the Romberg integration method is used then divMax is the
+    div_max : int, optional
+        If the Romberg integration method is used then div_max is the
         maximum number of divisions before the Romberg integration
         routine exits.
     m : int, optional
         Only used if df=None and method='quad'.  The argument order=m is
         passed to numdifftools.Derivative and is the order of the error
         term in the Taylor approximation.  m must be even.
-    rootTol : float, optional
-        If any roots are within rootTol of one another then they will be
+    root_tol : float, optional
+        If any roots are within root_tol of one another then they will be
         treated as duplicates and removed.  This helps to alleviate the
-        problem of errStop being too small.
-    intMethod : {'quad', 'romb'}, optional
+        problem of err_stop being too small.
+    int_method : {'quad', 'romb'}, optional
         If 'quad' then :func:`scipy.integrate.quad` is used to perform
         integration.  If 'romb' then Romberg integraion is performed
         instead.
     callback : function, optional
-        Only used if intMethod is 'romb'.  Passed to :func:`~<cxroots.CountRoots.prod>`.
+        Only used if int_method is 'romb'. Passed to :func:`~<cxroots.CountRoots.prod>`.
 
     Returns
     -------
@@ -95,46 +95,46 @@ def approximate_roots(
         Mathematics, Vol. 15, 2, (2017)
     """
     logger = logging.getLogger(__name__)
-    logger.info("Approximating the " + str(N) + " roots in: " + str(C))
+    logger.info("Approximating the " + str(num_roots) + " roots in: " + str(contour))
 
-    if N == 0:
+    if num_roots == 0:
         return (), ()
 
     product = functools.partial(
         prod,
-        C,
+        contour,
         f,
         df,
-        absTol=absTol,
-        relTol=relTol,
-        divMin=divMin,
-        divMax=divMax,
+        abs_tol=abs_tol,
+        rel_tol=rel_tol,
+        div_min=div_min,
+        div_max=div_max,
         m=m,
-        intMethod=intMethod,
+        int_method=int_method,
         callback=callback,
     )
 
-    s = [N, product(lambda z: z)[0]]  # ordinary moments
-    mu = s[1] / N
-    phiZeros = [[], [mu]]
+    s = [num_roots, product(lambda z: z)[0]]  # ordinary moments
+    mu = s[1] / num_roots
+    phi_zeros = [[], [mu]]
 
     def phi(i):
-        if len(phiZeros[i]) == 0:
+        if len(phi_zeros[i]) == 0:
             return lambda z: np.ones_like(z)
         else:
-            coeff = np.poly(phiZeros[i])
+            coeff = np.poly(phi_zeros[i])
             return lambda z: np.polyval(coeff, z)
 
     # initialize G_{pq} = <phi_p, phi_q>
-    G = np.zeros((N, N), dtype=np.complex128)
-    G[0, 0] = N  # = <phi_0, phi_0> = <1,1>
+    G = np.zeros((num_roots, num_roots), dtype=np.complex128)  # noqa
+    G[0, 0] = num_roots  # = <phi_0, phi_0> = <1,1>
 
     # initialize G1_{pq} = <phi_p, phi_1 phi_q>
-    G1 = np.zeros((N, N), dtype=np.complex128)
+    G1 = np.zeros((num_roots, num_roots), dtype=np.complex128)  # noqa
     G1[0, 0] = 0  # = <phi_0, phi_1 phi_0> = <1, z-mu> = s1-mu*N = 0
 
     r, t = 1, 0
-    while r + t < N:
+    while r + t < num_roots:
         ### define FOP of degree r+t+1
         p = r + t
         G[p, 0 : p + 1] = [product(phi(p), phi(q))[0] for q in range(r + t + 1)]
@@ -153,20 +153,24 @@ def approximate_roots(
         of the contour then we assume that they are 'arbitary' and
         instead define the FOP as an inner polynomial. [KB]
         """
-        polyRoots = scipy.linalg.eig(G1[: p + 1, : p + 1], G[: p + 1, : p + 1])[0] + mu
-        if np.all([C.contains(z) for z in polyRoots]):
+        poly_roots = scipy.linalg.eig(G1[: p + 1, : p + 1], G[: p + 1, : p + 1])[0] + mu
+        if np.all([contour.contains(z) for z in poly_roots]):
             r, t = r + t + 1, 0
-            phiZeros.append(polyRoots)
+            phi_zeros.append(poly_roots)
             logger.debug(
-                "Regular polynomial " + str(r + t) + " roots: " + str(phiZeros[-1])
+                "Regular polynomial " + str(r + t) + " roots: " + str(phi_zeros[-1])
             )
 
             # is the number of distinct roots, n=r?
-            phiFuncLast = phi(-1)
-            for j in range(N - r):
-                ip, err = product(lambda z: phiFuncLast(z) * (z - mu) ** j, phiFuncLast)
-                logger.debug("%i of %i, err=%f, abs(ip)=%f" % (j, N - r, err, abs(ip)))
-                if abs(ip) > errStop:
+            phi_func_last = phi(-1)
+            for j in range(num_roots - r):
+                ip, err = product(
+                    lambda z: phi_func_last(z) * (z - mu) ** j, phi_func_last
+                )
+                logger.debug(
+                    "%i of %i, err=%f, abs(ip)=%f" % (j, num_roots - r, err, abs(ip))
+                )
+                if abs(ip) > err_stop:
                     # n != r so carry on
                     logger.debug("n != " + str(r))
                     break
@@ -178,19 +182,19 @@ def approximate_roots(
         else:
             # define an inner polynomial as phi_{r+t+1} = phi_{t+1} phi_{r}
             t += 1
-            phiZeros.append(np.append(phiZeros[t], phiZeros[r]))
+            phi_zeros.append(np.append(phi_zeros[t], phi_zeros[r]))
             logger.debug(
-                "Inner polynomial " + str(r + t) + " roots: " + str(phiZeros[-1])
+                "Inner polynomial " + str(r + t) + " roots: " + str(phi_zeros[-1])
             )
 
-    roots = np.array(phiZeros[-1])
+    roots = np.array(phi_zeros[-1])
 
     # remove any roots which are not distinct
-    rootsToRemove = []
+    roots_to_remove = []
     for i, root in enumerate(roots):
-        if len(roots[i + 1 :]) > 0 and np.any(np.abs(root - roots[i + 1 :]) < rootTol):
-            rootsToRemove.append(i)
-    roots = np.delete(roots, rootsToRemove)
+        if len(roots[i + 1 :]) > 0 and np.any(np.abs(root - roots[i + 1 :]) < root_tol):
+            roots_to_remove.append(i)
+    roots = np.delete(roots, roots_to_remove)
     n = len(roots)
 
     ### compute the multiplicities, eq. (1.19) in [KB]
@@ -200,7 +204,7 @@ def approximate_roots(
     # multiplicities = np.dot(s[:n], np.linalg.inv(V))
 
     ### compute the multiplicities, eq. (21) in [SLV]
-    V = np.array([[phi(j)(root) for root in roots] for j in range(n)])
+    V = np.array([[phi(j)(root) for root in roots] for j in range(n)])  # noqa
     multiplicities = np.dot(np.linalg.inv(V), G[:n, 0])
 
     ### The method used in the vandermonde module doesn't seem significantly

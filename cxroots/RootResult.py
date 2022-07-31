@@ -16,25 +16,25 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
     multiplicities : list
         List of multiplicities where the ith element of the list is the
         multiplicity of the ith element of roots.
-    originalContour : Contour
+    original_contour : Contour
         The contour bounding the region in which the roots were found.
     """
 
-    def __new__(cls, roots, multiplicities, originalContour):
+    def __new__(cls, roots, multiplicities, original_contour):
         obj = super(RootResult, cls).__new__(cls, roots, multiplicities)
-        obj.originalContour = originalContour
+        obj.original_contour = original_contour
         return obj
 
-    def show(self, saveFile=None):
+    def show(self, save_file=None):
         """
         Plot the roots and the initial integration contour in the
         complex plane.
 
         Parameters
         ----------
-        saveFile : str, optional
+        save_file : str, optional
             If provided the plot of the roots will be saved with
-            file name saveFile instead of being shown.
+            file name save_file instead of being shown.
 
         Example
         -------
@@ -50,11 +50,11 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
         """
         import matplotlib.pyplot as plt
 
-        self.originalContour.plot(linecolor="k", linestyle="--")
+        self.original_contour.plot(linecolor="k", linestyle="--")
         plt.scatter(np.real(self.roots), np.imag(self.roots), color="k", marker="x")
 
-        if saveFile is not None:
-            plt.savefig(saveFile)
+        if save_file is not None:
+            plt.savefig(save_file)
             plt.close()
         else:
             plt.show()

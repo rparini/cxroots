@@ -9,18 +9,18 @@ import numdifftools
 
 
 def prod(
-    C,
+    contour,
     f,
     df=None,
     phi=None,
     psi=None,
-    absTol=1e-12,
-    relTol=1e-12,
-    divMin=3,
-    divMax=15,
-    m=2,
-    intMethod="quad",
-    integerTol=inf,
+    abs_tol=1e-12,
+    rel_tol=1e-12,
+    div_min=3,
+    div_max=15,
+    m=2,  # XXX what can m be replaced with
+    int_method="quad",
+    integer_tol=inf,
     callback=None,
 ):
     r"""
@@ -32,9 +32,9 @@ def prod(
 
     Parameters
     ----------
-    C : :class:`Contour <cxroots.Contour.Contour>`
+    contour : :class:`Contour <cxroots.Contour.Contour>`
         A contour in the complex plane for.  No roots or poles of f
-        should lie on C.
+        should lie on contour.
     f : function
         Function of a single variable f(x)
     df : function, optional
@@ -47,31 +47,31 @@ def prod(
     psi : function, optional
         Function of a single variable psi(x).  If not provided then
         psi(z)=1.
-    absTol : float, optional
+    abs_tol : float, optional
         Absolute error tolerance for integration.
-    relTol : float, optional
+    rel_tol : float, optional
         Relative error tolerance for integration.
-    divMin : int, optional
-        Only used if intMethod='romb'. Minimum number of divisions before
+    div_min : int, optional
+        Only used if int_method='romb'. Minimum number of divisions before
         the Romberg integration routine is allowed to exit.
-    divMax : int, optional
-        Only used if intMethod='romb'.  The maximum number of divisions
+    div_max : int, optional
+        Only used if int_method='romb'.  The maximum number of divisions
         before the Romberg integration routine of a path exits.
     m : int, optional
-        Only used if df=None and intMethod='quad'.  Must be even.  The
+        Only used if df=None and int_method='quad'.  Must be even.  The
         argument order=m is passed to numdifftools.Derivative and is the
         order of the error term in the Taylor approximation.
-    intMethod : {'quad', 'romb'}, optional
+    int_method : {'quad', 'romb'}, optional
         If 'quad' then scipy.integrate.quad is used to perform the
         integral.  If 'romb' then Romberg integraion, using
         scipy.integrate.romb, is performed instead.
-    integerTol : float, optional
-        Only used when intMethod is 'romb'.  The integration routine will
-        not exit unless the result is within integerTol of an integer.
+    integer_tol : float, optional
+        Only used when int_method is 'romb'.  The integration routine will
+        not exit unless the result is within integer_tol of an integer.
         This is useful when computing the number of roots in a contour,
-        which must be an integer.  By default integerTol is inf.
+        which must be an integer.  By default integer_tol is inf.
     callback : function, optional
-        Only used when intMethod is 'romb'.  A function that at each
+        Only used when int_method is 'romb'.  A function that at each
         step in the iteration is passed the current approximation for
         the integral, the estimated error of that approximation and the
         number of iterations.  If the return of callback evaluates to
@@ -90,42 +90,42 @@ def prod(
         Marc Van Barel, Springer 2000
     """
     logger = logging.getLogger(__name__)
-    if intMethod == "romb":
-        N = 1
+    if int_method == "romb":
+        N = 1  # noqa
         k = 0
-        I_approx = []
+        I = []  # List of approximations to the integral  # noqa
 
-        while k < divMax and (
-            len(I_approx) < divMin
+        while k < div_max and (
+            len(I) < div_min
             or (
-                abs(I_approx[-2] - I_approx[-1]) > absTol
-                and abs(I_approx[-2] - I_approx[-1]) > relTol * abs(I_approx[-1])
+                abs(I[-2] - I[-1]) > abs_tol
+                and abs(I[-2] - I[-1]) > rel_tol * abs(I[-1])
             )
             or (
-                abs(I_approx[-3] - I_approx[-2]) > absTol
-                and abs(I_approx[-3] - I_approx[-2]) > relTol * abs(I_approx[-2])
+                abs(I[-3] - I[-2]) > abs_tol
+                and abs(I[-3] - I[-2]) > rel_tol * abs(I[-2])
             )
-            or abs(int(round(I_approx[-1].real)) - I_approx[-1].real) > integerTol
-            or abs(I_approx[-1].imag) > integerTol
+            or abs(int(round(I[-1].real)) - I[-1].real) > integer_tol
+            or abs(I[-1].imag) > integer_tol
         ):
-            N = 2 * N
+            N *= 2
             t = np.linspace(0, 1, N + 1)
             k += 1
             dt = t[1] - t[0]
 
             integrals = []
-            for segment in C.segments:
+            for segment in contour.segments:
                 # compute/retrieve function evaluations
-                fVal = segment.trap_values(f, k)
+                f_val = segment.trap_values(f, k)
 
                 if df is None:
                     # approximate df/dz with finite difference
-                    dfdt = np.gradient(fVal, dt)
-                    dfVal = dfdt / segment.dzdt(t)
+                    dfdt = np.gradient(f_val, dt)
+                    df_val = dfdt / segment.dzdt(t)
                 else:
-                    dfVal = segment.trap_values(df, k)
+                    df_val = segment.trap_values(df, k)
 
-                segment_integrand = dfVal / fVal * segment.dzdt(t)
+                segment_integrand = df_val / f_val * segment.dzdt(t)
                 if phi is not None:
                     segment_integrand = segment.trap_values(phi, k) * segment_integrand
                 if psi is not None:
@@ -136,27 +136,27 @@ def prod(
                 ) / (2j * pi)
                 integrals.append(segment_integral)
 
-            I_approx.append(sum(integrals))
+            I.append(sum(integrals))
             if k > 1:
                 logger.debug(
                     "Iteration=%i, integral=%f, err=%f"
                     % (
                         k,
-                        I_approx[-1],
-                        I_approx[-2] - I_approx[-1],
+                        I[-1],
+                        I[-2] - I[-1],
                     )
                 )
             else:
-                logger.debug("Iteration=%i, integral=%f" % (k, I_approx[-1]))
+                logger.debug("Iteration=%i, integral=%f" % (k, I[-1]))
 
             if callback is not None:
-                err = abs(I_approx[-2] - I_approx[-1]) if k > 1 else None
-                if callback(I_approx[-1], err, k):
+                err = abs(I[-2] - I[-1]) if k > 1 else None
+                if callback(I[-1], err, k):
                     break
 
-        return I_approx[-1], abs(I_approx[-2] - I_approx[-1])
+        return I[-1], abs(I[-2] - I[-1])
 
-    elif intMethod == "quad":
+    elif int_method == "quad":
         if df is None:
             df = numdifftools.Derivative(f, order=m)
             # df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
@@ -167,7 +167,7 @@ def prod(
             # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
 
         integral, err = 0, 0
-        for segment in C.segments:
+        for segment in contour.segments:
             integrand_cache = {}
 
             def integrand(t):
@@ -188,7 +188,7 @@ def prod(
                 return np.real(integrand(t))
 
             result_real = scipy.integrate.quad(
-                integrand_real, 0, 1, full_output=1, epsabs=absTol, epsrel=relTol
+                integrand_real, 0, 1, full_output=1, epsabs=abs_tol, epsrel=rel_tol
             )
             integral_real, abserr_real, infodict_real = result_real[:3]
 
@@ -197,7 +197,7 @@ def prod(
                 return np.imag(integrand(t))
 
             result_imag = scipy.integrate.quad(
-                integrand_imag, 0, 1, full_output=1, epsabs=absTol, epsrel=relTol
+                integrand_imag, 0, 1, full_output=1, epsabs=abs_tol, epsrel=rel_tol
             )
             integral_imag, abserr_imag = result_imag[:2]
 
@@ -207,7 +207,7 @@ def prod(
         return integral, abs(err)
 
     else:
-        raise ValueError("intMethod must be either 'romb' or 'quad'")
+        raise ValueError("int_method must be either 'romb' or 'quad'")
 
 
 class RootError(RuntimeError):
@@ -215,19 +215,19 @@ class RootError(RuntimeError):
 
 
 def count_roots(
-    C,
+    contour,
     f,
     df=None,
-    NIntAbsTol=0.07,
-    integerTol=0.1,
-    divMin=3,
-    divMax=15,
+    int_abs_tol=0.07,
+    integer_tol=0.1,
+    div_min=3,
+    div_max=15,
     m=2,
-    intMethod="quad",
+    int_method="quad",
 ):
     r"""
     For a function of one complex variable, f(z), which is analytic in
-    and within the contour C, return the number of zeros (counting
+    and within the contour contour, return the number of zeros (counting
     multiplicities) within the contour, N, using Cauchy's argument
     principle,
 
@@ -241,11 +241,11 @@ def count_roots(
 
     The number of roots is taken to be the closest integer to the
     computed value of the integral and the result is only accepted
-    if the integral is within integerTol of the closest integer.
+    if the integral is within integer_tol of the closest integer.
 
     Parameters
     ----------
-    C : :class:`Contour <cxroots.Contour.Contour>`
+    contour : :class:`Contour <cxroots.Contour.Contour>`
         The contour which encloses the roots of f(z) that are to be
         counted.
     f : function
@@ -255,25 +255,25 @@ def count_roots(
         derivative of the function f(z) at the point z.  If not
         provided, df will be approximated using a finite difference
         method.
-    NIntAbsTol : float, optional
+    int_abs_tol : float, optional
         Required absolute error tolerance for the contour integration.
         Since the Cauchy integral must be an integer it is only
         necessary to distinguish which integer the integral is
-        converging towards.  Therefore, NIntAbsTol can be fairly large.
-    integerTol : float, optional
+        converging towards.  Therefore, int_abs_tol can be fairly large.
+    integer_tol : float, optional
         The evaluation of the Cauchy integral will be accepted if its
-        value is within integerTol of the closest integer.
-    divMin : int, optional
-        Only used if intMethod='romb'. Minimum number of divisions
+        value is within integer_tol of the closest integer.
+    div_min : int, optional
+        Only used if int_method='romb'. Minimum number of divisions
         before the Romberg integration routine is allowed to exit.
-    divMax : int, optional
-        Only used if intMethod='romb'.  The maximum number of divisions
+    div_max : int, optional
+        Only used if int_method='romb'.  The maximum number of divisions
         before the Romberg integration routine of a path exits.
     m : int, optional
-        Only used if df=None and intMethod='quad'.  The argument order=m
+        Only used if df=None and int_method='quad'.  The argument order=m
         is passed to numdifftools.Derivative and is the order of the
         error term in the Taylor approximation.  m must be even.
-    intMethod : {'quad', 'romb'}, optional
+    int_method : {'quad', 'romb'}, optional
         If 'quad' then scipy.integrate.quad is used to perform the
         integral.  If 'romb' then Romberg integraion, using
         scipy.integrate.romb, is performed instead.
@@ -282,45 +282,45 @@ def count_roots(
     -------
     int
         The number of zeros of f (counting multiplicities) which lie
-        within the contour C.
+        within the contour contour.
     """
     logger = logging.getLogger(__name__)
-    logger.info("Computing number of roots within " + str(C))
+    logger.info("Computing number of roots within " + str(contour))
 
     with warnings.catch_warnings():
-        # ignore warnings and catch if I_approx is NaN later
+        # ignore warnings and catch if integral is NaN later
         warnings.simplefilter("ignore")
-        I_approx, err = prod(
-            C,
+        integral, err = prod(
+            contour,
             f,
             df,
-            absTol=NIntAbsTol,
-            relTol=0,
-            divMin=divMin,
-            divMax=divMax,
+            abs_tol=int_abs_tol,
+            rel_tol=0,
+            div_min=div_min,
+            div_max=div_max,
             m=m,
-            intMethod=intMethod,
-            integerTol=integerTol,
+            int_method=int_method,
+            integer_tol=integer_tol,
         )
 
-    if intMethod == "romb":
-        C._numberOfDivisionsForN = int(
-            np.log2(len(C.segments[0]._trapValuesCache[f]) - 1)
+    if int_method == "romb":
+        contour._numberOfDivisionsForN = int(
+            np.log2(len(contour.segments[0]._trapValuesCache[f]) - 1)
         )
 
-    if np.isnan(I_approx):
+    if np.isnan(integral):
         raise RootError(
             "Result of integral is an invalid value. "
             "Most likely because of a divide by zero error."
         )
 
     elif (
-        abs(int(round(I_approx.real)) - I_approx.real) < integerTol
-        and abs(I_approx.imag) < integerTol
+        abs(int(round(integral.real)) - integral.real) < integer_tol
+        and abs(integral.imag) < integer_tol
     ):
         # integral is sufficiently close to an integer
-        numberOfZeros = int(round(I_approx.real))
-        return numberOfZeros
+        num_zeros = int(round(integral.real))
+        return num_zeros
 
     else:
         raise RootError("The number of enclosed roots has not converged to an integer")

@@ -10,10 +10,10 @@ class Rectangle(Contour):
 
     Parameters
     ----------
-    xRange : tuple
+    x_range : tuple
             Tuple of length two giving the range of the rectangle along the
             real axis.
-    yRange : tuple
+    y_range : tuple
             Tuple of length two giving the range of the rectangle along the
             imaginary axis.
 
@@ -23,19 +23,19 @@ class Rectangle(Contour):
             :include-source:
 
             from cxroots import Rectangle
-            rect = Rectangle(xRange=(-2, 2), yRange=(-1, 1))
+            rect = Rectangle(x_range=(-2, 2), y_range=(-1, 1))
             rect.show()
     """
 
-    def __init__(self, xRange, yRange):
-        self.xRange = xRange
-        self.yRange = yRange
-        self.axisName = ("x", "y")
+    def __init__(self, x_range, y_range):
+        self.x_range = x_range
+        self.y_range = y_range
+        self.axis_name = ("x", "y")
 
-        self.z1 = z1 = self.xRange[0] + 1j * self.yRange[0]
-        self.z2 = z2 = self.xRange[1] + 1j * self.yRange[0]
-        self.z3 = z3 = self.xRange[1] + 1j * self.yRange[1]
-        self.z4 = z4 = self.xRange[0] + 1j * self.yRange[1]
+        self.z1 = z1 = self.x_range[0] + 1j * self.y_range[0]
+        self.z2 = z2 = self.x_range[1] + 1j * self.y_range[0]
+        self.z3 = z3 = self.x_range[1] + 1j * self.y_range[1]
+        self.z4 = z4 = self.x_range[0] + 1j * self.y_range[1]
 
         segments = [
             ComplexLine(z1, z2),
@@ -55,24 +55,24 @@ class Rectangle(Contour):
         )
 
     @property
-    def centralPoint(self):
+    def central_point(self):
         # get the central point within the contour
-        x = (self.xRange[0] + self.xRange[1]) / 2
-        y = (self.yRange[0] + self.yRange[1]) / 2
+        x = (self.x_range[0] + self.x_range[1]) / 2
+        y = (self.y_range[0] + self.y_range[1]) / 2
         return x + 1j * y
 
     @property
     def area(self):
-        return (self.xRange[1] - self.xRange[0]) * (self.yRange[1] - self.yRange[0])
+        return (self.x_range[1] - self.x_range[0]) * (self.y_range[1] - self.y_range[0])
 
     def contains(self, z):
         """Returns True if the point z lies within the contour, False if otherwise"""
         return (
-            self.xRange[0] < z.real < self.xRange[1]
-            and self.yRange[0] < z.imag < self.yRange[1]
+            self.x_range[0] < z.real < self.x_range[1]
+            and self.y_range[0] < z.imag < self.y_range[1]
         )
 
-    def subdivide(self, axis, divisionFactor=0.5):
+    def subdivide(self, axis, division_factor=0.5):
         """
         Subdivide the contour
 
@@ -80,45 +80,45 @@ class Rectangle(Contour):
         ----------
         axis : str, can be either 'x' or 'y'
             The axis along which the line subdividing the contour is a constant.
-        divisionFactor : float in range (0,1), optional
+        division_factor : float in range (0,1), optional
             Determines the point along 'axis' at which the line dividing the contour
             is placed.
 
         Returns
         -------
         box1 : Rectangle
-            If axis is 'x' then box1 has the same yRange and minimum value of xRange as
-            the original Rectangle but the maximum xRange is determined by the
-            divisionFactor.
-            If axis is 'y' then box1 has the same xRange and minimum value of yRange as
-            the original Rectangle but the maximum yRange is determined by the
-            divisionFactor.
+            If axis is 'x' then box1 has the same y_range and minimum value of x_range
+            as the original Rectangle but the maximum x_range is determined by the
+            division_factor.
+            If axis is 'y' then box1 has the same x_range and minimum value of y_range
+            as the original Rectangle but the maximum y_range is determined by the
+            division_factor.
         box2 : Rectangle
-            If axis is 'x' then box2 has the same yRange and maximum value of xRange as
-            the original Rectangle but the minimum xRange is equal to the maximum
-            xRange of box1.
-            If axis is 'x' then box2 has the same xRange and maximum value of yRange as
-            the original Rectangle but the minimum yRange is equal to the maximum
-            yRange of box1.
+            If axis is 'x' then box2 has the same y_range and maximum value of x_range
+            as the original Rectangle but the minimum x_range is equal to the maximum
+            x_range of box1.
+            If axis is 'x' then box2 has the same x_range and maximum value of y_range
+            as the original Rectangle but the minimum y_range is equal to the maximum
+            y_range of box1.
         """
-        if axis == "x" or self.axisName[axis] == "x":
-            midpoint = self.xRange[0] + divisionFactor * (
-                self.xRange[1] - self.xRange[0]
+        if axis == "x" or self.axis_name[axis] == "x":
+            midpoint = self.x_range[0] + division_factor * (
+                self.x_range[1] - self.x_range[0]
             )
-            box1 = Rectangle([self.xRange[0], midpoint], self.yRange)
-            box2 = Rectangle([midpoint, self.xRange[1]], self.yRange)
+            box1 = Rectangle([self.x_range[0], midpoint], self.y_range)
+            box2 = Rectangle([midpoint, self.x_range[1]], self.y_range)
 
             box1.segments[3] = self.segments[3]
             box2.segments[1] = self.segments[1]
             box1.segments[1]._reversePath = box2.segments[3]
             box2.segments[3]._reversePath = box1.segments[1]
 
-        elif axis == "y" or self.axisName[axis] == "y":
-            midpoint = self.yRange[0] + divisionFactor * (
-                self.yRange[1] - self.yRange[0]
+        elif axis == "y" or self.axis_name[axis] == "y":
+            midpoint = self.y_range[0] + division_factor * (
+                self.y_range[1] - self.y_range[0]
             )
-            box1 = Rectangle(self.xRange, [self.yRange[0], midpoint])
-            box2 = Rectangle(self.xRange, [midpoint, self.yRange[1]])
+            box1 = Rectangle(self.x_range, [self.y_range[0], midpoint])
+            box2 = Rectangle(self.x_range, [midpoint, self.y_range[1]])
 
             box1.segments[0] = self.segments[0]
             box2.segments[2] = self.segments[2]
@@ -126,7 +126,7 @@ class Rectangle(Contour):
             box2.segments[0]._reversePath = box1.segments[2]
 
         for box in [box1, box2]:
-            box._createdBySubdivisionAxis = axis
+            box._created_by_subdivision_axis = axis
             box._parentBox = self
         self._childBoxes = [box1, box2]
 

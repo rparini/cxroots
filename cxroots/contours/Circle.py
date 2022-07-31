@@ -30,7 +30,7 @@ class Circle(Contour):
     def __init__(self, center, radius):
         self.center = center
         self.radius = radius
-        self.axisName = "r"
+        self.axis_name = "r"
 
         segments = [ComplexArc(center, radius, 0, 2 * pi)]
         super(Circle, self).__init__(segments)
@@ -46,14 +46,14 @@ class Circle(Contour):
         return abs(z - self.center) < self.radius
 
     @property
-    def centralPoint(self):
+    def central_point(self):
         return self.center
 
     @property
     def area(self):
         return pi * self.radius**2
 
-    def subdivide(self, axis="r", divisionFactor=0.5):
+    def subdivide(self, axis="r", division_factor=0.5):
         """
         Subdivide the contour
 
@@ -61,27 +61,27 @@ class Circle(Contour):
         ----------
         axis : str, can only be 'r'
             The axis along which the line subdividing the contour is a constant.
-        divisionFactor : float in range (0,1), optional
+        division_factor : float in range (0,1), optional
             Determines the point along 'axis' at which the line dividing the box is
             placed
 
         Returns
         -------
         box1 : Annulus
-            With inner radius determined by the divisionFactor and outer radius equal
+            With inner radius determined by the division_factor and outer radius equal
             to that of the original circle
         box2 : Circle
             With radius equal to the inner radius of box1
         """
-        if axis == "r" or self.axisName[axis] == "r":
-            box1 = Annulus(self.center, [self.radius * divisionFactor, self.radius])
-            box2 = Circle(self.center, self.radius * divisionFactor)
+        if axis == "r" or self.axis_name[axis] == "r":
+            box1 = Annulus(self.center, [self.radius * division_factor, self.radius])
+            box2 = Circle(self.center, self.radius * division_factor)
             box1.segments[0] = self.segments[0]
             box1.segments[1]._reversePath = box2.segments[0]
             box2.segments[0]._reversePath = box1.segments[1]
 
         for box in [box1, box2]:
-            box._createdBySubdivisionAxis = axis
+            box._created_by_subdivision_axis = axis
             box._parentBox = self
             self._childBoxes = [box1, box2]
 

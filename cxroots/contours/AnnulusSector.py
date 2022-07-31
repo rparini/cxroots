@@ -16,7 +16,7 @@ class AnnulusSector(Contour):
         The center of the annulus sector.
     radii : tuple
         Tuple of length two of the form (inner_radius, outer_radius)
-    phiRange : tuple
+    phi_range : tuple
         Tuple of length two of the form (phi0, phi1).
         The segment of the contour containing inner and outer circular
         arcs will be joined, counter clockwise from phi0 to phi1.
@@ -29,7 +29,7 @@ class AnnulusSector(Contour):
         from numpy import pi
         from cxroots import AnnulusSector
         annulusSector = AnnulusSector(
-            center=0.2, radii=(0.5, 1.25), phiRange=(-pi/4, pi/4)
+            center=0.2, radii=(0.5, 1.25), phi_range=(-pi/4, pi/4)
         )
         annulusSector.show()
 
@@ -39,19 +39,19 @@ class AnnulusSector(Contour):
         from numpy import pi
         from cxroots import AnnulusSector
         annulusSector = AnnulusSector(
-            center=0.2, radii=(0.5, 1.25), phiRange=(pi/4, -pi/4)
+            center=0.2, radii=(0.5, 1.25), phi_range=(pi/4, -pi/4)
         )
         annulusSector.show()
     """
 
-    def __init__(self, center, radii, phiRange):
+    def __init__(self, center, radii, phi_range):
         self.center = center
-        self.axisName = ("r", "phi")
+        self.axis_name = ("r", "phi")
 
-        if phiRange[0] > phiRange[1]:
-            phiRange = (phiRange[0], phiRange[1] + 2 * pi)
+        if phi_range[0] > phi_range[1]:
+            phi_range = (phi_range[0], phi_range[1] + 2 * pi)
 
-        phi0, phi1 = self.phiRange = phiRange
+        phi0, phi1 = self.phi_range = phi_range
 
         # r > 0
         r0, r1 = self.radii = radii
@@ -77,21 +77,21 @@ class AnnulusSector(Contour):
         return (
             f"Annulus sector: center={self.center.real:.3f}{self.center.imag:+.3f}i, "
             f"r0={self.radii[0]:.3f}, r1={self.radii[1]:.3f}, "
-            f"phi0={self.phiRange[0]:.3f}, phi1={self.phiRange[1]:.3f}"
+            f"phi0={self.phi_range[0]:.3f}, phi1={self.phi_range[1]:.3f}"
         )
 
     @property
-    def centralPoint(self):
+    def central_point(self):
         # get the central point within the contour
         r = (self.radii[0] + self.radii[1]) / 2
-        phi = (self.phiRange[0] + self.phiRange[1]) / 2
+        phi = (self.phi_range[0] + self.phi_range[1]) / 2
         return r * exp(1j * phi)
 
     @property
     def area(self):
         return (
             (self.radii[1] ** 2 - self.radii[0] ** 2)
-            * abs(self.phiRange[1] - self.phiRange[0])
+            * abs(self.phi_range[1] - self.phi_range[0])
             % (2 * pi)
             / 2
         )
@@ -99,17 +99,17 @@ class AnnulusSector(Contour):
     def contains(self, z):
         """Returns True if the point z lies within the contour, False if otherwise"""
         angle = np.angle(z - self.center) % (2 * pi)  # np.angle maps to [-pi,pi]
-        radiusCorrect = self.radii[0] < abs(z - self.center) < self.radii[1]
+        radius_correct = self.radii[0] < abs(z - self.center) < self.radii[1]
 
-        phi = np.mod(self.phiRange, 2 * pi)
+        phi = np.mod(self.phi_range, 2 * pi)
         if phi[0] > phi[1]:
-            angleCorrect = phi[0] < angle <= 2 * pi or 0 <= angle < phi[1]
+            angle_correct = phi[0] < angle <= 2 * pi or 0 <= angle < phi[1]
         else:
-            angleCorrect = phi[0] < angle < phi[1]
+            angle_correct = phi[0] < angle < phi[1]
 
-        return radiusCorrect and angleCorrect
+        return radius_correct and angle_correct
 
-    def subdivide(self, axis, divisionFactor=0.5):
+    def subdivide(self, axis, division_factor=0.5):
         """
         Subdivide the contour
 
@@ -117,29 +117,29 @@ class AnnulusSector(Contour):
         ----------
         axis : str, can be either 'r' or 'phi'
             The axis along which the line subdividing the contour is a constant.
-        divisionFactor : float in range (0,1), optional
+        division_factor : float in range (0,1), optional
             Determines the point along 'axis' at which the line dividing the box is
             placed
 
         Returns
         -------
         box1 : AnnulusSector
-            If axis is 'r' then phiRange and the inner radius is the same as original
-            AnnulusSector with the outer radius determined by the divisionFactor.
-            If axis is 'phi' then the radii and phiRange[0] is the same as the original
-            AnnulusSector with phiRange[1] determined by the divisionFactor.
+            If axis is 'r' then phi_range and the inner radius is the same as original
+            AnnulusSector with the outer radius determined by the division_factor.
+            If axis is 'phi' then the radii and phi_range[0] is the same as the original
+            AnnulusSector with phi_range[1] determined by the division_factor.
         box2 : AnnulusSector
-            If axis is 'r' then phiRange and the outer radius is the same as original
+            If axis is 'r' then phi_range and the outer radius is the same as original
             AnnulusSector with the inner radius determined equal to the outer radius
-            of box1. If axis is 'phi' then the radii and phiRange[1] is the same as
-            the original AnnulusSector with phiRange[0] equal to phiRange[1] of box1.
+            of box1. If axis is 'phi' then the radii and phi_range[1] is the same as
+            the original AnnulusSector with phi_range[0] equal to phi_range[1] of box1.
         """
         r0, r1 = self.radii
-        phi0, phi1 = self.phiRange
-        if axis == 0 or axis == self.axisName[0]:
-            divisionPoint = r0 + divisionFactor * (r1 - r0)
-            box1 = AnnulusSector(self.center, [r0, divisionPoint], self.phiRange)
-            box2 = AnnulusSector(self.center, [divisionPoint, r1], self.phiRange)
+        phi0, phi1 = self.phi_range
+        if axis == 0 or axis == self.axis_name[0]:
+            division_point = r0 + division_factor * (r1 - r0)
+            box1 = AnnulusSector(self.center, [r0, division_point], self.phi_range)
+            box2 = AnnulusSector(self.center, [division_point, r1], self.phi_range)
 
             # reuse line segments from original box where possible
             # this allows the cached integrals to be used
@@ -148,10 +148,10 @@ class AnnulusSector(Contour):
             box1.segments[1]._reversePath = box2.segments[3]
             box2.segments[3]._reversePath = box1.segments[1]
 
-        elif axis == 1 or axis == self.axisName[1]:
-            divisionPoint = phi0 + divisionFactor * (phi1 - phi0)
-            box1 = AnnulusSector(self.center, self.radii, [phi0, divisionPoint])
-            box2 = AnnulusSector(self.center, self.radii, [divisionPoint, phi1])
+        elif axis == 1 or axis == self.axis_name[1]:
+            division_point = phi0 + division_factor * (phi1 - phi0)
+            box1 = AnnulusSector(self.center, self.radii, [phi0, division_point])
+            box2 = AnnulusSector(self.center, self.radii, [division_point, phi1])
 
             box1.segments[0] = self.segments[0]
             box2.segments[2] = self.segments[2]
@@ -159,7 +159,7 @@ class AnnulusSector(Contour):
             box2.segments[0]._reversePath = box1.segments[2]
 
         for box in [box1, box2]:
-            box._createdBySubdivisionAxis = axis
+            box._created_by_subdivision_axis = axis
             box._parentBox = self
         self._childBoxes = [box1, box2]
 

@@ -22,28 +22,28 @@ from cxroots.Derivative import find_multiplicity
 class RootfindingTests(object):
     def test_rootfinding_romb_df(self):
         roots_approx_equal(
-            self.C.roots(self.f, self.df, intMethod="romb", verbose=True),
+            self.C.roots(self.f, self.df, int_method="romb", verbose=True),
             (self.roots, self.multiplicities),
             decimal=10,
         )
 
     def test_rootfinding_romb_f(self):
         roots_approx_equal(
-            self.C.roots(self.f, intMethod="romb", verbose=True),
+            self.C.roots(self.f, int_method="romb", verbose=True),
             (self.roots, self.multiplicities),
             decimal=10,
         )
 
     def test_rootfinding_quad_df(self):
         roots_approx_equal(
-            self.C.roots(self.f, self.df, intMethod="quad", verbose=True),
+            self.C.roots(self.f, self.df, int_method="quad", verbose=True),
             (self.roots, self.multiplicities),
             decimal=10,
         )
 
     def test_rootfinding_quad_f(self):
         roots_approx_equal(
-            self.C.roots(self.f, intMethod="quad", verbose=True),
+            self.C.roots(self.f, int_method="quad", verbose=True),
             (self.roots, self.multiplicities),
             decimal=10,
         )
@@ -303,7 +303,7 @@ def test_reevaluation_of_N():
     roots = [1, 0.2]
     multiplicities = [1, 2]
     roots_approx_equal(
-        C.roots(f, NIntAbsTol=10, intMethod="romb", verbose=True),
+        C.roots(f, int_abs_tol=10, int_method="romb", verbose=True),
         (roots, multiplicities),
     )
 
@@ -352,12 +352,12 @@ def test_annular_combustion():
     import warnings
 
     warnings.filterwarnings("error")
-    roots = rectangle.roots(f, df, verbose=True, rootErrTol=1e-6)
+    roots = rectangle.roots(f, df, verbose=True, root_err_tol=1e-6)
     assert len(roots.roots) == 24
 
 
-@pytest.mark.parametrize("intMethod", ["quad", "romb"])
-def test_const_df(intMethod):
+@pytest.mark.parametrize("int_method", ["quad", "romb"])
+def test_const_df(int_method):
     from cxroots import Circle
 
     def f(z):
@@ -367,14 +367,14 @@ def test_const_df(intMethod):
         return 1
 
     C = Circle(0, 1)
-    roots = C.roots(f, df, intMethod=intMethod)
+    roots = C.roots(f, df, int_method=int_method)
 
     assert roots.roots == [0.5]
     assert roots.multiplicities == [1]
 
 
-@pytest.mark.parametrize("intMethod", ["quad", "romb"])
-def test_df(intMethod):
+@pytest.mark.parametrize("int_method", ["quad", "romb"])
+def test_df(int_method):
     from cxroots import Circle
 
     def f(z):
@@ -384,7 +384,7 @@ def test_df(intMethod):
         return 2 * (z - 0.5)
 
     C = Circle(0, 1)
-    roots = C.roots(f, df, intMethod=intMethod)
+    roots = C.roots(f, df, int_method=int_method)
 
     assert roots.roots == pytest.approx([0.5])
     assert roots.multiplicities == [2]

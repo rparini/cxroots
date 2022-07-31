@@ -4,14 +4,14 @@ import logging
 from numpy import inf
 
 
-def iterateToRoot(
+def iterate_to_root(
     x0,
     f,
     df=None,
     steptol=1e-12,
-    roottol=1e-12,
-    maxIter=20,
-    attemptBest=False,
+    root_tol=1e-12,
+    max_iter=20,
+    attempt_best=False,
     callback=None,
 ):
     """
@@ -31,16 +31,16 @@ def iterateToRoot(
         The derivative of f.
     steptol: float, optional
         The routine ends if the step size, dx, between sucessive
-        iterations satisfies abs(dx) < steptol and attemptBest is False.
-    roottol: float, optional
-        The routine ends if abs(f(x)) < roottol and attemptBest is False.
-    maxIter : int, optional
-        The routine ends after maxIter iterations.
-    attemptBest : bool, optional
+        iterations satisfies abs(dx) < steptol and attempt_best is False.
+    root_tol: float, optional
+        The routine ends if abs(f(x)) < root_tol and attempt_best is False.
+    max_iter : int, optional
+        The routine ends after max_iter iterations.
+    attempt_best : bool, optional
         If True then routine ends if the error of the previous iteration,
         x0, was at least as good as the current iteration, x, in the
         sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-        satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
+        satisfied either abs(dx0) < steptol or abs(f(x0)) < root_tol.  In
         this case the previous iteration is returned as the approximation
         of the root.
     callback : function, optional
@@ -61,7 +61,7 @@ def iterateToRoot(
 
     if df is not None:
         try:
-            root, err = newton(x0, f, df, steptol, 0, maxIter, attemptBest, callback)
+            root, err = newton(x0, f, df, steptol, 0, max_iter, attempt_best, callback)
         except (RuntimeError, OverflowError):
             return None
     else:
@@ -71,10 +71,10 @@ def iterateToRoot(
 
         x1, x2, x3 = x0, x0 * (1 + 1e-8) + 1e-8, x0 * (1 - 1e-8) - 1e-8
         root, err = muller(
-            x1, x2, x3, f_muller, steptol, 0, maxIter, attemptBest, callback
+            x1, x2, x3, f_muller, steptol, 0, max_iter, attempt_best, callback
         )
 
-    if err < roottol:
+    if err < root_tol:
         return root
 
 
@@ -84,9 +84,9 @@ def muller(
     x3,
     f,
     steptol=1e-12,
-    roottol=1e-12,
-    maxIter=20,
-    attemptBest=False,
+    root_tol=1e-12,
+    max_iter=20,
+    attempt_best=False,
     callback=None,
 ):
     """
@@ -106,16 +106,16 @@ def muller(
         Function of a single variable which we seek to find a root of.
     steptol: float, optional
         The routine ends if the step size, dx, between sucessive
-        iterations satisfies abs(dx) < steptol and attemptBest is False.
-    roottol: float, optional
-        The routine ends if abs(f(x)) < roottol and attemptBest is False.
-    maxIter : int, optional
-        The routine ends after maxIter iterations.
-    attemptBest : bool, optional
+        iterations satisfies abs(dx) < steptol and attempt_best is False.
+    root_tol: float, optional
+        The routine ends if abs(f(x)) < root_tol and attempt_best is False.
+    max_iter : int, optional
+        The routine ends after max_iter iterations.
+    attempt_best : bool, optional
         If True then routine ends if the error of the previous iteration,
         x0, was at least as good as the current iteration, x, in the
         sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-        satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
+        satisfied either abs(dx0) < steptol or abs(f(x0)) < root_tol.  In
         this case the previous iteration is returned as the approximation
         of the root.
     callback : function, optional
@@ -164,13 +164,13 @@ def muller(
                 break
 
             if (
-                not attemptBest
-                and (abs(dx) < steptol or err < roottol)
-                or iteration > maxIter
+                not attempt_best
+                and (abs(dx) < steptol or err < root_tol)
+                or iteration > max_iter
             ):
                 break
 
-            if attemptBest and (abs(dx0) < steptol or err0 < roottol) and err >= err0:
+            if attempt_best and (abs(dx0) < steptol or err0 < root_tol) and err >= err0:
                 # The previous iteration was a better appproximation the current one so
                 # assume that that was as close to the root as we are going to get.
                 x, err = x0, err0
@@ -179,7 +179,7 @@ def muller(
             iteration += 1
             x0 = x
 
-            if attemptBest:
+            if attempt_best:
                 # record previous error for comparison
                 dx0, err0 = dx, err
 
@@ -199,9 +199,9 @@ def newton(
     f,
     df,
     steptol=1e-12,
-    roottol=1e-12,
-    maxIter=20,
-    attemptBest=False,
+    root_tol=1e-12,
+    max_iter=20,
+    attempt_best=False,
     callback=None,
 ):
     """
@@ -221,16 +221,16 @@ def newton(
         derivative of the function f(x) at the point x
     steptol: float, optional
         The routine ends if the step size, dx, between sucessive
-        iterations satisfies abs(dx) < steptol and attemptBest is False.
-    roottol: float, optional
-        The routine ends if abs(f(x)) < roottol and attemptBest is False.
-    maxIter : int, optional
-        The routine ends after maxIter iterations.
-    attemptBest : bool, optional
+        iterations satisfies abs(dx) < steptol and attempt_best is False.
+    root_tol: float, optional
+        The routine ends if abs(f(x)) < root_tol and attempt_best is False.
+    max_iter : int, optional
+        The routine ends after max_iter iterations.
+    attempt_best : bool, optional
         If True then routine ends if the error of the previous iteration,
         x0, was at least as good as the current iteration, x, in the
         sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-        satisfied either abs(dx0) < steptol or abs(f(x0)) < roottol.  In
+        satisfied either abs(dx0) < steptol or abs(f(x0)) < root_tol.  In
         this case the previous iteration is returned as the approximation
         of the root.
     callback : function, optional
@@ -250,7 +250,7 @@ def newton(
     logger = logging.getLogger(__name__)
     x, y = x0, f(x0)
     dx0, y0 = inf, y
-    for iteration in range(maxIter):
+    for iteration in range(max_iter):
         dx = -y / df(x)
         x += dx
         y = f(x)
@@ -260,17 +260,17 @@ def newton(
         if callback is not None and callback(x, dx, y, iteration + 1):
             break
 
-        if not attemptBest and (abs(dx) < steptol or abs(y) < roottol):
+        if not attempt_best and (abs(dx) < steptol or abs(y) < root_tol):
             break
 
         if (
-            attemptBest
-            and (abs(dx0) < steptol or abs(y0) < roottol)
+            attempt_best
+            and (abs(dx0) < steptol or abs(y0) < root_tol)
             and abs(y) > abs(y0)
         ):
             break
 
-        if attemptBest:
+        if attempt_best:
             # store previous dx and y
             dx0, y0 = dx, y
 
@@ -278,7 +278,7 @@ def newton(
     return x, abs(y)
 
 
-def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
+def secant(x1, x2, f, steptol=1e-12, root_tol=1e-12, max_iter=30, callback=None):
     """
     Find an approximation to a point xf such that f(xf)=0 for a
     scalar function f using the secant method.  The method requires
@@ -297,11 +297,11 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
         Function of a single variable which we seek to find a root of.
     steptol: float, optional
         The routine ends if the step size, dx, between sucessive
-        iterations satisfies abs(dx) < steptol and attemptBest is False.
-    roottol: float, optional
-        The routine ends if abs(f(x)) < roottol and attemptBest is False.
-    maxIter : int, optional
-        The routine ends after maxIter iterations.
+        iterations satisfies abs(dx) < steptol and attempt_best is False.
+    root_tol: float, optional
+        The routine ends if abs(f(x)) < root_tol and attempt_best is False.
+    max_iter : int, optional
+        The routine ends after max_iter iterations.
     callback : function, optional
         After each iteration callback(x, dx, f(x), iteration) will be
         called where 'x' is the current iteration of the estimated root,
@@ -323,7 +323,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
         x1, x2 = x2, x1
         y1, y2 = y2, y1
 
-    for iteration in range(maxIter):
+    for iteration in range(max_iter):
         dx = -(x2 - x1) * y2 / (y2 - y1)
         x1, x2 = x2, x2 + dx
         y1, y2 = y2, f(x2)
@@ -331,7 +331,7 @@ def secant(x1, x2, f, steptol=1e-12, roottol=1e-12, maxIter=30, callback=None):
         if callback is not None and callback(x2, dx, y2, iteration + 1):
             break
 
-        if abs(dx) < steptol or abs(y2) < roottol:
+        if abs(dx) < steptol or abs(y2) < root_tol:
             break
 
     return x2, abs(y2)
