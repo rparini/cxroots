@@ -203,7 +203,7 @@ class ComplexPath(object):
                     1,
                     tol=abs_tol,
                     rtol=rel_tol,
-                    div_max=div_max,
+                    divmax=div_max,
                 )
             elif int_method == "quad":
 
