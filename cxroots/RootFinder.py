@@ -610,19 +610,20 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
         task = progress.add_task("Rootfinding", visible=False)
         progress.start()
 
-    root_finder = find_roots_gen(original_contour, f, df, **kwargs)
-    for roots, multiplicities, contours, num_remaining_roots in root_finder:
+    try:
+        root_finder = find_roots_gen(original_contour, f, df, **kwargs)
+        for roots, multiplicities, _, num_remaining_roots in root_finder:
+            if verbose:
+                num_found_roots = sum(
+                    int(round(multiplicity.real))
+                    for root, multiplicity in zip(roots, multiplicities)
+                )
+                total_roots = num_found_roots + num_remaining_roots
+                progress.update(
+                    task, completed=num_found_roots, total=total_roots, visible=True
+                )
+    finally:
         if verbose:
-            num_found_roots = sum(
-                int(round(multiplicity.real))
-                for root, multiplicity in zip(roots, multiplicities)
-            )
-            total_roots = num_found_roots + num_remaining_roots
-            progress.update(
-                task, completed=num_found_roots, total=total_roots, visible=True
-            )
-
-    if verbose:
-        progress.stop()
+            progress.stop()
 
     return RootResult(roots, multiplicities, original_contour)
