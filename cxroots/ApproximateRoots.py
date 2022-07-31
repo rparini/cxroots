@@ -25,13 +25,13 @@ def approximate_roots(
 ):
     """
     Approximate the roots and multiplcities of the function f within the
-    C C using the method of [KB]_.  The multiplicites are computed
+    contour C using the method of [KB]_.  The multiplicites are computed
     using eq. (21) in [SLV]_.
 
     Parameters
     ----------
     C : :class:`~<cxroots.Contour.Contour>`
-        The C which encloses the roots of f the user wishes to find.
+        The contour which encloses the roots of f the user wishes to find.
     N : int
         The number of roots (counting multiplicties) of f within C.
         This is the result of calling :meth:`~cxroots.Contour.Contour.count_roots`.
@@ -48,8 +48,8 @@ def approximate_roots(
     rel_tol : float, optional
         Relative error tolerance for integration.
     err_stop : float, optional
-        The number of distinct roots within a C, n, is determined
-        by checking if all the elements of a list of C integrals
+        The number of distinct roots within a contour, n, is determined
+        by checking if all the elements of a list of contour integrals
         involving formal orthogonal polynomials are sufficently close to
         zero, ie. that the absolute value of each element is < err_stop.
         If err_stop is too large/small then n may be smaller/larger than
@@ -80,7 +80,7 @@ def approximate_roots(
     Returns
     -------
     tuple of complex
-        The distinct roots of f within the C C.
+        The distinct roots of f within the contour C.
     tuple of float
         The corresponding multiplicites of the roots within C.  Should
         be integers but will not be automatically rounded here.
@@ -126,11 +126,11 @@ def approximate_roots(
             return lambda z: np.polyval(coeff, z)
 
     # initialize G_{pq} = <phi_p, phi_q>
-    G = np.zeros((N, N), dtype=np.complex128)  # noqa
+    G = np.zeros((N, N), dtype=np.complex128)  # noqa: N806
     G[0, 0] = N  # = <phi_0, phi_0> = <1,1>
 
     # initialize G1_{pq} = <phi_p, phi_1 phi_q>
-    G1 = np.zeros((N, N), dtype=np.complex128)  # noqa
+    G1 = np.zeros((N, N), dtype=np.complex128)  # noqa: N806
     G1[0, 0] = 0  # = <phi_0, phi_1 phi_0> = <1, z-mu> = s1-mu*N = 0
 
     r, t = 1, 0
@@ -150,7 +150,7 @@ def approximate_roots(
 
         """
         If any of the zeros of the FOP are outside of the interior
-        of the C then we assume that they are 'arbitary' and
+        of the contour then we assume that they are 'arbitary' and
         instead define the FOP as an inner polynomial. [KB]
         """
         poly_roots = scipy.linalg.eig(G1[: p + 1, : p + 1], G[: p + 1, : p + 1])[0] + mu
@@ -202,7 +202,7 @@ def approximate_roots(
     # multiplicities = np.dot(s[:n], np.linalg.inv(V))
 
     ### compute the multiplicities, eq. (21) in [SLV]
-    V = np.array([[phi(j)(root) for root in roots] for j in range(n)])  # noqa
+    V = np.array([[phi(j)(root) for root in roots] for j in range(n)])  # noqa: N806
     multiplicities = np.dot(np.linalg.inv(V), G[:n, 0])
 
     ### The method used in the vandermonde module doesn't seem significantly
