@@ -37,14 +37,14 @@ Example
 
 
 .. Relative images do not display on pypi
-.. image:: https://github.com/rparini/cxroots/blob/master/README_resources/readmeEx.png?raw=true
+.. image:: https://github.com/rparini/cxroots/blob/master/README_resources/readme_example.png?raw=true
 
 .. code:: python
 
     print(roots)
 
 
-.. literalinclude readmeExOut.txt doesn't work on github
+.. literalinclude readme_example.txt doesn't work on github
 .. code::
 
 	 Multiplicity |               Root              

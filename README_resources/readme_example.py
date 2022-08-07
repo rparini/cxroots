@@ -10,5 +10,5 @@ from cxroots import Circle
 
 C = Circle(0, 3)
 roots = C.roots(f)
-roots.show("readmeEx.png")
+roots.show("readme_example.png")
 print(roots)
