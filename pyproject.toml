@@ -10,5 +10,5 @@ exclude = '''
 '''
 
 [tool.isort]
-profile = "hug"
+profile = "black"
 skip = ["docs", "docs_src"]
