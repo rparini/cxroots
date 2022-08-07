@@ -14,6 +14,17 @@ jobs:
       - run: pip install -r requirements_static_analysis.txt
       - run: black --check .
 
+  isort:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements_static_analysis.txt
+      - run: isort --check
+
   flake8:
     runs-on: ubuntu-latest
     steps:
