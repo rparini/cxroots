@@ -188,19 +188,17 @@ def prod(
             def integrand_real(t):
                 return np.real(integrand(t))
 
-            result_real = scipy.integrate.quad(
+            integral_real, abserr_real, *_ = scipy.integrate.quad(
                 integrand_real, 0, 1, full_output=1, epsabs=abs_tol, epsrel=rel_tol
             )
-            integral_real, abserr_real = result_real[:2]
 
             # integrate imaginary part
             def integrand_imag(t):
                 return np.imag(integrand(t))
 
-            result_imag = scipy.integrate.quad(
+            integral_imag, abserr_imag, *_ = scipy.integrate.quad(
                 integrand_imag, 0, 1, full_output=1, epsabs=abs_tol, epsrel=rel_tol
             )
-            integral_imag, abserr_imag = result_imag[:2]
 
             integral += integral_real + 1j * integral_imag
             err += abserr_real + 1j * abserr_imag
