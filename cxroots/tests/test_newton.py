@@ -1,6 +1,6 @@
 import pytest
 
-from cxroots.IterativeMethods import newton
+from cxroots.iterative_methods import newton
 from numpy import pi, cos, sin
 
 

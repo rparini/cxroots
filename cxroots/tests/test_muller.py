@@ -1,6 +1,6 @@
 import pytest
 
-from cxroots.IterativeMethods import muller
+from cxroots.iterative_methods import muller
 from numpy import pi, cos
 
 

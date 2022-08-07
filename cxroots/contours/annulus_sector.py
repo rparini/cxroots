@@ -2,8 +2,8 @@ from __future__ import division
 import numpy as np
 from numpy import pi, exp
 
-from ..Contour import Contour
-from ..Paths import ComplexLine, ComplexArc
+from ..contour import Contour
+from ..paths import ComplexLine, ComplexArc
 
 
 class AnnulusSector(Contour):

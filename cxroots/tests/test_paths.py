@@ -4,7 +4,7 @@ import numpy as np
 from numpy import pi
 from numpy.random import uniform
 
-from cxroots.Paths import ComplexArc, ComplexLine
+from cxroots.paths import ComplexArc, ComplexLine
 
 # have a common seed for each testing process
 from datetime import date
