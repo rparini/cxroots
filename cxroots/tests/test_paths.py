@@ -1,13 +1,12 @@
-import pytest
+# have a common seed for each testing process
+from datetime import date
 
 import numpy as np
+import pytest
 from numpy import pi
 from numpy.random import uniform
 
 from cxroots.paths import ComplexArc, ComplexLine
-
-# have a common seed for each testing process
-from datetime import date
 
 today = date.today()
 np.random.seed(today.year * today.month * today.day)

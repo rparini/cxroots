@@ -1,7 +1,7 @@
 import pytest
+from numpy import cos, pi
 
 from cxroots.iterative_methods import muller
-from numpy import pi, cos
 
 
 def test_muller():

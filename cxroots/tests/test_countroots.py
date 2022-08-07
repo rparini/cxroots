@@ -1,6 +1,6 @@
-import pytest
 import numpy as np
-from numpy import cos, sin, exp
+import pytest
+from numpy import cos, exp, sin
 
 from cxroots import Rectangle
 

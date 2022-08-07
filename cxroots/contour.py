@@ -1,14 +1,15 @@
 from __future__ import division
 
-import numpy as np
 import functools
 
-from .root_counting import count_roots
+import numpy as np
+
+from .paths import ComplexPath
 from .root_approximation import approximate_roots
+from .root_counting import count_roots
 from .root_finding import find_roots
 from .root_finding_demo import demo_find_roots
 from .util import remove_para
-from .paths import ComplexPath
 
 
 class Contour(object):
