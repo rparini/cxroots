@@ -1,10 +1,24 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", "group:allNonMajor"],
-  "schedule": ["before 3am on Saturday"],
-  "reviewers": ["rparini"],
-  "ignorePaths": ["docs/**"],
+  "extends": [
+    "config:base",
+    "group:allNonMajor"
+  ],
+  "schedule": [
+    "before 3am on Saturday"
+  ],
+  "reviewers": [
+    "rparini"
+  ],
+  "ignorePaths": [
+    "docs/**"
+  ],
   "pip_requirements": {
-    "fileMatch": ["requirements.*\\.txt$"]
+    "fileMatch": [
+      "requirements.*\\.txt$"
+    ]
+  },
+  "pre-commit": {
+    "enabled": true
   }
 }
