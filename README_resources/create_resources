@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 readmeEx.py > readmeExOut.txt
+python3 readme_example.py > readme_example.txt

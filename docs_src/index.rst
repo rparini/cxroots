@@ -18,7 +18,7 @@ The implementation is primarily based on [KB]_ and evaluates contour integrals i
     roots = C.roots(f)
     roots.show()
 
-.. image:: https://github.com/rparini/cxroots/blob/master/README_resources/readmeEx.png?raw=true
+.. image:: https://github.com/rparini/cxroots/blob/master/README_resources/readme_example.png?raw=true
 
 
 Documentation
