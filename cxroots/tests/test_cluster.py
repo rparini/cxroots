@@ -1,5 +1,5 @@
-import pytest
 import numpy as np
+import pytest
 
 from cxroots import Circle, Rectangle
 from cxroots.tests.approx_equal import roots_approx_equal

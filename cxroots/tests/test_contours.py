@@ -1,5 +1,4 @@
-from cxroots import AnnulusSector
-from cxroots import Rectangle
+from cxroots import AnnulusSector, Rectangle
 
 
 def test_annulus_sector_contains():

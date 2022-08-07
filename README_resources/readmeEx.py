@@ -1,4 +1,4 @@
-from numpy import exp, cos, sin
+from numpy import cos, exp, sin
 
 f = lambda z: (exp(2 * z) * cos(z) - 1 - sin(z) + z**5) * (z * (z + 2)) ** 2
 

@@ -10,13 +10,14 @@ References
 """
 
 import unittest
-import pytest
-import numpy as np
-from numpy import sqrt, exp, sin, cos
 
-from cxroots import Circle, Rectangle, Annulus
-from cxroots.tests.approx_equal import roots_approx_equal
+import numpy as np
+import pytest
+from numpy import cos, exp, sin, sqrt
+
+from cxroots import Annulus, Circle, Rectangle
 from cxroots.derivative import find_multiplicity
+from cxroots.tests.approx_equal import roots_approx_equal
 
 
 class RootfindingTests(object):
@@ -293,8 +294,6 @@ class TestRootfinding153(unittest.TestCase, RootfindingTests, MultiplicityTests)
 
 
 def test_reevaluation_of_num_roots():
-    from cxroots import Circle
-
     contour = Circle(0, 2)
 
     def f(z):
@@ -333,9 +332,6 @@ class TestIntroduction(unittest.TestCase, RootfindingTests, MultiplicityTests):
 
 
 def test_annular_combustion():
-    from numpy import exp
-    from cxroots import Rectangle
-
     A = -0.19435  # noqa: N806
     B = 1000.41  # noqa: N806
     C = 522463  # noqa: N806
@@ -358,8 +354,6 @@ def test_annular_combustion():
 
 @pytest.mark.parametrize("int_method", ["quad", "romb"])
 def test_const_df(int_method):
-    from cxroots import Circle
-
     def f(z):
         return z - 0.5
 
@@ -375,8 +369,6 @@ def test_const_df(int_method):
 
 @pytest.mark.parametrize("int_method", ["quad", "romb"])
 def test_df(int_method):
-    from cxroots import Circle
-
     def f(z):
         return (z - 0.5) ** 2
 

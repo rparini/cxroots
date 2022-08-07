@@ -1,11 +1,12 @@
 from __future__ import division
-import warnings
+
 import functools
 import logging
+import warnings
 
 import numpy as np
 from numpydoc.docscrape import FunctionDoc
-from rich.progress import Progress, BarColumn, TextColumn
+from rich.progress import BarColumn, Progress, TextColumn
 
 from .iterative_methods import iterate_to_root
 from .root_counting import RootError

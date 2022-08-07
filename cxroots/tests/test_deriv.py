@@ -1,9 +1,8 @@
-import pytest
 import numpy as np
+import pytest
 from numpy import cos, sin
 
-from cxroots import Circle, Rectangle
-from cxroots import cx_derivative
+from cxroots import Circle, Rectangle, cx_derivative
 
 
 @pytest.mark.parametrize(

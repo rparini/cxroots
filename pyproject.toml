@@ -8,3 +8,7 @@ exclude = '''
     | README_resources
 )/
 '''
+
+[tool.isort]
+profile = "black"
+skip = ["docs", "docs_src"]

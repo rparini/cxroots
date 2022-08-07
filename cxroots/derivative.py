@@ -1,9 +1,11 @@
 from __future__ import division
+
 import logging
 import math
+
+import numdifftools.fornberg as ndf
 import numpy as np
 from numpy import pi
-import numdifftools.fornberg as ndf
 
 from .contours.circle import Circle
 
