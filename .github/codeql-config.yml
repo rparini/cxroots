@@ -1,0 +1,5 @@
+queries:
+  - security-extended
+  - security-and-quality
+paths-ignore:
+  - docs
