@@ -158,55 +158,67 @@ def prod(
         return I[-1], abs(I[-2] - I[-1])
 
     elif int_method == "quad":
-        if df is None:
-            df = numdifftools.Derivative(f, order=df_approx_order)
-            # df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
-
-            # Too slow
-            # import numdifftools.fornberg as ndf
-            # ndf.derivative returns an array [f, f', f'', ...]
-            # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
-
-        integral, err = 0, 0
-        for segment in C.segments:
-            integrand_cache = {}
-
-            def integrand(t):
-                if t in integrand_cache.keys():
-                    i = integrand_cache[t]
-                else:
-                    z = segment(t)
-                    i = (df(z) / f(z)) / (2j * pi) * segment.dzdt(t)
-                    if phi is not None:
-                        i = phi(z) * i
-                    if psi is not None:
-                        i = psi(z) * i
-                    integrand_cache[t] = i
-                return i
-
-            # integrate real part
-            def integrand_real(t):
-                return np.real(integrand(t))
-
-            integral_real, abserr_real = scipy.integrate.quad(
-                integrand_real, 0, 1, epsabs=abs_tol, epsrel=rel_tol
-            )
-
-            # integrate imaginary part
-            def integrand_imag(t):
-                return np.imag(integrand(t))
-
-            integral_imag, abserr_imag = scipy.integrate.quad(
-                integrand_imag, 0, 1, epsabs=abs_tol, epsrel=rel_tol
-            )
-
-            integral += integral_real + 1j * integral_imag
-            err += abserr_real + 1j * abserr_imag
-
-        return integral, abs(err)
-
+        return _quad_prod(C, f, df, phi, psi, abs_tol, rel_tol, df_approx_order)
     else:
         raise ValueError("int_method must be either 'romb' or 'quad'")
+
+
+def _quad_prod(
+    C,  # noqa: N803
+    f,
+    df=None,
+    phi=None,
+    psi=None,
+    abs_tol=1e-12,
+    rel_tol=1e-12,
+    df_approx_order=2,
+):
+    if df is None:
+        df = numdifftools.Derivative(f, order=df_approx_order)
+        # df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
+
+        # Too slow
+        # import numdifftools.fornberg as ndf
+        # ndf.derivative returns an array [f, f', f'', ...]
+        # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
+
+    integral, err = 0, 0
+    for segment in C.segments:
+        integrand_cache = {}
+
+        def integrand(t):
+            if t in integrand_cache.keys():
+                i = integrand_cache[t]
+            else:
+                z = segment(t)
+                i = (df(z) / f(z)) / (2j * pi) * segment.dzdt(t)
+                if phi is not None:
+                    i = phi(z) * i
+                if psi is not None:
+                    i = psi(z) * i
+                integrand_cache[t] = i
+            return i
+
+        # integrate real part
+        def integrand_real(t):
+            return np.real(integrand(t))
+
+        integral_real, abserr_real = scipy.integrate.quad(
+            integrand_real, 0, 1, epsabs=abs_tol, epsrel=rel_tol
+        )
+
+        # integrate imaginary part
+        def integrand_imag(t):
+            return np.imag(integrand(t))
+
+        integral_imag, abserr_imag = scipy.integrate.quad(
+            integrand_imag, 0, 1, epsabs=abs_tol, epsrel=rel_tol
+        )
+
+        integral += integral_real + 1j * integral_imag
+        err += abserr_real + 1j * abserr_imag
+
+    return integral, abs(err)
 
 
 class RootError(RuntimeError):
