@@ -1,3 +1,5 @@
-queries: security-extendedm,security-and-quality
+queries:
+  - security-and-quality
+  - security-extended
 paths-ignore:
   - docs
