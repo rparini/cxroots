@@ -2,7 +2,7 @@ from __future__ import division
 
 import numpy as np
 
-from .RootFinder import find_roots_gen
+from .root_finding import find_roots_gen
 
 
 def demo_find_roots(
