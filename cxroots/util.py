@@ -1,3 +1,5 @@
+import numpy as np
+import scipy.integrate
 from numpydoc.docscrape import FunctionDoc
 
 
@@ -26,3 +28,22 @@ def update_docstring(**dic):
 
 class NumberOfRootsChanged(Exception):
     pass
+
+
+def integrate_quad_complex(func, *args, **kwargs):
+    """
+    A thin wrapper around scipy.integrate.quad that copes
+    with the integrand returning complex values
+    """
+
+    def integrand_real(t):
+        return np.real(func(t))
+
+    def integrand_imag(t):
+        return np.imag(func(t))
+
+    integral_real, abserr_real = scipy.integrate.quad(integrand_real, *args, **kwargs)
+    integral_imag, abserr_imag = scipy.integrate.quad(integrand_imag, *args, **kwargs)
+    integral = integral_real + 1j * integral_imag
+    err = abserr_real + 1j * abserr_imag
+    return integral, err

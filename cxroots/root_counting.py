@@ -8,6 +8,8 @@ import numpy as np
 import scipy.integrate
 from numpy import inf, pi
 
+from .util import integrate_quad_complex
+
 
 def prod(
     C,  # noqa: N803
@@ -220,24 +222,9 @@ def _quad_prod(
                 integrand_cache[t] = i
             return i
 
-        # integrate real part
-        def integrand_real(t):
-            return np.real(integrand(t))
-
-        integral_real, abserr_real = scipy.integrate.quad(
-            integrand_real, 0, 1, epsabs=abs_tol, epsrel=rel_tol
+        integral, err = integrate_quad_complex(
+            integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
         )
-
-        # integrate imaginary part
-        def integrand_imag(t):
-            return np.imag(integrand(t))
-
-        integral_imag, abserr_imag = scipy.integrate.quad(
-            integrand_imag, 0, 1, epsabs=abs_tol, epsrel=rel_tol
-        )
-
-        integral += integral_real + 1j * integral_imag
-        err += abserr_real + 1j * abserr_imag
 
     return integral, abs(err)
 
