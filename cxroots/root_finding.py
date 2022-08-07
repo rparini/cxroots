@@ -7,10 +7,10 @@ import numpy as np
 from numpydoc.docscrape import FunctionDoc
 from rich.progress import Progress, BarColumn, TextColumn
 
-from .IterativeMethods import iterate_to_root
-from .CountRoots import RootError
-from .RootResult import RootResult
-from .Misc import NumberOfRootsChanged, update_docstring
+from .iterative_methods import iterate_to_root
+from .root_counting import RootError
+from .root_result import RootResult
+from .util import NumberOfRootsChanged, update_docstring
 
 
 class MultiplicityError(RuntimeError):
@@ -165,7 +165,7 @@ def find_roots_gen(
     .. [KB] Peter Kravanja, Marc Van Barel, "Computing the Zeros of
         Anayltic Functions", Springer (2000)
     """
-    from .contours.Circle import Circle
+    from .contours.circle import Circle
 
     # wrap f to record the number of function calls
     f = CountCalls(f)

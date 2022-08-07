@@ -1,13 +1,13 @@
-from .contours.Circle import Circle
-from .contours.Annulus import Annulus
-from .contours.AnnulusSector import AnnulusSector
-from .contours.Rectangle import Rectangle
+from .contours.circle import Circle
+from .contours.annulus import Annulus
+from .contours.annulus_sector import AnnulusSector
+from .contours.rectangle import Rectangle
 
-from .RootFinder import find_roots
-from .DemoRootFinder import demo_find_roots
-from .CountRoots import count_roots
-from .Derivative import cx_derivative
-from .Derivative import find_multiplicity
+from .root_finding import find_roots
+from .root_finding_demo import demo_find_roots
+from .root_counting import count_roots
+from .derivative import cx_derivative
+from .derivative import find_multiplicity
 
 # Define public interface
 __all__ = [

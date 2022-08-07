@@ -5,7 +5,7 @@ import logging
 import numpy as np
 import scipy.linalg
 
-from .CountRoots import prod
+from .root_counting import prod
 
 
 def approximate_roots(

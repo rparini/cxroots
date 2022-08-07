@@ -16,7 +16,7 @@ from numpy import sqrt, exp, sin, cos
 
 from cxroots import Circle, Rectangle, Annulus
 from cxroots.tests.approx_equal import roots_approx_equal
-from cxroots.Derivative import find_multiplicity
+from cxroots.derivative import find_multiplicity
 
 
 class RootfindingTests(object):

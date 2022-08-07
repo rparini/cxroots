@@ -1,6 +1,6 @@
 import pytest
 
-from cxroots.IterativeMethods import secant
+from cxroots.iterative_methods import secant
 from numpy import pi, cos, sin
 
 
