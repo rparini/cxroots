@@ -31,7 +31,7 @@ class Annulus(Contour):
     def __init__(self, center, radii):
         self.center = center
         self.radii = radii
-        self.axisName = ("r", "phi")
+        self.axis_name = ("r", "phi")
 
         segments = [
             ComplexArc(center, radii[1], 0, 2 * pi),
@@ -46,7 +46,7 @@ class Annulus(Contour):
         )
 
     @property
-    def centralPoint(self):
+    def central_point(self):
         # get the central point within the contour
         r = (self.radii[0] + self.radii[1]) / 2
         return r
@@ -59,7 +59,7 @@ class Annulus(Contour):
         """Returns True if the point z lies within the contour, False if otherwise"""
         return self.radii[0] < abs(z - self.center) < self.radii[1]
 
-    def subdivide(self, axis, divisionFactor=0.5):
+    def subdivide(self, axis, division_factor=0.5):
         """
         Subdivide the contour
 
@@ -67,7 +67,7 @@ class Annulus(Contour):
         ----------
         axis : str, can be either 'r' or 'phi'
             The axis along which the line subdividing the contour is a constant.
-        divisionFactor : float in range (0,1), optional
+        division_factor : float in range (0,1), optional
             Determines the point along 'axis' at which the line dividing the box is
             placed
 
@@ -75,10 +75,10 @@ class Annulus(Contour):
         -------
         boxes : list of contours
             Two annuluses if axis is 'r'.
-            Two half-annuluses oriented according to divisionFactor if axis is 'phi'.
+            Two half-annuluses oriented according to division_factor if axis is 'phi'.
         """
-        if axis == "r" or self.axisName[axis] == "r":
-            midpoint = self.radii[0] + divisionFactor * (self.radii[1] - self.radii[0])
+        if axis == "r" or self.axis_name[axis] == "r":
+            midpoint = self.radii[0] + division_factor * (self.radii[1] - self.radii[0])
             box1 = Annulus(self.center, [self.radii[0], midpoint])
             box2 = Annulus(self.center, [midpoint, self.radii[1]])
 
@@ -87,16 +87,16 @@ class Annulus(Contour):
             box1.segments[0]._reversePath = box2.segments[1]
             box2.segments[1]._reversePath = box1.segments[0]
 
-            box1._createdBySubdivisionAxis = axis
-            box2._createdBySubdivisionAxis = axis
+            box1._created_by_subdivision_axis = axis
+            box2._created_by_subdivision_axis = axis
 
-        elif axis == "phi" or self.axisName[axis] == "phi":
+        elif axis == "phi" or self.axis_name[axis] == "phi":
             # Subdividing into two radial boxes rather than one to
             # ensure that an error is raised if one of the new paths
             # is too close to a root
             # XXX: introduce another parameter for phi1
 
-            phi0 = 2 * pi * divisionFactor
+            phi0 = 2 * pi * division_factor
             phi1 = phi0 + pi
 
             box1 = AnnulusSector(self.center, self.radii, [phi0, phi1])
@@ -108,7 +108,7 @@ class Annulus(Contour):
             box2.segments[0]._reversePath = box1.segments[2]
 
         for box in [box1, box2]:
-            box._createdBySubdivisionAxis = axis
+            box._created_by_subdivision_axis = axis
             box._parentBox = self
         self._childBoxes = [box1, box2]
 

@@ -24,7 +24,7 @@ We can also save this process as an animation (in this case a gif) using
 	f = lambda z: (z*(z+2))**2 * (exp(2*z)*cos(z)-1-sin(z)+z**5)
 	C = Circle(0,3)
 
-	C.demo_roots(f, saveFile='rootsDemo.gif', writer='imagemagick')
+	C.demo_roots(f, save_file='rootsDemo.gif', writer='imagemagick')
 
 .. image:: rootsDemo.gif
 	:width: 400px

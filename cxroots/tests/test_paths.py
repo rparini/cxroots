@@ -15,20 +15,20 @@ np.random.seed(today.year * today.month * today.day)
 
 @pytest.mark.parametrize("a", uniform(-10, 10, size=3) + 1j * uniform(-10, 10, size=3))
 @pytest.mark.parametrize("b", uniform(-10, 10, size=3) + 1j * uniform(-10, 10, size=3))
-@pytest.mark.parametrize("P", uniform(-10, 10, size=3) + 1j * uniform(-10, 10, size=3))
-def test_distance_line(a, b, P):
+@pytest.mark.parametrize("p", uniform(-10, 10, size=3) + 1j * uniform(-10, 10, size=3))
+def test_distance_line(a, b, p):
     t = np.linspace(0, 1, 100001)
-    C = ComplexLine(a, b)
-    assert C.distance(P) == pytest.approx(np.min(np.abs(C(t) - P)), abs=1e-6)
+    line = ComplexLine(a, b)
+    assert line.distance(p) == pytest.approx(np.min(np.abs(line(t) - p)), abs=1e-6)
 
 
 @pytest.mark.parametrize("z0", uniform(-10, 10, size=3) + 1j * uniform(-10, 10, size=3))
-@pytest.mark.parametrize("R", uniform(0, 10, size=3))
+@pytest.mark.parametrize("r", uniform(0, 10, size=3))
 @pytest.mark.parametrize("t0", uniform(0, 2 * pi, size=3))
 @pytest.mark.parametrize("dt", uniform(-2 * pi, 2 * pi, size=3))
-@pytest.mark.parametrize("P", uniform(-10, 10, size=3) + 1j * uniform(-10, 10, size=3))
-def test_distance_arc(z0, R, t0, dt, P):
+@pytest.mark.parametrize("p", uniform(-10, 10, size=3) + 1j * uniform(-10, 10, size=3))
+def test_distance_arc(z0, r, t0, dt, p):
     z0 = 0
     t = np.linspace(0, 1, 100001)
-    C = ComplexArc(z0, R, t0, dt)
-    assert C.distance(P) == pytest.approx(np.min(np.abs(C(t) - P)), abs=1e-6)
+    arc = ComplexArc(z0, r, t0, dt)
+    assert arc.distance(p) == pytest.approx(np.min(np.abs(arc(t) - p)), abs=1e-6)

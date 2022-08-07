@@ -3,18 +3,18 @@ import numpy as np
 from numpy import cos, sin
 
 from cxroots import Circle, Rectangle
-from cxroots import CxDerivative
+from cxroots import cx_derivative
 
 
 @pytest.mark.parametrize(
-    "C",
+    "contour",
     [
         pytest.param(Circle(0, 2), id="circle"),
         pytest.param(Rectangle([-1.5, 1.5], [-2, 2]), id="rect"),
         pytest.param(None, id="default"),
     ],
 )
-def test_CxDerivative(C):
+def test_cx_derivative(contour):
     def f(z):
         return z**10 - 2 * z**5 + sin(z) * cos(z / 2)
 
@@ -23,4 +23,4 @@ def test_CxDerivative(C):
 
     z = np.array([-1.234, 0.3 + 1j, 0.1j, -0.9 - 0.5j])
 
-    assert CxDerivative(f, z, n=1, contour=C) == pytest.approx(df(z))
+    assert cx_derivative(f, z, n=1, contour=contour) == pytest.approx(df(z))

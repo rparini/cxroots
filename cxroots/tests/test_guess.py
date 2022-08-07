@@ -3,7 +3,7 @@ from numpy import exp, sin, cos
 import numpy as np
 
 from cxroots import Circle
-from cxroots.tests.ApproxEqual import roots_approx_equal
+from cxroots.tests.approx_equal import roots_approx_equal
 
 
 @pytest.mark.parametrize(
@@ -14,7 +14,7 @@ from cxroots.tests.ApproxEqual import roots_approx_equal
     ],
 )
 def test_guess_symmetry_1(symmetry):
-    C = Circle(0, 3)
+    contour = Circle(0, 3)
 
     def f(z):
         return z**4 + z**3 + z**2 + z
@@ -23,7 +23,8 @@ def test_guess_symmetry_1(symmetry):
     multiplicities = [1, 1, 1, 1]
 
     roots_approx_equal(
-        C.roots(f, verbose=True, guessRootSymmetry=symmetry), (roots, multiplicities)
+        contour.roots(f, guess_roots_symmetry=symmetry),
+        (roots, multiplicities),
     )
 
 
@@ -35,7 +36,7 @@ def test_guess_symmetry_1(symmetry):
     ],
 )
 def test_guess_root(guesses):
-    C = Circle(0, 3)
+    contour = Circle(0, 3)
 
     def f(z):
         return (z - 2.5) ** 2 * (exp(-z) * sin(z / 2.0) - 1.2 * cos(z))
@@ -48,16 +49,14 @@ def test_guess_root(guesses):
     ]
     multiplicities = [2, 1, 1, 1]
 
-    roots_approx_equal(
-        C.roots(f, guessRoots=[2.5], verbose=True), (roots, multiplicities)
-    )
+    roots_approx_equal(contour.roots(f, guess_roots=[2.5]), (roots, multiplicities))
 
 
 @pytest.mark.parametrize(
     "usedf", [pytest.param(True, id="with_df"), pytest.param(False, id="wihout_df")]
 )
 def test_guess_symmetry_2(usedf):
-    C = Circle(0, 1.5)
+    contour = Circle(0, 1.5)
 
     def f(z):
         return z**27 - 2 * z**11 + 0.5 * z**6 - 1
@@ -103,6 +102,6 @@ def test_guess_symmetry_2(usedf):
     multiplicities = np.ones_like(roots)
 
     roots_approx_equal(
-        C.roots(f, df, verbose=True, guessRootSymmetry=symmetry),
+        contour.roots(f, df, guess_roots_symmetry=symmetry),
         (roots, multiplicities),
     )

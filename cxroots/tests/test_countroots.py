@@ -5,20 +5,20 @@ from numpy import cos, sin, exp
 from cxroots import Rectangle
 
 
-@pytest.mark.parametrize("useDerivative", [True, False])
-def test_count_roots(useDerivative):
+@pytest.mark.parametrize("use_df", [True, False])
+def test_count_roots(use_df):
     """
     From "Locating all the Zeros of an Analytic Function in one Complex Variable"
     M.Dellnitz, O.Schutze, Q.Zheng, J. Compu. and App. Math. (2002), Vol.138, Issue 2
 
     There should be 424 roots inside this contour
     """
-    C = Rectangle([-20.3, 20.7], [-20.3, 20.7])
+    contour = Rectangle([-20.3, 20.7], [-20.3, 20.7])
 
     def f(z):
         return z**50 + z**12 - 5 * sin(20 * z) * cos(12 * z) - 1
 
-    if useDerivative:
+    if use_df:
 
         def df(z):
             return (
@@ -31,14 +31,14 @@ def test_count_roots(useDerivative):
     else:
         df = None
 
-    assert C.count_roots(f, df) == 424
+    assert contour.count_roots(f, df) == 424
 
 
 @pytest.mark.xfail(reason="Possibly lack of high precision arithmetic")
-def test_RingOscillator():
+def test_ring_oscillator():
     """Problem in section 4.3 of [DSZ]"""
 
-    def A(z):
+    def A(z):  # noqa: N802
         t = 2.0
         return np.array(
             [
@@ -50,7 +50,7 @@ def test_RingOscillator():
             ]
         )
 
-    def dA(z):
+    def dA(z):  # noqa: N802
         t = 2.0
         return np.array(
             [
@@ -66,17 +66,17 @@ def test_RingOscillator():
         )
 
     def f(z):
-        AVal = np.rollaxis(A(z), -1, 0)
-        return np.linalg.det(AVal)
+        A_val = np.rollaxis(A(z), -1, 0)  # noqa: N806
+        return np.linalg.det(A_val)
 
     def df(z):
-        AVal = A(z)
-        dAVal = dA(z)
+        A_val = A(z)  # noqa: N806
+        dA_val = dA(z)  # noqa: N806
         return (
-            dAVal[0, 0] * AVal[1, 1]
-            + AVal[0, 0] * dAVal[1, 1]
-            - dAVal[0, 1] * AVal[1, 0]
-            - AVal[0, 1] * dAVal[1, 0]
+            dA_val[0, 0] * A_val[1, 1]
+            + A_val[0, 0] * dA_val[1, 1]
+            - dA_val[0, 1] * A_val[1, 0]
+            - A_val[0, 1] * dA_val[1, 0]
         )
 
     box = Rectangle([-12, 0], [-40, 40])

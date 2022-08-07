@@ -9,7 +9,7 @@ from .contours.Circle import Circle
 
 
 @np.vectorize
-def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10):
+def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1e-10):
     r"""
     Compute the derivaive of an analytic function using Cauchy's
     Integral Formula for Derivatives.
@@ -29,7 +29,7 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10):
     contour : :class:`Contour <cxroots.Contour.Contour>`, optional
         The contour, C, in the complex plane which encloses the point z0.
         By default the contour is the circle |z-z_0|=1e-3.
-    absIntegrationTol : float, optional
+    integration_abs_tol : float, optional
         The absolute tolerance required of the integration routine.
 
     Returns
@@ -43,15 +43,15 @@ def CxDerivative(f, z0, n=1, contour=None, absIntegrationTol=1e-10):
     def integrand(z):
         return f(z) / (z - z0) ** (n + 1)
 
-    integral = contour.integrate(integrand, absTol=absIntegrationTol)
+    integral = contour.integrate(integrand, abs_tol=integration_abs_tol)
     return integral * math.factorial(n) / (2j * pi)
 
 
-def find_multiplicity(root, f, df=None, rootErrTol=1e-10):
+def find_multiplicity(root, f, df=None, root_err_tol=1e-10):
     """
     Find the multiplicity of a given root of f by computing the
     derivatives of f, f^{(1)}, f^{(2)}, ... until
-    |f^{(n)}(root)|>rootErrTol.  The multiplicity of the root is then
+    |f^{(n)}(root)|>root_err_tol.  The multiplicity of the root is then
     equal to n.  The derivative is calculated with `numdifftools.fornberg.ndf`
     which employs a method due to Fornberg.
 
@@ -65,8 +65,8 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10):
         The first derivative of f.  If not known then df=None.
     contour : Contour, optional
         The integration contour used to evaluate the derivatives.
-    rootErrTol : float, optional
-        It will be assumed that f(z)=0 if numerically |f(z)|<rootErrTol.
+    root_err_tol : float, optional
+        It will be assumed that f(z)=0 if numerically |f(z)|<root_err_tol.
 
     Returns
     -------
@@ -74,11 +74,11 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10):
         The multiplicity of the given root.
     """
     logger = logging.getLogger(__name__)
-    if abs(f(root)) > rootErrTol:
+    if abs(f(root)) > root_err_tol:
         raise ValueError(
             "The provided 'root' is not a root of the given function f."
-            "Specifically, %f = abs(f(root)) > rootErrTol = %f"
-            % (abs(f(root)), rootErrTol)
+            "Specifically, %f = abs(f(root)) > root_err_tol = %f"
+            % (abs(f(root)), root_err_tol)
         )
 
     n = 1
@@ -94,7 +94,7 @@ def find_multiplicity(root, f, df=None, rootErrTol=1e-10):
 
         logger.debug("n=%i |df^(n)|=%f", n, err)
 
-        if err > rootErrTol:
+        if err > root_err_tol:
             break
 
         n += 1

@@ -6,33 +6,33 @@ from .RootFinder import find_roots_gen
 
 
 def demo_find_roots(
-    originalContour,
+    original_contour,
     f,
     df=None,
-    saveFile=None,
-    automaticAnim=False,
-    returnAnim=False,
+    save_file=None,
+    auto_animation=False,
+    return_animation=False,
     writer=None,
-    **rootsKwargs
+    **roots_kwargs
 ):
     """
     An animated demonstration of the root finding process using matplotlib.
 
     Parameters
     ----------
-    saveFile : str, optional
+    save_file : str, optional
         If given then the animation will be saved to disk with filename
-        equal to saveFile instead of being shown.
-    automaticAnim : bool, optional
+        equal to save_file instead of being shown.
+    auto_animation : bool, optional
         If False (default) then press SPACE to step the animation forward
         If True then the animation will play automatically until all the
         roots have been found.
-    returnAnim : bool, optional
+    return_animation : bool, optional
         If True then the matplotlib animation object will be returned
         instead of being shown.  Defaults to False.
     writer : str, optional
         Passed to :meth:`matplotlib.animation.FuncAnimation.save`.
-    **rootsKwargs
+    **roots_kwargs
         Additional key word arguments passed to :meth:`~cxroots.Contour.Contour.roots`.
     """
     import matplotlib.pyplot as plt
@@ -41,55 +41,55 @@ def demo_find_roots(
     fig = plt.gcf()
     ax = plt.gca()
 
-    rootFinder = find_roots_gen(originalContour, f, df, **rootsKwargs)
+    root_finder = find_roots_gen(original_contour, f, df, **roots_kwargs)
 
     def init():
-        originalContour.plot(linecolor="k", linestyle="--")
-        originalContour._sizePlot()
+        original_contour.plot(linecolor="k", linestyle="--")
+        original_contour._size_plot()
 
     def update_frame(args):
-        roots, multiplicities, boxes, numberOfRemainingRoots = args
+        roots, _, boxes, num_remaining_roots = args
 
         plt.cla()  # clear axis
-        originalContour.plot(linecolor="k", linestyle="--")
+        original_contour.plot(linecolor="k", linestyle="--")
         for box in boxes:
             if not hasattr(box, "_color"):
                 cmap = plt.get_cmap("jet")
                 box._color = cmap(np.random.random())
 
-            plt.text(box.centralPoint.real, box.centralPoint.imag, box._numberOfRoots)
+            plt.text(box.central_point.real, box.central_point.imag, box._num_roots)
             box.plot(linecolor=box._color)
 
         plt.scatter(np.real(roots), np.imag(roots), color="k", marker="x")
         ax.text(
             0.02,
             0.95,
-            "Zeros remaining: %i" % numberOfRemainingRoots,
+            "Zeros remaining: %i" % num_remaining_roots,
             transform=ax.transAxes,
         )
-        originalContour._sizePlot()
+        original_contour._size_plot()
         fig.canvas.draw()
 
-    if saveFile:
-        automaticAnim = True
+    if save_file:
+        auto_animation = True
 
-    if automaticAnim or returnAnim:
+    if auto_animation or return_animation:
         anim = animation.FuncAnimation(
-            fig, update_frame, init_func=init, frames=rootFinder
+            fig, update_frame, init_func=init, frames=root_finder
         )
-        if returnAnim:
+        if return_animation:
             return anim
 
     else:
 
         def draw_next(event):
             if event.key == " ":
-                update_frame(next(rootFinder))
+                update_frame(next(root_finder))
 
         fig.canvas.mpl_connect("key_press_event", draw_next)
 
-    if saveFile:
-        anim.save(filename=saveFile, fps=1, dpi=200, writer=writer)
+    if save_file:
+        anim.save(filename=save_file, fps=1, dpi=200, writer=writer)
         plt.close()
     else:
         plt.show()
