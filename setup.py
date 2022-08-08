@@ -5,7 +5,7 @@ packages = ["cxroots", "cxroots.tests", "cxroots.contours"]
 
 # get the version, this will assign __version__
 with open("cxroots/version.py") as f:
-    exec(f.read())  # noqa
+    exec(f.read())
 
 # read the README_pip.rst
 try:
