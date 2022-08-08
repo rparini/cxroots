@@ -8,6 +8,8 @@ import numpy as np
 import scipy.integrate
 from numpy import inf, pi
 
+from .util import integrate_quad_complex
+
 
 def prod(
     C,  # noqa: N803
@@ -90,125 +92,141 @@ def prod(
     .. [KB] "Computing the zeros of analytic functions" by Peter Kravanja,
         Marc Van Barel, Springer 2000
     """
-    logger = logging.getLogger(__name__)
     if int_method == "romb":
-        N = 1  # noqa: N806
-        k = 0
-        I = []  # List of approximations to the integral # noqa: E741 N806
-
-        while k < div_max and (
-            len(I) < div_min
-            or (
-                abs(I[-2] - I[-1]) > abs_tol
-                and abs(I[-2] - I[-1]) > rel_tol * abs(I[-1])
-            )
-            or (
-                abs(I[-3] - I[-2]) > abs_tol
-                and abs(I[-3] - I[-2]) > rel_tol * abs(I[-2])
-            )
-            or abs(int(round(I[-1].real)) - I[-1].real) > integer_tol
-            or abs(I[-1].imag) > integer_tol
-        ):
-            N *= 2
-            t = np.linspace(0, 1, N + 1)
-            k += 1
-            dt = t[1] - t[0]
-
-            integrals = []
-            for segment in C.segments:
-                # compute/retrieve function evaluations
-                f_val = segment.trap_values(f, k)
-
-                if df is None:
-                    # approximate df/dz with finite difference
-                    dfdt = np.gradient(f_val, dt)
-                    df_val = dfdt / segment.dzdt(t)
-                else:
-                    df_val = segment.trap_values(df, k)
-
-                segment_integrand = df_val / f_val * segment.dzdt(t)
-                if phi is not None:
-                    segment_integrand = segment.trap_values(phi, k) * segment_integrand
-                if psi is not None:
-                    segment_integrand = segment.trap_values(psi, k) * segment_integrand
-
-                segment_integral = scipy.integrate.romb(
-                    segment_integrand, dx=dt, axis=-1
-                ) / (2j * pi)
-                integrals.append(segment_integral)
-
-            I.append(sum(integrals))
-            if k > 1:
-                logger.debug(
-                    "Iteration=%i, integral=%f, err=%f"
-                    % (
-                        k,
-                        I[-1],
-                        I[-2] - I[-1],
-                    )
-                )
-            else:
-                logger.debug("Iteration=%i, integral=%f" % (k, I[-1]))
-
-            if callback is not None:
-                err = abs(I[-2] - I[-1]) if k > 1 else None
-                if callback(I[-1], err, k):
-                    break
-
-        return I[-1], abs(I[-2] - I[-1])
-
+        return _romb_prod(
+            C,
+            f,
+            df,
+            phi,
+            psi,
+            abs_tol,
+            rel_tol,
+            div_min,
+            div_max,
+            integer_tol,
+            callback,
+        )
     elif int_method == "quad":
-        if df is None:
-            df = numdifftools.Derivative(f, order=df_approx_order)
-            # df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
-
-            # Too slow
-            # import numdifftools.fornberg as ndf
-            # ndf.derivative returns an array [f, f', f'', ...]
-            # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
-
-        integral, err = 0, 0
-        for segment in C.segments:
-            integrand_cache = {}
-
-            def integrand(t):
-                if t in integrand_cache.keys():
-                    i = integrand_cache[t]
-                else:
-                    z = segment(t)
-                    i = (df(z) / f(z)) / (2j * pi) * segment.dzdt(t)
-                    if phi is not None:
-                        i = phi(z) * i
-                    if psi is not None:
-                        i = psi(z) * i
-                    integrand_cache[t] = i
-                return i
-
-            # integrate real part
-            def integrand_real(t):
-                return np.real(integrand(t))
-
-            result_real = scipy.integrate.quad(
-                integrand_real, 0, 1, full_output=1, epsabs=abs_tol, epsrel=rel_tol
-            )
-            integral_real, abserr_real = result_real[:2]
-
-            # integrate imaginary part
-            def integrand_imag(t):
-                return np.imag(integrand(t))
-
-            result_imag = scipy.integrate.quad(
-                integrand_imag, 0, 1, full_output=1, epsabs=abs_tol, epsrel=rel_tol
-            )
-            integral_imag, abserr_imag = result_imag[:2]
-
-            integral += integral_real + 1j * integral_imag
-            err += abserr_real + 1j * abserr_imag
-
-        return integral, abs(err)
-
+        return _quad_prod(C, f, df, phi, psi, abs_tol, rel_tol, df_approx_order)
     else:
         raise ValueError("int_method must be either 'romb' or 'quad'")
+
+
+def _romb_prod(
+    C,  # noqa: N803
+    f,
+    df=None,
+    phi=None,
+    psi=None,
+    abs_tol=1e-12,
+    rel_tol=1e-12,
+    div_min=3,
+    div_max=15,
+    integer_tol=inf,
+    callback=None,
+):
+    logger = logging.getLogger(__name__)
+    N = 1  # noqa: N806
+    k = 0
+    I = []  # List of approximations to the integral # noqa: E741 N806
+
+    while k < div_max and (
+        len(I) < div_min
+        or (abs(I[-2] - I[-1]) > abs_tol and abs(I[-2] - I[-1]) > rel_tol * abs(I[-1]))
+        or (abs(I[-3] - I[-2]) > abs_tol and abs(I[-3] - I[-2]) > rel_tol * abs(I[-2]))
+        or abs(int(round(I[-1].real)) - I[-1].real) > integer_tol
+        or abs(I[-1].imag) > integer_tol
+    ):
+        N *= 2
+        t = np.linspace(0, 1, N + 1)
+        k += 1
+        dt = t[1] - t[0]
+
+        integrals = []
+        for segment in C.segments:
+            # compute/retrieve function evaluations
+            f_val = segment.trap_values(f, k)
+
+            if df is None:
+                # approximate df/dz with finite difference
+                dfdt = np.gradient(f_val, dt)
+                df_val = dfdt / segment.dzdt(t)
+            else:
+                df_val = segment.trap_values(df, k)
+
+            segment_integrand = df_val / f_val * segment.dzdt(t)
+            if phi is not None:
+                segment_integrand = segment.trap_values(phi, k) * segment_integrand
+            if psi is not None:
+                segment_integrand = segment.trap_values(psi, k) * segment_integrand
+
+            segment_integral = scipy.integrate.romb(
+                segment_integrand, dx=dt, axis=-1
+            ) / (2j * pi)
+            integrals.append(segment_integral)
+
+        I.append(sum(integrals))
+        if k > 1:
+            logger.debug(
+                "Iteration=%i, integral=%f, err=%f"
+                % (
+                    k,
+                    I[-1],
+                    I[-2] - I[-1],
+                )
+            )
+        else:
+            logger.debug("Iteration=%i, integral=%f" % (k, I[-1]))
+
+        if callback is not None:
+            err = abs(I[-2] - I[-1]) if k > 1 else None
+            if callback(I[-1], err, k):
+                break
+
+    return I[-1], abs(I[-2] - I[-1])
+
+
+def _quad_prod(
+    C,  # noqa: N803
+    f,
+    df=None,
+    phi=None,
+    psi=None,
+    abs_tol=1e-12,
+    rel_tol=1e-12,
+    df_approx_order=2,
+):
+    if df is None:
+        df = numdifftools.Derivative(f, order=df_approx_order)
+        # df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
+
+        # Too slow
+        # import numdifftools.fornberg as ndf
+        # ndf.derivative returns an array [f, f', f'', ...]
+        # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
+
+    integral, err = 0, 0
+    for segment in C.segments:
+        integrand_cache = {}
+
+        def integrand(t):
+            if t in integrand_cache.keys():
+                i = integrand_cache[t]
+            else:
+                z = segment(t)
+                i = (df(z) / f(z)) / (2j * pi) * segment.dzdt(t)
+                if phi is not None:
+                    i = phi(z) * i
+                if psi is not None:
+                    i = psi(z) * i
+                integrand_cache[t] = i
+            return i
+
+        integral, err = integrate_quad_complex(
+            integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
+        )
+
+    return integral, abs(err)
 
 
 class RootError(RuntimeError):

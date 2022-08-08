@@ -69,7 +69,8 @@ author = 'Robert Parini'
 # built documents.
 #
 # The short X.Y version.
-exec(open('../cxroots/version.py').read())
+with open("../cxroots/version.py") as f:
+    exec(f.read())
 version = __version__
 # The full version, including alpha/beta/rc tags.
 release = version

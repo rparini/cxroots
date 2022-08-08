@@ -4,6 +4,8 @@ import numpy as np
 import scipy.integrate
 from numpy import exp, pi
 
+from .util import integrate_quad_complex
+
 
 class ComplexPath(object):
     """A base class for paths in the complex plane."""
@@ -206,20 +208,9 @@ class ComplexPath(object):
                     divmax=div_max,
                 )
             elif int_method == "quad":
-
-                def integrand_real(t):
-                    return np.real(integrand(t))
-
-                def integrand_imag(t):
-                    return np.imag(integrand(t))
-
-                integral_real, abserr_real = scipy.integrate.quad(
-                    integrand_real, 0, 1, epsabs=abs_tol, epsrel=rel_tol
+                integral, _ = integrate_quad_complex(
+                    integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
                 )
-                integral_imag, abserr_imag = scipy.integrate.quad(
-                    integrand_imag, 0, 1, epsabs=abs_tol, epsrel=rel_tol
-                )
-                integral = integral_real + 1j * integral_imag
             else:
                 raise ValueError("int_method must be either 'romb' or 'quad'")
 
