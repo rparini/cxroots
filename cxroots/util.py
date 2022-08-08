@@ -36,12 +36,12 @@ def integrate_quad_complex(func, *args, **kwargs):
     with the integrand returning complex values
     """
     # full_output=0 ensures only 2 values returned
-    integral_re, abserr_re = scipy.integrate.quad(
+    integral_real, abserr_real = scipy.integrate.quad(
         lambda t: np.real(func(t)), *args, full_output=0, **kwargs
     )
-    integral_im, abserr_im = scipy.integrate.quad(
+    integral_imag, abserr_imag = scipy.integrate.quad(
         lambda t: np.imag(func(t)), *args, full_output=0, **kwargs
     )
-    integral = integral_re + 1j * integral_im
-    err = abserr_re + 1j * abserr_im
+    integral = integral_real + 1j * integral_imag
+    err = abserr_real + 1j * abserr_imag
     return integral, err
