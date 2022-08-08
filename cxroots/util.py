@@ -37,10 +37,10 @@ def integrate_quad_complex(func, *args, **kwargs):
     """
     # full_output=0 ensures only 2 values returned
     integral_re, abserr_re = scipy.integrate.quad(
-        func=lambda t: np.real(func(t)), full_output=0, *args, **kwargs
+        lambda t: np.real(func(t)), *args, full_output=0, **kwargs
     )
     integral_im, abserr_im = scipy.integrate.quad(
-        func=lambda t: np.imag(func(t)), full_output=0, *args, **kwargs
+        lambda t: np.imag(func(t)), *args, full_output=0, **kwargs
     )
     integral = integral_re + 1j * integral_im
     err = abserr_re + 1j * abserr_im
