@@ -59,6 +59,7 @@ jobs:
         pip install -r requirements.txt
     - name: Test with pytest
       run: pytest -v -n 2 --durations=10 -m 'not slow'
+      timeout-minutes: 20
 
 #   document:
 #     runs-on: ubuntu-latest
