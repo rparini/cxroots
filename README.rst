@@ -1,10 +1,16 @@
-|pkg_img| |tests|
+|pkg_img| |tests| |lgtm_grade| |lgtm_alerts|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
     
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
+
+.. |lgtm_grade| image:: https://img.shields.io/lgtm/grade/python/g/rparini/cxroots.svg?logo=lgtm&logoWidth=18
+    :target: https://lgtm.com/projects/g/rparini/cxroots/context:python
+
+.. |lgtm_alerts| image:: https://img.shields.io/lgtm/alerts/g/rparini/cxroots.svg?logo=lgtm&logoWidth=18
+    :target: https://lgtm.com/projects/g/rparini/cxroots/alerts/
 
 cxroots
 =======
@@ -85,8 +91,9 @@ Development
 -----------
 - Install the `pre-commit <https://pre-commit.com/>`_ and then run :code:`pre-commit install`.  The pre-commit scripts can also be run manually with :code:`pre-commit run --all-files`
 - The project uses:
-	- `Black <https://github.com/psf/black/>`_ to maintain consistent formatting. It is run as part of the pre-commit hook and is recommended to be run on save in the developer's editor.
-	- `isort <https://pycqa.github.io/isort/>`_ to sensibly order import statements in Python files. It is also run as part of the pre-commit hook.
+
+  - `Black <https://github.com/psf/black/>`_ to maintain consistent formatting. It is run as part of the pre-commit hook and is recommended to be run on save in the developer's editor.
+  - `isort <https://pycqa.github.io/isort/>`_ to sensibly order import statements in Python files. It is also run as part of the pre-commit hook.
 
 Release Procedure
 -----------------
