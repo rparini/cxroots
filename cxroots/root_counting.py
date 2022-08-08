@@ -222,9 +222,11 @@ def _quad_prod(
                 integrand_cache[t] = i
             return i
 
-        integral, err = integrate_quad_complex(
+        segment_integral, segment_err = integrate_quad_complex(
             integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
         )
+        integral += segment_integral
+        err += segment_err
 
     return integral, abs(err)
 
