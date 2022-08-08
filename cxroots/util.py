@@ -35,20 +35,13 @@ def integrate_quad_complex(func, *args, **kwargs):
     A thin wrapper around scipy.integrate.quad that copes
     with the integrand returning complex values
     """
-
-    def integrand_real(t):
-        return np.real(func(t))
-
-    def integrand_imag(t):
-        return np.imag(func(t))
-
     # full_output=0 ensures only 2 values returned
-    integral_real, abserr_real = scipy.integrate.quad(
-        integrand_real, full_output=0, *args, **kwargs
+    integral_re, abserr_re = scipy.integrate.quad(
+        func=lambda t: np.real(func(t)), full_output=0, *args, **kwargs
     )
-    integral_imag, abserr_imag = scipy.integrate.quad(
-        integrand_imag, full_output=0, *args, **kwargs
+    integral_im, abserr_im = scipy.integrate.quad(
+        func=lambda t: np.imag(func(t)), full_output=0, *args, **kwargs
     )
-    integral = integral_real + 1j * integral_imag
-    err = abserr_real + 1j * abserr_imag
+    integral = integral_re + 1j * integral_im
+    err = abserr_re + 1j * abserr_im
     return integral, err
