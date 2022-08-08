@@ -42,8 +42,13 @@ def integrate_quad_complex(func, *args, **kwargs):
     def integrand_imag(t):
         return np.imag(func(t))
 
-    integral_real, abserr_real = scipy.integrate.quad(integrand_real, *args, **kwargs)
-    integral_imag, abserr_imag = scipy.integrate.quad(integrand_imag, *args, **kwargs)
+    # full_output=0 ensures only 2 values returned
+    integral_real, abserr_real = scipy.integrate.quad(
+        integrand_real, full_output=0, *args, **kwargs
+    )
+    integral_imag, abserr_imag = scipy.integrate.quad(
+        integrand_imag, full_output=0, *args, **kwargs
+    )
     integral = integral_real + 1j * integral_imag
     err = abserr_real + 1j * abserr_imag
     return integral, err
