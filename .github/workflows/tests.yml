@@ -58,7 +58,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Test with pytest
-      run: pytest -v -n 2 --durations=10 -m 'not slow'
+      run: pytest -v -n 2 --durations=10 -m 'not slow' -x
 
 #   document:
 #     runs-on: ubuntu-latest
