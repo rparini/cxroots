@@ -58,9 +58,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Test with pytest
-      run: pytest --cov=cxroots -v -n 2 --durations=10 -m 'not slow' -x
+      run: pytest --cov=cxroots --cov-report xml -v -n 2 --durations=10 -m 'not slow' -x
       timeout-minutes: 20
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: coverage.xml
