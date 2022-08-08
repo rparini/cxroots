@@ -1,10 +1,13 @@
-|pkg_img| |tests|
+|pkg_img| |tests| |grade|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
     
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
+
+.. |grade| image:: https://img.shields.io/lgtm/grade/python/g/rparini/cxroots.svg?logo=lgtm&logoWidth=18
+    :target: https://lgtm.com/projects/g/rparini/cxroots/context:python
 
 cxroots
 =======
