@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - run: pip install -r requirements_static_analysis.txt
+      - run: pip install -r requirements_analysis.txt
       - run: bandit -r . -x ./cxroots/tests --format sarif --output out.sarif
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
