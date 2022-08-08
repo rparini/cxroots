@@ -38,7 +38,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: pip install -r requirements_analysis.txt
-      - run: bandit -r . -x ./cxroots/tests --format sarif --output out.sarif
+      - name: Run Bandit
+        run: bandit -r . -x ./cxroots/tests
+      - name: Run Bandit with SARIF output
+        if: always()
+        run: bandit -r . -x ./cxroots/tests --format sarif --output out.sarif
       - name: Upload SARIF file
         if: always()
         uses: github/codeql-action/upload-sarif@v2
