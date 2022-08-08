@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: analysis
 
 on:
   push:
@@ -10,8 +10,8 @@ on:
     - cron: '36 22 * * 2'
 
 jobs:
-  analyze:
-    name: Analyze
+  codeql:
+    name: CodeQL
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -24,6 +24,6 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: 'python'
-        config-file: ./.github/codeql-config.yml
+        config-file: ./.github/codeql/codeql-config.yml
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
