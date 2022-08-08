@@ -1,4 +1,4 @@
-|pkg_img| |tests| |lgtm_grade| |lgtm_alerts|
+|pkg_img| |tests| |coverage| |lgtm_grade| |lgtm_alerts|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
@@ -11,6 +11,10 @@
 
 .. |lgtm_alerts| image:: https://img.shields.io/lgtm/alerts/g/rparini/cxroots.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/rparini/cxroots/alerts/
+
+.. |coverage| image:: https://coveralls.io/repos/github/rparini/cxroots/badge.svg
+	:target: https://coveralls.io/github/rparini/cxroots
+
 
 cxroots
 =======
