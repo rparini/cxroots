@@ -21,3 +21,4 @@ rich==12.5.1
 matplotlib==3.5.2; python_version >= '3.8'
 pytest==7.1.2; python_version >= '3.8'
 pytest-xdist==2.5.0
+pytest-cov==3.0.0
