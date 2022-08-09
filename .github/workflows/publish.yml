@@ -23,12 +23,12 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: pip install . -r requirements.txt -r requirements_doc.txt
-    - name: Update __version__.py
+    - name: Update version.py
       run: |
         VERSION=${{ steps.get_tag_name.outputs.VERSION }}
-        echo "Updating __version__.py to $VERSION"
-        echo "# __version__ is set by CI based on release tag on GitHub" > cxroots/__version__.py
-        echo "__version__ = '$VERSION'" >> cxroots/__version__.py
+        echo "Updating version.py to $VERSION"
+        echo "# __version__ is set by CI based on release tag on GitHub" > cxroots/version.py
+        echo "__version__ = '$VERSION'" >> cxroots/version.py
     - name: Update documentation
       run: |
         cd docs_src
@@ -36,7 +36,7 @@ jobs:
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Autoupdate documentation for ${{ steps.get_tag_name.outputs.VERSION }}
-        file_pattern: docs/* cxroots/__version__.py
+        file_pattern: docs/* cxroots/version.py
         branch: master
     - name: Build and publish
       env:
