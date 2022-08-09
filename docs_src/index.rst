@@ -51,11 +51,3 @@ Documentation
 	prod.rst
 	iteration.rst
 	result.rst
-
-
-References
-----------
-
-.. [KB] \P. Kravanja and M. Van Barel.  *Computing the Zeros of Analytic Functions*. Springer, Berlin, Heidelberg, 2000.
-
-

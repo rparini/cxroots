@@ -5,7 +5,7 @@ The goal of cxroots is to compute the distinct roots :math:`\{z_i\}_{i=1}^n` and
 cxroots starts by computing the total number of roots (counting multiplicities) :math:`N` within :math:`C`.
 If :math:`N>M`, where :math:`M` is supplied by the user, then the contour is subdivided until a set of contours is obtained where the number of roots within each one is :math:`\leq M`.
 
-The roots within each of these contours are approximated using the method of [1] which involves calculating integrals of the form
+The roots within each of these contours are approximated using the method of [KB]_ which involves calculating integrals of the form
 
 .. math::
 	\frac{1}{2\pi i} \int_C \phi(z)\psi(z) \frac{f'(z)}{f(z)} dz
@@ -18,4 +18,4 @@ These roots are then refined using the Newton-Raphson method if :math:`f'(z)` is
 
 References
 ----------
-[1] Kravanja, Peter, and Marc Van Barel. "Zeros of analytic functions." Computing the Zeros of Analytic Functions. Springer Berlin Heidelberg, 2000. 1-59.
+.. [KB] \P. Kravanja and M. Van Barel.  *Computing the Zeros of Analytic Functions*. Springer, Berlin, Heidelberg, 2000.
