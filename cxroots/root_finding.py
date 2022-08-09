@@ -595,7 +595,7 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
 
     Returns
     -------
-    result : :class:`RootResult <cxroots.RootResult.RootResult>`
+    result : :class:`RootResult <cxroots.root_result.RootResult>`
         A container for the roots and their multiplicities.
     """
     if verbose:

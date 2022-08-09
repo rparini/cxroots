@@ -60,7 +60,7 @@ With cxroots this acomplished with the following short Python script:
 
 In the first three lines we define the function :math:`f(z)` and its derivative :math:`f'(z)`. 
 We then define our contour, in this case the circle :math:`C=\{z\in\mathbb{C}\,|\,|z|=2\}`.
-The method :py:meth:`C.roots(f, df) <cxroots.contour.Contour.roots>` on the last line returns a :py:class:`~cxroots.RootResult.RootResult` object which we can use to print the roots and their multiplicities:
+The method :py:meth:`C.roots(f, df) <cxroots.contour.Contour.roots>` on the last line returns a :py:class:`~cxroots.root_result.RootResult` object which we can use to print the roots and their multiplicities:
 
 .. code-block:: python
 
@@ -77,7 +77,7 @@ We can also plot the roots using matplotlib:
 .. image:: tutorial_roots.png
 	:width: 400px
 
-The :py:class:`RootResult <cxroots.RootResult.RootResult>` object also contains the roots and multiplicites as lists which can be accessed as:
+The :py:class:`RootResult <cxroots.root_result.RootResult>` object also contains the roots and multiplicites as lists which can be accessed as:
 
 .. code-block:: python
 

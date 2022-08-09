@@ -76,7 +76,7 @@ def approximate_roots(
         integration.  If 'romb' then Romberg integraion is performed
         instead.
     callback : function, optional
-        Only used if int_method is 'romb'. Passed to :func:`~<cxroots.CountRoots.prod>`.
+        Only used if int_method is 'romb'. Passed to :func:`~<cxroots.root_counting.prod>`.
 
     Returns
     -------
