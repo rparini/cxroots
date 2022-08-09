@@ -1,8 +1,9 @@
 from __future__ import division
 
+from math import pi
+
 import numpy as np
 import scipy.integrate
-from numpy import exp, pi
 
 from .util import integrate_quad_complex
 
@@ -321,7 +322,9 @@ class ComplexArc(ComplexPath):
 
     def __init__(self, z0, R, t0, dt):  # noqa: N803
         self.z0, self.R, self.t0, self.dt = z0, R, t0, dt
-        self.dzdt = lambda t: 1j * self.dt * self.R * exp(1j * (self.t0 + t * self.dt))
+        self.dzdt = (
+            lambda t: 1j * self.dt * self.R * np.exp(1j * (self.t0 + t * self.dt))
+        )
         super(ComplexArc, self).__init__()
 
     def __str__(self):
@@ -346,7 +349,7 @@ class ComplexArc(ComplexPath):
         complex
             A point on the arc in the complex plane.
         """
-        return self.R * exp(1j * (self.t0 + t * self.dt)) + self.z0
+        return self.R * np.exp(1j * (self.t0 + t * self.dt)) + self.z0
 
     def distance(self, z):
         """
@@ -369,7 +372,7 @@ class ComplexArc(ComplexPath):
             self.dt < 0 and self.t0 + self.dt < theta - 2 * pi < self.t0
         ):
             # the closest point to z lies on the arc
-            return abs(self.R * exp(1j * theta) + self.z0 - z)
+            return abs(self.R * np.exp(1j * theta) + self.z0 - z)
         else:
             # the closest point to z is one of the endpoints
             return min(abs(self(0) - z), abs(self(1) - z))

@@ -1,11 +1,10 @@
 from __future__ import division
 
 import logging
-import math
+from math import factorial, pi
 
 import numdifftools.fornberg as ndf
 import numpy as np
-from numpy import pi
 
 from .contours.circle import Circle
 
@@ -46,7 +45,7 @@ def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1e-10):
         return f(z) / (z - z0) ** (n + 1)
 
     integral = contour.integrate(integrand, abs_tol=integration_abs_tol)
-    return integral * math.factorial(n) / (2j * pi)
+    return integral * factorial(n) / (2j * pi)
 
 
 def find_multiplicity(root, f, df=None, root_err_tol=1e-10):
