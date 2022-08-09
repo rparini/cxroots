@@ -6,7 +6,7 @@ cxroots is a Python package for finding all the roots of a function, *f(z)*, of 
 -  *f(z)* has no roots or poles on *C*
 -  *f(z)* is analytic in the interior of *C*
 
-The implementation is primarily based on [KB]_ and evaluates contour integrals involving *f(z)* and its derivative *f'(z)* to determine the roots.  If *f'(z)* is not provided then it is approximated using a finite difference method.  The roots are further refined using Newton-Raphson if *f'(z)* is given or Muller's method if not.
+The implementation is primarily based on [KB]_ and evaluates contour integrals involving *f(z)* and its derivative *f'(z)* to approximate the roots. Then iterative methods, such as Newton-Raphson or Muller's method are used to refine the roots. If *f'(z)* is not provided then it is approximated. See the :ref:`theory:theory` page for a more detailed explanation.
 
 .. code:: python
 
@@ -28,6 +28,7 @@ Documentation
 
 	installation.rst
 	tutorial.rst
+	theory.rst
 
 .. toctree::
 	:caption: User Guides
