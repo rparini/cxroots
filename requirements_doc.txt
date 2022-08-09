@@ -5,4 +5,3 @@ sphinx_rtd_theme==1.0.0
 ipython==8.4.0
 nbconvert==6.5.0
 ipython_genutils==0.2.0 # not direct dependency but seems to be a missing requirement from nbconvert
-mistune==2.0.4 # not directly required, pinned by Snyk to avoid a vulnerability
