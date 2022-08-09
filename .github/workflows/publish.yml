@@ -22,11 +22,7 @@ jobs:
       with:
         python-version: '3.x'
     - name: Install dependencies
-      run: |
-        pip install setuptools wheel twine
-        pip install -r requirements.txt
-        pip install -r requirements_doc.txt
-        pip install .
+      run: pip install . -r requirements.txt -r requirements_doc.txt
     - name: Update version.py
       run: |
         VERSION=${{ steps.get_tag_name.outputs.VERSION }}
