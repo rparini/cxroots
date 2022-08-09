@@ -19,3 +19,5 @@ dist/*
 
 .vscode/settings.json
 *.sarif
+.coverage
+*.lcov
