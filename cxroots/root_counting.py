@@ -2,11 +2,11 @@ from __future__ import division
 
 import logging
 import warnings
+from math import inf, pi
 
 import numdifftools
 import numpy as np
 import scipy.integrate
-from numpy import inf, pi
 
 from .util import integrate_quad_complex
 

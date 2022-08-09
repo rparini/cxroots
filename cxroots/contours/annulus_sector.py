@@ -1,7 +1,8 @@
 from __future__ import division
 
+from math import pi
+
 import numpy as np
-from numpy import exp, pi
 
 from ..contour import Contour
 from ..paths import ComplexArc, ComplexLine
@@ -60,10 +61,10 @@ class AnnulusSector(Contour):
             raise ValueError("Radius > 0")
 
         # verticies [[radius0,phi0],[radius0,phi1],[radius1,phi1],[radius0,phi1]]
-        self.z1 = z1 = center + r0 * exp(1j * phi0)
-        self.z2 = z2 = center + r1 * exp(1j * phi0)
-        self.z3 = z3 = center + r1 * exp(1j * phi1)
-        self.z4 = z4 = center + r0 * exp(1j * phi1)
+        self.z1 = z1 = center + r0 * np.exp(1j * phi0)
+        self.z2 = z2 = center + r1 * np.exp(1j * phi0)
+        self.z3 = z3 = center + r1 * np.exp(1j * phi1)
+        self.z4 = z4 = center + r0 * np.exp(1j * phi1)
 
         segments = [
             ComplexLine(z1, z2),
@@ -86,7 +87,7 @@ class AnnulusSector(Contour):
         # get the central point within the contour
         r = (self.radii[0] + self.radii[1]) / 2
         phi = (self.phi_range[0] + self.phi_range[1]) / 2
-        return r * exp(1j * phi)
+        return r * np.exp(1j * phi)
 
     @property
     def area(self):
