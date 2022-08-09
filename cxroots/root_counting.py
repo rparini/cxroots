@@ -35,7 +35,7 @@ def prod(
 
     Parameters
     ----------
-    C : :class:`Contour <cxroots.Contour.Contour>`
+    C : :class:`Contour <cxroots.contour.Contour>`
         A contour in the complex plane for.  No roots or poles of f
         should lie on C.
     f : function
@@ -266,7 +266,7 @@ def count_roots(
 
     Parameters
     ----------
-    C : :class:`Contour <cxroots.Contour.Contour>`
+    C : :class:`Contour <cxroots.contour.Contour>`
         The contour which encloses the roots of f(z) that are to be
         counted.
     f : function

@@ -65,7 +65,7 @@ def find_roots_gen(
 
     Parameters
     ----------
-    original_contour : :class:`Contour <cxroots.Contour.Contour>`
+    original_contour : :class:`Contour <cxroots.contour.Contour>`
         The contour which bounds the region in which all the roots of
         f(z) are sought.
     f : function

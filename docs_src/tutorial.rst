@@ -60,7 +60,7 @@ To check that this is what we want we can plot this contour:
 
 Rootfinding
 -----------
-To find the roots of a function :math:`f(z)` within a contour :math:`C` we can use the method :py:meth:`C.roots(f) <cxroots.Contour.Contour.roots>` or preferably :py:meth:`C.roots(f, df) <cxroots.Contour.Contour.roots>` if the derivative `df` is known.
+To find the roots of a function :math:`f(z)` within a contour :math:`C` we can use the method :py:meth:`C.roots(f) <cxroots.contour.Contour.roots>` or preferably :py:meth:`C.roots(f, df) <cxroots.contour.Contour.roots>` if the derivative `df` is known.
 
 For example, suppose we want to find all the roots of the function :math:`f(z) = iz^5 + z\sin(z)` within a circle of radius 2 and centered at :math:`z=0`.
 With cxroots this acomplished with the following short Python script:
@@ -70,7 +70,7 @@ With cxroots this acomplished with the following short Python script:
 
 In the first three lines we define the function :math:`f(z)` and its derivative :math:`f'(z)`. 
 We then define our contour, in this case the circle :math:`C=\{z\in\mathbb{C}\,|\,|z|=2\}`.
-The method :py:meth:`C.roots(f, df) <cxroots.Contour.Contour.roots>` on the last line returns a :py:class:`~cxroots.RootResult.RootResult` object which we can use to print the roots and their multiplicities:
+The method :py:meth:`C.roots(f, df) <cxroots.contour.Contour.roots>` on the last line returns a :py:class:`~cxroots.RootResult.RootResult` object which we can use to print the roots and their multiplicities:
 
 .. code-block:: python
 
