@@ -28,6 +28,7 @@ Documentation
 
 	installation.rst
 	tutorial.rst
+	changelog.rst
 
 .. toctree::
 	:caption: User Guides
