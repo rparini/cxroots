@@ -1,5 +1,3 @@
-from __future__ import division
-
 import logging
 import warnings
 from math import inf, pi

@@ -1,5 +1,3 @@
-from __future__ import division
-
 import numpy as np
 
 from .root_finding import find_roots_gen
