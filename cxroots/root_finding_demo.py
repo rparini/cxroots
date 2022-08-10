@@ -70,26 +70,26 @@ def demo_find_roots(
         original_contour._size_plot()
         fig.canvas.draw()
 
-    if save_file:
-        auto_animation = True
-
-    if auto_animation or return_animation:
+    if save_file or auto_animation or return_animation:
         anim = animation.FuncAnimation(
             fig, update_frame, init_func=init, frames=root_finder
         )
-        if return_animation:
-            return anim
 
+    if return_animation:
+        return anim
+    elif save_file:
+        anim.save(filename=save_file, fps=1, dpi=200, writer=writer)
+        plt.close()
+    elif auto_animation:
+        plt.show()
     else:
+        # Create event to handler to let user move through frames
 
         def draw_next(event):
             if event.key == " ":
                 update_frame(next(root_finder))
 
         fig.canvas.mpl_connect("key_press_event", draw_next)
-
-    if save_file:
-        anim.save(filename=save_file, fps=1, dpi=200, writer=writer)
-        plt.close()
-    else:
         plt.show()
+
+    return None
