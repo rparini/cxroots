@@ -10,6 +10,6 @@ runs:
       shell: bash
       run: pip install . -r requirements_doc.txt
     - name: Build documentation
-      shell: bash -eo
+      shell: bash
       working-directory: docs_src
       run: ./create_docs
