@@ -13,9 +13,6 @@ def test_secant():
     def f(x):
         return cos(x) - x
 
-    def df(x):
-        return -sin(x) - 1
-
     iterations = []
 
     def callback(x, dx, y, iteration):
