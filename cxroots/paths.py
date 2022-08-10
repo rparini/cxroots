@@ -151,7 +151,9 @@ class ComplexPath(object):
         else:
             plt.show()
 
-    def integrate(self, f, abs_tol=0, rel_tol=1e-12, div_max=15, int_method="quad"):
+    def integrate(
+        self, f, abs_tol=1.49e-08, rel_tol=1.49e-08, div_max=15, int_method="quad"
+    ):
         """
         Integrate the function f along the path.  The value of the
         integral is cached and will be reused if the method is called
