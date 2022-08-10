@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 rm -rf ../docs
 python3 docex_contour.py
 python3 docex_tutorial.py
