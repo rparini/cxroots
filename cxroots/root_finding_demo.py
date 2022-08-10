@@ -31,7 +31,7 @@ def demo_find_roots(
     writer : str, optional
         Passed to :meth:`matplotlib.animation.FuncAnimation.save`.
     **roots_kwargs
-        Additional key word arguments passed to :meth:`~cxroots.Contour.Contour.roots`.
+        Additional key word arguments passed to :meth:`~cxroots.contour.Contour.roots`.
     """
     import matplotlib.pyplot as plt
     from matplotlib import animation

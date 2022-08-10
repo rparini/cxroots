@@ -63,7 +63,7 @@ def find_roots_gen(
 
     Parameters
     ----------
-    original_contour : :class:`Contour <cxroots.Contour.Contour>`
+    original_contour : :class:`Contour <cxroots.contour.Contour>`
         The contour which bounds the region in which all the roots of
         f(z) are sought.
     f : function
@@ -593,7 +593,7 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
 
     Returns
     -------
-    result : :class:`RootResult <cxroots.RootResult.RootResult>`
+    result : :class:`RootResult <cxroots.root_result.RootResult>`
         A container for the roots and their multiplicities.
     """
     if verbose:

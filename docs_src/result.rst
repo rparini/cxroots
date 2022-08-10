@@ -1,5 +1,5 @@
 Rootfinding Result
 ==================
 
-.. autoclass:: cxroots.RootResult.RootResult
+.. autoclass:: cxroots.root_result.RootResult
 	:members:
