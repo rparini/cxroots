@@ -16,6 +16,7 @@ terminalizer render cxroots_logging_progress -o ../docs_src/cxroots_logging_prog
 sphinx-build -b html . ../docs -T -E -a -W
 
 # Clean up
-find -delete *.gif *.png \
+find *.gif *.png \
     ! -name 'cxroots_progress.gif' \
-    ! -name 'cxroots_logging_progress.gif'
+    ! -name 'cxroots_logging_progress.gif' \
+    -delete
