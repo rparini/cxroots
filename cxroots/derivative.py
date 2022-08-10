@@ -10,7 +10,7 @@ from .contours.circle import Circle
 
 
 @np.vectorize
-def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1e-10):
+def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1.49e-08):
     r"""
     Compute the derivaive of an analytic function using Cauchy's
     Integral Formula for Derivatives.
