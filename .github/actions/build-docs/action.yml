@@ -1,5 +1,5 @@
 name: "build-docs"
-description: "Generates html documentation"
+description: "Generates html documentation using Sphinx"
 runs:
   using: "composite"
   steps:
@@ -11,6 +11,5 @@ runs:
       run: pip install . -r requirements.txt -r requirements_doc.txt
     - name: Build documentation
       shell: bash
-      run: |
-        cd docs_src
-        bash create_docs
+      working-directory: docs_src
+      run: create_docs
