@@ -45,6 +45,7 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.intersphinx",
     "sphinxcontrib.programoutput",
+    "sphinxcontrib.bibtex",
     "matplotlib.sphinxext.plot_directive",
     "IPython.sphinxext.ipython_directive",
     "IPython.sphinxext.ipython_console_highlighting",
@@ -87,13 +88,9 @@ language = "en"
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
 
-# The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
-
-# If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
-
 autosectionlabel_prefix_document = True
+bibtex_bibfiles = ["refs.bib"]
 
 # -- Options for HTML output ----------------------------------------------
 
