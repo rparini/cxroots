@@ -7,8 +7,10 @@ runs:
       with:
         python-version: '3.x'
     - name: Install dependencies
+      shell: bash
       run: pip install . -r requirements.txt -r requirements_doc.txt
     - name: Build documentation
+      shell: bash
       run: |
         cd docs_src
         bash create_docs
