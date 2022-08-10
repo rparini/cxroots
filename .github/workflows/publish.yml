@@ -17,22 +17,14 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: master
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: pip install . -r requirements.txt -r requirements_doc.txt
     - name: Update version.py
       run: |
         VERSION=${{ steps.get_tag_name.outputs.VERSION }}
         echo "Updating version.py to $VERSION"
         echo "# __version__ is set by CI based on release tag on GitHub" > cxroots/version.py
         echo "__version__ = '$VERSION'" >> cxroots/version.py
-    - name: Update documentation
-      run: |
-        cd docs_src
-        bash create_docs
+    - id: build
+      uses: ./.github/actions/build-docs
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Autoupdate documentation for ${{ steps.get_tag_name.outputs.VERSION }}
@@ -52,7 +44,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
-
     steps:
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4

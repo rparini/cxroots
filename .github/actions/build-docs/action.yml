@@ -1,0 +1,14 @@
+name: "build-docs"
+description: "Generates html documentation"
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: pip install . -r requirements.txt -r requirements_doc.txt
+    - name: Build documentation
+      run: |
+        cd docs_src
+        bash create_docs
