@@ -69,3 +69,18 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: coverage.lcov
+
+  test-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install . -r requirements_doc.txt
+      - name: Build documentation
+        working-directory: docs_src
+        run: ./create_docs
+      - name: Build wheel
+        run: python setup.py sdist bdist_wheel

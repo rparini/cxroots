@@ -1,12 +1,12 @@
 cxroots: rootfinding for complex analytic functions
 ===================================================
 
-cxroots is a Python package for finding all the roots of a function, *f(z)*, of a single complex variable within a given contour, *C*, in the complex plane.  It requires only that:
+cxroots is a Python package for finding all the roots of a function, :math:`f(z)`, of a single complex variable within a given contour, :math:`C`, in the complex plane.  It requires only that both:
 
--  *f(z)* has no roots or poles on *C*
--  *f(z)* is analytic in the interior of *C*
+-  :math:`f(z)` has no roots or poles on :math:`C`
+-  :math:`f(z)` is analytic in the interior of :math:`C`
 
-The implementation is primarily based on [KB]_ and evaluates contour integrals involving *f(z)* and its derivative *f'(z)* to determine the roots.  If *f'(z)* is not provided then it is approximated using a finite difference method.  The roots are further refined using Newton-Raphson if *f'(z)* is given or Muller's method if not.
+The implementation is primarily based on :cite:t:`Kravanja2000a` and evaluates contour integrals involving :math:`f(z)` and its derivative :math:`f'(z)` to approximate the roots. Then iterative methods, such as Newton-Raphson or Muller's method are used to refine the roots. If :math:`f'(z)` is not provided then it is approximated. See the :ref:`theory:theory` page for a more detailed explanation.
 
 .. code:: python
 
@@ -29,6 +29,7 @@ Documentation
 	installation.rst
 	tutorial.rst
 	changelog.rst
+	theory.rst
 
 .. toctree::
 	:caption: User Guides
@@ -51,11 +52,3 @@ Documentation
 	prod.rst
 	iteration.rst
 	result.rst
-
-
-References
-----------
-
-.. [KB] \P. Kravanja and M. Van Barel.  *Computing the Zeros of Analytic Functions*. Springer, Berlin, Heidelberg, 2000.
-
-

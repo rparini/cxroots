@@ -1,9 +1,9 @@
 # have a common seed for each testing process
 from datetime import date
+from math import pi
 
 import numpy as np
 import pytest
-from numpy import pi
 from numpy.random import uniform
 
 from cxroots.paths import ComplexArc, ComplexLine

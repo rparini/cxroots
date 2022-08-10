@@ -3,6 +3,10 @@ from setuptools import setup
 
 packages = ["cxroots", "cxroots.tests", "cxroots.contours"]
 
+# get the version, this will assign __version__
+with open("cxroots/version.py") as f:
+    exec(f.read())  # nosec
+
 # read the README_pip.rst
 try:
     with open("README.rst") as file:
@@ -12,6 +16,7 @@ except IOError:
 
 setup(
     name="cxroots",
+    version=__version__,  # noqa
     description="Find all the roots (zeros) of a complex analytic function within a "
     "given contour in the complex plane.",
     long_description=long_description,

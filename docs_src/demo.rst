@@ -1,7 +1,7 @@
 Demonstrating Rootfinding
 =========================
 
-The rootfinding process can be visualised using the :meth:`~cxroots.Contour.Contour.demo_roots` method.
+The rootfinding process can be visualised using the :meth:`~cxroots.contour.Contour.demo_roots` method.
 
 .. code-block:: python
 

@@ -19,7 +19,7 @@
 cxroots
 =======
 
-cxroots is a Python package for finding all the roots of a function, *f(z)*, of a single complex variable within a given contour, *C*, in the complex plane.  It requires only that:
+cxroots is a Python package for finding all the roots of a function, *f(z)*, of a single complex variable within a given contour, *C*, in the complex plane.  It requires only that both:
 
 -  *f(z)* has no roots or poles on *C*
 -  *f(z)* is analytic in the interior of *C*
