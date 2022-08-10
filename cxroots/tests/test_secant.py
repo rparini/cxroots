@@ -1,5 +1,5 @@
 import pytest
-from numpy import cos, pi, sin
+from numpy import cos, pi
 
 from cxroots.iterative_methods import secant
 
