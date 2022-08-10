@@ -12,8 +12,8 @@ def approximate_roots(
     N,  # noqa: N803
     f,
     df=None,
-    abs_tol=1e-12,
-    rel_tol=1e-12,
+    abs_tol=1.49e-08,
+    rel_tol=1.49e-08,
     err_stop=1e-10,
     div_min=3,
     div_max=15,

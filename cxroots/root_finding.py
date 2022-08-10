@@ -45,8 +45,8 @@ def find_roots_gen(
     attempt_best_iter=True,
     newton_max_iter=50,
     root_err_tol=1e-10,
-    abs_tol=0,
-    rel_tol=1e-12,
+    abs_tol=1.49e-08,
+    rel_tol=1.49e-08,
     integer_tol=0.1,
     int_abs_tol=0.07,
     M=5,  # noqa: N803
