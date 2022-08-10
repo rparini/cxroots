@@ -74,13 +74,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - name: Install dependencies
-        shell: bash
-        run: pip install . -r requirements_doc.txt
-      - name: Build documentation
-        shell: bash
-        working-directory: docs_src
-        run: ./create_docs
+      - name: Build docs
+        uses: ./.github/actions/build-docs
