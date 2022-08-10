@@ -12,4 +12,4 @@ runs:
     - name: Build documentation
       shell: bash
       working-directory: docs_src
-      run: create_docs
+      run: ./create_docs
