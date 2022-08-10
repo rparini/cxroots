@@ -6,6 +6,8 @@ python3 docex_contour.py
 python3 docex_tutorial.py
 
 # Render terminal GIFs
+# Note this does not seem to work on GitHub Action runners so we have to manually
+# commit these gifs whenever we think they should change
 npm install -g terminalizer
 terminalizer render cxroots_progress -o ../docs_src/cxroots_progress.gif
 terminalizer render cxroots_logging_progress -o ../docs_src/cxroots_logging_progress.gif
@@ -13,9 +15,7 @@ terminalizer render cxroots_logging_progress -o ../docs_src/cxroots_logging_prog
 # Build documentation
 sphinx-build -b html . ../docs -T -E -a -W
 
-# clean up
-rm -f *.gif
-rm -f *.pdf
-rm -f *.png
-rm -f *.mov
-rm -f *.mp4
+# Clean up
+find -delete *.gif *.png \
+    ! -name 'cxroots_progress.gif' \
+    ! -name 'cxroots_logging_progress.gif'
