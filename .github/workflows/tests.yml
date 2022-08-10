@@ -74,5 +74,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: build
+      - name: Build docs
         uses: ./.github/actions/build-docs
