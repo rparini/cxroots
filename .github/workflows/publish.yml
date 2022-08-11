@@ -31,6 +31,8 @@ jobs:
     - name: Build documentation
       working-directory: docs_src
       run: ./create_docs
+      env:
+        SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Autoupdate documentation for ${{ steps.get_tag_name.outputs.VERSION }}

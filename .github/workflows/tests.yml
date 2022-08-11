@@ -82,5 +82,7 @@ jobs:
       - name: Build documentation
         working-directory: docs_src
         run: ./create_docs
+        env:
+          SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build wheel
         run: python setup.py sdist bdist_wheel
