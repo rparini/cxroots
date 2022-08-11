@@ -304,7 +304,7 @@ def count_roots(
         within the contour C.
     """
     logger = logging.getLogger(__name__)
-    logger.info("Computing number of roots within " + str(C))
+    logger.debug("Computing number of roots within " + str(C))
 
     with warnings.catch_warnings():
         # ignore warnings and catch if integral is NaN later
@@ -337,6 +337,13 @@ def count_roots(
     ):
         # integral is sufficiently close to an integer
         num_zeros = int(round(integral.real))
+        logger.info(
+            "Counted "
+            + str(num_zeros)
+            + " roots (including multiplicities) within "
+            + str(C)
+        )
+
         return num_zeros
 
     else:
