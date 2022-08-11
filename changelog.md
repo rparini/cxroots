@@ -11,6 +11,7 @@
 - `m` argument renamed to `df_approx_order`
 - Renamed internal files to camel_case.py
 - Warnings from `scipy.integrate.quad` are no longer suppressed by cxroots while calculating the bilinear product
+- Changed default absolute and relative integration tolernaces to 1.49e-08 to match scipy's defaults for `scipy.integrate.quad` and `scipy.integrate.romberg`.
 
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value

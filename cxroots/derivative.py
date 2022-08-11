@@ -10,7 +10,7 @@ from .contours.circle import Circle
 
 
 @np.vectorize
-def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1e-10):
+def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1.49e-08):
     r"""
     Compute the derivaive of an analytic function using Cauchy's
     Integral Formula for Derivatives.
@@ -27,7 +27,7 @@ def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1e-10):
         Point to evaluate the derivative at.
     n : int
         The order of the derivative to evaluate.
-    contour : :class:`Contour <cxroots.Contour.Contour>`, optional
+    contour : :class:`Contour <cxroots.contour.Contour>`, optional
         The contour, C, in the complex plane which encloses the point z0.
         By default the contour is the circle |z-z_0|=1e-3.
     integration_abs_tol : float, optional

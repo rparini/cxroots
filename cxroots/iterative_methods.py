@@ -1,5 +1,3 @@
-from __future__ import division
-
 import logging
 
 from numpy import inf
@@ -18,8 +16,8 @@ def iterate_to_root(
     """
     Starting with initial point x0 iterate to a root of f. This function is called
     during the rootfinding process to refine any roots found. If df is given then
-    the Newton-Raphson method, :func:`~cxroots.IterativeMethods.newton`, will be used,
-    otherwise Muller's method, :func:`~cxroots.IterativeMethods.muller`, will be used
+    the Newton-Raphson method, :func:`~cxroots.iterative_methods.newton`, will be used,
+    otherwise Muller's method, :func:`~cxroots.iterative_methods.muller`, will be used
     instead.
 
     Parameters

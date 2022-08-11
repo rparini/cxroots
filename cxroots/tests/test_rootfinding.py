@@ -348,7 +348,7 @@ def test_annular_combustion():
     import warnings
 
     warnings.filterwarnings("error")
-    roots = rectangle.roots(f, df, root_err_tol=1e-6, rel_tol=1e-10)
+    roots = rectangle.roots(f, df, root_err_tol=1e-6)
     assert len(roots.roots) == 24
 
 

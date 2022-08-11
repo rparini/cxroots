@@ -1,5 +1,3 @@
-from __future__ import division
-
 import functools
 import logging
 
@@ -14,8 +12,8 @@ def approximate_roots(
     N,  # noqa: N803
     f,
     df=None,
-    abs_tol=1e-12,
-    rel_tol=1e-12,
+    abs_tol=1.49e-08,
+    rel_tol=1.49e-08,
     err_stop=1e-10,
     div_min=3,
     div_max=15,
@@ -31,11 +29,11 @@ def approximate_roots(
 
     Parameters
     ----------
-    C : :class:`~<cxroots.Contour.Contour>`
+    C : :class:`~<cxroots.contour.Contour>`
         The contour which encloses the roots of f the user wishes to find.
     N : int
         The number of roots (counting multiplicties) of f within C.
-        This is the result of calling :meth:`~cxroots.Contour.Contour.count_roots`.
+        This is the result of calling :meth:`~cxroots.contour.Contour.count_roots`.
     f : function
         The function for which the roots are sought.  Must be a function
         of a single complex variable, z, which is analytic within C and
@@ -76,7 +74,8 @@ def approximate_roots(
         integration.  If 'romb' then Romberg integraion is performed
         instead.
     callback : function, optional
-        Only used if int_method is 'romb'. Passed to :func:`~<cxroots.CountRoots.prod>`.
+        Only used if int_method is 'romb'. Passed to
+        :func:`~<cxroots.root_counting.prod>`.
 
     Returns
     -------

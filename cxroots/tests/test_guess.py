@@ -53,9 +53,9 @@ def test_guess_root(guesses):
 
 
 @pytest.mark.parametrize(
-    "usedf", [pytest.param(True, id="with_df"), pytest.param(False, id="wihout_df")]
+    "use_df", [pytest.param(True, id="with_df"), pytest.param(False, id="wihout_df")]
 )
-def test_guess_symmetry_2(usedf):
+def test_guess_symmetry_2(use_df):
     contour = Circle(0, 1.5)
 
     def f(z):
@@ -64,7 +64,7 @@ def test_guess_symmetry_2(usedf):
     def derviative(z):
         return 27 * z**26 - 22 * z**10 + 3 * z**5
 
-    df = derviative if usedf else None
+    df = derviative if use_df else None
 
     def symmetry(z):
         return [z.conjugate()]

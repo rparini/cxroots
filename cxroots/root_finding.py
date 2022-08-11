@@ -1,5 +1,3 @@
-from __future__ import division
-
 import functools
 import logging
 import warnings
@@ -47,8 +45,8 @@ def find_roots_gen(
     attempt_best_iter=True,
     newton_max_iter=50,
     root_err_tol=1e-10,
-    abs_tol=0,
-    rel_tol=1e-12,
+    abs_tol=1.49e-08,
+    rel_tol=1.49e-08,
     integer_tol=0.1,
     int_abs_tol=0.07,
     M=5,  # noqa: N803
@@ -65,7 +63,7 @@ def find_roots_gen(
 
     Parameters
     ----------
-    original_contour : :class:`Contour <cxroots.Contour.Contour>`
+    original_contour : :class:`Contour <cxroots.contour.Contour>`
         The contour which bounds the region in which all the roots of
         f(z) are sought.
     f : function
@@ -595,7 +593,7 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
 
     Returns
     -------
-    result : :class:`RootResult <cxroots.RootResult.RootResult>`
+    result : :class:`RootResult <cxroots.root_result.RootResult>`
         A container for the roots and their multiplicities.
     """
     if verbose:

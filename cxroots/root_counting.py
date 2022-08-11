@@ -1,5 +1,3 @@
-from __future__ import division
-
 import logging
 import warnings
 from math import inf, pi
@@ -17,8 +15,8 @@ def prod(
     df=None,
     phi=None,
     psi=None,
-    abs_tol=1e-12,
-    rel_tol=1e-12,
+    abs_tol=1.49e-08,
+    rel_tol=1.49e-08,
     div_min=3,
     div_max=15,
     df_approx_order=2,
@@ -35,7 +33,7 @@ def prod(
 
     Parameters
     ----------
-    C : :class:`Contour <cxroots.Contour.Contour>`
+    C : :class:`Contour <cxroots.contour.Contour>`
         A contour in the complex plane for.  No roots or poles of f
         should lie on C.
     f : function
@@ -118,8 +116,8 @@ def _romb_prod(
     df=None,
     phi=None,
     psi=None,
-    abs_tol=1e-12,
-    rel_tol=1e-12,
+    abs_tol=1.49e-08,
+    rel_tol=1.49e-08,
     div_min=3,
     div_max=15,
     integer_tol=inf,
@@ -192,8 +190,8 @@ def _quad_prod(
     df=None,
     phi=None,
     psi=None,
-    abs_tol=1e-12,
-    rel_tol=1e-12,
+    abs_tol=1.49e-08,
+    rel_tol=1.49e-08,
     df_approx_order=2,
 ):
     if df is None:
@@ -266,7 +264,7 @@ def count_roots(
 
     Parameters
     ----------
-    C : :class:`Contour <cxroots.Contour.Contour>`
+    C : :class:`Contour <cxroots.contour.Contour>`
         The contour which encloses the roots of f(z) that are to be
         counted.
     f : function
