@@ -1,5 +1,7 @@
 import logging
 
+from mpmath import mp, mpmathify
+from mpmath.calculus.optimization import Muller
 from numpy import inf
 
 
@@ -131,9 +133,6 @@ def muller(
     float
         abs(f(x)) where x is the final approximation for the root of f.
     """
-    from mpmath import mp, mpmathify
-    from mpmath.calculus.optimization import Muller
-
     logger = logging.getLogger(__name__)
 
     # mpmath insists on functions accepting mpc
