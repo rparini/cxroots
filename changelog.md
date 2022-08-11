@@ -6,12 +6,13 @@
 - Use [Black](https://github.com/psf/black) formatting and added pre-commit hook
 - Add `cxroots[plot]` install option that will install dependencies for plotting contours and roots
 - Contour arrows to are now scale-independent ([#153](https://github.com/rparini/cxroots/issues/153), thanks [@llohse](https://github.com/llohse))
-- Remove unused `randomPoint` contour method
+- Remove unused `Contour.randomPoint` method
 - All `camelCase` functions and arguments changed to be `snake_case`
 - `m` argument renamed to `df_approx_order`
 - Renamed internal files to camel_case.py
 - Warnings from `scipy.integrate.quad` are no longer suppressed by cxroots while calculating the bilinear product
 - Changed default absolute and relative integration tolernaces to 1.49e-08 to match scipy's defaults for `scipy.integrate.quad` and `scipy.integrate.romberg`.
+- Removed `return_animation` argument from `demo_find_roots` function and `Contour.demo_roots` method. Instead, the `demo_roots_animation` function or `Contour.demo_roots_animation` method can be used to get a `animation.FuncAnimation` object that would animate the rootfinding process without displaying it.
 
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value
