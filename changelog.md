@@ -12,9 +12,10 @@
 - Renamed internal files to camel_case.py
 - Warnings from `scipy.integrate.quad` are no longer suppressed by cxroots while calculating the bilinear product
 - Changed default absolute and relative integration tolernaces to 1.49e-08 to match scipy's defaults for `scipy.integrate.quad` and `scipy.integrate.romberg`.
-- Fixed issue with `newton` iteration method when `attempt_best` was True and the routine would not exit if the error of the previous and current iterations were only equal
+- Rename `attempt_best` argument to `refine_roots_beyond_tol`
+- Fixed issue with `newton` iteration method when `refine_roots_beyond_tol` was True and the routine would not exit if the error of the previous and current iterations were only equal
 - The `callback` for the `muller` iteration method will now correctly be passed the value of the evaluated function for the iteration, rather than the error.
-- Fixed description of `root_tol` and `attempt_best` in `iterate_to_root` docstring
+- Fixed description of `root_tol` and `refine_roots_beyond_tol` in `iterate_to_root` docstring
 - Changes default `root_tol` to 0 for `secant`, `newton` and `muller` functions
 
 ### 1.1.11 - 22/Dec/2021

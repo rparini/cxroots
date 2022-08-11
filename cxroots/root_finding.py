@@ -42,7 +42,7 @@ def find_roots_gen(
     guess_roots=[],
     guess_roots_symmetry=None,
     newton_step_tol=1e-14,
-    attempt_best_iter=True,
+    refine_roots_beyond_tol=True,
     newton_max_iter=50,
     root_err_tol=1e-10,
     abs_tol=1.49e-08,
@@ -84,8 +84,8 @@ def find_roots_gen(
         The required accuracy of the root.  The iterative method used to
         give a final value for each root will exit if the step size, dx,
         between sucessive iterations satisfies abs(dx) < newton_step_tol
-        and iterBestAttempt is False.
-    attempt_best_iter : bool, optional
+        and refine_roots_beyond_tol is False.
+    refine_roots_beyond_tol : bool, optional
         If True then the iterative method used to refine the roots will
         exit when error of the previous iteration, x0, was at least as
         good as the current iteration, x, in the sense that
@@ -340,7 +340,7 @@ def find_roots_gen(
                             newton_step_tol,
                             root_err_tol,
                             newton_max_iter,
-                            attempt_best_iter,
+                            refine_roots_beyond_tol,
                         )
                         if root is not None:
                             contours.append(Circle(root, 1e-3))
@@ -390,7 +390,7 @@ def find_roots_gen(
                 newton_step_tol,
                 root_err_tol,
                 newton_max_iter,
-                attempt_best_iter,
+                refine_roots_beyond_tol,
             )
             if (
                 root is None
@@ -505,7 +505,7 @@ def find_roots_gen(
                 newton_step_tol,
                 root_err_tol,
                 newton_max_iter,
-                attempt_best_iter,
+                refine_roots_beyond_tol,
             )
 
             if root is None or abs(f(approx_root)) < abs(f(root)):
