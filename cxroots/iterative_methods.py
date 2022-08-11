@@ -147,7 +147,8 @@ def muller(
     err0, dx0 = inf, inf
     try:
         for iteration, (x, dx) in enumerate(mull):
-            err = abs(f_mpmath(x))
+            y = f_mpmath(x)
+            err = abs(y)
             logger.debug(
                 str(iteration)
                 + " x="
@@ -158,7 +159,7 @@ def muller(
                 + str(dx)
             )
 
-            if callback is not None and callback(x, dx, err, iteration + 1):
+            if callback is not None and callback(x, dx, y, iteration + 1):
                 break
 
             if (

@@ -13,6 +13,7 @@
 - Warnings from `scipy.integrate.quad` are no longer suppressed by cxroots while calculating the bilinear product
 - Changed default absolute and relative integration tolernaces to 1.49e-08 to match scipy's defaults for `scipy.integrate.quad` and `scipy.integrate.romberg`.
 - Fixed issue with `newton` iteration method when `attempt_best` was True and the routine would not exit if the error of the previous and current iterations were only equal
+- The `callback` for the `muller` iteration method will now correctly be passed the value of the evaluated function for the iteration, rather than the error.
 
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value
