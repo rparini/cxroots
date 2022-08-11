@@ -267,7 +267,7 @@ def newton(
         if (
             attempt_best
             and (abs(dx0) < step_tol or abs(y0) < root_tol)
-            and abs(y) > abs(y0)
+            and abs(y) >= abs(y0)
         ):
             break
 
