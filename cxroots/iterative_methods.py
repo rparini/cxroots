@@ -84,7 +84,7 @@ def muller(
     x3,
     f,
     step_tol=1e-12,
-    root_tol=1e-12,
+    root_tol=0,
     max_iter=20,
     attempt_best=False,
     callback=None,
@@ -199,7 +199,7 @@ def newton(
     f,
     df,
     step_tol=1e-12,
-    root_tol=1e-12,
+    root_tol=0,
     max_iter=20,
     attempt_best=False,
     callback=None,
@@ -278,7 +278,7 @@ def newton(
     return x, abs(y)
 
 
-def secant(x1, x2, f, step_tol=1e-12, root_tol=1e-12, max_iter=30, callback=None):
+def secant(x1, x2, f, step_tol=1e-12, root_tol=0, max_iter=30, callback=None):
     """
     Find an approximation to a point xf such that f(xf)=0 for a
     scalar function f using the secant method.  The method requires
