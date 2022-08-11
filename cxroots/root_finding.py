@@ -193,12 +193,6 @@ def find_roots_gen(
         )
 
     logger = logging.getLogger(__name__)
-    logger.info(
-        "Counted "
-        + str(original_contour._num_roots)
-        + " roots (including multiplicities) within the original contour"
-    )
-
     roots = []
     multiplicities = []
     failed_contours = []
@@ -564,7 +558,7 @@ def find_roots_gen(
     logger.info(
         "Completed rootfinding with "
         + str(f.calls)
-        + " evaluations of f at "
+        + " evaluations of the given analytic function at "
         + str(f.points)
         + " points\n"
         + str(result)
