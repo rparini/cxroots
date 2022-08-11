@@ -34,16 +34,15 @@ def iterate_to_root(
         The routine ends if the step size, dx, between sucessive
         iterations satisfies abs(dx) < step_tol and attempt_best is False.
     root_tol: float, optional
-        The routine ends if abs(f(x)) < root_tol and attempt_best is False.
+        A root, x, is only returned if abs(f(x)) < root_tol, otherwise None is returned
     max_iter : int, optional
         The routine ends after max_iter iterations.
     attempt_best : bool, optional
-        If True then routine ends if the error of the previous iteration,
-        x0, was at least as good as the current iteration, x, in the
-        sense that abs(f(x)) >= abs(f(x0)) and the previous iteration
-        satisfied either abs(dx0) < step_tol or abs(f(x0)) < root_tol.  In
-        this case the previous iteration is returned as the approximation
-        of the root.
+        If True then the routine ends only once the error of the previous iteration,
+        x0, was at least as good as the current iteration, x, in the sense that
+        abs(f(x)) >= abs(f(x0)), and the previous iteration satisfied
+        abs(dx0) < step_tol. In this case the previous iteration is returned as the
+        approximation of the root, provided that it satisfies abs(f(x)) < root_tol
     callback : function, optional
         After each iteration callback(x, dx, f(x), iteration) will be
         called where 'x' is the current iteration of the estimated root,
@@ -54,7 +53,7 @@ def iterate_to_root(
     Returns
     -------
     complex
-        An approximation for a root of f.  If the rootfinding was
+        An approximation for a root of f. If the rootfinding was
         unsucessful then None will be returned instead.
     """
     logger = logging.getLogger(__name__)
