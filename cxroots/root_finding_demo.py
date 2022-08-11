@@ -41,10 +41,6 @@ def demo_find_roots(
 
     root_finder = find_roots_gen(original_contour, f, df, **roots_kwargs)
 
-    def init():
-        original_contour.plot(linecolor="k", linestyle="--")
-        original_contour._size_plot()
-
     def update_frame(args):
         roots, _, boxes, num_remaining_roots = args
 
@@ -69,9 +65,7 @@ def demo_find_roots(
         fig.canvas.draw()
 
     if save_file or auto_animation or return_animation:
-        anim = animation.FuncAnimation(
-            fig, update_frame, init_func=init, frames=root_finder
-        )
+        anim = animation.FuncAnimation(fig, update_frame, frames=root_finder)
 
     if return_animation:
         return anim
