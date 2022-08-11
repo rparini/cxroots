@@ -3,6 +3,35 @@ import numpy as np
 from .root_finding import find_roots_gen
 
 
+def _update_frame(frame, original_contour):
+    import matplotlib.pyplot as plt
+
+    fig = plt.gcf()
+    ax = plt.gca()
+
+    roots, _, boxes, num_remaining_roots = frame
+
+    plt.cla()  # clear axis
+    original_contour.plot(linecolor="k", linestyle="--")
+    for box in boxes:
+        if not hasattr(box, "_color"):
+            cmap = plt.get_cmap("jet")
+            box._color = cmap(np.random.random())
+
+        plt.text(box.central_point.real, box.central_point.imag, box._num_roots)
+        box.plot(linecolor=box._color)
+
+    plt.scatter(np.real(roots), np.imag(roots), color="k", marker="x")
+    ax.text(
+        0.02,
+        0.95,
+        "Zeros remaining: %i" % num_remaining_roots,
+        transform=ax.transAxes,
+    )
+    original_contour._size_plot()
+    fig.canvas.draw()
+
+
 def demo_find_roots(
     original_contour,
     f,
@@ -37,35 +66,13 @@ def demo_find_roots(
     from matplotlib import animation
 
     fig = plt.gcf()
-    ax = plt.gca()
 
     root_finder = find_roots_gen(original_contour, f, df, **roots_kwargs)
 
-    def update_frame(args):
-        roots, _, boxes, num_remaining_roots = args
-
-        plt.cla()  # clear axis
-        original_contour.plot(linecolor="k", linestyle="--")
-        for box in boxes:
-            if not hasattr(box, "_color"):
-                cmap = plt.get_cmap("jet")
-                box._color = cmap(np.random.random())
-
-            plt.text(box.central_point.real, box.central_point.imag, box._num_roots)
-            box.plot(linecolor=box._color)
-
-        plt.scatter(np.real(roots), np.imag(roots), color="k", marker="x")
-        ax.text(
-            0.02,
-            0.95,
-            "Zeros remaining: %i" % num_remaining_roots,
-            transform=ax.transAxes,
-        )
-        original_contour._size_plot()
-        fig.canvas.draw()
-
     if save_file or auto_animation or return_animation:
-        anim = animation.FuncAnimation(fig, update_frame, frames=root_finder)
+        anim = animation.FuncAnimation(
+            fig, _update_frame, frames=root_finder, fargs=[original_contour]
+        )
 
     if return_animation:
         return anim
@@ -79,7 +86,7 @@ def demo_find_roots(
 
         def draw_next(event):
             if event.key == " ":
-                update_frame(next(root_finder))
+                _update_frame(next(root_finder))
 
         fig.canvas.mpl_connect("key_press_event", draw_next)
         plt.show()
