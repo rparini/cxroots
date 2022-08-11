@@ -141,13 +141,12 @@ def muller(
         return mpmathify(f(complex(z)))
 
     mull = Muller(mp, f_mpmath, (x1, x2, x3), verbose=False)
-    iteration = 0
     x0 = x3
 
     x, err = x0, abs(f(x0))
     err0, dx0 = inf, inf
     try:
-        for x, dx in mull:
+        for iteration, (x, dx) in enumerate(mull):
             err = abs(f_mpmath(x))
             logger.debug(
                 str(iteration)
@@ -179,7 +178,6 @@ def muller(
                 x, err = x0, err0
                 break
 
-            iteration += 1
             x0 = x
 
             if attempt_best:
