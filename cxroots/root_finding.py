@@ -551,7 +551,7 @@ def find_roots_gen(
 
     # delete cache for original contour incase this contour is being reused
     for segment in original_contour.segments:
-        segment._integralCache = {}
+        segment._integral_cache = {}
         segment._trap_cache = {}
 
     result = RootResult(roots, multiplicities, original_contour)

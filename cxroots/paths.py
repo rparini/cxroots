@@ -12,7 +12,7 @@ class ComplexPath(object):
     """A base class for paths in the complex plane."""
 
     def __init__(self):
-        self._integralCache = {}
+        self._integral_cache = {}
         self._trap_cache = {}
 
     def __call__(self, t):
@@ -196,12 +196,14 @@ class ComplexPath(object):
         """
 
         args = (f, abs_tol, rel_tol, div_max, int_method)
-        if args in self._integralCache.keys():
-            integral = self._integralCache[args]
+        if args in self._integral_cache.keys():
+            integral = self._integral_cache[args]
 
-        elif hasattr(self, "_reversePath") and args in self._reversePath._integralCache:
+        elif (
+            hasattr(self, "_reversePath") and args in self._reversePath._integral_cache
+        ):
             # if we have already computed the reverse of this path
-            integral = -self._reversePath._integralCache[args]
+            integral = -self._reversePath._integral_cache[args]
 
         else:
 
@@ -231,7 +233,7 @@ class ComplexPath(object):
                     "integration."
                 )
 
-            self._integralCache[args] = integral
+            self._integral_cache[args] = integral
 
         return integral
 
