@@ -21,7 +21,7 @@ def test_newton(refine_roots_beyond_tol):
 
     x0 = pi / 4
     step_tol = 1e-10
-    x, err = newton(
+    newton(
         x0,
         f,
         df,
