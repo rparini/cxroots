@@ -3,6 +3,19 @@ import numpy as np
 from .root_finding import find_roots_gen
 
 
+def _contour_color(contour):
+    """
+    Deterministically generate a colour for a contour so that the contour has the same
+    colour in each frame of the root finding animation
+    """
+    import matplotlib.pyplot as plt
+
+    cmap = plt.get_cmap("jet")
+
+    rng = np.random.default_rng(hash(contour))
+    return cmap(rng.random())
+
+
 def _update_frame(frame, original_contour):
     import matplotlib.pyplot as plt
 
@@ -13,12 +26,8 @@ def _update_frame(frame, original_contour):
     plt.cla()  # clear axis
     original_contour.plot(linecolor="k", linestyle="--")
     for box in boxes:
-        if not hasattr(box, "_color"):
-            cmap = plt.get_cmap("jet")
-            box._color = cmap(np.random.random())
-
         plt.text(box.central_point.real, box.central_point.imag, box._num_roots)
-        box.plot(linecolor=box._color)
+        box.plot(linecolor=_contour_color(box))
 
     plt.scatter(np.real(roots), np.imag(roots), color="k", marker="x")
     ax.text(
