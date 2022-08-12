@@ -12,6 +12,11 @@
 - Renamed internal files to camel_case.py
 - Warnings from `scipy.integrate.quad` are no longer suppressed by cxroots while calculating the bilinear product
 - Changed default absolute and relative integration tolernaces to 1.49e-08 to match scipy's defaults for `scipy.integrate.quad` and `scipy.integrate.romberg`.
+- Rename `attempt_best` argument to `refine_roots_beyond_tol`
+- Fixed issue with `newton` iteration method when `refine_roots_beyond_tol` was True and the routine would not exit if the error of the previous and current iterations were only equal
+- The `callback` for the `muller` iteration method will now correctly be passed the value of the evaluated function for the iteration, rather than the error.
+- Fixed description of `root_tol` and `refine_roots_beyond_tol` in `iterate_to_root` docstring
+- Changes default `root_tol` to 0 for `secant`, `newton` and `muller` functions
 - Removed `return_animation` argument from `demo_find_roots` function and `Contour.demo_roots` method. Instead, the `demo_roots_animation` function or `Contour.demo_roots_animation` method can be used to get a `animation.FuncAnimation` object that would animate the rootfinding process without displaying it.
 - Change starting points for muller's method used when root refining to be complex, to guard against the iterations keeping to the real line.
 
