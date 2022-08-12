@@ -68,7 +68,7 @@ def iterate_to_root(
         def f_muller(z):
             return complex(f(z))
 
-        x1, x2, x3 = x0, x0 * (1 + 1e-8) + 1e-8, x0 * (1 - 1e-8) - 1e-8
+        x1, x2, x3 = x0, x0 * (1 + 1e-8) + 1e-8j, x0 * (1 - 1e-8) - 1e-8j
         root, err = muller(
             x1, x2, x3, f_muller, step_tol, 0, max_iter, attempt_best, callback
         )
