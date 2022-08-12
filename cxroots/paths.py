@@ -31,6 +31,13 @@ class ComplexPath(object):
         """
         raise NotImplementedError("__call__ must be implemented in a subclass")
 
+    def dzdt(self, t):
+        """
+        The derivative of the parameterised curve in the complex plane, z, with
+        respect to the parameterization parameter, t.
+        """
+        raise NotImplementedError("dzdt must be implemented in a subclass")
+
     def trap_values(self, f, k, use_cache=True):
         """
         Compute or retrieve (if cached) the values of the functions f
@@ -247,7 +254,6 @@ class ComplexLine(ComplexPath):
 
     def __init__(self, a, b):
         self.a, self.b = a, b
-        self.dzdt = lambda t: self.b - self.a
         super(ComplexLine, self).__init__()
 
     def __str__(self):
@@ -273,6 +279,13 @@ class ComplexLine(ComplexPath):
             A point on the line in the complex plane.
         """
         return self.a + t * (self.b - self.a)
+
+    def dzdt(self, t):
+        """
+        The derivative of the parameterised curve in the complex plane, z, with
+        respect to the parameterization parameter, t.
+        """
+        return self.b - self.a
 
     def distance(self, z):
         """
@@ -324,9 +337,6 @@ class ComplexArc(ComplexPath):
 
     def __init__(self, z0, R, t0, dt):  # noqa: N803
         self.z0, self.R, self.t0, self.dt = z0, R, t0, dt
-        self.dzdt = (
-            lambda t: 1j * self.dt * self.R * np.exp(1j * (self.t0 + t * self.dt))
-        )
         super(ComplexArc, self).__init__()
 
     def __str__(self):
@@ -352,6 +362,13 @@ class ComplexArc(ComplexPath):
             A point on the arc in the complex plane.
         """
         return self.R * np.exp(1j * (self.t0 + t * self.dt)) + self.z0
+
+    def dzdt(self, t):
+        """
+        The derivative of the parameterised curve in the complex plane, z, with
+        respect to the parameterization parameter, t.
+        """
+        return 1j * self.dt * self.R * np.exp(1j * (self.t0 + t * self.dt))
 
     def distance(self, z):
         """
