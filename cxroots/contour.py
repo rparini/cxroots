@@ -137,6 +137,12 @@ class Contour(object):
         else:
             plt.show()
 
+    def subdivide(self, axis, division_factor):
+        """
+        Subdivide the contour
+        """
+        raise NotImplementedError("subdivide must be implemented in a subclass")
+
     def subdivisions(self, axis="alternating"):
         """
         A generator for possible subdivisions of the contour.
