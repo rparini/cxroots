@@ -160,7 +160,7 @@ class AnnulusSector(Contour):
 
         for box in [box1, box2]:
             box._created_by_subdivision_axis = axis
-            box._parentBox = self
-        self._childBoxes = [box1, box2]
+            box._parent = self
+        self._children = [box1, box2]
 
         return box1, box2
