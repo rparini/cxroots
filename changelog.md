@@ -6,7 +6,7 @@
 - Use [Black](https://github.com/psf/black) formatting and added pre-commit hook
 - Add `cxroots[plot]` install option that will install dependencies for plotting contours and roots
 - Contour arrows to are now scale-independent ([#153](https://github.com/rparini/cxroots/issues/153), thanks [@llohse](https://github.com/llohse))
-- Remove unused `randomPoint` contour method
+- Remove unused `Contour.randomPoint` method
 - All `camelCase` functions and arguments changed to be `snake_case`
 - `m` argument renamed to `df_approx_order`
 - Renamed internal files to camel_case.py
@@ -17,6 +17,8 @@
 - The `callback` for the `muller` iteration method will now correctly be passed the value of the evaluated function for the iteration, rather than the error.
 - Fixed description of `root_tol` and `refine_roots_beyond_tol` in `iterate_to_root` docstring
 - Changes default `root_tol` to 0 for `secant`, `newton` and `muller` functions
+- Removed `return_animation` argument from `demo_find_roots` function and `Contour.demo_roots` method. Instead, the `demo_roots_animation` function or `Contour.demo_roots_animation` method can be used to get a `animation.FuncAnimation` object that would animate the rootfinding process without displaying it.
+- Change starting points for muller's method used when root refining to be complex, to guard against the iterations keeping to the real line.
 
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value

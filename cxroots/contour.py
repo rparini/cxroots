@@ -8,7 +8,7 @@ from .paths import ComplexPath
 from .root_approximation import approximate_roots
 from .root_counting import count_roots
 from .root_finding import find_roots
-from .root_finding_demo import demo_find_roots
+from .root_finding_demo import demo_find_roots, demo_roots_animation
 from .util import remove_para
 
 
@@ -210,6 +210,11 @@ class Contour(object):
     @functools.wraps(demo_find_roots)
     def demo_roots(self, *args, **kwargs):
         return demo_find_roots(self, *args, **kwargs)
+
+    @remove_para("C")
+    @functools.wraps(demo_roots_animation)
+    def demo_roots_animation(self, *args, **kwargs):
+        return demo_roots_animation(self, *args, **kwargs)
 
 
 def division_factor_gen():
