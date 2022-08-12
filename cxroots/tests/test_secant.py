@@ -18,7 +18,7 @@ def test_secant():
     def callback(x, dx, y, iteration):
         return iterations.append(x)
 
-    x, _ = secant(0.5, pi / 4, f, callback=callback)
+    x, _ = secant(0.5, pi / 4, f, callback=callback, root_tol=1e-12)
     iterations.append(x)
 
     correct_iterations = [
