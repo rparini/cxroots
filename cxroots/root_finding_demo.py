@@ -24,7 +24,7 @@ def _update_frame(frame, original_contour):
     ax.text(
         0.02, 0.95, "Zeros remaining: %i" % num_remaining_roots, transform=ax.transAxes
     )
-    original_contour._size_plot()
+    original_contour.size_plot()
     plt.draw()
 
 
