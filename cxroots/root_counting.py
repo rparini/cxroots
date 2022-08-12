@@ -322,9 +322,6 @@ def count_roots(
             integer_tol=integer_tol,
         )
 
-    if int_method == "romb":
-        C._num_divisions_for_N = int(np.log2(len(C.segments[0]._trap_cache[f]) - 1))
-
     if np.isnan(integral):
         raise RootError(
             "Result of integral is an invalid value. "

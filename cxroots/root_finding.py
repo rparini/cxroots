@@ -425,32 +425,28 @@ def find_roots_gen(
         if int_method == "romb":
             # Check to see if the number of roots has changed after new values of f
             # have been sampled
+            new_count_kwargs = count_kwargs.copy()
+
             def callback(integral, err, num_div):
-                if num_div > contour._num_divisions_for_N:
+                if num_div > new_count_kwargs["div_min"]:
                     logger.info(
                         "Checking root count using the newly sampled values of f"
                     )
-                    new_num_roots = contour.count_roots(
-                        f,
-                        df,
-                        int_abs_tol=int_abs_tol,
-                        integer_tol=integer_tol,
-                        div_min=num_div,
-                        div_max=div_max,
-                        df_approx_order=df_approx_order,
-                        int_method=int_method,
-                    )
+                    new_count_kwargs["div_min"] = num_div
+                    new_num_roots = contour.count_roots(**new_count_kwargs)
 
                     if new_num_roots != contour._num_roots:
-                        logger.info("N has been recalculated using more samples of f")
+                        logger.info(
+                            "Number of roots has been recalculated using more samples"
+                            " of f"
+                        )
                         original_num_roots = contour._num_roots
                         contour._num_roots = new_num_roots
                         raise NumberOfRootsChanged(
                             "The additional function evaluations of f taken while "
-                            "approximating the roots within the contour have been "
+                            "approximating the roots within the contour have "
                             "shown that the number of roots of f within the contour "
-                            f"is {new_num_roots} rather than the supplied "
-                            f"{original_num_roots}."
+                            f"is {new_num_roots} instead of {original_num_roots}."
                         )
 
         else:
@@ -550,6 +546,7 @@ def find_roots_gen(
             subdivide(contour)
 
     # delete cache for original contour incase this contour is being reused
+    # XXX maybe cache key more than function so we don't have to worry about this
     for segment in original_contour.segments:
         segment._integral_cache = {}
         segment._trap_cache = {}
