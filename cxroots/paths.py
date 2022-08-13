@@ -1,5 +1,3 @@
-from __future__ import division
-
 from math import pi
 
 import numpy as np
