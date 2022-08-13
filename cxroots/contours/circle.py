@@ -79,8 +79,8 @@ class Circle(Contour):
             box1 = Annulus(self.center, [self.radius * division_factor, self.radius])
             box2 = Circle(self.center, self.radius * division_factor)
             box1.segments[0] = self.segments[0]
-            box1.segments[1]._reversePath = box2.segments[0]
-            box2.segments[0]._reversePath = box1.segments[1]
+            box1.segments[1]._reverse_path = box2.segments[0]
+            box2.segments[0]._reverse_path = box1.segments[1]
 
         else:
             raise ValueError("axis must be 'r'")

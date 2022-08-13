@@ -111,8 +111,8 @@ class Rectangle(Contour):
 
             box1.segments[3] = self.segments[3]
             box2.segments[1] = self.segments[1]
-            box1.segments[1]._reversePath = box2.segments[3]
-            box2.segments[3]._reversePath = box1.segments[1]
+            box1.segments[1]._reverse_path = box2.segments[3]
+            box2.segments[3]._reverse_path = box1.segments[1]
 
         elif axis == "y":
             midpoint = self.y_range[0] + division_factor * (
@@ -123,8 +123,8 @@ class Rectangle(Contour):
 
             box1.segments[0] = self.segments[0]
             box2.segments[2] = self.segments[2]
-            box1.segments[2]._reversePath = box2.segments[0]
-            box2.segments[0]._reversePath = box1.segments[2]
+            box1.segments[2]._reverse_path = box2.segments[0]
+            box2.segments[0]._reverse_path = box1.segments[2]
 
         else:
             raise ValueError("axis must be 'x' or 'y'")

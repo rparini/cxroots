@@ -198,10 +198,11 @@ class ComplexPath(object):
             integral = self._integral_cache[args]
 
         elif (
-            hasattr(self, "_reversePath") and args in self._reversePath._integral_cache
+            hasattr(self, "_reverse_path")
+            and args in self._reverse_path._integral_cache
         ):
             # if we have already computed the reverse of this path
-            integral = -self._reversePath._integral_cache[args]
+            integral = -self._reverse_path._integral_cache[args]
 
         else:
 

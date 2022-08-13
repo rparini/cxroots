@@ -86,8 +86,8 @@ class Annulus(Contour):
 
             box1.segments[1] = self.segments[1]
             box2.segments[0] = self.segments[0]
-            box1.segments[0]._reversePath = box2.segments[1]
-            box2.segments[1]._reversePath = box1.segments[0]
+            box1.segments[0]._reverse_path = box2.segments[1]
+            box2.segments[1]._reverse_path = box1.segments[0]
 
         elif axis == "phi":
             # Subdividing into two radial boxes rather than one to
@@ -101,10 +101,10 @@ class Annulus(Contour):
             box1 = AnnulusSector(self.center, self.radii, [phi0, phi1])
             box2 = AnnulusSector(self.center, self.radii, [phi1, phi0])
 
-            box1.segments[0]._reversePath = box2.segments[2]
-            box2.segments[2]._reversePath = box1.segments[0]
-            box1.segments[2]._reversePath = box2.segments[0]
-            box2.segments[0]._reversePath = box1.segments[2]
+            box1.segments[0]._reverse_path = box2.segments[2]
+            box2.segments[2]._reverse_path = box1.segments[0]
+            box1.segments[2]._reverse_path = box2.segments[0]
+            box2.segments[0]._reverse_path = box1.segments[2]
 
         else:
             raise ValueError("axis must be 'r' or 'phi'")
