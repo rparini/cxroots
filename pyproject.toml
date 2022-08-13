@@ -12,3 +12,10 @@ exclude = '''
 [tool.isort]
 profile = "black"
 skip = ["docs", "docs_src"]
+
+[tool.pyright]
+include = ["cxroots"]
+exclude = [
+    "cxroots/tests/**",
+    "**/__pycache__"
+]
