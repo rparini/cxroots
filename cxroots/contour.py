@@ -69,12 +69,12 @@ class Contour(object):
     @property
     def central_point(self):
         raise NotImplementedError(
-            "central_point needs to be implemented in the subclass."
+            "central_point needs to be implemented in a subclass."
         )
 
     @property
     def area(self):
-        raise NotImplementedError("area needs to be implemented in the subclass.")
+        raise NotImplementedError("area needs to be implemented in a subclass.")
 
     def contains(self, z):
         """
@@ -89,7 +89,7 @@ class Contour(object):
         bool
             True if z lies within the contour and false otherwise.
         """
-        raise NotImplementedError("contains() needs to be implemented in the subclass.")
+        raise NotImplementedError("contains() needs to be implemented in a subclass.")
 
     @functools.wraps(ComplexPath.plot)
     def plot(self, *args, **kwargs):
