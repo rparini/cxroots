@@ -1,5 +1,3 @@
-from __future__ import division
-
 from ..contour import Contour
 from ..paths import ComplexLine
 
