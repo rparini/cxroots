@@ -76,6 +76,10 @@ class Contour(object):
     def area(self):
         raise NotImplementedError("area needs to be implemented in a subclass.")
 
+    @property
+    def axis_names(self):
+        raise NotImplementedError("axis_names needs to be implemented in a subclass.")
+
     def contains(self, z):
         """
         Tests whether the point z is within the contour.
@@ -135,19 +139,19 @@ class Contour(object):
         else:
             plt.show()
 
-    def subdivide(self, axis, division_factor):
+    def subdivide(self, axis: str, division_factor: float):
         """
         Subdivide the contour
         """
         raise NotImplementedError("subdivide must be implemented in a subclass")
 
-    def subdivisions(self, axis="alternating"):
+    def subdivisions(self, axis: str = "alternating"):
         """
         A generator for possible subdivisions of the contour.
 
         Parameters
         ----------
-        axis : str, 'alternating' or any element of self.axis_name.
+        axis : str, 'alternating' or any element of self.axis_names.
             The axis along which the line subdividing the contour is a
             constant (eg. subdividing a circle along the radial axis
             will give an outer annulus and an inner circle).  If
@@ -163,9 +167,12 @@ class Contour(object):
         """
         if axis == "alternating":
             if hasattr(self, "_created_by_subdivision_axis"):
-                axis = (self._created_by_subdivision_axis + 1) % len(self.axis_name)
+                axis_index = (
+                    self.axis_names.index(self._created_by_subdivision_axis) + 1
+                ) % len(self.axis_names)
             else:
-                axis = 0
+                axis_index = 0
+            axis = self.axis_names[axis_index]
 
         for division_factor in division_factor_gen():
             yield self.subdivide(axis, division_factor)
