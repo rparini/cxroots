@@ -1,4 +1,5 @@
 from math import pi
+from typing import Optional
 
 import numpy as np
 import scipy.integrate
@@ -12,6 +13,11 @@ class ComplexPath(object):
     def __init__(self):
         self._integral_cache = {}
         self._trap_cache = {}
+
+        # If the path is created during subvision then this will be set to the path
+        # that is oppositely oriented to this path. This is done so that we can look
+        # up the _integral_cache for the reverse path
+        self._reverse_path: Optional[ComplexPath] = None
 
     def __call__(self, t):
         r"""
@@ -195,45 +201,42 @@ class ComplexPath(object):
 
         args = (f, abs_tol, rel_tol, div_max, int_method)
         if args in self._integral_cache.keys():
-            integral = self._integral_cache[args]
+            return self._integral_cache[args]
 
-        elif (
-            hasattr(self, "_reverse_path")
+        if (
+            self._reverse_path is not None
             and args in self._reverse_path._integral_cache
         ):
             # if we have already computed the reverse of this path
-            integral = -self._reverse_path._integral_cache[args]
+            return -self._reverse_path._integral_cache[args]
 
+        def integrand(t):
+            return f(self(t)) * self.dzdt(t)
+
+        if int_method == "romb":
+            integral = scipy.integrate.romberg(
+                integrand,
+                0,
+                1,
+                tol=abs_tol,
+                rtol=rel_tol,
+                divmax=div_max,
+            )
+        elif int_method == "quad":
+            integral, _ = integrate_quad_complex(
+                integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
+            )
         else:
+            raise ValueError("int_method must be either 'romb' or 'quad'")
 
-            def integrand(t):
-                return f(self(t)) * self.dzdt(t)
+        if np.isnan(integral):
+            raise RuntimeError(
+                f"The integral along the segment {self} is NaN. This is most "
+                "likely due to a root being on or very close to the path of "
+                "integration."
+            )
 
-            if int_method == "romb":
-                integral = scipy.integrate.romberg(
-                    integrand,
-                    0,
-                    1,
-                    tol=abs_tol,
-                    rtol=rel_tol,
-                    divmax=div_max,
-                )
-            elif int_method == "quad":
-                integral, _ = integrate_quad_complex(
-                    integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
-                )
-            else:
-                raise ValueError("int_method must be either 'romb' or 'quad'")
-
-            if np.isnan(integral):
-                raise RuntimeError(
-                    f"The integral along the segment {self} is NaN. This is most "
-                    "likely due to a root being on or very close to the path of "
-                    "integration."
-                )
-
-            self._integral_cache[args] = integral
-
+        self._integral_cache[args] = integral
         return integral
 
 
