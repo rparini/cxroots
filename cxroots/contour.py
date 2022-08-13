@@ -1,4 +1,5 @@
 import functools
+from typing import Optional
 
 import numpy as np
 
@@ -24,6 +25,11 @@ class Contour(object):
 
     def __init__(self, segments):
         self.segments = np.array(segments, dtype=object)
+
+        # A contour created by the subdvision method will have this attribute set to
+        # the axis along which the line subdividing the parent contour was a constant.
+        # This is done in order to implement the "alternating" subdivision method
+        self._created_by_subdivision_axis: Optional[str] = None
 
     def __call__(self, t):
         r"""
@@ -166,12 +172,13 @@ class Contour(object):
             contour.
         """
         if axis == "alternating":
-            if hasattr(self, "_created_by_subdivision_axis"):
+            if self._created_by_subdivision_axis is None:
+                axis_index = 0
+            else:
                 axis_index = (
                     self.axis_names.index(self._created_by_subdivision_axis) + 1
                 ) % len(self.axis_names)
-            else:
-                axis_index = 0
+
             axis = self.axis_names[axis_index]
 
         for division_factor in division_factor_gen():
