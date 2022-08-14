@@ -203,23 +203,18 @@ def find_roots_gen(
         """Given a contour, parent_contour, subdivide it into multiple contours."""
         logger.info("Subdividing " + str(parent_contour))
 
-        num_roots = None
         for subcontours in parent_contour.subdivisions():
             # if a contour has already been used and caused an error then skip it
             failed_contour_desc = list(map(str, failed_contours))
-            if np.any(
-                [
-                    contour_desc in failed_contour_desc
-                    for contour_desc in list(map(str, subcontours))
-                ]
+            if any(
+                contour_desc in failed_contour_desc
+                for contour_desc in list(map(str, subcontours))
             ):
                 continue
 
-            # if a contour is near to a known root then skip it
+            # if a contour is near to a known root then skip this subdivision
             for root in roots:
-                if np.any(
-                    np.abs([contour.distance(root) for contour in subcontours]) < 0.01
-                ):
+                if any(contour.distance(root) < 0.01 for contour in subcontours):
                     continue
 
             try:
