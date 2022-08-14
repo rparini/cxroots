@@ -257,10 +257,8 @@ def find_roots_gen(
                     + subcontours[1]
                 )
                 continue
-
-        if num_roots is None or parent_contour._num_roots != sum(num_roots):
-            # The list of subdivisions has been exhaused and still the number of
-            # enclosed zeros does not add up
+        else:
+            # The list of possible subdivisions has been exhaused
             raise RuntimeError(
                 """Unable to subdivide contour:
                 \t%s
