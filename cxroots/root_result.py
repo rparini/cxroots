@@ -1,9 +1,11 @@
-from collections import namedtuple
+from typing import List, NamedTuple
 
 import numpy as np
 
 
-class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
+class RootResult(
+    NamedTuple("RootResult", [("roots", List[complex]), ("multiplicities", List[int])])
+):
     """
     A class which stores the roots and their multiplicites as attributes
     and provides convienent methods for displaying them.
