@@ -4,3 +4,4 @@ flake8==5.0.4
 pep8-naming==0.13.1
 bandit==1.7.4
 bandit-sarif-formatter==1.1.1
+pyright==1.1.266
