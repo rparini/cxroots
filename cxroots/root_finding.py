@@ -590,9 +590,7 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
             "{task.completed} of {task.total} roots found"
         )
         progress = Progress(text_column, bar_column, progress_text_column, expand=True)
-        # Set visible=False here so that we don't show the progress bar before the
-        # total number of roots in the contour have been determined
-        task = progress.add_task("Rootfinding", visible=False)
+        task = progress.add_task("Rootfinding")
         progress.start()
 
         try:
@@ -601,9 +599,7 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
                     int(round(multiplicity.real)) for multiplicity in multiplicities
                 )
                 total_roots = num_found_roots + num_remaining_roots
-                progress.update(
-                    task, completed=num_found_roots, total=total_roots, visible=True
-                )
+                progress.update(task, completed=num_found_roots, total=total_roots)
         finally:
             progress.stop()
 
