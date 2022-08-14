@@ -305,7 +305,7 @@ class ComplexLine(ComplexPath):
         t = ((z - self.a) * d.conjugate()).real / (d * d.conjugate())
 
         # but the line segment only has 0 <= t <= 1
-        t = t.clip(0, 1)
+        t = np.clip(t.real, 0, 1)
 
         # so the point on the line segment closest to z is
         c = self(t)
