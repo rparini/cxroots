@@ -346,8 +346,7 @@ def find_roots_gen(
         # yield the initial state here so that the animation in demo_find_roots shows
         # the first frame
         num_found_roots = sum(
-            int(round(multiplicity.real))
-            for root, multiplicity in zip(roots, multiplicities)
+            int(round(multiplicity.real)) for multiplicity in multiplicities
         )
         remaining_roots = original_contour._num_roots - num_found_roots
         yield roots, multiplicities, contours, remaining_roots
@@ -557,8 +556,7 @@ def find_roots_gen(
     )
 
     num_found_roots = sum(
-        int(round(multiplicity.real))
-        for root, multiplicity in zip(roots, multiplicities)
+        int(round(multiplicity.real)) for multiplicity in multiplicities
     )
     remaining_roots = original_contour._num_roots - num_found_roots
     yield roots, multiplicities, contours, remaining_roots
@@ -600,8 +598,7 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
         try:
             for roots, multiplicities, _, num_remaining_roots in root_finder:
                 num_found_roots = sum(
-                    int(round(multiplicity.real))
-                    for root, multiplicity in zip(roots, multiplicities)
+                    int(round(multiplicity.real)) for multiplicity in multiplicities
                 )
                 total_roots = num_found_roots + num_remaining_roots
                 progress.update(
