@@ -101,7 +101,7 @@ def demo_find_roots(
             plt.show()
 
     else:
-        # Create event to handler to let user move through frames
+        # Create event handler to let user move through frames
         root_finder = find_roots_gen(original_contour, f, df, **roots_kwargs)
         original_contour.plot(linecolor="k", linestyle="--")
 
