@@ -271,9 +271,7 @@ def find_roots_gen(
             contour._num_roots = num_roots[i]
 
         # add these sub-contours to the list of contours to find the roots in
-        contours.extend(
-            [contour for i, contour in enumerate(subcontours) if num_roots[i] != 0]
-        )
+        contours.extend([contour for contour in subcontours if contour._num_roots != 0])
 
     def remove_siblings_children(contour):
         """
