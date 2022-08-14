@@ -34,7 +34,7 @@ class Contour(object):
         # This is done in order to implement the "alternating" subdivision method
         self._created_by_subdivision_axis: Optional[str] = None
         # _parent attribute will be set on subdivision
-        self._parent = None
+        self._parent: Optional[Contour] = None
 
     def __call__(self, t):
         r"""
