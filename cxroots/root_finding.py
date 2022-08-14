@@ -582,6 +582,9 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
     result : :class:`RootResult <cxroots.root_result.RootResult>`
         A container for the roots and their multiplicities.
     """
+    roots, multiplicities = [], []
+    root_finder = find_roots_gen(original_contour, f, df, **kwargs)
+
     if verbose:
         text_column = TextColumn("{task.description}")
         bar_column = BarColumn(bar_width=None)
@@ -594,10 +597,8 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
         task = progress.add_task("Rootfinding", visible=False)
         progress.start()
 
-    try:
-        root_finder = find_roots_gen(original_contour, f, df, **kwargs)
-        for roots, multiplicities, _, num_remaining_roots in root_finder:
-            if verbose:
+        try:
+            for roots, multiplicities, _, num_remaining_roots in root_finder:
                 num_found_roots = sum(
                     int(round(multiplicity.real))
                     for root, multiplicity in zip(roots, multiplicities)
@@ -606,8 +607,11 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
                 progress.update(
                     task, completed=num_found_roots, total=total_roots, visible=True
                 )
-    finally:
-        if verbose:
+        finally:
             progress.stop()
+
+    else:
+        for roots, multiplicities, _, _ in root_finder:
+            pass
 
     return RootResult(roots, multiplicities, original_contour)
