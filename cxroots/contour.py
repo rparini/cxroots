@@ -33,6 +33,8 @@ class Contour(object):
         # the axis along which the line subdividing the parent contour was a constant.
         # This is done in order to implement the "alternating" subdivision method
         self._created_by_subdivision_axis: Optional[str] = None
+        # _parent attribute will be set on subdivision
+        self._parent = None
 
     def __call__(self, t):
         r"""
