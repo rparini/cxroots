@@ -20,6 +20,7 @@
 - Removed `return_animation` argument from `demo_find_roots` function and `Contour.demo_roots` method. Instead, the `demo_roots_animation` function or `Contour.demo_roots_animation` method can be used to get a `animation.FuncAnimation` object that would animate the rootfinding process without displaying it.
 - Change starting points for muller's method used when root refining to be complex, to guard against the iterations keeping to the real line.
 - Rename `RootResult.original_contour` attribute to `contour`
+- The `Contour._size_plot` method was renamed to `Contour.size_plot` and given a docstring
 
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value

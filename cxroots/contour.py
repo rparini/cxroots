@@ -104,11 +104,15 @@ class Contour(object):
 
     @functools.wraps(ComplexPath.plot)
     def plot(self, *args, **kwargs):
-        self._size_plot()
+        self.size_plot()
         for segment in self.segments:
             segment.plot(*args, **kwargs)
 
-    def _size_plot(self):
+    def size_plot(self):
+        """
+        Adjust the plot axes limits to nicely frame the contour. Called as part of
+        :meth:`~cxroots.contour.Contour.plot`
+        """
         import matplotlib.pyplot as plt
 
         t = np.linspace(0, 1, 1000)
@@ -134,7 +138,7 @@ class Contour(object):
             If given then the plot will be saved to disk with name
             'save_file'.  If save_file=None the plot is shown on-screen.
         **plot_kwargs
-            Key word arguments are as in :meth:`~cxroots.Contour.Contour.plot`.
+            Key word arguments are as in :meth:`~cxroots.contour.Contour.plot`.
         """
         import matplotlib.pyplot as plt
 
