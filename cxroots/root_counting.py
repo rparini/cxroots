@@ -124,7 +124,7 @@ def _romb_prod(
     callback=None,
 ):
     logger = logging.getLogger(__name__)
-    N = 1  # noqa: N806
+    n_points = 1
     k = 0
     I = []  # List of approximations to the integral # noqa: E741 N806
 
@@ -135,8 +135,8 @@ def _romb_prod(
         or abs(int(round(I[-1].real)) - I[-1].real) > integer_tol
         or abs(I[-1].imag) > integer_tol
     ):
-        N *= 2
-        t = np.linspace(0, 1, N + 1)
+        n_points *= 2
+        t = np.linspace(0, 1, n_points + 1)
         k += 1
         dt = t[1] - t[0]
 
