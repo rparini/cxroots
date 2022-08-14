@@ -309,7 +309,7 @@ def count_roots(
     with warnings.catch_warnings():
         # ignore warnings and catch if integral is NaN later
         warnings.simplefilter("ignore")
-        integral, err = prod(
+        integral, _ = prod(
             C,
             f,
             df,
