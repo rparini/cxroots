@@ -227,10 +227,12 @@ def find_roots_gen(
                     contour.count_roots(**count_kwargs)
                     for contour in np.array(subcontours)
                 ]
-                while parent_contour._num_roots != sum(num_roots):
+                while (
+                    parent_contour._num_roots != sum(num_roots) and int_abs_tol > 0.01
+                ):
                     logger.warning(
                         "Number of roots in sub contours not adding up to parent "
-                        "contour.  Recomputing number of roots in parent and child "
+                        "contour. Recomputing number of roots in parent and child "
                         f"contours with int_abs_tol={0.5 * int_abs_tol}"
                     )
                     temp_count_kwargs = count_kwargs.copy()
