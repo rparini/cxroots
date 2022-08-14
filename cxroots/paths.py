@@ -242,21 +242,15 @@ class ComplexPath(object):
 
 class ComplexLine(ComplexPath):
     r"""
-    A straight line :math:`z` in the complex plane from a to b
+    A straight line :math:`z` in the complex plane from points a to b
     parameterised by
 
     ..math::
 
         z(t) = a + (b-a)t, \quad 0\leq t \leq 1
-
-
-    Parameters
-    ----------
-    a : float
-    b : float
     """
 
-    def __init__(self, a, b):
+    def __init__(self, a: complex, b: complex):
         self.a, self.b = a, b
         super(ComplexLine, self).__init__()
 
@@ -305,14 +299,10 @@ class ComplexLine(ComplexPath):
             The distance from z to the point on the line which is
             closest to z.
         """
-        # convert complex numbers to vectors
-        A = np.array([self.a.real, self.a.imag])  # noqa: N806
-        B = np.array([self.b.real, self.b.imag])  # noqa: N806
-        Z = np.array([z.real, z.imag])  # noqa: N806
-
         # the projection of the point z onto the line a -> b is where
         # the parameter t is
-        t = (Z - A).dot(B - A) / abs((B - A).dot(B - A))
+        d = self.b - self.a
+        t = ((z - self.a) * d.conjugate()).real / (d * d.conjugate())
 
         # but the line segment only has 0 <= t <= 1
         t = t.clip(0, 1)
