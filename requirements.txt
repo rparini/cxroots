@@ -6,19 +6,13 @@
 # cxroots as a library.
 #
 
-scipy; python_version < '3.8' # pyup: ignore
-numpy; python_version < '3.8' # pyup: ignore
-numpydoc; python_version < '3.8' # pyup: ignore
-matplotlib; python_version < '3.8' # pyup: ignore
-pytest; python_version < '3.8' # pyup: ignore
-
-scipy==1.9.0; python_version >= '3.8'
-numpy==1.23.1; python_version >= '3.8'
-numpydoc==1.4.0; python_version >= '3.8'
+scipy==1.9.0
+numpy==1.23.1
+numpydoc==1.4.0
 mpmath==1.2.1
 numdifftools==0.9.40
 rich==12.5.1
-matplotlib==3.5.2; python_version >= '3.8'
-pytest==7.1.2; python_version >= '3.8'
+matplotlib==3.5.2
+pytest==7.1.2
 pytest-xdist==2.5.0
 pytest-cov==3.0.0
