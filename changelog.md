@@ -1,6 +1,6 @@
 ## Changelog
 ### Unreleased
-- Drop support for Python 2
+- Drop support for Python 2. Cxroots now requires python 3.8 or later
 - cxroots now logs rootfinding progress which can be accessed using the standard library's [logging module](https://docs.python.org/3/library/logging.html). See the [documentation](https://rparini.github.io/cxroots/logging.html) for examples.
 - The `verbose` argument has been removed from some functions. It still exists for the `Contour.roots` method and `find_roots` function but it will now create a progress bar, using [rich](https://github.com/Textualize/rich), rather than printing debugging information to the console.
 - Use [Black](https://github.com/psf/black) formatting and added pre-commit hook
