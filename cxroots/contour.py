@@ -23,6 +23,9 @@ class Contour(object):
         The surface area of the contour.
     """
 
+    # Should be set in subclass
+    axis_names = ()
+
     def __init__(self, segments):
         self.segments = np.array(segments, dtype=object)
 
@@ -81,10 +84,6 @@ class Contour(object):
     @property
     def area(self):
         raise NotImplementedError("area needs to be implemented in a subclass.")
-
-    @property
-    def axis_names(self):
-        raise NotImplementedError("axis_names needs to be implemented in a subclass.")
 
     def contains(self, z):
         """
