@@ -443,7 +443,9 @@ def find_roots_gen(
                         )
 
         else:
-            callback = None
+
+            def callback(integral, err, num_div):
+                pass
 
         try:
             approx_roots, approx_multiplicities = contour.approximate_roots(
