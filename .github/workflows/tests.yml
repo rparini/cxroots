@@ -44,7 +44,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - run: pip install -r requirements_analysis.txt
+      - run: pip install -r requirements.txt
       - run: pyright cxroots
 
   test:
