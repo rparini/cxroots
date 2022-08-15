@@ -7,7 +7,7 @@
 #
 
 scipy==1.9.0
-numpy==1.23.1
+numpy==1.23.2
 numpydoc==1.4.0
 mpmath==1.2.1
 numdifftools==0.9.40
