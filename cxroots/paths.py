@@ -298,7 +298,7 @@ class ComplexLine(ComplexPath):
         """
         return self.b - self.a
 
-    def distance(self, z):
+    def distance(self, z: complex) -> float:
         """
         Distance from the point z to the closest point on the line.
 
@@ -377,7 +377,7 @@ class ComplexArc(ComplexPath):
         """
         return 1j * self.dt * self.R * np.exp(1j * (self.t0 + t * self.dt))
 
-    def distance(self, z):
+    def distance(self, z: complex) -> float:
         """
         Distance from the point z to the closest point on the arc.
 
