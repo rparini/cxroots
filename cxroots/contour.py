@@ -1,7 +1,8 @@
 import functools
-from typing import List, Optional
+from typing import List, Optional, Union, overload
 
 import numpy as np
+import numpy.typing as npt
 
 from .paths import ComplexPath, ComplexPathType
 from .root_approximation import approximate_roots
@@ -37,7 +38,17 @@ class Contour(object):
         self._parent: Optional[Contour] = None
         self._children: Optional[List[Contour]] = None
 
-    def __call__(self, t):
+    @overload
+    def __call__(self, t: float) -> complex:
+        ...
+
+    @overload
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def __call__(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         r"""
         The point on the contour corresponding the value of the
         parameter t.
@@ -56,7 +67,7 @@ class Contour(object):
         Example
         -------
 
-        >>> from cxroots.Paths import Circle
+        >>> from cxroots import Circle
         >>> c = Circle(0,1) # Circle |z|=1 parameterised by e^{it}
         >>> c(0.25)
         (6.123233995736766e-17+1j)

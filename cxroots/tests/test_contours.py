@@ -1,4 +1,6 @@
-from cxroots import AnnulusSector, Rectangle
+import numpy as np
+
+from cxroots import AnnulusSector, Circle, Rectangle
 
 
 def test_annulus_sector_contains():
@@ -18,3 +20,31 @@ def test_rect_contains():
 
     assert contour.contains(-2258 - 8694j)
     assert not contour.contains(-2258 - 8500j)
+
+
+def test_rect_call():
+    c = Rectangle([0, 2], [0, 1])
+
+    t_arr = np.array([0, 0.125, 0.25, 0.5, 0.75, 1])
+    z_arr = np.array([0, 1, 2, 2 + 1j, 1j, 0])
+
+    # Test passing in the whole array
+    assert np.all(c(t_arr) == z_arr)
+
+    # Test individual calls
+    for t, z in zip(t_arr, z_arr):
+        assert c(t) == z
+
+
+def test_circle_call():
+    c = Circle(0, 1)
+
+    t_arr = np.array([0, 0.25])
+    z_arr = np.array([1, 6.123233995736766e-17 + 1j])
+
+    # Test passing in the whole array
+    assert np.all(c(t_arr) == z_arr)
+
+    # Test individual calls
+    for t, z in zip(t_arr, z_arr):
+        assert c(t) == z
