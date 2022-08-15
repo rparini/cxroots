@@ -1,4 +1,5 @@
 import functools
+from typing import List, Optional
 
 import numpy as np
 
@@ -22,8 +23,19 @@ class Contour(object):
         The surface area of the contour.
     """
 
+    # Should be set in subclass
+    axis_names = ()
+
     def __init__(self, segments):
         self.segments = np.array(segments, dtype=object)
+
+        # A contour created by the subdvision method will have this attribute set to
+        # the axis along which the line subdividing the parent contour was a constant.
+        # This is done in order to implement the "alternating" subdivision method
+        self._created_by_subdivision_axis: Optional[str] = None
+        # _parent and _children are set in subdivision method
+        self._parent: Optional[Contour] = None
+        self._children: Optional[List[Contour]] = None
 
     def __call__(self, t):
         r"""
@@ -69,12 +81,12 @@ class Contour(object):
     @property
     def central_point(self):
         raise NotImplementedError(
-            "central_point needs to be implemented in the subclass."
+            "central_point needs to be implemented in a subclass."
         )
 
     @property
     def area(self):
-        raise NotImplementedError("area needs to be implemented in the subclass.")
+        raise NotImplementedError("area needs to be implemented in a subclass.")
 
     def contains(self, z):
         """
@@ -89,7 +101,7 @@ class Contour(object):
         bool
             True if z lies within the contour and false otherwise.
         """
-        raise NotImplementedError("contains() needs to be implemented in the subclass.")
+        raise NotImplementedError("contains() needs to be implemented in a subclass.")
 
     @functools.wraps(ComplexPath.plot)
     def plot(self, *args, **kwargs):
@@ -139,13 +151,19 @@ class Contour(object):
         else:
             plt.show()
 
-    def subdivisions(self, axis="alternating"):
+    def subdivide(self, axis: str, division_factor: float):
+        """
+        Subdivide the contour
+        """
+        raise NotImplementedError("subdivide must be implemented in a subclass")
+
+    def subdivisions(self, axis: str = "alternating"):
         """
         A generator for possible subdivisions of the contour.
 
         Parameters
         ----------
-        axis : str, 'alternating' or any element of self.axis_name.
+        axis : str, 'alternating' or any element of self.axis_names.
             The axis along which the line subdividing the contour is a
             constant (eg. subdividing a circle along the radial axis
             will give an outer annulus and an inner circle).  If
@@ -160,10 +178,14 @@ class Contour(object):
             contour.
         """
         if axis == "alternating":
-            if hasattr(self, "_created_by_subdivision_axis"):
-                axis = (self._created_by_subdivision_axis + 1) % len(self.axis_name)
+            if self._created_by_subdivision_axis is None:
+                axis_index = 0
             else:
-                axis = 0
+                axis_index = (
+                    self.axis_names.index(self._created_by_subdivision_axis) + 1
+                ) % len(self.axis_names)
+
+            axis = self.axis_names[axis_index]
 
         for division_factor in division_factor_gen():
             yield self.subdivide(axis, division_factor)

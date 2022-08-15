@@ -26,9 +26,10 @@ setup(
     license="BSD-3-Clause",
     data_files=[("", ["LICENSE"])],
     packages=packages,
+    package_data={"cxroots": ["py.typed"]},
     zip_safe=False,  # prevent cxroots from installing as a .egg zip file
     platforms=["all"],
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     setup_requires=["pytest-runner"],
     install_requires=[
         "numpy",

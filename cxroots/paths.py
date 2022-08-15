@@ -1,4 +1,5 @@
 from math import pi
+from typing import Optional
 
 import numpy as np
 import scipy.integrate
@@ -10,8 +11,13 @@ class ComplexPath(object):
     """A base class for paths in the complex plane."""
 
     def __init__(self):
-        self._integralCache = {}
+        self._integral_cache = {}
         self._trap_cache = {}
+
+        # If the path is created during subvision then this will be set to the path
+        # that is oppositely oriented to this path. This is done so that we can look
+        # up the _integral_cache for the reverse path
+        self._reverse_path: Optional[ComplexPath] = None
 
     def __call__(self, t):
         r"""
@@ -28,6 +34,13 @@ class ComplexPath(object):
             A point on the path in the complex plane.
         """
         raise NotImplementedError("__call__ must be implemented in a subclass")
+
+    def dzdt(self, t):
+        """
+        The derivative of the parameterised curve in the complex plane, z, with
+        respect to the parameterization parameter, t.
+        """
+        raise NotImplementedError("dzdt must be implemented in a subclass")
 
     def trap_values(self, f, k, use_cache=True):
         """
@@ -187,65 +200,58 @@ class ComplexPath(object):
         """
 
         args = (f, abs_tol, rel_tol, div_max, int_method)
-        if args in self._integralCache.keys():
-            integral = self._integralCache[args]
+        if args in self._integral_cache.keys():
+            return self._integral_cache[args]
 
-        elif hasattr(self, "_reversePath") and args in self._reversePath._integralCache:
+        if (
+            self._reverse_path is not None
+            and args in self._reverse_path._integral_cache
+        ):
             # if we have already computed the reverse of this path
-            integral = -self._reversePath._integralCache[args]
+            return -self._reverse_path._integral_cache[args]
 
+        def integrand(t):
+            return f(self(t)) * self.dzdt(t)
+
+        if int_method == "romb":
+            integral = scipy.integrate.romberg(
+                integrand,
+                0,
+                1,
+                tol=abs_tol,
+                rtol=rel_tol,
+                divmax=div_max,
+            )
+        elif int_method == "quad":
+            integral, _ = integrate_quad_complex(
+                integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
+            )
         else:
+            raise ValueError("int_method must be either 'romb' or 'quad'")
 
-            def integrand(t):
-                return f(self(t)) * self.dzdt(t)
+        if np.isnan(integral):
+            raise RuntimeError(
+                f"The integral along the segment {self} is NaN. This is most "
+                "likely due to a root being on or very close to the path of "
+                "integration."
+            )
 
-            if int_method == "romb":
-                integral = scipy.integrate.romberg(
-                    integrand,
-                    0,
-                    1,
-                    tol=abs_tol,
-                    rtol=rel_tol,
-                    divmax=div_max,
-                )
-            elif int_method == "quad":
-                integral, _ = integrate_quad_complex(
-                    integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
-                )
-            else:
-                raise ValueError("int_method must be either 'romb' or 'quad'")
-
-            if np.isnan(integral):
-                raise RuntimeError(
-                    f"The integral along the segment {self} is NaN. This is most "
-                    "likely due to a root being on or very close to the path of "
-                    "integration."
-                )
-
-            self._integralCache[args] = integral
-
+        self._integral_cache[args] = integral
         return integral
 
 
 class ComplexLine(ComplexPath):
     r"""
-    A straight line :math:`z` in the complex plane from a to b
+    A straight line :math:`z` in the complex plane from points a to b
     parameterised by
 
     ..math::
 
         z(t) = a + (b-a)t, \quad 0\leq t \leq 1
-
-
-    Parameters
-    ----------
-    a : float
-    b : float
     """
 
-    def __init__(self, a, b):
+    def __init__(self, a: complex, b: complex):
         self.a, self.b = a, b
-        self.dzdt = lambda t: self.b - self.a
         super(ComplexLine, self).__init__()
 
     def __str__(self):
@@ -272,6 +278,13 @@ class ComplexLine(ComplexPath):
         """
         return self.a + t * (self.b - self.a)
 
+    def dzdt(self, t):
+        """
+        The derivative of the parameterised curve in the complex plane, z, with
+        respect to the parameterization parameter, t.
+        """
+        return self.b - self.a
+
     def distance(self, z):
         """
         Distance from the point z to the closest point on the line.
@@ -286,17 +299,13 @@ class ComplexLine(ComplexPath):
             The distance from z to the point on the line which is
             closest to z.
         """
-        # convert complex numbers to vectors
-        A = np.array([self.a.real, self.a.imag])  # noqa: N806
-        B = np.array([self.b.real, self.b.imag])  # noqa: N806
-        Z = np.array([z.real, z.imag])  # noqa: N806
-
         # the projection of the point z onto the line a -> b is where
         # the parameter t is
-        t = (Z - A).dot(B - A) / abs((B - A).dot(B - A))
+        d = self.b - self.a
+        t = ((z - self.a) * d.conjugate()).real / (d * d.conjugate())
 
         # but the line segment only has 0 <= t <= 1
-        t = t.clip(0, 1)
+        t = np.clip(t.real, 0, 1)
 
         # so the point on the line segment closest to z is
         c = self(t)
@@ -322,9 +331,6 @@ class ComplexArc(ComplexPath):
 
     def __init__(self, z0, R, t0, dt):  # noqa: N803
         self.z0, self.R, self.t0, self.dt = z0, R, t0, dt
-        self.dzdt = (
-            lambda t: 1j * self.dt * self.R * np.exp(1j * (self.t0 + t * self.dt))
-        )
         super(ComplexArc, self).__init__()
 
     def __str__(self):
@@ -350,6 +356,13 @@ class ComplexArc(ComplexPath):
             A point on the arc in the complex plane.
         """
         return self.R * np.exp(1j * (self.t0 + t * self.dt)) + self.z0
+
+    def dzdt(self, t):
+        """
+        The derivative of the parameterised curve in the complex plane, z, with
+        respect to the parameterization parameter, t.
+        """
+        return 1j * self.dt * self.R * np.exp(1j * (self.t0 + t * self.dt))
 
     def distance(self, z):
         """

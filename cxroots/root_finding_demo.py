@@ -103,14 +103,14 @@ def demo_find_roots(
 
     if save_file or auto_animation:
         anim = demo_roots_animation(original_contour, f, df=None, **roots_kwargs)
+        if save_file:
+            anim.save(filename=save_file, fps=1, dpi=200, writer=writer)
+            plt.close()
+        else:
+            plt.show()
 
-    if save_file:
-        anim.save(filename=save_file, fps=1, dpi=200, writer=writer)
-        plt.close()
-    elif auto_animation:
-        plt.show()
     else:
-        # Create event to handler to let user move through frames
+        # Create event handler to let user move through frames
         root_finder = find_roots_gen(original_contour, f, df, **roots_kwargs)
         original_contour.plot(linecolor="k", linestyle="--")
 

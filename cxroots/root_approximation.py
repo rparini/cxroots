@@ -116,7 +116,7 @@ def approximate_roots(
 
     s = [N, product(lambda z: z)[0]]  # ordinary moments
     mu = s[1] / N
-    phi_zeros = [[], [mu]]
+    phi_zeros = [np.array([]), np.array([mu])]
 
     def phi(i):
         if len(phi_zeros[i]) == 0:
@@ -185,7 +185,7 @@ def approximate_roots(
                 "Inner polynomial " + str(r + t) + " roots: " + str(phi_zeros[-1])
             )
 
-    roots = np.array(phi_zeros[-1])
+    roots = phi_zeros[-1]
 
     # remove any roots which are not distinct
     roots_to_remove = []

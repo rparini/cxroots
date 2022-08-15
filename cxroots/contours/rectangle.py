@@ -1,3 +1,5 @@
+from typing import Literal
+
 from ..contour import Contour
 from ..paths import ComplexLine
 
@@ -25,10 +27,11 @@ class Rectangle(Contour):
             rect.show()
     """
 
+    axis_names = ("x", "y")
+
     def __init__(self, x_range, y_range):
         self.x_range = x_range
         self.y_range = y_range
-        self.axis_name = ("x", "y")
 
         self.z1 = z1 = self.x_range[0] + 1j * self.y_range[0]
         self.z2 = z2 = self.x_range[1] + 1j * self.y_range[0]
@@ -70,7 +73,7 @@ class Rectangle(Contour):
             and self.y_range[0] < z.imag < self.y_range[1]
         )
 
-    def subdivide(self, axis, division_factor=0.5):
+    def subdivide(self, axis: Literal["x", "y"], division_factor: float = 0.5):
         """
         Subdivide the contour
 
@@ -99,7 +102,7 @@ class Rectangle(Contour):
             as the original Rectangle but the minimum y_range is equal to the maximum
             y_range of box1.
         """
-        if axis == "x" or self.axis_name[axis] == "x":
+        if axis == "x":
             midpoint = self.x_range[0] + division_factor * (
                 self.x_range[1] - self.x_range[0]
             )
@@ -108,10 +111,10 @@ class Rectangle(Contour):
 
             box1.segments[3] = self.segments[3]
             box2.segments[1] = self.segments[1]
-            box1.segments[1]._reversePath = box2.segments[3]
-            box2.segments[3]._reversePath = box1.segments[1]
+            box1.segments[1]._reverse_path = box2.segments[3]
+            box2.segments[3]._reverse_path = box1.segments[1]
 
-        elif axis == "y" or self.axis_name[axis] == "y":
+        elif axis == "y":
             midpoint = self.y_range[0] + division_factor * (
                 self.y_range[1] - self.y_range[0]
             )
@@ -120,12 +123,15 @@ class Rectangle(Contour):
 
             box1.segments[0] = self.segments[0]
             box2.segments[2] = self.segments[2]
-            box1.segments[2]._reversePath = box2.segments[0]
-            box2.segments[0]._reversePath = box1.segments[2]
+            box1.segments[2]._reverse_path = box2.segments[0]
+            box2.segments[0]._reverse_path = box1.segments[2]
+
+        else:
+            raise ValueError("axis must be 'x' or 'y'")
 
         for box in [box1, box2]:
             box._created_by_subdivision_axis = axis
-            box._parentBox = self
-        self._childBoxes = [box1, box2]
+            box._parent = self
+        self._children = [box1, box2]
 
         return box1, box2

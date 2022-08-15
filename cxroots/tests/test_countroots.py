@@ -80,14 +80,15 @@ def test_ring_oscillator():
         )
 
     box = Rectangle([-12, 0], [-40, 40])
-    # roots_fdf = findRoots(box, f, df)
-    # roots_f = findRoots(box, f)
 
     # XXX: No roots are recorded within the initial contour.
     #   Perhaps because the coefficents of z are very small?
     #   Perhaps need higher precision?
-    assert box.count_enclosed_roots(f, df) != 0
-    assert box.count_enclosed_roots(f) != 0
+    assert box.count_roots(f, df) != 0
+    assert box.count_roots(f) != 0
+
+    # roots_fdf = findRoots(box, f, df)
+    # roots_f = findRoots(box, f)
 
     # compare with fig 4 of [DSZ]
     # roots_fdf.show()

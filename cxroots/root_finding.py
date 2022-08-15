@@ -203,23 +203,18 @@ def find_roots_gen(
         """Given a contour, parent_contour, subdivide it into multiple contours."""
         logger.info("Subdividing " + str(parent_contour))
 
-        num_roots = None
         for subcontours in parent_contour.subdivisions():
             # if a contour has already been used and caused an error then skip it
             failed_contour_desc = list(map(str, failed_contours))
-            if np.any(
-                [
-                    contour_desc in failed_contour_desc
-                    for contour_desc in list(map(str, subcontours))
-                ]
+            if any(
+                contour_desc in failed_contour_desc
+                for contour_desc in list(map(str, subcontours))
             ):
                 continue
 
-            # if a contour is near to a known root then skip it
+            # if a contour is near to a known root then skip this subdivision
             for root in roots:
-                if np.any(
-                    np.abs([contour.distance(root) for contour in subcontours]) < 0.01
-                ):
+                if any(contour.distance(root) < 0.01 for contour in subcontours):
                     continue
 
             try:
@@ -227,10 +222,12 @@ def find_roots_gen(
                     contour.count_roots(**count_kwargs)
                     for contour in np.array(subcontours)
                 ]
-                while parent_contour._num_roots != sum(num_roots):
+                while (
+                    parent_contour._num_roots != sum(num_roots) and int_abs_tol > 0.01
+                ):
                     logger.warning(
                         "Number of roots in sub contours not adding up to parent "
-                        "contour.  Recomputing number of roots in parent and child "
+                        "contour. Recomputing number of roots in parent and child "
                         f"contours with int_abs_tol={0.5 * int_abs_tol}"
                     )
                     temp_count_kwargs = count_kwargs.copy()
@@ -260,10 +257,8 @@ def find_roots_gen(
                     + subcontours[1]
                 )
                 continue
-
-        if num_roots is None or parent_contour._num_roots != sum(num_roots):
-            # The list of subdivisions has been exhaused and still the number of
-            # enclosed zeros does not add up
+        else:
+            # The list of possible subdivisions has been exhaused
             raise RuntimeError(
                 """Unable to subdivide contour:
                 \t%s
@@ -276,9 +271,7 @@ def find_roots_gen(
             contour._num_roots = num_roots[i]
 
         # add these sub-contours to the list of contours to find the roots in
-        contours.extend(
-            [contour for i, contour in enumerate(subcontours) if num_roots[i] != 0]
-        )
+        contours.extend([contour for contour in subcontours if contour._num_roots != 0])
 
     def remove_siblings_children(contour):
         """
@@ -353,8 +346,7 @@ def find_roots_gen(
         # yield the initial state here so that the animation in demo_find_roots shows
         # the first frame
         num_found_roots = sum(
-            int(round(multiplicity.real))
-            for root, multiplicity in zip(roots, multiplicities)
+            int(round(multiplicity.real)) for multiplicity in multiplicities
         )
         remaining_roots = original_contour._num_roots - num_found_roots
         yield roots, multiplicities, contours, remaining_roots
@@ -425,36 +417,34 @@ def find_roots_gen(
         if int_method == "romb":
             # Check to see if the number of roots has changed after new values of f
             # have been sampled
+            new_count_kwargs = count_kwargs.copy()
+
             def callback(integral, err, num_div):
-                if num_div > contour._num_divisions_for_N:
+                if num_div > new_count_kwargs["div_min"]:
                     logger.info(
                         "Checking root count using the newly sampled values of f"
                     )
-                    new_num_roots = contour.count_roots(
-                        f,
-                        df,
-                        int_abs_tol=int_abs_tol,
-                        integer_tol=integer_tol,
-                        div_min=num_div,
-                        div_max=div_max,
-                        df_approx_order=df_approx_order,
-                        int_method=int_method,
-                    )
+                    new_count_kwargs["div_min"] = num_div
+                    new_num_roots = contour.count_roots(**new_count_kwargs)
 
                     if new_num_roots != contour._num_roots:
-                        logger.info("N has been recalculated using more samples of f")
+                        logger.info(
+                            "Number of roots has been recalculated using more samples"
+                            " of f"
+                        )
                         original_num_roots = contour._num_roots
                         contour._num_roots = new_num_roots
                         raise NumberOfRootsChanged(
                             "The additional function evaluations of f taken while "
-                            "approximating the roots within the contour have been "
+                            "approximating the roots within the contour have "
                             "shown that the number of roots of f within the contour "
-                            f"is {new_num_roots} rather than the supplied "
-                            f"{original_num_roots}."
+                            f"is {new_num_roots} instead of {original_num_roots}."
                         )
 
         else:
-            callback = None
+
+            def callback(integral, err, num_div):
+                pass
 
         try:
             approx_roots, approx_multiplicities = contour.approximate_roots(
@@ -550,8 +540,9 @@ def find_roots_gen(
             subdivide(contour)
 
     # delete cache for original contour incase this contour is being reused
+    # XXX maybe cache key more than function so we don't have to worry about this
     for segment in original_contour.segments:
-        segment._integralCache = {}
+        segment._integral_cache = {}
         segment._trap_cache = {}
 
     result = RootResult(roots, multiplicities, original_contour)
@@ -565,8 +556,7 @@ def find_roots_gen(
     )
 
     num_found_roots = sum(
-        int(round(multiplicity.real))
-        for root, multiplicity in zip(roots, multiplicities)
+        int(round(multiplicity.real)) for multiplicity in multiplicities
     )
     remaining_roots = original_contour._num_roots - num_found_roots
     yield roots, multiplicities, contours, remaining_roots
@@ -590,6 +580,9 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
     result : :class:`RootResult <cxroots.root_result.RootResult>`
         A container for the roots and their multiplicities.
     """
+    roots, multiplicities = [], []
+    root_finder = find_roots_gen(original_contour, f, df, **kwargs)
+
     if verbose:
         text_column = TextColumn("{task.description}")
         bar_column = BarColumn(bar_width=None)
@@ -597,25 +590,21 @@ def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
             "{task.completed} of {task.total} roots found"
         )
         progress = Progress(text_column, bar_column, progress_text_column, expand=True)
-        # Set visible=False here so that we don't show the progress bar before the
-        # total number of roots in the contour have been determined
-        task = progress.add_task("Rootfinding", visible=False)
+        task = progress.add_task("Rootfinding")
         progress.start()
 
-    try:
-        root_finder = find_roots_gen(original_contour, f, df, **kwargs)
-        for roots, multiplicities, _, num_remaining_roots in root_finder:
-            if verbose:
+        try:
+            for roots, multiplicities, _, num_remaining_roots in root_finder:
                 num_found_roots = sum(
-                    int(round(multiplicity.real))
-                    for root, multiplicity in zip(roots, multiplicities)
+                    int(round(multiplicity.real)) for multiplicity in multiplicities
                 )
                 total_roots = num_found_roots + num_remaining_roots
-                progress.update(
-                    task, completed=num_found_roots, total=total_roots, visible=True
-                )
-    finally:
-        if verbose:
+                progress.update(task, completed=num_found_roots, total=total_roots)
+        finally:
             progress.stop()
+
+    else:
+        for roots, multiplicities, _, _ in root_finder:
+            pass
 
     return RootResult(roots, multiplicities, original_contour)
