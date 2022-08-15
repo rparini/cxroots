@@ -19,3 +19,21 @@ exclude = [
     "cxroots/tests/**",
     "**/__pycache__"
 ]
+
+typeCheckingMode = "strict"
+
+reportMissingTypeStubs = "warning"
+
+reportUnknownVariableType = false
+reportUnknownParameterType = false
+reportUnknownMemberType = false
+reportMissingParameterType = false
+reportUnknownArgumentType = false
+reportUnknownLambdaType = false
+
+reportIncompatibleMethodOverride = false
+strictDictionaryInference = false
+
+reportUninitializedInstanceVariable = true
+reportUnnecessaryTypeIgnoreComment = true
+reportUnusedCallResult = true
