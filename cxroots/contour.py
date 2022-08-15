@@ -1,5 +1,5 @@
 import functools
-from typing import Optional
+from typing import List, Optional
 
 import numpy as np
 
@@ -33,8 +33,9 @@ class Contour(object):
         # the axis along which the line subdividing the parent contour was a constant.
         # This is done in order to implement the "alternating" subdivision method
         self._created_by_subdivision_axis: Optional[str] = None
-        # _parent attribute will be set on subdivision
+        # _parent and _children are set in subdivision method
         self._parent: Optional[Contour] = None
+        self._children: Optional[List[Contour]] = None
 
     def __call__(self, t):
         r"""
