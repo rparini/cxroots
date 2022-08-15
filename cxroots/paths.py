@@ -1,8 +1,11 @@
 from math import pi
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 import scipy.integrate
+from numpy.typing import NDArray
+
+from cxroots.types import AnalyticFunc, IntegrationMethod
 
 from .util import integrate_quad_complex
 
@@ -42,7 +45,12 @@ class ComplexPath(object):
         """
         raise NotImplementedError("dzdt must be implemented in a subclass")
 
-    def trap_values(self, f, k, use_cache=True):
+    def trap_values(
+        self,
+        f: AnalyticFunc,
+        k: int,
+        use_cache: bool = True,
+    ) -> NDArray[np.complex128]:
         """
         Compute or retrieve (if cached) the values of the functions f
         at :math:`2^k+1` points along the contour which are evenly
@@ -98,7 +106,7 @@ class ComplexPath(object):
                 self._trap_cache[f] = vals
             return vals
 
-    def plot(self, num_points=100, linecolor="C0", linestyle="-"):
+    def plot(self, num_points: int = 100, linecolor="C0", linestyle: str = "-") -> None:
         """
         Uses matplotlib to plot, but not show, the path as a 2D plot in
         the Complex plane.
@@ -139,7 +147,7 @@ class ComplexPath(object):
             arrowprops=dict(arrowstyle="->", fc=linecolor, ec=linecolor),
         )
 
-    def show(self, save_file=None, **plot_kwargs):
+    def show(self, save_file: Optional[str] = None, **plot_kwargs) -> None:
         """
         Shows the path as a 2D plot in the complex plane.  Requires
         Matplotlib.
@@ -163,8 +171,13 @@ class ComplexPath(object):
             plt.show()
 
     def integrate(
-        self, f, abs_tol=1.49e-08, rel_tol=1.49e-08, div_max=15, int_method="quad"
-    ):
+        self,
+        f: AnalyticFunc,
+        abs_tol: float = 1.49e-08,
+        rel_tol: float = 1.49e-08,
+        div_max: int = 15,
+        int_method: IntegrationMethod = "quad",
+    ) -> complex:
         """
         Integrate the function f along the path.  The value of the
         integral is cached and will be reused if the method is called
@@ -329,7 +342,7 @@ class ComplexArc(ComplexPath):
     dt : float
     """
 
-    def __init__(self, z0, R, t0, dt):  # noqa: N803
+    def __init__(self, z0: complex, R: float, t0: float, dt: float):  # noqa: N803
         self.z0, self.R, self.t0, self.dt = z0, R, t0, dt
         super(ComplexArc, self).__init__()
 
