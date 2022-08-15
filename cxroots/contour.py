@@ -3,7 +3,7 @@ from typing import List, Optional
 
 import numpy as np
 
-from .paths import ComplexPath
+from .paths import ComplexPath, ComplexPathType
 from .root_approximation import approximate_roots
 from .root_counting import count_roots
 from .root_finding import find_roots
@@ -26,8 +26,8 @@ class Contour(object):
     # Should be set in subclass
     axis_names = ()
 
-    def __init__(self, segments):
-        self.segments = np.array(segments, dtype=object)
+    def __init__(self, segments: List[ComplexPathType]):
+        self.segments = segments
 
         # A contour created by the subdvision method will have this attribute set to
         # the axis along which the line subdividing the parent contour was a constant.

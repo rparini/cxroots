@@ -1,5 +1,5 @@
 from math import pi
-from typing import Optional
+from typing import Optional, TypeVar
 
 import numpy as np
 import scipy.integrate
@@ -8,6 +8,8 @@ from numpy.typing import NDArray
 from cxroots.types import AnalyticFunc, IntegrationMethod
 
 from .util import integrate_quad_complex
+
+ComplexPathType = TypeVar("ComplexPathType", bound="ComplexPath")
 
 
 class ComplexPath(object):
@@ -44,6 +46,12 @@ class ComplexPath(object):
         respect to the parameterization parameter, t.
         """
         raise NotImplementedError("dzdt must be implemented in a subclass")
+
+    def distance(self, z: complex) -> float:
+        """
+        Distance from the point z to the closest point on the line.
+        """
+        raise NotImplementedError("distance must be implemented in a subclass")
 
     def trap_values(
         self,
