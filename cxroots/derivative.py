@@ -1,14 +1,23 @@
 import logging
 from math import factorial, pi
+from typing import Optional
 
 import numdifftools.fornberg as ndf
 import numpy as np
 
+from .contour import Contour
 from .contours.circle import Circle
+from .types import AnalyticFunc
 
 
 @np.vectorize
-def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1.49e-08):
+def cx_derivative(
+    f: AnalyticFunc,
+    z0: complex,
+    n: int = 1,
+    contour: Optional[Contour] = None,
+    integration_abs_tol: float = 1.49e-08,
+) -> complex:
     r"""
     Compute the derivaive of an analytic function using Cauchy's
     Integral Formula for Derivatives.
@@ -46,7 +55,12 @@ def cx_derivative(f, z0, n=1, contour=None, integration_abs_tol=1.49e-08):
     return integral * factorial(n) / (2j * pi)
 
 
-def find_multiplicity(root, f, df=None, root_err_tol=1e-10):
+def find_multiplicity(
+    root: complex,
+    f: AnalyticFunc,
+    df: Optional[AnalyticFunc] = None,
+    root_err_tol: float = 1e-10,
+) -> int:
     """
     Find the multiplicity of a given root of f by computing the
     derivatives of f, f^{(1)}, f^{(2)}, ... until
