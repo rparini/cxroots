@@ -211,7 +211,7 @@ def muller(
 
 def newton(
     x0: complex,
-    f: AnalyticFunc,
+    f,
     df: AnalyticFunc,
     step_tol: float = 1e-12,
     root_tol: float = 0,
@@ -266,17 +266,10 @@ def newton(
     x, y = x0, f(x0)
     dx0, y0 = inf, y
 
-    # Workaround as can't type that f returns complex if given complex
-    assert isinstance(y, complex)
-
     for iteration in range(max_iter):
         dx = -y / df(x)
         x += dx
         y = f(x)
-
-        assert isinstance(x, complex)
-        assert isinstance(dx, complex)
-        assert isinstance(y, complex)
 
         logger.debug("x=" + str(x) + " f(x)=" + str(y) + " dx=" + str(dx))
 
@@ -304,7 +297,7 @@ def newton(
 def secant(
     x1: complex,
     x2: complex,
-    f: AnalyticFunc,
+    f,
     step_tol: float = 1e-12,
     root_tol: float = 0,
     max_iter: int = 30,
@@ -354,16 +347,10 @@ def secant(
         x1, x2 = x2, x1
         y1, y2 = y2, y1
 
-    # Workaround as can't type that f returns complex if given complex
-    assert isinstance(y2, complex)
-
     for iteration in range(max_iter):
         dx = -(x2 - x1) * y2 / (y2 - y1)
-        assert isinstance(dx, complex)
         x1, x2 = x2, x2 + dx
         y1, y2 = y2, f(x2)
-
-        assert isinstance(y2, complex)
 
         if callback is not None and callback(x2, dx, y2, iteration + 1):
             break
