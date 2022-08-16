@@ -13,6 +13,9 @@ exclude = '''
 profile = "black"
 skip = ["docs", "docs_src"]
 
+[tool.bandit]
+skips = ["B101"]
+
 [tool.pyright]
 include = ["cxroots"]
 exclude = [
