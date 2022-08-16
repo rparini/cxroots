@@ -1,20 +1,25 @@
 import logging
+from typing import Callable, Optional, Tuple
 
 from mpmath import mp, mpmathify
 from mpmath.calculus.optimization import Muller
 from numpy import inf
 
+from .types import AnalyticFunc
+
+Callback = Callable[[complex, complex, complex, int], bool]
+
 
 def iterate_to_root(
-    x0,
-    f,
-    df=None,
-    step_tol=1e-12,
-    root_tol=1e-12,
-    max_iter=20,
-    refine_roots_beyond_tol=False,
-    callback=None,
-):
+    x0: complex,
+    f: AnalyticFunc,
+    df: Optional[AnalyticFunc] = None,
+    step_tol: float = 1e-12,
+    root_tol: float = 1e-12,
+    max_iter: int = 20,
+    refine_roots_beyond_tol: bool = False,
+    callback: Optional[Callback] = None,
+) -> Optional[complex]:
     """
     Starting with initial point x0 iterate to a root of f. This function is called
     during the rootfinding process to refine any roots found. If df is given then
@@ -89,16 +94,16 @@ def iterate_to_root(
 
 
 def muller(
-    x1,
-    x2,
-    x3,
-    f,
-    step_tol=1e-12,
-    root_tol=0,
-    max_iter=20,
-    refine_roots_beyond_tol=False,
-    callback=None,
-):
+    x1: complex,
+    x2: complex,
+    x3: complex,
+    f: AnalyticFunc,
+    step_tol: float = 1e-12,
+    root_tol: float = 0,
+    max_iter: int = 20,
+    refine_roots_beyond_tol: bool = False,
+    callback: Optional[Callback] = None,
+) -> Tuple[complex, float]:
     """
     A wrapper for mpmath's implementation of Muller's method.
 
@@ -205,15 +210,15 @@ def muller(
 
 
 def newton(
-    x0,
-    f,
-    df,
-    step_tol=1e-12,
-    root_tol=0,
-    max_iter=20,
-    refine_roots_beyond_tol=False,
-    callback=None,
-):
+    x0: complex,
+    f: AnalyticFunc,
+    df: AnalyticFunc,
+    step_tol: float = 1e-12,
+    root_tol: float = 0,
+    max_iter: int = 20,
+    refine_roots_beyond_tol: bool = False,
+    callback: Optional[Callback] = None,
+) -> Tuple[complex, float]:
     """
     Find an approximation to a point xf such that f(xf)=0 for a
     scalar function f using Newton-Raphson iteration starting at
@@ -260,10 +265,18 @@ def newton(
     logger = logging.getLogger(__name__)
     x, y = x0, f(x0)
     dx0, y0 = inf, y
+
+    # Workaround as can't type that f returns complex if given complex
+    assert isinstance(y, complex)
+
     for iteration in range(max_iter):
         dx = -y / df(x)
         x += dx
         y = f(x)
+
+        assert isinstance(x, complex)
+        assert isinstance(dx, complex)
+        assert isinstance(y, complex)
 
         logger.debug("x=" + str(x) + " f(x)=" + str(y) + " dx=" + str(dx))
 
@@ -288,7 +301,15 @@ def newton(
     return x, abs(y)
 
 
-def secant(x1, x2, f, step_tol=1e-12, root_tol=0, max_iter=30, callback=None):
+def secant(
+    x1: complex,
+    x2: complex,
+    f: AnalyticFunc,
+    step_tol: float = 1e-12,
+    root_tol: float = 0,
+    max_iter: int = 30,
+    callback: Optional[Callback] = None,
+) -> Tuple[complex, float]:
     """
     Find an approximation to a point xf such that f(xf)=0 for a
     scalar function f using the secant method.  The method requires
@@ -333,10 +354,16 @@ def secant(x1, x2, f, step_tol=1e-12, root_tol=0, max_iter=30, callback=None):
         x1, x2 = x2, x1
         y1, y2 = y2, y1
 
+    # Workaround as can't type that f returns complex if given complex
+    assert isinstance(y2, complex)
+
     for iteration in range(max_iter):
         dx = -(x2 - x1) * y2 / (y2 - y1)
+        assert isinstance(dx, complex)
         x1, x2 = x2, x2 + dx
         y1, y2 = y2, f(x2)
+
+        assert isinstance(y2, complex)
 
         if callback is not None and callback(x2, dx, y2, iteration + 1):
             break
