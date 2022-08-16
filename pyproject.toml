@@ -37,4 +37,3 @@ strictDictionaryInference = false
 
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
-reportUnusedCallResult = true

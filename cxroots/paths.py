@@ -5,8 +5,7 @@ import numpy as np
 import scipy.integrate
 from numpy.typing import NDArray
 
-from cxroots.types import AnalyticFunc, IntegrationMethod
-
+from .types import AnalyticFunc, IntegrationMethod
 from .util import integrate_quad_complex
 
 ComplexPathType = TypeVar("ComplexPathType", bound="ComplexPath")

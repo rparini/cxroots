@@ -21,6 +21,7 @@
 - Change starting points for muller's method used when root refining to be complex, to guard against the iterations keeping to the real line.
 - Rename `RootResult.original_contour` attribute to `contour`
 - The `Contour._size_plot` method was renamed to `Contour.size_plot` and given a docstring
+- Remove `Contour.approximate_roots` method as it is intended for users to call `Contour.roots` instead
 
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value

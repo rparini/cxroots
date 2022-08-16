@@ -7,6 +7,7 @@ from numpydoc.docscrape import FunctionDoc
 from rich.progress import BarColumn, Progress, TextColumn
 
 from .iterative_methods import iterate_to_root
+from .root_approximation import approximate_roots
 from .root_counting import RootError
 from .root_result import RootResult
 from .util import NumberOfRootsChanged, update_docstring
@@ -447,7 +448,8 @@ def find_roots_gen(
                 pass
 
         try:
-            approx_roots, approx_multiplicities = contour.approximate_roots(
+            approx_roots, approx_multiplicities = approximate_roots(
+                contour,
                 contour._num_roots,
                 f,
                 df,
@@ -564,7 +566,7 @@ def find_roots_gen(
 
 @update_docstring(Parameters=FunctionDoc(find_roots_gen)["Parameters"])
 @functools.wraps(find_roots_gen, assigned=("__module__", "__name__"))
-def find_roots(original_contour, f, df=None, verbose=False, **kwargs):
+def find_roots(original_contour, f, df=None, verbose=False, **kwargs) -> RootResult:
     """
     Find all the roots of the complex analytic function f within the
     given contour.

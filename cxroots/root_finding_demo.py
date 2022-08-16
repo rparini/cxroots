@@ -81,7 +81,7 @@ def demo_find_roots(
     auto_animation=False,
     writer=None,
     **roots_kwargs
-):
+) -> None:
     """
     An animated demonstration of the root finding process using matplotlib.
 

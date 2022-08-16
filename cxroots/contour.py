@@ -1,14 +1,15 @@
 import functools
-from typing import List, Optional, Union, overload
+from typing import Generator, List, Optional, Union, overload
 
 import numpy as np
 import numpy.typing as npt
 
 from .paths import ComplexPath, ComplexPathType
-from .root_approximation import approximate_roots
 from .root_counting import count_roots
 from .root_finding import find_roots
 from .root_finding_demo import demo_find_roots, demo_roots_animation
+from .root_result import RootResult
+from .types import AnalyticFunc
 from .util import remove_para
 
 
@@ -90,16 +91,16 @@ class Contour(object):
             return self.segments[segment_index](num_segments * t % 1)
 
     @property
-    def central_point(self):
+    def central_point(self) -> complex:
         raise NotImplementedError(
             "central_point needs to be implemented in a subclass."
         )
 
     @property
-    def area(self):
+    def area(self) -> float:
         raise NotImplementedError("area needs to be implemented in a subclass.")
 
-    def contains(self, z):
+    def contains(self, z: complex) -> bool:
         """
         Tests whether the point z is within the contour.
 
@@ -115,12 +116,12 @@ class Contour(object):
         raise NotImplementedError("contains() needs to be implemented in a subclass.")
 
     @functools.wraps(ComplexPath.plot)
-    def plot(self, *args, **kwargs):
+    def plot(self, *args, **kwargs) -> None:
         self.size_plot()
         for segment in self.segments:
             segment.plot(*args, **kwargs)
 
-    def size_plot(self):
+    def size_plot(self) -> None:
         """
         Adjust the plot axes limits to nicely frame the contour. Called as part of
         :meth:`~cxroots.contour.Contour.plot`
@@ -139,7 +140,7 @@ class Contour(object):
         plt.xlim([xmin, xmax])
         plt.ylim([ymin, ymax])
 
-    def show(self, save_file=None, **plot_kwargs):
+    def show(self, save_file: Optional[str] = None, **plot_kwargs) -> None:
         """
         Shows the contour as a 2D plot in the complex plane.  Requires
         Matplotlib.
@@ -162,13 +163,15 @@ class Contour(object):
         else:
             plt.show()
 
-    def subdivide(self, axis: str, division_factor: float):
+    def subdivide(self, axis: str, division_factor: float) -> List["Contour"]:
         """
         Subdivide the contour
         """
         raise NotImplementedError("subdivide must be implemented in a subclass")
 
-    def subdivisions(self, axis: str = "alternating"):
+    def subdivisions(
+        self, axis: str = "alternating"
+    ) -> Generator[List["Contour"], None, None]:
         """
         A generator for possible subdivisions of the contour.
 
@@ -201,7 +204,7 @@ class Contour(object):
         for division_factor in division_factor_gen():
             yield self.subdivide(axis, division_factor)
 
-    def distance(self, z):
+    def distance(self, z: complex) -> float:
         """
         Get the distance from the point z in the complex plane to the
         nearest point on the contour.
@@ -221,29 +224,28 @@ class Contour(object):
         return min(segment.distance(z) for segment in self.segments)
 
     @functools.wraps(ComplexPath.integrate)
-    def integrate(self, f, **integration_kwargs):
+    def integrate(self, f: AnalyticFunc, **integration_kwargs) -> complex:
         return sum(
-            [segment.integrate(f, **integration_kwargs) for segment in self.segments]
+            segment.integrate(f, **integration_kwargs) for segment in self.segments
         )
 
     @remove_para("C")
     @functools.wraps(count_roots)
-    def count_roots(self, f, df=None, **kwargs):
+    def count_roots(
+        self, f: AnalyticFunc, df: Optional[AnalyticFunc] = None, **kwargs
+    ) -> int:
         return count_roots(self, f, df, **kwargs)
-
-    @remove_para("C")
-    @functools.wraps(approximate_roots)
-    def approximate_roots(self, N, f, df=None, **kwargs):  # noqa: N803
-        return approximate_roots(self, N, f, df, **kwargs)
 
     @remove_para("original_contour")
     @functools.wraps(find_roots)
-    def roots(self, f, df=None, **kwargs):
+    def roots(
+        self, f: AnalyticFunc, df: Optional[AnalyticFunc] = None, **kwargs
+    ) -> RootResult:
         return find_roots(self, f, df, **kwargs)
 
     @remove_para("C")
     @functools.wraps(demo_find_roots)
-    def demo_roots(self, *args, **kwargs):
+    def demo_roots(self, *args, **kwargs) -> None:
         return demo_find_roots(self, *args, **kwargs)
 
     @remove_para("C")
@@ -252,7 +254,7 @@ class Contour(object):
         return demo_roots_animation(self, *args, **kwargs)
 
 
-def division_factor_gen():
+def division_factor_gen() -> Generator[float, None, None]:
     """A generator for division_factors."""
     yield 0.3  # being off-center is a better first choice for certain problems
 
