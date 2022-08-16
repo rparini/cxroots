@@ -1,5 +1,5 @@
 import functools
-from typing import Generator, List, Optional, Union, overload
+from typing import Generator, List, Optional, Sequence, Union, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -37,7 +37,7 @@ class Contour(object):
         self._created_by_subdivision_axis: Optional[str] = None
         # _parent and _children are set in subdivision method
         self._parent: Optional[Contour] = None
-        self._children: Optional[List[Contour]] = None
+        self._children: Optional[Sequence[Contour]] = None
 
     @overload
     def __call__(self, t: float) -> complex:
