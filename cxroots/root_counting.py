@@ -1,11 +1,13 @@
 import logging
 import warnings
 from math import inf, pi
+from typing import Optional
 
 import numdifftools
 import numpy as np
 import scipy.integrate
 
+from .types import AnalyticFunc, IntegrationMethod
 from .util import integrate_quad_complex
 
 
@@ -235,14 +237,14 @@ class RootError(RuntimeError):
 
 def count_roots(
     C,  # noqa: N803
-    f,
-    df=None,
-    int_abs_tol=0.07,
-    integer_tol=0.1,
-    div_min=3,
-    div_max=15,
-    df_approx_order=2,
-    int_method="quad",
+    f: AnalyticFunc,
+    df: Optional[AnalyticFunc] = None,
+    int_abs_tol: float = 0.07,
+    integer_tol: float = 0.1,
+    div_min: int = 3,
+    div_max: int = 15,
+    df_approx_order: int = 2,
+    int_method: IntegrationMethod = "quad",
 ):
     r"""
     For a function of one complex variable, f(z), which is analytic in
