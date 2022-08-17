@@ -1,3 +1,4 @@
+import functools
 from math import pi
 from typing import Optional, TypeVar
 
@@ -113,6 +114,42 @@ class ComplexPath(object):
                 self._trap_cache[f] = vals
             return vals
 
+    def trap_product(
+        self,
+        k: int,
+        f,
+        df=None,
+        phi=None,
+        psi=None,
+    ) -> complex:
+        r"""
+        Use Romberg integration to estimate the symmetric bilinear form used in
+        (1.12) of [KB]_ using 2**k+1 samples
+
+        .. math::
+
+            <\phi,\psi> = \frac{1}{2\pi i} \oint_C \phi(z)\psi(z)\frac{f'(z)}{f(z)} dz
+        """
+        # compute/retrieve function evaluations
+        f_val = self.trap_values(f, k)
+        t = np.linspace(0, 1, 2**k + 1)
+        dt = t[1] - t[0]
+
+        if df is None:
+            # approximate df/dz with finite difference
+            dfdt = np.gradient(f_val, dt)
+            df_val = dfdt / self.dzdt(t)
+        else:
+            df_val = self.trap_values(df, k)
+
+        segment_integrand = df_val / f_val * self.dzdt(t)
+        if phi is not None:
+            segment_integrand = self.trap_values(phi, k) * segment_integrand
+        if psi is not None:
+            segment_integrand = self.trap_values(psi, k) * segment_integrand
+
+        return scipy.integrate.romb(segment_integrand, dx=dt, axis=-1) / (2j * pi)
+
     def plot(self, num_points: int = 100, linecolor="C0", linestyle: str = "-") -> None:
         """
         Uses matplotlib to plot, but not show, the path as a 2D plot in
@@ -154,29 +191,6 @@ class ComplexPath(object):
             arrowprops=dict(arrowstyle="->", fc=linecolor, ec=linecolor),
         )
 
-    def show(self, save_file: Optional[str] = None, **plot_kwargs) -> None:
-        """
-        Shows the path as a 2D plot in the complex plane.  Requires
-        Matplotlib.
-
-        Parameters
-        ----------
-        save_file : str (optional)
-            If given then the plot will be saved to disk with name
-            'save_file'.  If save_file=None the plot is shown on-screen.
-        **plot_kwargs
-            Other key word args are passed to :meth:`~cxroots.Paths.ComplexPath.plot`
-        """
-        import matplotlib.pyplot as plt
-
-        self.plot(**plot_kwargs)
-
-        if save_file is not None:
-            plt.savefig(save_file, bbox_inches="tight")
-            plt.close()
-        else:
-            plt.show()
-
     def integrate(
         self,
         f: AnalyticFunc,
@@ -185,10 +199,15 @@ class ComplexPath(object):
         div_max: int = 15,
         int_method: IntegrationMethod = "quad",
     ) -> complex:
-        """
-        Integrate the function f along the path.  The value of the
-        integral is cached and will be reused if the method is called
-        with same arguments (ignoring verbose).
+        r"""
+        Integrate the function f along the path.
+
+        .. math::
+
+            \oint_C f(z) dz
+
+        The value of the integral is cached and will be reused if the method
+        is called with same arguments.
 
         Parameters
         ----------
@@ -211,12 +230,6 @@ class ComplexPath(object):
         -------
         complex
             The integral of the function f along the path.
-
-        Notes
-        -----
-        This function is only used when checking the
-        multiplicity of roots.  The bulk of the integration for
-        rootfinding is done with :func:`cxroots.CountRoots.prod`.
         """
 
         args = (f, abs_tol, rel_tol, div_max, int_method)
@@ -230,6 +243,7 @@ class ComplexPath(object):
             # if we have already computed the reverse of this path
             return -self._reverse_path._integral_cache[args]
 
+        @functools.cache
         def integrand(t):
             return f(self(t)) * self.dzdt(t)
 
@@ -243,7 +257,7 @@ class ComplexPath(object):
                 divmax=div_max,
             )
         elif int_method == "quad":
-            integral, _ = integrate_quad_complex(
+            integral = integrate_quad_complex(
                 integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
             )
         else:
@@ -258,6 +272,29 @@ class ComplexPath(object):
 
         self._integral_cache[args] = integral
         return integral
+
+    def show(self, save_file: Optional[str] = None, **plot_kwargs) -> None:
+        """
+        Shows the path as a 2D plot in the complex plane.  Requires
+        Matplotlib.
+
+        Parameters
+        ----------
+        save_file : str (optional)
+            If given then the plot will be saved to disk with name
+            'save_file'.  If save_file=None the plot is shown on-screen.
+        **plot_kwargs
+            Other key word args are passed to :meth:`~cxroots.Paths.ComplexPath.plot`
+        """
+        import matplotlib.pyplot as plt
+
+        self.plot(**plot_kwargs)
+
+        if save_file is not None:
+            plt.savefig(save_file, bbox_inches="tight")
+            plt.close()
+        else:
+            plt.show()
 
 
 class ComplexLine(ComplexPath):

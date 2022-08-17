@@ -5,6 +5,7 @@ import numpy as np
 import scipy.linalg
 
 from .root_counting import prod
+from .types import IntegrationMethod
 
 
 def approximate_roots(
@@ -19,7 +20,7 @@ def approximate_roots(
     div_max=15,
     df_approx_order=2,
     root_tol=1e-8,
-    int_method="quad",
+    int_method: IntegrationMethod = "quad",
     callback=None,
 ):
     """
@@ -114,7 +115,7 @@ def approximate_roots(
         callback=callback,
     )
 
-    s = [N, product(lambda z: z)[0]]  # ordinary moments
+    s = [N, product(lambda z: z)]  # ordinary moments
     mu = s[1] / N
     phi_zeros = [np.array([]), np.array([mu])]
 
@@ -137,13 +138,12 @@ def approximate_roots(
     while r + t < N:
         ### define FOP of degree r+t+1
         p = r + t
-        G[p, 0 : p + 1] = [product(phi(p), phi(q))[0] for q in range(r + t + 1)]
+        G[p, 0 : p + 1] = [product(phi(p), phi(q)) for q in range(r + t + 1)]
         G[0 : p + 1, p] = G[p, 0 : p + 1]  # G is symmetric
         logger.debug("G=\n" + str(G[: p + 1, : p + 1]))
 
         G1[p, 0 : p + 1] = [
-            product(phi(p), lambda z: phi(1)(z) * phi(q)(z))[0]
-            for q in range(r + t + 1)
+            product(phi(p), lambda z: phi(1)(z) * phi(q)(z)) for q in range(r + t + 1)
         ]
         G1[0 : p + 1, p] = G1[p, 0 : p + 1]  # G1 is symmetric
         logger.debug("G1=\n" + str(G1[: p + 1, : p + 1]))
@@ -164,10 +164,8 @@ def approximate_roots(
             # is the number of distinct roots, n=r?
             phi_func_last = phi(-1)
             for j in range(N - r):
-                ip, err = product(
-                    lambda z: phi_func_last(z) * (z - mu) ** j, phi_func_last
-                )
-                logger.debug("%i of %i, err=%f, abs(ip)=%f" % (j, N - r, err, abs(ip)))
+                ip = product(lambda z: phi_func_last(z) * (z - mu) ** j, phi_func_last)
+                logger.debug("%i of %i, abs(ip)=%f" % (j, N - r, abs(ip)))
                 if abs(ip) > err_stop:
                     # n != r so carry on
                     logger.debug("n != " + str(r))

@@ -5,10 +5,8 @@ from typing import Optional
 
 import numdifftools
 import numpy as np
-import scipy.integrate
 
 from .types import AnalyticFunc, IntegrationMethod
-from .util import integrate_quad_complex
 
 
 def prod(
@@ -17,13 +15,13 @@ def prod(
     df=None,
     phi=None,
     psi=None,
-    abs_tol=1.49e-08,
-    rel_tol=1.49e-08,
-    div_min=3,
-    div_max=15,
-    df_approx_order=2,
-    int_method="quad",
-    integer_tol=inf,
+    abs_tol: float = 1.49e-08,
+    rel_tol: float = 1.49e-08,
+    div_min: int = 3,
+    div_max: int = 15,
+    df_approx_order: int = 2,
+    int_method: IntegrationMethod = "quad",
+    integer_tol: float = inf,
     callback=None,
 ):
     r"""
@@ -118,15 +116,14 @@ def _romb_prod(
     df=None,
     phi=None,
     psi=None,
-    abs_tol=1.49e-08,
-    rel_tol=1.49e-08,
-    div_min=3,
-    div_max=15,
-    integer_tol=inf,
+    abs_tol: float = 1.49e-08,
+    rel_tol: float = 1.49e-08,
+    div_min: int = 3,
+    div_max: int = 15,
+    integer_tol: float = inf,
     callback=None,
 ):
     logger = logging.getLogger(__name__)
-    n_points = 1
     k = 0
     I = []  # List of approximations to the integral # noqa: E741 N806
 
@@ -137,53 +134,20 @@ def _romb_prod(
         or abs(int(round(I[-1].real)) - I[-1].real) > integer_tol
         or abs(I[-1].imag) > integer_tol
     ):
-        n_points *= 2
-        t = np.linspace(0, 1, n_points + 1)
         k += 1
-        dt = t[1] - t[0]
-
-        integrals = []
-        for segment in C.segments:
-            # compute/retrieve function evaluations
-            f_val = segment.trap_values(f, k)
-
-            if df is None:
-                # approximate df/dz with finite difference
-                dfdt = np.gradient(f_val, dt)
-                df_val = dfdt / segment.dzdt(t)
-            else:
-                df_val = segment.trap_values(df, k)
-
-            segment_integrand = df_val / f_val * segment.dzdt(t)
-            if phi is not None:
-                segment_integrand = segment.trap_values(phi, k) * segment_integrand
-            if psi is not None:
-                segment_integrand = segment.trap_values(psi, k) * segment_integrand
-
-            segment_integral = scipy.integrate.romb(
-                segment_integrand, dx=dt, axis=-1
-            ) / (2j * pi)
-            integrals.append(segment_integral)
-
-        I.append(sum(integrals))
+        integral = C.trap_product(k, f, df, phi, psi)
+        I.append(integral)
         if k > 1:
-            logger.debug(
-                "Iteration=%i, integral=%f, err=%f"
-                % (
-                    k,
-                    I[-1],
-                    I[-2] - I[-1],
-                )
-            )
+            logger.debug(f"Iteration={k}, integral={I[-1]}, err={I[-2] - I[-1]}")
         else:
-            logger.debug("Iteration=%i, integral=%f" % (k, I[-1]))
+            logger.debug(f"Iteration={k}, integral={I[-1]}")
 
         if callback is not None:
             err = abs(I[-2] - I[-1]) if k > 1 else None
             if callback(I[-1], err, k):
                 break
 
-    return I[-1], abs(I[-2] - I[-1])
+    return I[-1]
 
 
 def _quad_prod(
@@ -192,43 +156,36 @@ def _quad_prod(
     df=None,
     phi=None,
     psi=None,
-    abs_tol=1.49e-08,
-    rel_tol=1.49e-08,
-    df_approx_order=2,
+    abs_tol: float = 1.49e-08,
+    rel_tol: float = 1.49e-08,
+    df_approx_order: int = 2,
 ):
     if df is None:
         df = numdifftools.Derivative(f, order=df_approx_order)
-        # df = lambda z: scipy.misc.derivative(f, z, dx=1e-8, n=1, order=3)
 
-        # Too slow
-        # import numdifftools.fornberg as ndf
-        # ndf.derivative returns an array [f, f', f'', ...]
-        # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
+    if phi is not None and psi is not None:
 
-    integral, err = 0, 0
-    for segment in C.segments:
-        integrand_cache = {}
+        def integrand_func(z):
+            return phi(z) * psi(z) * (df(z) / f(z)) / (2j * pi)
 
-        def integrand(t):
-            if t in integrand_cache.keys():
-                i = integrand_cache[t]
-            else:
-                z = segment(t)
-                i = (df(z) / f(z)) / (2j * pi) * segment.dzdt(t)
-                if phi is not None:
-                    i = phi(z) * i
-                if psi is not None:
-                    i = psi(z) * i
-                integrand_cache[t] = i
-            return i
+    elif psi is not None:
 
-        segment_integral, segment_err = integrate_quad_complex(
-            integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
-        )
-        integral += segment_integral
-        err += segment_err
+        def integrand_func(z):
+            return psi(z) * (df(z) / f(z)) / (2j * pi)
 
-    return integral, abs(err)
+    elif phi is not None:
+
+        def integrand_func(z):
+            return phi(z) * (df(z) / f(z)) / (2j * pi)
+
+    else:
+
+        def integrand_func(z):
+            return (df(z) / f(z)) / (2j * pi)
+
+    return C.integrate(
+        integrand_func, abs_tol=abs_tol, rel_tol=rel_tol, int_method="quad"
+    )
 
 
 class RootError(RuntimeError):
@@ -288,7 +245,7 @@ def count_roots(
         Only used if int_method='romb'. Minimum number of divisions
         before the Romberg integration routine is allowed to exit.
     div_max : int, optional
-        Only used if int_method='romb'.  The maximum number of divisions
+        Only used if int_method='romb'. The maximum number of divisions
         before the Romberg integration routine of a path exits.
     df_approx_order : int, optional
         Only used if df=None and int_method='quad'.  The argument order=df_approx_order
@@ -311,7 +268,7 @@ def count_roots(
     with warnings.catch_warnings():
         # ignore warnings and catch if integral is NaN later
         warnings.simplefilter("ignore")
-        integral, _ = prod(
+        integral = prod(
             C,
             f,
             df,

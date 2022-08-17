@@ -10,6 +10,7 @@ from .iterative_methods import iterate_to_root
 from .root_approximation import approximate_roots
 from .root_counting import RootError
 from .root_result import RootResult
+from .types import IntegrationMethod
 from .util import NumberOfRootsChanged, update_docstring
 
 
@@ -52,7 +53,7 @@ def find_roots_gen(
     int_abs_tol=0.07,
     M=5,  # noqa: N803
     err_stop=1e-10,
-    int_method="quad",
+    int_method: IntegrationMethod = "quad",
     div_min=3,
     div_max=15,
     df_approx_order=2,
