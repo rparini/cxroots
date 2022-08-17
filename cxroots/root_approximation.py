@@ -1,28 +1,31 @@
 import functools
 import logging
+from typing import Optional, Tuple
 
 import numpy as np
+import numpy.polynomial as npp
 import scipy.linalg
 
-from .root_counting import prod
-from .types import IntegrationMethod
+from .contour_interface import ContourABC
+from .root_counting import RombCallback, prod
+from .types import AnalyticFunc, IntegrationMethod
 
 
 def approximate_roots(
-    C,  # noqa: N803
-    N,  # noqa: N803
-    f,
-    df=None,
-    abs_tol=1.49e-08,
-    rel_tol=1.49e-08,
-    err_stop=1e-10,
-    div_min=3,
-    div_max=15,
-    df_approx_order=2,
-    root_tol=1e-8,
+    C: ContourABC,  # noqa: N803
+    N: int,  # noqa: N803
+    f: AnalyticFunc,
+    df: Optional[AnalyticFunc] = None,
+    abs_tol: float = 1.49e-08,
+    rel_tol: float = 1.49e-08,
+    err_stop: float = 1e-10,
+    div_min: int = 3,
+    div_max: int = 15,
+    df_approx_order: int = 2,
+    root_tol: float = 1e-8,
     int_method: IntegrationMethod = "quad",
-    callback=None,
-):
+    callback: Optional[RombCallback] = None,
+) -> Tuple[Tuple[complex, ...], Tuple[float, ...]]:
     """
     Approximate the roots and multiplcities of the function f within the
     contour C using the method of [KB]_.  The multiplicites are computed
@@ -119,12 +122,13 @@ def approximate_roots(
     mu = s[1] / N
     phi_zeros = [np.array([]), np.array([mu])]
 
-    def phi(i):
+    def phi(
+        i: int,
+    ) -> AnalyticFunc:
         if len(phi_zeros[i]) == 0:
-            return lambda z: np.ones_like(z)
+            return lambda z: complex(1)
         else:
-            coeff = np.poly(phi_zeros[i])
-            return lambda z: np.polyval(coeff, z)
+            return npp.Polynomial.fromroots(phi_zeros[i])
 
     # initialize G_{pq} = <phi_p, phi_q>
     G = np.zeros((N, N), dtype=np.complex128)  # noqa: N806
