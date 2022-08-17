@@ -14,7 +14,9 @@ class AnalyticFunc(Protocol):
     @overload
     def __call__(
         self, z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
-    ) -> npt.NDArray[np.complex_]:
+    ) -> Union[npt.NDArray[np.complex_], complex]:
+        # Note that the function may return a scalar in this case if, for example,
+        # it's a constant function
         ...
 
     def __call__(

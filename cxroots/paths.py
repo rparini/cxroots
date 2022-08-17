@@ -1,15 +1,16 @@
 import functools
 from math import pi
-from typing import Optional, TypeVar
+from typing import Optional, Tuple, TypeVar, Union, overload
 
 import numpy as np
+import numpy.typing as npt
 import scipy.integrate
-from numpy.typing import NDArray
 
 from .types import AnalyticFunc, IntegrationMethod
 from .util import integrate_quad_complex
 
 ComplexPathType = TypeVar("ComplexPathType", bound="ComplexPath")
+Color = Union[str, Tuple[float, float, float], Tuple[float, float, float, float]]
 
 
 class ComplexPath(object):
@@ -24,7 +25,17 @@ class ComplexPath(object):
         # up the _integral_cache for the reverse path
         self._reverse_path: Optional[ComplexPath] = None
 
-    def __call__(self, t):
+    @overload
+    def __call__(self, t: float) -> complex:
+        ...
+
+    @overload
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def __call__(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         r"""
         The parameterization of the path in the varaible :math:`t\in[0,1]`.
 
@@ -40,7 +51,17 @@ class ComplexPath(object):
         """
         raise NotImplementedError("__call__ must be implemented in a subclass")
 
-    def dzdt(self, t):
+    @overload
+    def dzdt(self, t: float) -> complex:
+        ...
+
+    @overload
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def dzdt(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
@@ -58,7 +79,7 @@ class ComplexPath(object):
         f: AnalyticFunc,
         k: int,
         use_cache: bool = True,
-    ) -> NDArray[np.complex128]:
+    ) -> npt.NDArray[np.complex128]:
         """
         Compute or retrieve (if cached) the values of the functions f
         at :math:`2^k+1` points along the contour which are evenly
@@ -117,7 +138,7 @@ class ComplexPath(object):
     def trap_product(
         self,
         k: int,
-        f,
+        f: AnalyticFunc,
         df=None,
         phi=None,
         psi=None,
@@ -150,7 +171,12 @@ class ComplexPath(object):
 
         return scipy.integrate.romb(segment_integrand, dx=dt, axis=-1) / (2j * pi)
 
-    def plot(self, num_points: int = 100, linecolor="C0", linestyle: str = "-") -> None:
+    def plot(
+        self,
+        num_points: int = 100,
+        linecolor: Color = "C0",
+        linestyle: str = "-",
+    ) -> None:
         """
         Uses matplotlib to plot, but not show, the path as a 2D plot in
         the Complex plane.
@@ -162,8 +188,8 @@ class ComplexPath(object):
         linecolor : optional
             The colour of the plotted path, passed to the
             :func:`matplotlib.pyplot.plot` function as the keyword
-            argument of 'color'.  See the matplotlib tutorial on
-            `specifying colours <https://matplotlib.org/users/colors.html#>`_.
+            argument of 'color'.  See the matplotlib tutorial on specifying
+            `colours <https://matplotlib.org/stable/tutorials/colors/colors#>`_.
         linestyle : str, optional
             The line style of the plotted path, passed to the
             :func:`matplotlib.pyplot.plot` function as the keyword
@@ -319,7 +345,17 @@ class ComplexLine(ComplexPath):
             self.b.imag,
         )
 
-    def __call__(self, t):
+    @overload
+    def __call__(self, t: float) -> complex:
+        ...
+
+    @overload
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def __call__(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         r"""
         The function :math:`z(t) = a + (b-a)t`.
 
@@ -335,7 +371,17 @@ class ComplexLine(ComplexPath):
         """
         return self.a + t * (self.b - self.a)
 
-    def dzdt(self, t):
+    @overload
+    def dzdt(self, t: float) -> complex:
+        ...
+
+    @overload
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def dzdt(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
@@ -398,7 +444,17 @@ class ComplexArc(ComplexPath):
             self.dt,
         )
 
-    def __call__(self, t):
+    @overload
+    def __call__(self, t: float) -> complex:
+        ...
+
+    @overload
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def __call__(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         r"""
         The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.
 
@@ -414,7 +470,17 @@ class ComplexArc(ComplexPath):
         """
         return self.R * np.exp(1j * (self.t0 + t * self.dt)) + self.z0
 
-    def dzdt(self, t):
+    @overload
+    def dzdt(self, t: float) -> complex:
+        ...
+
+    @overload
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def dzdt(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
