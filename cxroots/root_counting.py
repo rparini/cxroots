@@ -6,11 +6,12 @@ from typing import Optional
 import numdifftools
 import numpy as np
 
+from .contour_interface import ContourABC
 from .types import AnalyticFunc, IntegrationMethod
 
 
 def prod(
-    C,  # noqa: N803
+    C: ContourABC,  # noqa: N803
     f,
     df=None,
     phi=None,
@@ -111,7 +112,7 @@ def prod(
 
 
 def _romb_prod(
-    C,  # noqa: N803
+    C: ContourABC,  # noqa: N803
     f,
     df=None,
     phi=None,
@@ -151,7 +152,7 @@ def _romb_prod(
 
 
 def _quad_prod(
-    C,  # noqa: N803
+    C: ContourABC,  # noqa: N803
     f,
     df=None,
     phi=None,
@@ -193,7 +194,7 @@ class RootError(RuntimeError):
 
 
 def count_roots(
-    C,  # noqa: N803
+    C: ContourABC,  # noqa: N803
     f: AnalyticFunc,
     df: Optional[AnalyticFunc] = None,
     int_abs_tol: float = 0.07,

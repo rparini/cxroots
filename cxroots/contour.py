@@ -4,6 +4,7 @@ from typing import Generator, List, Optional, Sequence, Union, overload
 import numpy as np
 import numpy.typing as npt
 
+from .contour_interface import ContourABC
 from .paths import ComplexPath, ComplexPathType
 from .root_counting import count_roots
 from .root_finding import find_roots
@@ -13,7 +14,7 @@ from .types import AnalyticFunc
 from .util import remove_para
 
 
-class Contour(object):
+class Contour(ContourABC):
     """
     A base class for contours in the complex plane.
 
@@ -90,30 +91,30 @@ class Contour(object):
         else:
             return self.segments[segment_index](num_segments * t % 1)
 
-    @property
-    def central_point(self) -> complex:
-        raise NotImplementedError(
-            "central_point needs to be implemented in a subclass."
+    @functools.wraps(ComplexPath.trap_product)
+    def trap_product(self, *args, **integration_kwargs) -> complex:
+        r"""
+        Use Romberg integration to estimate the symmetric bilinear form used in
+        (1.12) of [KB]_ using 2**k+1 samples
+
+        .. math::
+
+            <\phi,\psi> = \frac{1}{2\pi i} \oint_C \phi(z)\psi(z)\frac{f'(z)}{f(z)} dz
+        """
+        return sum(s.trap_product(*args, **integration_kwargs) for s in self.segments)
+
+    @functools.wraps(ComplexPath.integrate)
+    def integrate(self, f: AnalyticFunc, **integration_kwargs) -> complex:
+        r"""
+        Integrate the function f along the contour C
+
+        .. math::
+
+            \oint_C f(z) dz
+        """
+        return sum(
+            segment.integrate(f, **integration_kwargs) for segment in self.segments
         )
-
-    @property
-    def area(self) -> float:
-        raise NotImplementedError("area needs to be implemented in a subclass.")
-
-    def contains(self, z: complex) -> bool:
-        """
-        Tests whether the point z is within the contour.
-
-        Parameters
-        ----------
-        z : complex
-
-        Returns
-        -------
-        bool
-            True if z lies within the contour and false otherwise.
-        """
-        raise NotImplementedError("contains() needs to be implemented in a subclass.")
 
     @functools.wraps(ComplexPath.plot)
     def plot(self, *args, **kwargs) -> None:
@@ -222,12 +223,6 @@ class Contour(object):
             closest to z.
         """
         return min(segment.distance(z) for segment in self.segments)
-
-    @functools.wraps(ComplexPath.integrate)
-    def integrate(self, f: AnalyticFunc, **integration_kwargs) -> complex:
-        return sum(
-            segment.integrate(f, **integration_kwargs) for segment in self.segments
-        )
 
     @remove_para("C")
     @functools.wraps(count_roots)
