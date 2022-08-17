@@ -76,7 +76,7 @@ class Contour(ContourABC):
         >>> c(0) == c(1)
         True
         """
-        t = np.array(t)
+        t = np.array(t, dtype=np.float_)
         num_segments = len(self.segments)
         segment_index = np.array(num_segments * t, dtype=int)
         segment_index = np.mod(segment_index, num_segments)
