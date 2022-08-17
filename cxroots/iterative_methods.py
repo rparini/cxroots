@@ -73,15 +73,12 @@ def iterate_to_root(
             return None
     else:
         # Muller's method:
-        def f_muller(z):
-            return complex(f(z))
-
         x1, x2, x3 = x0, x0 * (1 + 1e-8) + 1e-8j, x0 * (1 - 1e-8) - 1e-8j
         root, err = muller(
             x1,
             x2,
             x3,
-            f_muller,
+            f,
             step_tol,
             0,
             max_iter,
@@ -211,7 +208,7 @@ def muller(
 
 def newton(
     x0: complex,
-    f,
+    f: AnalyticFunc,
     df: AnalyticFunc,
     step_tol: float = 1e-12,
     root_tol: float = 0,
@@ -297,7 +294,7 @@ def newton(
 def secant(
     x1: complex,
     x2: complex,
-    f,
+    f: AnalyticFunc,
     step_tol: float = 1e-12,
     root_tol: float = 0,
     max_iter: int = 30,
