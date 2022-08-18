@@ -1,7 +1,7 @@
 import logging
 import warnings
 from math import inf, pi
-from typing import Optional
+from typing import Callable, Optional
 
 import numdifftools
 import numpy as np
@@ -9,13 +9,15 @@ import numpy as np
 from .contour_interface import ContourABC
 from .types import AnalyticFunc, IntegrationMethod
 
+RombCallback = Callable[[complex, Optional[float], int], Optional[bool]]
+
 
 def prod(
     C: ContourABC,  # noqa: N803
-    f,
-    df=None,
-    phi=None,
-    psi=None,
+    f: AnalyticFunc,
+    df: Optional[AnalyticFunc] = None,
+    phi: Optional[AnalyticFunc] = None,
+    psi: Optional[AnalyticFunc] = None,
     abs_tol: float = 1.49e-08,
     rel_tol: float = 1.49e-08,
     div_min: int = 3,
@@ -23,8 +25,8 @@ def prod(
     df_approx_order: int = 2,
     int_method: IntegrationMethod = "quad",
     integer_tol: float = inf,
-    callback=None,
-):
+    callback: Optional[RombCallback] = None,
+) -> complex:
     r"""
     Compute the symmetric bilinear form used in (1.12) of [KB]_.
 
@@ -113,17 +115,17 @@ def prod(
 
 def _romb_prod(
     C: ContourABC,  # noqa: N803
-    f,
-    df=None,
-    phi=None,
-    psi=None,
+    f: AnalyticFunc,
+    df: Optional[AnalyticFunc] = None,
+    phi: Optional[AnalyticFunc] = None,
+    psi: Optional[AnalyticFunc] = None,
     abs_tol: float = 1.49e-08,
     rel_tol: float = 1.49e-08,
     div_min: int = 3,
     div_max: int = 15,
     integer_tol: float = inf,
-    callback=None,
-):
+    callback: Optional[RombCallback] = None,
+) -> complex:
     logger = logging.getLogger(__name__)
     k = 0
     I = []  # List of approximations to the integral # noqa: E741 N806
@@ -153,16 +155,26 @@ def _romb_prod(
 
 def _quad_prod(
     C: ContourABC,  # noqa: N803
-    f,
-    df=None,
-    phi=None,
-    psi=None,
+    f: AnalyticFunc,
+    df: Optional[AnalyticFunc] = None,
+    phi: Optional[AnalyticFunc] = None,
+    psi: Optional[AnalyticFunc] = None,
     abs_tol: float = 1.49e-08,
     rel_tol: float = 1.49e-08,
     df_approx_order: int = 2,
-):
+) -> complex:
     if df is None:
         df = numdifftools.Derivative(f, order=df_approx_order)
+        # type checker needs this reassurance for some reason
+        assert df is not None  # nosec B101
+
+        # Using scipy.misc.derivative leads to some roots being missed in tests
+        # df = lambda z: scipy.misc.derivative(f, z, dx=1.49e-8, n=1, order=3)
+
+        # Too slow
+        # import numdifftools.fornberg as ndf
+        # ndf.derivative returns an array [f, f', f'', ...]
+        # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
 
     if phi is not None and psi is not None:
 
@@ -203,7 +215,7 @@ def count_roots(
     div_max: int = 15,
     df_approx_order: int = 2,
     int_method: IntegrationMethod = "quad",
-):
+) -> int:
     r"""
     For a function of one complex variable, f(z), which is analytic in
     and within the contour C, return the number of zeros (counting
