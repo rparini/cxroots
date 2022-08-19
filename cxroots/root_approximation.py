@@ -128,7 +128,11 @@ def approximate_roots(
         if len(phi_zeros[i]) == 0:
             return lambda z: complex(1)
         else:
-            return npp.Polynomial.fromroots(phi_zeros[i])
+            coeff = np.poly(phi_zeros[i])
+            # We should be using Polynomial.fromroots but this is not hashable so
+            # causes problems with caching
+            return lambda z: np.polyval(coeff, z)  # type: ignore
+            # return npp.Polynomial.fromroots(phi_zeros[i])
 
     # initialize G_{pq} = <phi_p, phi_q>
     G = np.zeros((N, N), dtype=np.complex128)  # noqa: N806
