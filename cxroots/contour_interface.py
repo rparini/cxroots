@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Generator, List, Optional, Sequence
 
 from .types import AnalyticFunc, IntegrationMethod
 
@@ -8,23 +8,25 @@ class ContourABC(ABC):
     @property
     @abstractmethod
     def central_point(self) -> complex:
-        """
-        A central point that lies within the contour
-        """
+        """A central point that lies within the contour"""
         ...
 
     @property
     @abstractmethod
     def area(self) -> float:
-        """
-        The area of the contour in the complex plane
-        """
+        """The area of the contour in the complex plane"""
         ...
 
     @abstractmethod
     def contains(self, z: complex) -> bool:
+        """True if the point z is within the contour, false otherwise"""
+        ...
+
+    @abstractmethod
+    def distance(self, z: complex) -> float:
         """
-        True if the point z is within the contour, false otherwise
+        The distance from the point z in the complex plane to the
+        nearest point on the contour.
         """
         ...
 
@@ -63,4 +65,40 @@ class ContourABC(ABC):
 
             \oint_C f(z) dz
         """
+        ...
+
+    @abstractmethod
+    def count_roots(
+        self,
+        f: AnalyticFunc,
+        df: Optional[AnalyticFunc] = None,
+        int_abs_tol: float = 0.07,
+        integer_tol: float = 0.1,
+        div_min: int = 3,
+        div_max: int = 15,
+        df_approx_order: int = 2,
+        int_method: IntegrationMethod = "quad",
+    ) -> int:
+        """
+        For a function of one complex variable, f(z), which is analytic in
+        and within the contour C, return the number of zeros (counting
+        multiplicities) within the contour
+        """
+        ...
+
+    @abstractmethod
+    def subdivisions(
+        self, axis: str = "alternating"
+    ) -> Generator[List["ContourABC"], None, None]:
+        """A generator for possible subdivisions of the contour."""
+        ...
+
+    @property
+    @abstractmethod
+    def parent(self) -> Optional["ContourABC"]:
+        ...
+
+    @property
+    @abstractmethod
+    def children(self) -> Optional[Sequence["ContourABC"]]:
         ...

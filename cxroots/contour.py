@@ -170,6 +170,14 @@ class Contour(ContourABC):
         """
         raise NotImplementedError("subdivide must be implemented in a subclass")
 
+    @property
+    def parent(self) -> Optional["Contour"]:
+        return self._parent
+
+    @property
+    def children(self) -> Optional[Sequence["Contour"]]:
+        return self._children
+
     def subdivisions(
         self, axis: str = "alternating"
     ) -> Generator[List["Contour"], None, None]:
@@ -207,7 +215,7 @@ class Contour(ContourABC):
 
     def distance(self, z: complex) -> float:
         """
-        Get the distance from the point z in the complex plane to the
+        The distance from the point z in the complex plane to the
         nearest point on the contour.
 
         Parameters
