@@ -2,6 +2,8 @@ import numpy as np
 import scipy.integrate
 from numpydoc.docscrape import FunctionDoc
 
+from cxroots.types import AnalyticFunc
+
 
 def remove_para(*paras):
     def wrapper(func):
@@ -30,7 +32,7 @@ class NumberOfRootsChanged(Exception):
     pass
 
 
-def integrate_quad_complex(func, *args, **kwargs):
+def integrate_quad_complex(func: AnalyticFunc, *args, **kwargs) -> complex:
     """
     A thin wrapper around scipy.integrate.quad that copes
     with the integrand returning complex values

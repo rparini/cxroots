@@ -3,7 +3,6 @@ import logging
 from typing import Optional, Tuple
 
 import numpy as np
-import numpy.polynomial as npp
 import scipy.linalg
 
 from .contour_interface import ContourABC

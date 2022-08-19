@@ -2,7 +2,7 @@ import functools
 import logging
 import warnings
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Tuple
+from typing import Any, Callable, Dict, Generator, Iterable, List, NamedTuple, Optional
 
 import numpy as np
 from numpydoc.docscrape import FunctionDoc
@@ -52,6 +52,13 @@ def make_contour_data(
     return [ContourData(contour=c, num_roots=num_roots[c]) for c in contours]
 
 
+class RootFinderState(NamedTuple):
+    roots: List[complex]
+    multiplicities: List[int]
+    contour_data: List[ContourData]
+    num_remaining_roots: int
+
+
 def find_roots_gen(
     original_contour: ContourABC,
     f: AnalyticFunc,
@@ -72,8 +79,7 @@ def find_roots_gen(
     div_min: int = 3,
     div_max: int = 15,
     df_approx_order: int = 2,
-) -> Generator[Tuple[List[complex], List[int], List[ContourData], int], None, None]:
-    # XXX need return type, maybe named tuple?
+) -> Generator[RootFinderState, None, None]:
     """
     A generator which at each step takes a contour and either finds all
     the zeros of f within it or subdivides it further.  Based on the
@@ -364,13 +370,14 @@ def find_roots_gen(
     while contours:
         # yield the initial state here so that the animation in demo_find_roots shows
         # the first frame
-        num_found_roots = sum(
-            int(round(multiplicity.real)) for multiplicity in multiplicities
-        )
+        num_found_roots = sum(multiplicities)
         remaining_roots = num_roots[original_contour] - num_found_roots
-        yield roots, multiplicities, make_contour_data(
-            contours, num_roots
-        ), remaining_roots
+        yield RootFinderState(
+            roots,
+            multiplicities,
+            make_contour_data(contours, num_roots),
+            remaining_roots,
+        )
         contour = contours.pop()
 
         # if a known root is too near to this contour then reverse the subdivision that
@@ -410,7 +417,7 @@ def find_roots_gen(
         # if all the roots within the contour have been located then continue to the
         # next contour
         num_known_roots = sum(
-            int(round(multiplicity.real))
+            multiplicity
             for root, multiplicity in zip(roots, multiplicities)
             if contour.contains(root)
         )
@@ -537,7 +544,7 @@ def find_roots_gen(
 
         # if we haven't found all the roots then subdivide further
         num_known_roots = sum(
-            int(round(multiplicity.real))
+            multiplicity
             for root, multiplicity in zip(roots, multiplicities)
             if contour.contains(root)
         )
@@ -554,11 +561,11 @@ def find_roots_gen(
         + str(result)
     )
 
-    num_found_roots = sum(
-        int(round(multiplicity.real)) for multiplicity in multiplicities
-    )
+    num_found_roots = sum(multiplicities)
     remaining_roots = num_roots[original_contour] - num_found_roots
-    yield roots, multiplicities, make_contour_data(contours, num_roots), remaining_roots
+    yield RootFinderState(
+        roots, multiplicities, make_contour_data(contours, num_roots), remaining_roots
+    )
 
 
 @update_docstring(Parameters=FunctionDoc(find_roots_gen)["Parameters"])
@@ -600,9 +607,7 @@ def find_roots(
 
         try:
             for roots, multiplicities, _, num_remaining_roots in root_finder:
-                num_found_roots = sum(
-                    int(round(multiplicity.real)) for multiplicity in multiplicities
-                )
+                num_found_roots = sum(multiplicities)
                 total_roots = num_found_roots + num_remaining_roots
                 progress.update(task, completed=num_found_roots, total=total_roots)
         finally:

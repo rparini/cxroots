@@ -1,6 +1,8 @@
-from typing import List, NamedTuple
+from typing import List, NamedTuple, Optional
 
 import numpy as np
+
+from cxroots.contour_interface import ContourABC
 
 
 class RootResult(
@@ -21,14 +23,18 @@ class RootResult(
         The contour bounding the region in which the roots were found.
     """
 
-    def __new__(cls, roots, multiplicities, contour):
+    def __new__(
+        cls, roots: List[complex], multiplicities: List[int], contour: ContourABC
+    ):
         return super(RootResult, cls).__new__(cls, roots, multiplicities)
 
-    def __init__(self, roots, multiplicities, contour):
+    def __init__(
+        self, roots: List[complex], multiplicities: List[int], contour: ContourABC
+    ):
         self.contour = contour
         super().__init__()
 
-    def show(self, save_file=None):
+    def show(self, save_file: Optional[str] = None) -> None:
         """
         Plot the roots and the initial integration contour in the
         complex plane.

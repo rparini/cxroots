@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Generator, List, Optional, Sequence
 
-from .types import AnalyticFunc, IntegrationMethod
+from .types import AnalyticFunc, Color, IntegrationMethod
 
 
 class ContourABC(ABC):
@@ -90,15 +90,32 @@ class ContourABC(ABC):
     def subdivisions(
         self, axis: str = "alternating"
     ) -> Generator[List["ContourABC"], None, None]:
-        """A generator for possible subdivisions of the contour."""
+        """A generator for possible subdivisions of the contour"""
         ...
 
     @property
     @abstractmethod
     def parent(self) -> Optional["ContourABC"]:
+        """The contour that this contour was created from as part of subdivision"""
         ...
 
     @property
     @abstractmethod
     def children(self) -> Optional[Sequence["ContourABC"]]:
+        """The contours that were created from this contour during subdivision"""
+        ...
+
+    @abstractmethod
+    def plot(
+        self, num_points: int = 100, linecolor: Color = "C0", linestyle: str = "-"
+    ) -> None:
+        """
+        Uses matplotlib to plot, but not show, the contour as a 2D plot in
+        the Complex plane.
+        """
+        ...
+
+    @abstractmethod
+    def size_plot(self) -> None:
+        """Adjust the plot axes limits to nicely frame the contour"""
         ...

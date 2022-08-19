@@ -1,9 +1,10 @@
-from typing import Literal, Protocol, Union, overload
+from typing import Literal, Protocol, Tuple, Union, overload
 
 import numpy as np
 import numpy.typing as npt
 
 IntegrationMethod = Literal["quad", "romb"]
+Color = Union[str, Tuple[float, float, float], Tuple[float, float, float, float]]
 
 
 class AnalyticFunc(Protocol):

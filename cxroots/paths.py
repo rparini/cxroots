@@ -1,16 +1,15 @@
 import functools
 from math import pi
-from typing import Optional, Tuple, TypeVar, Union, overload
+from typing import Optional, TypeVar, Union, overload
 
 import numpy as np
 import numpy.typing as npt
 import scipy.integrate
 
-from .types import AnalyticFunc, IntegrationMethod
+from .types import AnalyticFunc, Color, IntegrationMethod
 from .util import integrate_quad_complex
 
 ComplexPathType = TypeVar("ComplexPathType", bound="ComplexPath")
-Color = Union[str, Tuple[float, float, float], Tuple[float, float, float, float]]
 
 
 class ComplexPath(object):
@@ -139,9 +138,9 @@ class ComplexPath(object):
         self,
         k: int,
         f: AnalyticFunc,
-        df=None,
-        phi=None,
-        psi=None,
+        df: Optional[AnalyticFunc] = None,
+        phi: Optional[AnalyticFunc] = None,
+        psi: Optional[AnalyticFunc] = None,
     ) -> complex:
         r"""
         Use Romberg integration to estimate the symmetric bilinear form used in
