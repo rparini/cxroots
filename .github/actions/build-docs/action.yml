@@ -13,5 +13,3 @@ runs:
       shell: bash
       working-directory: docs_src
       run: ./create_docs
-      env:
-        SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
