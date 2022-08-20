@@ -268,7 +268,7 @@ class ComplexPath(object):
             # if we have already computed the reverse of this path
             return -self._reverse_path._integral_cache[args]
 
-        @functools.cache
+        @functools.lru_cache(maxsize=None)
         def integrand(t):
             return f(self(t)) * self.dzdt(t)
 
