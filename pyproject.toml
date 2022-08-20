@@ -12,3 +12,28 @@ exclude = '''
 [tool.isort]
 profile = "black"
 skip = ["docs", "docs_src"]
+
+[tool.pyright]
+include = ["cxroots"]
+exclude = [
+    "cxroots/tests/**",
+    "**/__pycache__"
+]
+
+typeCheckingMode = "strict"
+
+reportMissingTypeStubs = "warning"
+
+reportUnknownVariableType = false
+reportUnknownParameterType = false
+reportUnknownMemberType = false
+reportMissingParameterType = false
+reportUnknownArgumentType = false
+reportUnknownLambdaType = false
+
+reportPrivateUsage = false
+reportIncompatibleMethodOverride = false
+strictDictionaryInference = false
+
+reportUninitializedInstanceVariable = true
+reportUnnecessaryTypeIgnoreComment = true

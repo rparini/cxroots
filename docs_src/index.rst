@@ -1,7 +1,7 @@
 cxroots: rootfinding for complex analytic functions
 ===================================================
 
-cxroots is a Python package for finding all the roots of a function, :math:`f(z)`, of a single complex variable within a given contour, :math:`C`, in the complex plane.  It requires only that:
+cxroots is a Python package for finding all the roots of a function, :math:`f(z)`, of a single complex variable within a given contour, :math:`C`, in the complex plane.  It requires only that both:
 
 -  :math:`f(z)` has no roots or poles on :math:`C`
 -  :math:`f(z)` is analytic in the interior of :math:`C`
@@ -28,6 +28,7 @@ Documentation
 
 	installation.rst
 	tutorial.rst
+	changelog.rst
 	theory.rst
 
 .. toctree::

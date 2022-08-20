@@ -30,20 +30,23 @@ jobs:
         commit_message: Autoupdate documentation for ${{ steps.get_tag_name.outputs.VERSION }}
         file_pattern: docs/* cxroots/version.py
         branch: master
-    - name: Build and publish
+    - name: Build wheel
+      run: python setup.py sdist bdist_wheel
+    - name: Publish with twine
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      run: |
-        python setup.py sdist bdist_wheel
-        twine upload dist/*
+      run: twine upload dist/*
 
   test:
     needs: deploy
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
+        python-version: 
+          - '3.8'
+          - '3.9'
+          - '3.10'
     steps:
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4

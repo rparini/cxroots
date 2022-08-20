@@ -21,6 +21,13 @@ from cxroots.tests.approx_equal import roots_approx_equal
 
 
 class RootfindingTests(object):
+    # These attributes need to be defined by test case subclasses
+    C = None
+    f = None
+    df = None
+    roots = None
+    multiplicities = None
+
     def test_rootfinding_romb_df(self):
         roots_approx_equal(
             self.C.roots(self.f, self.df, int_method="romb"),
@@ -51,6 +58,12 @@ class RootfindingTests(object):
 
 
 class MultiplicityTests(object):
+    # These attributes need to be defined by test case subclasses
+    f = None
+    df = None
+    roots = None
+    multiplicities = None
+
     def test_multiplicity_f(self):
         # Check that if only the root is given then the multiplcity could be computed
         for i, root in enumerate(self.roots):
@@ -348,7 +361,7 @@ def test_annular_combustion():
     import warnings
 
     warnings.filterwarnings("error")
-    roots = rectangle.roots(f, df, root_err_tol=1e-6, rel_tol=1e-10)
+    roots = rectangle.roots(f, df, root_err_tol=1e-6)
     assert len(roots.roots) == 24
 
 

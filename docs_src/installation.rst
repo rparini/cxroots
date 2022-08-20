@@ -1,7 +1,7 @@
 Installation
 ============
 
-cxroots uses the Python_ programming language and requires Python 3.6 or later.
+cxroots requires Python_ 3.8 or later.
 
 With Python installed the easiest way to install cxroots, along with its required dependencies, is using the Python Package Index (PyPi) by running on the command line::
 

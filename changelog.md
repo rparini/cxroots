@@ -1,16 +1,29 @@
 ## Changelog
 ### Unreleased
-- Drop support for Python 2
+- Drop support for Python 2. Cxroots now requires python 3.8 or later
 - cxroots now logs rootfinding progress which can be accessed using the standard library's [logging module](https://docs.python.org/3/library/logging.html). See the [documentation](https://rparini.github.io/cxroots/logging.html) for examples.
 - The `verbose` argument has been removed from some functions. It still exists for the `Contour.roots` method and `find_roots` function but it will now create a progress bar, using [rich](https://github.com/Textualize/rich), rather than printing debugging information to the console.
 - Use [Black](https://github.com/psf/black) formatting and added pre-commit hook
 - Add `cxroots[plot]` install option that will install dependencies for plotting contours and roots
 - Contour arrows to are now scale-independent ([#153](https://github.com/rparini/cxroots/issues/153), thanks [@llohse](https://github.com/llohse))
-- Remove unused `randomPoint` contour method
+- Remove unused `Contour.randomPoint` method
 - All `camelCase` functions and arguments changed to be `snake_case`
 - `m` argument renamed to `df_approx_order`
 - Renamed internal files to camel_case.py
 - Warnings from `scipy.integrate.quad` are no longer suppressed by cxroots while calculating the bilinear product
+- Changed default absolute and relative integration tolernaces to 1.49e-08 to match scipy's defaults for `scipy.integrate.quad` and `scipy.integrate.romberg`.
+- Rename `attempt_best` argument to `refine_roots_beyond_tol`
+- Fixed issue with `newton` iteration method when `refine_roots_beyond_tol` was True and the routine would not exit if the error of the previous and current iterations were only equal
+- The `callback` for the `muller` iteration method will now correctly be passed the value of the evaluated function for the iteration, rather than the error.
+- Fixed description of `root_tol` and `refine_roots_beyond_tol` in `iterate_to_root` docstring
+- Changes default `root_tol` to 0 for `secant`, `newton` and `muller` functions
+- Removed `return_animation` argument from `demo_find_roots` function and `Contour.demo_roots` method. Instead, the `demo_roots_animation` function or `Contour.demo_roots_animation` method can be used to get a `animation.FuncAnimation` object that would animate the rootfinding process without displaying it.
+- Change starting points for muller's method used when root refining to be complex, to guard against the iterations keeping to the real line.
+- Rename `RootResult.original_contour` attribute to `contour`
+- The `Contour._size_plot` method was renamed to `Contour.size_plot` and given a docstring
+- Remove `Contour.approximate_roots` method as it is intended for users to call `Contour.roots` instead
+- The `count_roots`, `find_roots` and `demo_find_roots` are no longer exposed directly by importing cxroots. Instead, it is intended that the contour method is used instead. For example, use `Circle(0,3).find_roots(f)` instead of `find_roots(Circle(0,3),f)`
+- Added type annotations for all public interfaces
 
 ### 1.1.11 - 22/Dec/2021
 - Fixed error when using `romb` integration method when supplied with a derivative function that returns a constant value
