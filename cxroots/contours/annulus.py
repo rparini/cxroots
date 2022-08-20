@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Tuple, Union, overload
 
 from numpy import pi
 
@@ -31,7 +31,7 @@ class Annulus(Contour):
 
     axis_names = ("r", "phi")
 
-    def __init__(self, center, radii):
+    def __init__(self, center: complex, radii: Tuple[float, float]):
         self.center = center
         self.radii = radii
 
@@ -48,20 +48,34 @@ class Annulus(Contour):
         )
 
     @property
-    def central_point(self):
-        # get the central point within the contour
+    def central_point(self) -> complex:
+        # get a central point within the contour
         r = (self.radii[0] + self.radii[1]) / 2
         return r
 
     @property
-    def area(self):
+    def area(self) -> float:
         return pi * (self.radii[1] ** 2 - self.radii[0] ** 2)
 
-    def contains(self, z):
+    def contains(self, z: complex) -> bool:
         """Returns True if the point z lies within the contour, False if otherwise"""
         return self.radii[0] < abs(z - self.center) < self.radii[1]
 
-    def subdivide(self, axis: Literal["r", "phi"], division_factor: float = 0.5):
+    @overload
+    def subdivide(
+        self, axis: Literal["r"], division_factor: float
+    ) -> Tuple["Annulus", "Annulus"]:
+        ...
+
+    @overload
+    def subdivide(
+        self, axis: Literal["phi"], division_factor: float
+    ) -> Tuple[AnnulusSector, AnnulusSector]:
+        ...
+
+    def subdivide(
+        self, axis: Literal["r", "phi"], division_factor: float = 0.5
+    ) -> Union[Tuple[AnnulusSector, AnnulusSector], Tuple["Annulus", "Annulus"]]:
         """
         Subdivide the contour
 
@@ -81,13 +95,15 @@ class Annulus(Contour):
         """
         if axis == "r":
             midpoint = self.radii[0] + division_factor * (self.radii[1] - self.radii[0])
-            box1 = Annulus(self.center, [self.radii[0], midpoint])
-            box2 = Annulus(self.center, [midpoint, self.radii[1]])
+            boxes = (
+                Annulus(self.center, (self.radii[0], midpoint)),
+                Annulus(self.center, (midpoint, self.radii[1])),
+            )
 
-            box1.segments[1] = self.segments[1]
-            box2.segments[0] = self.segments[0]
-            box1.segments[0]._reverse_path = box2.segments[1]
-            box2.segments[1]._reverse_path = box1.segments[0]
+            boxes[0].segments[1] = self.segments[1]
+            boxes[1].segments[0] = self.segments[0]
+            boxes[0].segments[0]._reverse_path = boxes[1].segments[1]
+            boxes[1].segments[1]._reverse_path = boxes[0].segments[0]
 
         elif axis == "phi":
             # Subdividing into two radial boxes rather than one to
@@ -97,21 +113,22 @@ class Annulus(Contour):
 
             phi0 = 2 * pi * division_factor
             phi1 = phi0 + pi
+            boxes = (
+                AnnulusSector(self.center, self.radii, (phi0, phi1)),
+                AnnulusSector(self.center, self.radii, (phi1, phi0)),
+            )
 
-            box1 = AnnulusSector(self.center, self.radii, [phi0, phi1])
-            box2 = AnnulusSector(self.center, self.radii, [phi1, phi0])
-
-            box1.segments[0]._reverse_path = box2.segments[2]
-            box2.segments[2]._reverse_path = box1.segments[0]
-            box1.segments[2]._reverse_path = box2.segments[0]
-            box2.segments[0]._reverse_path = box1.segments[2]
+            boxes[0].segments[0]._reverse_path = boxes[1].segments[2]
+            boxes[1].segments[2]._reverse_path = boxes[0].segments[0]
+            boxes[0].segments[2]._reverse_path = boxes[1].segments[0]
+            boxes[1].segments[0]._reverse_path = boxes[0].segments[2]
 
         else:
             raise ValueError("axis must be 'r' or 'phi'")
 
-        for box in [box1, box2]:
+        for box in boxes:
             box._created_by_subdivision_axis = axis
             box._parent = self
-        self._children = [box1, box2]
+        self._children = boxes
 
-        return box1, box2
+        return boxes

@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Tuple
 
 from ..contour import Contour
 from ..paths import ComplexLine
@@ -29,7 +29,7 @@ class Rectangle(Contour):
 
     axis_names = ("x", "y")
 
-    def __init__(self, x_range, y_range):
+    def __init__(self, x_range: Tuple[float, float], y_range: Tuple[float, float]):
         self.x_range = x_range
         self.y_range = y_range
 
@@ -56,24 +56,26 @@ class Rectangle(Contour):
         )
 
     @property
-    def central_point(self):
+    def central_point(self) -> complex:
         # get the central point within the contour
         x = (self.x_range[0] + self.x_range[1]) / 2
         y = (self.y_range[0] + self.y_range[1]) / 2
         return x + 1j * y
 
     @property
-    def area(self):
+    def area(self) -> float:
         return (self.x_range[1] - self.x_range[0]) * (self.y_range[1] - self.y_range[0])
 
-    def contains(self, z):
+    def contains(self, z: complex) -> bool:
         """Returns True if the point z lies within the contour, False if otherwise"""
         return (
             self.x_range[0] < z.real < self.x_range[1]
             and self.y_range[0] < z.imag < self.y_range[1]
         )
 
-    def subdivide(self, axis: Literal["x", "y"], division_factor: float = 0.5):
+    def subdivide(
+        self, axis: Literal["x", "y"], division_factor: float = 0.5
+    ) -> Tuple["Rectangle", "Rectangle"]:
         """
         Subdivide the contour
 
@@ -106,8 +108,8 @@ class Rectangle(Contour):
             midpoint = self.x_range[0] + division_factor * (
                 self.x_range[1] - self.x_range[0]
             )
-            box1 = Rectangle([self.x_range[0], midpoint], self.y_range)
-            box2 = Rectangle([midpoint, self.x_range[1]], self.y_range)
+            box1 = Rectangle((self.x_range[0], midpoint), self.y_range)
+            box2 = Rectangle((midpoint, self.x_range[1]), self.y_range)
 
             box1.segments[3] = self.segments[3]
             box2.segments[1] = self.segments[1]
@@ -118,8 +120,8 @@ class Rectangle(Contour):
             midpoint = self.y_range[0] + division_factor * (
                 self.y_range[1] - self.y_range[0]
             )
-            box1 = Rectangle(self.x_range, [self.y_range[0], midpoint])
-            box2 = Rectangle(self.x_range, [midpoint, self.y_range[1]])
+            box1 = Rectangle(self.x_range, (self.y_range[0], midpoint))
+            box2 = Rectangle(self.x_range, (midpoint, self.y_range[1]))
 
             box1.segments[0] = self.segments[0]
             box2.segments[2] = self.segments[2]

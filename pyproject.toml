@@ -31,9 +31,9 @@ reportMissingParameterType = false
 reportUnknownArgumentType = false
 reportUnknownLambdaType = false
 
+reportPrivateUsage = false
 reportIncompatibleMethodOverride = false
 strictDictionaryInference = false
 
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
-reportUnusedCallResult = true

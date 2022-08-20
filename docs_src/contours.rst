@@ -9,7 +9,7 @@ The cxroots module allows the user to specify four different types of contours w
 * :ref:`contours:Annulus Sector`
 
 .. autoclass:: cxroots.contour.Contour
-	:members: __call__, plot, show, subdivisions, distance, integrate, count_roots, approximate_roots, roots, demo_roots, contains
+	:members: __call__, plot, show, subdivisions, distance, integrate, count_roots, roots, demo_roots, contains
 
 Circle
 ------

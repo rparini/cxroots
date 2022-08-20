@@ -1,10 +1,15 @@
+import functools
 from math import pi
-from typing import Optional
+from typing import Optional, TypeVar, Union, overload
 
 import numpy as np
+import numpy.typing as npt
 import scipy.integrate
 
+from .types import AnalyticFunc, Color, IntegrationMethod
 from .util import integrate_quad_complex
+
+ComplexPathType = TypeVar("ComplexPathType", bound="ComplexPath")
 
 
 class ComplexPath(object):
@@ -19,7 +24,17 @@ class ComplexPath(object):
         # up the _integral_cache for the reverse path
         self._reverse_path: Optional[ComplexPath] = None
 
-    def __call__(self, t):
+    @overload
+    def __call__(self, t: float) -> complex:
+        ...
+
+    @overload
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def __call__(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         r"""
         The parameterization of the path in the varaible :math:`t\in[0,1]`.
 
@@ -35,14 +50,35 @@ class ComplexPath(object):
         """
         raise NotImplementedError("__call__ must be implemented in a subclass")
 
-    def dzdt(self, t):
+    @overload
+    def dzdt(self, t: float) -> complex:
+        ...
+
+    @overload
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def dzdt(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
         """
         raise NotImplementedError("dzdt must be implemented in a subclass")
 
-    def trap_values(self, f, k, use_cache=True):
+    def distance(self, z: complex) -> float:
+        """
+        Distance from the point z to the closest point on the line.
+        """
+        raise NotImplementedError("distance must be implemented in a subclass")
+
+    def trap_values(
+        self,
+        f: AnalyticFunc,
+        k: int,
+        use_cache: bool = True,
+    ) -> npt.NDArray[np.complex128]:
         """
         Compute or retrieve (if cached) the values of the functions f
         at :math:`2^k+1` points along the contour which are evenly
@@ -98,7 +134,48 @@ class ComplexPath(object):
                 self._trap_cache[f] = vals
             return vals
 
-    def plot(self, num_points=100, linecolor="C0", linestyle="-"):
+    def trap_product(
+        self,
+        k: int,
+        f: AnalyticFunc,
+        df: Optional[AnalyticFunc] = None,
+        phi: Optional[AnalyticFunc] = None,
+        psi: Optional[AnalyticFunc] = None,
+    ) -> complex:
+        r"""
+        Use Romberg integration to estimate the symmetric bilinear form used in
+        (1.12) of [KB]_ using 2**k+1 samples
+
+        .. math::
+
+            <\phi,\psi> = \frac{1}{2\pi i} \oint_C \phi(z)\psi(z)\frac{f'(z)}{f(z)} dz
+        """
+        # compute/retrieve function evaluations
+        f_val = self.trap_values(f, k)
+        t = np.linspace(0, 1, 2**k + 1)
+        dt = t[1] - t[0]
+
+        if df is None:
+            # approximate df/dz with finite difference
+            dfdt = np.gradient(f_val, dt)
+            df_val = dfdt / self.dzdt(t)
+        else:
+            df_val = self.trap_values(df, k)
+
+        segment_integrand = df_val / f_val * self.dzdt(t)
+        if phi is not None:
+            segment_integrand = self.trap_values(phi, k) * segment_integrand
+        if psi is not None:
+            segment_integrand = self.trap_values(psi, k) * segment_integrand
+
+        return scipy.integrate.romb(segment_integrand, dx=dt, axis=-1) / (2j * pi)
+
+    def plot(
+        self,
+        num_points: int = 100,
+        linecolor: Color = "C0",
+        linestyle: str = "-",
+    ) -> None:
         """
         Uses matplotlib to plot, but not show, the path as a 2D plot in
         the Complex plane.
@@ -110,8 +187,8 @@ class ComplexPath(object):
         linecolor : optional
             The colour of the plotted path, passed to the
             :func:`matplotlib.pyplot.plot` function as the keyword
-            argument of 'color'.  See the matplotlib tutorial on
-            `specifying colours <https://matplotlib.org/users/colors.html#>`_.
+            argument of 'color'.  See the matplotlib tutorial on specifying
+            `colours <https://matplotlib.org/stable/tutorials/colors/colors#>`_.
         linestyle : str, optional
             The line style of the plotted path, passed to the
             :func:`matplotlib.pyplot.plot` function as the keyword
@@ -139,36 +216,23 @@ class ComplexPath(object):
             arrowprops=dict(arrowstyle="->", fc=linecolor, ec=linecolor),
         )
 
-    def show(self, save_file=None, **plot_kwargs):
-        """
-        Shows the path as a 2D plot in the complex plane.  Requires
-        Matplotlib.
-
-        Parameters
-        ----------
-        save_file : str (optional)
-            If given then the plot will be saved to disk with name
-            'save_file'.  If save_file=None the plot is shown on-screen.
-        **plot_kwargs
-            Other key word args are passed to :meth:`~cxroots.Paths.ComplexPath.plot`
-        """
-        import matplotlib.pyplot as plt
-
-        self.plot(**plot_kwargs)
-
-        if save_file is not None:
-            plt.savefig(save_file, bbox_inches="tight")
-            plt.close()
-        else:
-            plt.show()
-
     def integrate(
-        self, f, abs_tol=1.49e-08, rel_tol=1.49e-08, div_max=15, int_method="quad"
-    ):
-        """
-        Integrate the function f along the path.  The value of the
-        integral is cached and will be reused if the method is called
-        with same arguments (ignoring verbose).
+        self,
+        f: AnalyticFunc,
+        abs_tol: float = 1.49e-08,
+        rel_tol: float = 1.49e-08,
+        div_max: int = 15,
+        int_method: IntegrationMethod = "quad",
+    ) -> complex:
+        r"""
+        Integrate the function f along the path.
+
+        .. math::
+
+            \oint_C f(z) dz
+
+        The value of the integral is cached and will be reused if the method
+        is called with same arguments.
 
         Parameters
         ----------
@@ -191,12 +255,6 @@ class ComplexPath(object):
         -------
         complex
             The integral of the function f along the path.
-
-        Notes
-        -----
-        This function is only used when checking the
-        multiplicity of roots.  The bulk of the integration for
-        rootfinding is done with :func:`cxroots.CountRoots.prod`.
         """
 
         args = (f, abs_tol, rel_tol, div_max, int_method)
@@ -210,6 +268,7 @@ class ComplexPath(object):
             # if we have already computed the reverse of this path
             return -self._reverse_path._integral_cache[args]
 
+        @functools.lru_cache(maxsize=None)
         def integrand(t):
             return f(self(t)) * self.dzdt(t)
 
@@ -223,7 +282,7 @@ class ComplexPath(object):
                 divmax=div_max,
             )
         elif int_method == "quad":
-            integral, _ = integrate_quad_complex(
+            integral = integrate_quad_complex(
                 integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
             )
         else:
@@ -238,6 +297,29 @@ class ComplexPath(object):
 
         self._integral_cache[args] = integral
         return integral
+
+    def show(self, save_file: Optional[str] = None, **plot_kwargs) -> None:
+        """
+        Shows the path as a 2D plot in the complex plane.  Requires
+        Matplotlib.
+
+        Parameters
+        ----------
+        save_file : str (optional)
+            If given then the plot will be saved to disk with name
+            'save_file'.  If save_file=None the plot is shown on-screen.
+        **plot_kwargs
+            Other key word args are passed to :meth:`~cxroots.Paths.ComplexPath.plot`
+        """
+        import matplotlib.pyplot as plt
+
+        self.plot(**plot_kwargs)
+
+        if save_file is not None:
+            plt.savefig(save_file, bbox_inches="tight")
+            plt.close()
+        else:
+            plt.show()
 
 
 class ComplexLine(ComplexPath):
@@ -262,7 +344,17 @@ class ComplexLine(ComplexPath):
             self.b.imag,
         )
 
-    def __call__(self, t):
+    @overload
+    def __call__(self, t: float) -> complex:
+        ...
+
+    @overload
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def __call__(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         r"""
         The function :math:`z(t) = a + (b-a)t`.
 
@@ -278,14 +370,24 @@ class ComplexLine(ComplexPath):
         """
         return self.a + t * (self.b - self.a)
 
-    def dzdt(self, t):
+    @overload
+    def dzdt(self, t: float) -> complex:
+        ...
+
+    @overload
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def dzdt(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
         """
         return self.b - self.a
 
-    def distance(self, z):
+    def distance(self, z: complex) -> float:
         """
         Distance from the point z to the closest point on the line.
 
@@ -329,7 +431,7 @@ class ComplexArc(ComplexPath):
     dt : float
     """
 
-    def __init__(self, z0, R, t0, dt):  # noqa: N803
+    def __init__(self, z0: complex, R: float, t0: float, dt: float):  # noqa: N803
         self.z0, self.R, self.t0, self.dt = z0, R, t0, dt
         super(ComplexArc, self).__init__()
 
@@ -341,7 +443,17 @@ class ComplexArc(ComplexPath):
             self.dt,
         )
 
-    def __call__(self, t):
+    @overload
+    def __call__(self, t: float) -> complex:
+        ...
+
+    @overload
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def __call__(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         r"""
         The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.
 
@@ -357,14 +469,24 @@ class ComplexArc(ComplexPath):
         """
         return self.R * np.exp(1j * (self.t0 + t * self.dt)) + self.z0
 
-    def dzdt(self, t):
+    @overload
+    def dzdt(self, t: float) -> complex:
+        ...
+
+    @overload
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
+        ...
+
+    def dzdt(
+        self, t: Union[float, npt.NDArray[np.float_]]
+    ) -> Union[complex, npt.NDArray[np.complex_]]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
         """
         return 1j * self.dt * self.R * np.exp(1j * (self.t0 + t * self.dt))
 
-    def distance(self, z):
+    def distance(self, z: complex) -> float:
         """
         Distance from the point z to the closest point on the arc.
 
