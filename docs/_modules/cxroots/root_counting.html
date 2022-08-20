@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cxroots.root_counting &mdash; cxroots 2.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> cxroots
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory.html">Theory</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../countroots.html">Counting Roots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logging.html">Viewing Progress</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../result.html">Rootfinding Result</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cxroots</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>cxroots.root_counting</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cxroots.root_counting</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span><span class="p">,</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numdifftools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.contour_interface</span> <span class="kn">import</span> <span class="n">ContourABC</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">AnalyticFunc</span><span class="p">,</span> <span class="n">IntegrationMethod</span>
+
+<span class="n">RombCallback</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">complex</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="prod"><a class="viewcode-back" href="../../prod.html#cxroots.root_counting.prod">[docs]</a><span class="k">def</span> <span class="nf">prod</span><span class="p">(</span>
+    <span class="n">C</span><span class="p">:</span> <span class="n">ContourABC</span><span class="p">,</span>  <span class="c1"># noqa: N803</span>
+    <span class="n">f</span><span class="p">:</span> <span class="n">AnalyticFunc</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">phi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">psi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">abs_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.49e-08</span><span class="p">,</span>
+    <span class="n">rel_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.49e-08</span><span class="p">,</span>
+    <span class="n">div_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">div_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="n">df_approx_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">int_method</span><span class="p">:</span> <span class="n">IntegrationMethod</span> <span class="o">=</span> <span class="s2">&quot;quad&quot;</span><span class="p">,</span>
+    <span class="n">integer_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">inf</span><span class="p">,</span>
+    <span class="n">callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RombCallback</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the symmetric bilinear form used in (1.12) of [KB]_.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        &lt;\phi,\psi&gt; = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f&#39;(z)}{f(z)} dz.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    C : :class:`Contour &lt;cxroots.contour.Contour&gt;`</span>
+<span class="sd">        A contour in the complex plane for.  No roots or poles of f</span>
+<span class="sd">        should lie on C.</span>
+<span class="sd">    f : function</span>
+<span class="sd">        Function of a single variable f(x)</span>
+<span class="sd">    df : function, optional</span>
+<span class="sd">        Function of a single variable, df(x), providing the derivative</span>
+<span class="sd">        of the function f(x) at the point x.  If not provided then df is</span>
+<span class="sd">        approximated using a finite difference method.</span>
+<span class="sd">    phi : function, optional</span>
+<span class="sd">        Function of a single variable phi(x).  If not provided then</span>
+<span class="sd">        phi(z)=1.</span>
+<span class="sd">    psi : function, optional</span>
+<span class="sd">        Function of a single variable psi(x).  If not provided then</span>
+<span class="sd">        psi(z)=1.</span>
+<span class="sd">    abs_tol : float, optional</span>
+<span class="sd">        Absolute error tolerance for integration.</span>
+<span class="sd">    rel_tol : float, optional</span>
+<span class="sd">        Relative error tolerance for integration.</span>
+<span class="sd">    div_min : int, optional</span>
+<span class="sd">        Only used if int_method=&#39;romb&#39;. Minimum number of divisions before</span>
+<span class="sd">        the Romberg integration routine is allowed to exit.</span>
+<span class="sd">    div_max : int, optional</span>
+<span class="sd">        Only used if int_method=&#39;romb&#39;.  The maximum number of divisions</span>
+<span class="sd">        before the Romberg integration routine of a path exits.</span>
+<span class="sd">    df_approx_order : int, optional</span>
+<span class="sd">        Only used if df=None and int_method=&#39;quad&#39;.  Must be even.  The</span>
+<span class="sd">        argument order=df_approx_order is passed to numdifftools.Derivative and is the</span>
+<span class="sd">        order of the error term in the Taylor approximation.</span>
+<span class="sd">    int_method : {&#39;quad&#39;, &#39;romb&#39;}, optional</span>
+<span class="sd">        If &#39;quad&#39; then scipy.integrate.quad is used to perform the</span>
+<span class="sd">        integral.  If &#39;romb&#39; then Romberg integraion, using</span>
+<span class="sd">        scipy.integrate.romb, is performed instead.</span>
+<span class="sd">    integer_tol : float, optional</span>
+<span class="sd">        Only used when int_method is &#39;romb&#39;.  The integration routine will</span>
+<span class="sd">        not exit unless the result is within integer_tol of an integer.</span>
+<span class="sd">        This is useful when computing the number of roots in a contour,</span>
+<span class="sd">        which must be an integer.  By default integer_tol is inf.</span>
+<span class="sd">    callback : function, optional</span>
+<span class="sd">        Only used when int_method is &#39;romb&#39;.  A function that at each</span>
+<span class="sd">        step in the iteration is passed the current approximation for</span>
+<span class="sd">        the integral, the estimated error of that approximation and the</span>
+<span class="sd">        number of iterations.  If the return of callback evaluates to</span>
+<span class="sd">        True then the integration will end.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    complex</span>
+<span class="sd">        The value of the integral &lt;phi, psi&gt;.</span>
+<span class="sd">    float</span>
+<span class="sd">        An estimate of the error for the integration.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [KB] &quot;Computing the zeros of analytic functions&quot; by Peter Kravanja,</span>
+<span class="sd">        Marc Van Barel, Springer 2000</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">int_method</span> <span class="o">==</span> <span class="s2">&quot;romb&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_romb_prod</span><span class="p">(</span>
+            <span class="n">C</span><span class="p">,</span>
+            <span class="n">f</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">,</span>
+            <span class="n">phi</span><span class="p">,</span>
+            <span class="n">psi</span><span class="p">,</span>
+            <span class="n">abs_tol</span><span class="p">,</span>
+            <span class="n">rel_tol</span><span class="p">,</span>
+            <span class="n">div_min</span><span class="p">,</span>
+            <span class="n">div_max</span><span class="p">,</span>
+            <span class="n">integer_tol</span><span class="p">,</span>
+            <span class="n">callback</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">int_method</span> <span class="o">==</span> <span class="s2">&quot;quad&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_quad_prod</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">abs_tol</span><span class="p">,</span> <span class="n">rel_tol</span><span class="p">,</span> <span class="n">df_approx_order</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;int_method must be either &#39;romb&#39; or &#39;quad&#39;&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_romb_prod</span><span class="p">(</span>
+    <span class="n">C</span><span class="p">:</span> <span class="n">ContourABC</span><span class="p">,</span>  <span class="c1"># noqa: N803</span>
+    <span class="n">f</span><span class="p">:</span> <span class="n">AnalyticFunc</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">phi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">psi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">abs_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.49e-08</span><span class="p">,</span>
+    <span class="n">rel_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.49e-08</span><span class="p">,</span>
+    <span class="n">div_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">div_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="n">integer_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">inf</span><span class="p">,</span>
+    <span class="n">callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RombCallback</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List of approximations to the integral # noqa: E741 N806</span>
+
+    <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">div_max</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">div_min</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">abs_tol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">rel_tol</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">abs_tol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">rel_tol</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integer_tol</span>
+        <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">integer_tol</span>
+    <span class="p">):</span>
+        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">integral</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">trap_product</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+        <span class="n">I</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">integral</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">, integral=</span><span class="si">{</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, err=</span><span class="si">{</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">, integral=</span><span class="si">{</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">callback</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">err</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">I</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_quad_prod</span><span class="p">(</span>
+    <span class="n">C</span><span class="p">:</span> <span class="n">ContourABC</span><span class="p">,</span>  <span class="c1"># noqa: N803</span>
+    <span class="n">f</span><span class="p">:</span> <span class="n">AnalyticFunc</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">phi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">psi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">abs_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.49e-08</span><span class="p">,</span>
+    <span class="n">rel_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.49e-08</span><span class="p">,</span>
+    <span class="n">df_approx_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">numdifftools</span><span class="o">.</span><span class="n">Derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">df_approx_order</span><span class="p">)</span>
+        <span class="c1"># type checker needs this reassurance for some reason</span>
+        <span class="k">assert</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>  <span class="c1"># nosec B101</span>
+
+        <span class="c1"># Using scipy.misc.derivative leads to some roots being missed in tests</span>
+        <span class="c1"># df = lambda z: scipy.misc.derivative(f, z, dx=1.49e-8, n=1, order=3)</span>
+
+        <span class="c1"># Too slow</span>
+        <span class="c1"># import numdifftools.fornberg as ndf</span>
+        <span class="c1"># ndf.derivative returns an array [f, f&#39;, f&#39;&#39;, ...]</span>
+        <span class="c1"># df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])</span>
+
+    <span class="k">if</span> <span class="n">phi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">psi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">integrand_func</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">phi</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">psi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">integrand_func</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">psi</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">phi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">integrand_func</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">phi</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">integrand_func</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">C</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span>
+        <span class="n">integrand_func</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="n">abs_tol</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="n">rel_tol</span><span class="p">,</span> <span class="n">int_method</span><span class="o">=</span><span class="s2">&quot;quad&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">RootError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">count_roots</span><span class="p">(</span>
+    <span class="n">C</span><span class="p">:</span> <span class="n">ContourABC</span><span class="p">,</span>  <span class="c1"># noqa: N803</span>
+    <span class="n">f</span><span class="p">:</span> <span class="n">AnalyticFunc</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnalyticFunc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">int_abs_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.07</span><span class="p">,</span>
+    <span class="n">integer_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">div_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">div_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="n">df_approx_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">int_method</span><span class="p">:</span> <span class="n">IntegrationMethod</span> <span class="o">=</span> <span class="s2">&quot;quad&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For a function of one complex variable, f(z), which is analytic in</span>
+<span class="sd">    and within the contour C, return the number of zeros (counting</span>
+<span class="sd">    multiplicities) within the contour, N, using Cauchy&#39;s argument</span>
+<span class="sd">    principle,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        N = \frac{1}{2i\pi} \oint_C \frac{f&#39;(z)}{f(z)} dz.</span>
+
+<span class="sd">    If df(z), the derivative of f(z), is provided then the above</span>
+<span class="sd">    integral is computed directly.  Otherwise the derivative is</span>
+<span class="sd">    approximated using a finite difference method.</span>
+
+<span class="sd">    The number of roots is taken to be the closest integer to the</span>
+<span class="sd">    computed value of the integral and the result is only accepted</span>
+<span class="sd">    if the integral is within integer_tol of the closest integer.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    C : :class:`Contour &lt;cxroots.contour.Contour&gt;`</span>
+<span class="sd">        The contour which encloses the roots of f(z) that are to be</span>
+<span class="sd">        counted.</span>
+<span class="sd">    f : function</span>
+<span class="sd">        Function of a single variable f(z).</span>
+<span class="sd">    df : function, optional</span>
+<span class="sd">        Function of a single complex variable, df(z), providing the</span>
+<span class="sd">        derivative of the function f(z) at the point z.  If not</span>
+<span class="sd">        provided, df will be approximated using a finite difference</span>
+<span class="sd">        method.</span>
+<span class="sd">    int_abs_tol : float, optional</span>
+<span class="sd">        Required absolute error tolerance for the contour integration.</span>
+<span class="sd">        Since the Cauchy integral must be an integer it is only</span>
+<span class="sd">        necessary to distinguish which integer the integral is</span>
+<span class="sd">        converging towards.  Therefore, int_abs_tol can be fairly large.</span>
+<span class="sd">    integer_tol : float, optional</span>
+<span class="sd">        The evaluation of the Cauchy integral will be accepted if its</span>
+<span class="sd">        value is within integer_tol of the closest integer.</span>
+<span class="sd">    div_min : int, optional</span>
+<span class="sd">        Only used if int_method=&#39;romb&#39;. Minimum number of divisions</span>
+<span class="sd">        before the Romberg integration routine is allowed to exit.</span>
+<span class="sd">    div_max : int, optional</span>
+<span class="sd">        Only used if int_method=&#39;romb&#39;. The maximum number of divisions</span>
+<span class="sd">        before the Romberg integration routine of a path exits.</span>
+<span class="sd">    df_approx_order : int, optional</span>
+<span class="sd">        Only used if df=None and int_method=&#39;quad&#39;.  The argument order=df_approx_order</span>
+<span class="sd">        is passed to numdifftools.Derivative and is the order of the</span>
+<span class="sd">        error term in the Taylor approximation.  df_approx_order must be even.</span>
+<span class="sd">    int_method : {&#39;quad&#39;, &#39;romb&#39;}, optional</span>
+<span class="sd">        If &#39;quad&#39; then scipy.integrate.quad is used to perform the</span>
+<span class="sd">        integral.  If &#39;romb&#39; then Romberg integraion, using</span>
+<span class="sd">        scipy.integrate.romb, is performed instead.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        The number of zeros of f (counting multiplicities) which lie</span>
+<span class="sd">        within the contour C.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Computing number of roots within &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">C</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="c1"># ignore warnings and catch if integral is NaN later</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">integral</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span>
+            <span class="n">C</span><span class="p">,</span>
+            <span class="n">f</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">,</span>
+            <span class="n">abs_tol</span><span class="o">=</span><span class="n">int_abs_tol</span><span class="p">,</span>
+            <span class="n">rel_tol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">div_min</span><span class="o">=</span><span class="n">div_min</span><span class="p">,</span>
+            <span class="n">div_max</span><span class="o">=</span><span class="n">div_max</span><span class="p">,</span>
+            <span class="n">df_approx_order</span><span class="o">=</span><span class="n">df_approx_order</span><span class="p">,</span>
+            <span class="n">int_method</span><span class="o">=</span><span class="n">int_method</span><span class="p">,</span>
+            <span class="n">integer_tol</span><span class="o">=</span><span class="n">integer_tol</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">integral</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">RootError</span><span class="p">(</span>
+            <span class="s2">&quot;Result of integral is an invalid value. &quot;</span>
+            <span class="s2">&quot;Most likely because of a divide by zero error.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="p">(</span>
+        <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">integral</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="o">-</span> <span class="n">integral</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">integer_tol</span>
+        <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">integral</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">integer_tol</span>
+    <span class="p">):</span>
+        <span class="c1"># integral is sufficiently close to an integer</span>
+        <span class="n">num_zeros</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">integral</span><span class="o">.</span><span class="n">real</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Counted &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">num_zeros</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot; roots (including multiplicities) within &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">num_zeros</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">RootError</span><span class="p">(</span><span class="s2">&quot;The number of enclosed roots has not converged to an integer&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Robert Parini.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

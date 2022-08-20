@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iterative Methods &mdash; cxroots 1.1.11 documentation</title>
+  <title>Iterative Methods &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -32,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -46,12 +47,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -115,31 +119,30 @@
 }
 </style>
 <section id="iterative-methods">
-<h1>Iterative Methods<a class="headerlink" href="#iterative-methods" title="Permalink to this headline"></a></h1>
+<h1>Iterative Methods<a class="headerlink" href="#iterative-methods" title="Permalink to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="cxroots.IterativeMethods.iterateToRoot">
-<span class="sig-prename descclassname"><span class="pre">cxroots.IterativeMethods.</span></span><span class="sig-name descname"><span class="pre">iterateToRoot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steptol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roottol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxIter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attemptBest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#iterateToRoot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.IterativeMethods.iterateToRoot" title="Permalink to this definition"></a></dt>
-<dd><p>Starting with initial point x0 iterate to a root of f. This function
-is called during the rootfinding process to refine any roots found.
-If df is given then the Newton-Raphson method, <a class="reference internal" href="#cxroots.IterativeMethods.newton" title="cxroots.IterativeMethods.newton"><code class="xref py py-func docutils literal notranslate"><span class="pre">newton()</span></code></a>,
-will be used, otherwise Muller’s method, <a class="reference internal" href="#cxroots.IterativeMethods.muller" title="cxroots.IterativeMethods.muller"><code class="xref py py-func docutils literal notranslate"><span class="pre">muller()</span></code></a>, will be used instead.</p>
+<dt class="sig sig-object py" id="cxroots.iterative_methods.iterate_to_root">
+<span class="sig-prename descclassname"><span class="pre">cxroots.iterative_methods.</span></span><span class="sig-name descname"><span class="pre">iterate_to_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnalyticFunc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnalyticFunc</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine_roots_beyond_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cxroots/iterative_methods.html#iterate_to_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.iterative_methods.iterate_to_root" title="Permalink to this definition"></a></dt>
+<dd><p>Starting with initial point x0 iterate to a root of f. This function is called
+during the rootfinding process to refine any roots found. If df is given then
+the Newton-Raphson method, <a class="reference internal" href="#cxroots.iterative_methods.newton" title="cxroots.iterative_methods.newton"><code class="xref py py-func docutils literal notranslate"><span class="pre">newton()</span></code></a>, will be used,
+otherwise Muller’s method, <a class="reference internal" href="#cxroots.iterative_methods.muller" title="cxroots.iterative_methods.muller"><code class="xref py py-func docutils literal notranslate"><span class="pre">muller()</span></code></a>, will be used
+instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x0</strong> (<em>complex</em>) – An initial point for the iteration.</p></li>
 <li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
 <li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – The derivative of f.</p></li>
-<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
-<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
-<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
-<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
-x0, was at least as good as the current iteration, x, in the
-sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
-satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
-this case the previous iteration is returned as the approximation
-of the root.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
+<li><p><strong>step_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; step_tol and refine_roots_beyond_tol is False.</p></li>
+<li><p><strong>root_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – A root, x, is only returned if abs(f(x)) &lt; root_tol, otherwise None is returned</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after max_iter iterations.</p></li>
+<li><p><strong>refine_roots_beyond_tol</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then the routine ends only once the error of the previous iteration,
+x0, was at least as good as the current iteration, x, in the sense that
+abs(f(x)) &gt;= abs(f(x0)), and the previous iteration satisfied
+abs(dx0) &lt; step_tol. In this case the previous iteration is returned as the
+approximation of the root, provided that it satisfies abs(f(x)) &lt; root_tol</p></li>
 <li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and
@@ -148,7 +151,7 @@ the callback function evaluates to True then the routine will end.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An approximation for a root of f.  If the rootfinding was
+<dd class="field-even"><p>An approximation for a root of f. If the rootfinding was
 unsucessful then None will be returned instead.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
@@ -158,8 +161,8 @@ unsucessful then None will be returned instead.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cxroots.IterativeMethods.muller">
-<span class="sig-prename descclassname"><span class="pre">cxroots.IterativeMethods.</span></span><span class="sig-name descname"><span class="pre">muller</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steptol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roottol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxIter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attemptBest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#muller"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.IterativeMethods.muller" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cxroots.iterative_methods.muller">
+<span class="sig-prename descclassname"><span class="pre">cxroots.iterative_methods.</span></span><span class="sig-name descname"><span class="pre">muller</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnalyticFunc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine_roots_beyond_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cxroots/iterative_methods.html#muller"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.iterative_methods.muller" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for mpmath’s implementation of Muller’s method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -170,17 +173,16 @@ Should not equal x1.</p></li>
 <li><p><strong>x3</strong> (<em>float</em><em> or </em><em>complex</em>) – An initial point for iteration, should be close to a root of f.
 Should not equal x1 or x2.</p></li>
 <li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
-<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
-<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
-<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
-<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
+<li><p><strong>step_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; step_tol and refine_roots_beyond_tol is False.</p></li>
+<li><p><strong>root_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; root_tol and refine_roots_beyond_tol is False.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after max_iter iterations.</p></li>
+<li><p><strong>refine_roots_beyond_tol</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
 x0, was at least as good as the current iteration, x, in the
 sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
-satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
+satisfied either abs(dx0) &lt; step_tol or abs(f(x0)) &lt; root_tol.  In
 this case the previous iteration is returned as the approximation
 of the root.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
 <li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and
@@ -199,8 +201,8 @@ the callback function evaluates to True then the routine will end.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cxroots.IterativeMethods.newton">
-<span class="sig-prename descclassname"><span class="pre">cxroots.IterativeMethods.</span></span><span class="sig-name descname"><span class="pre">newton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steptol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roottol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxIter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attemptBest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/IterativeMethods.html#newton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.IterativeMethods.newton" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cxroots.iterative_methods.newton">
+<span class="sig-prename descclassname"><span class="pre">cxroots.iterative_methods.</span></span><span class="sig-name descname"><span class="pre">newton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnalyticFunc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnalyticFunc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine_roots_beyond_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cxroots/iterative_methods.html#newton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.iterative_methods.newton" title="Permalink to this definition"></a></dt>
 <dd><p>Find an approximation to a point xf such that f(xf)=0 for a
 scalar function f using Newton-Raphson iteration starting at
 the point x0.</p>
@@ -212,17 +214,16 @@ possible to a root of f</p></li>
 <li><p><strong>f</strong> (<em>function</em>) – Function of a single variable which we seek to find a root of.</p></li>
 <li><p><strong>df</strong> (<em>function</em>) – Function of a single variable, df(x), providing the
 derivative of the function f(x) at the point x</p></li>
-<li><p><strong>steptol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
-iterations satisfies abs(dx) &lt; steptol and attemptBest is False.</p></li>
-<li><p><strong>roottol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; roottol and attemptBest is False.</p></li>
-<li><p><strong>maxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after maxIter iterations.</p></li>
-<li><p><strong>attemptBest</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
+<li><p><strong>step_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if the step size, dx, between sucessive
+iterations satisfies abs(dx) &lt; step_tol and refine_roots_beyond_tol is False.</p></li>
+<li><p><strong>root_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – The routine ends if abs(f(x)) &lt; root_tol and refine_roots_beyond_tol is False.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>optional</em>) – The routine ends after max_iter iterations.</p></li>
+<li><p><strong>refine_roots_beyond_tol</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True then routine ends if the error of the previous iteration,
 x0, was at least as good as the current iteration, x, in the
 sense that abs(f(x)) &gt;= abs(f(x0)) and the previous iteration
-satisfied either abs(dx0) &lt; steptol or abs(f(x0)) &lt; roottol.  In
+satisfied either abs(dx0) &lt; step_tol or abs(f(x0)) &lt; root_tol.  In
 this case the previous iteration is returned as the approximation
 of the root.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print x, dx and f(x) at each step of the iteration.</p></li>
 <li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – After each iteration callback(x, dx, f(x), iteration) will be
 called where ‘x’ is the current iteration of the estimated root,
 ‘dx’ is the step size between the previous and current ‘x’ and

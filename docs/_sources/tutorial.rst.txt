@@ -17,21 +17,11 @@ cxroots allows the user to choose from one of four kinds of contours:
 
 .. |annulussefig| image:: annulussefig.png 
 
-.. +------------------------+------------------------+
-.. | :ref:`circle`          | :ref:`annulus`         |
-.. +------------------------+------------------------+
-.. | |circlefig|            | |annulusfig|           |
-.. +------------------------+------------------------+
-.. | :ref:`rectangle`       | :ref:`Annulus Sector`  |
-.. +------------------------+------------------------+
-.. | |rectanglefig|         | |annulussefig|         |
-.. +------------------------+------------------------+
-
-+------------------------+------------------------+------------------------+------------------------+
-| :ref:`circle`          | :ref:`rectangle`       | :ref:`annulus`         | :ref:`Annulus Sector`  |
-+------------------------+------------------------+------------------------+------------------------+
-| |circlefig|            | |rectanglefig|         | |annulusfig|           | |annulussefig|         |
-+------------------------+------------------------+------------------------+------------------------+
++-------------------------+---------------------------+-------------------------+--------------------------------+
+| :ref:`contours:circle`  | :ref:`contours:rectangle` | :ref:`contours:annulus` | :ref:`contours:annulus sector` |
++-------------------------+---------------------------+-------------------------+--------------------------------+
+| |circlefig|             | |rectanglefig|            | |annulusfig|            | |annulussefig|                 |
++-------------------------+---------------------------+-------------------------+--------------------------------+
 
 For example, to define a rectangle whose verticies are the points :math:`0, i, 2+i, 2` we would write:
 
@@ -40,7 +30,12 @@ For example, to define a rectangle whose verticies are the points :math:`0, i, 2
 	from cxroots import Rectangle
 	rect = Rectangle([0,2], [0,1])
 
-To check that this is what we want we can plot this contour using matplotlib:
+To check that this is what we want we can plot this contour:
+
+.. note::
+	Getting cxroots to plot roots and contours requires additional optional dependencies that can be installed with::
+		
+		pip install cxroots[plot]
 
 .. code-block:: python
 
@@ -55,7 +50,7 @@ To check that this is what we want we can plot this contour using matplotlib:
 
 Rootfinding
 -----------
-To find the roots of a function :math:`f(z)` within a contour :math:`C` we can use the method :py:meth:`C.roots(f) <cxroots.Contour.Contour.roots>` or preferably :py:meth:`C.roots(f, df) <cxroots.Contour.Contour.roots>` if the derivative `df` is known.
+To find the roots of a function :math:`f(z)` within a contour :math:`C` we can use the method :py:meth:`C.roots(f) <cxroots.contour.Contour.roots>` or preferably :py:meth:`C.roots(f, df) <cxroots.contour.Contour.roots>` if the derivative `df` is known.
 
 For example, suppose we want to find all the roots of the function :math:`f(z) = iz^5 + z\sin(z)` within a circle of radius 2 and centered at :math:`z=0`.
 With cxroots this acomplished with the following short Python script:
@@ -65,7 +60,7 @@ With cxroots this acomplished with the following short Python script:
 
 In the first three lines we define the function :math:`f(z)` and its derivative :math:`f'(z)`. 
 We then define our contour, in this case the circle :math:`C=\{z\in\mathbb{C}\,|\,|z|=2\}`.
-The method :py:meth:`C.roots(f, df) <cxroots.Contour.Contour.roots>` on the last line returns a :py:class:`~cxroots.RootResult.RootResult` object which we can use to print the roots and their multiplicities:
+The method :py:meth:`C.roots(f, df) <cxroots.contour.Contour.roots>` on the last line returns a :py:class:`~cxroots.root_result.RootResult` object which we can use to print the roots and their multiplicities:
 
 .. code-block:: python
 
@@ -82,7 +77,7 @@ We can also plot the roots using matplotlib:
 .. image:: tutorial_roots.png
 	:width: 400px
 
-The :py:class:`RootResult <cxroots.RootResult.RootResult>` object also contains the roots and multiplicites as lists which can be accessed as:
+The :py:class:`RootResult <cxroots.root_result.RootResult>` object also contains the roots and multiplicites as lists which can be accessed as:
 
 .. code-block:: python
 

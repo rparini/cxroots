@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cxroots: rootfinding for complex analytic functions &mdash; cxroots 1.1.11 documentation</title>
+  <title>cxroots: rootfinding for complex analytic functions &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -15,8 +15,11 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,7 +34,7 @@
             <a href="#" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -45,12 +48,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -114,13 +120,13 @@
 }
 </style>
 <section id="cxroots-rootfinding-for-complex-analytic-functions">
-<h1>cxroots: rootfinding for complex analytic functions<a class="headerlink" href="#cxroots-rootfinding-for-complex-analytic-functions" title="Permalink to this headline"></a></h1>
-<p>cxroots is a Python package for finding all the roots of a function, <em>f(z)</em>, of a single complex variable within a given contour, <em>C</em>, in the complex plane.  It requires only that:</p>
+<h1>cxroots: rootfinding for complex analytic functions<a class="headerlink" href="#cxroots-rootfinding-for-complex-analytic-functions" title="Permalink to this heading"></a></h1>
+<p>cxroots is a Python package for finding all the roots of a function, <span class="math notranslate nohighlight">\(f(z)\)</span>, of a single complex variable within a given contour, <span class="math notranslate nohighlight">\(C\)</span>, in the complex plane.  It requires only that both:</p>
 <ul class="simple">
-<li><p><em>f(z)</em> has no roots or poles on <em>C</em></p></li>
-<li><p><em>f(z)</em> is analytic in the interior of <em>C</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(z)\)</span> has no roots or poles on <span class="math notranslate nohighlight">\(C\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(z)\)</span> is analytic in the interior of <span class="math notranslate nohighlight">\(C\)</span></p></li>
 </ul>
-<p>The implementation is primarily based on <a class="reference internal" href="prod.html#kb" id="id1"><span>[KB]</span></a> and evaluates contour integrals involving <em>f(z)</em> and its derivative <em>f’(z)</em> to determine the roots.  If <em>f’(z)</em> is not provided then it is approximated using a finite difference method.  The roots are further refined using Newton-Raphson if <em>f’(z)</em> is given or Muller’s method if not.</p>
+<p>The implementation is primarily based on <span id="id1">Kravanja and Van Barel [<a class="reference internal" href="theory.html#id3" title="P. Kravanja and M. Van Barel. Computing the Zeros of Analytic Functions. Springer, Berlin, Heidelberg, 2000. ISBN 978-3-540-67162-6. doi:10.1007/BFb0103927.">KVanBarel00</a>]</span> and evaluates contour integrals involving <span class="math notranslate nohighlight">\(f(z)\)</span> and its derivative <span class="math notranslate nohighlight">\(f'(z)\)</span> to approximate the roots. Then iterative methods, such as Newton-Raphson or Muller’s method are used to refine the roots. If <span class="math notranslate nohighlight">\(f'(z)\)</span> is not provided then it is approximated. See the <a class="reference internal" href="theory.html#theory"><span class="std std-ref">Theory</span></a> page for a more detailed explanation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">+</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
 
@@ -130,9 +136,9 @@
 <span class="n">roots</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="https://github.com/rparini/cxroots/blob/master/README_resources/readmeEx.png?raw=true" src="https://github.com/rparini/cxroots/blob/master/README_resources/readmeEx.png?raw=true" />
+<img alt="https://github.com/rparini/cxroots/blob/master/README_resources/readme_example.png?raw=true" src="https://github.com/rparini/cxroots/blob/master/README_resources/readme_example.png?raw=true" />
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
@@ -140,6 +146,22 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#contours">Contours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#rootfinding">Rootfinding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v2-0-0">v2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-11">v1.1.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-10">v1.1.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-9">v1.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-8">v1.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-7">v1.1.7: </a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-6">v1.1.6: </a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-5">v1.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-0-0">v1.0.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#references">References</a></li>
 </ul>
 </li>
 </ul>
@@ -152,6 +174,12 @@
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="guesses.html#guessing-roots">Guessing Roots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guesses.html#guessing-root-symmetry">Guessing Root Symmetry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#progress-bar">Progress Bar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#logging-with-progress-bar">Logging with Progress Bar</a></li>
 </ul>
 </li>
 </ul>
@@ -185,14 +213,6 @@
 <li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a></li>
 </ul>
 </div>
-</section>
-<section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
-<dl class="citation">
-<dt class="label" id="kb"><span class="brackets"><a class="fn-backref" href="#id1">KB</a></span></dt>
-<dd><p>P. Kravanja and M. Van Barel.  <em>Computing the Zeros of Analytic Functions</em>. Springer, Berlin, Heidelberg, 2000.</p>
-</dd>
-</dl>
 </section>
 </section>
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Using Known Roots or Symmetries &mdash; cxroots 1.1.11 documentation</title>
+  <title>Using Known Roots or Symmetries &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -15,14 +15,15 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Stability of an Annular Combustion Chamber" href="ex_annular_combustion.html" />
+    <link rel="next" title="Viewing Progress" href="logging.html" />
     <link rel="prev" title="Demonstrating Rootfinding" href="demo.html" /> 
 </head>
 
@@ -34,7 +35,7 @@
             <a href="index.html" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -48,6 +49,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul class="current">
@@ -58,6 +61,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#guessing-root-symmetry">Guessing Root Symmetry</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -121,40 +125,40 @@
 }
 </style>
 <section id="using-known-roots-or-symmetries">
-<h1>Using Known Roots or Symmetries<a class="headerlink" href="#using-known-roots-or-symmetries" title="Permalink to this headline"></a></h1>
+<h1>Using Known Roots or Symmetries<a class="headerlink" href="#using-known-roots-or-symmetries" title="Permalink to this heading"></a></h1>
 <section id="guessing-roots">
-<h2>Guessing Roots<a class="headerlink" href="#guessing-roots" title="Permalink to this headline"></a></h2>
-<p>The <cite>guessRoots</cite> argument of <code class="xref py py-func docutils literal notranslate"><span class="pre">Contour.roots</span></code> can be used to supply any roots the user already knows or suspects.
+<h2>Guessing Roots<a class="headerlink" href="#guessing-roots" title="Permalink to this heading"></a></h2>
+<p>The <cite>guess_roots</cite> argument of <code class="xref py py-func docutils literal notranslate"><span class="pre">Contour.roots</span></code> can be used to supply any roots the user already knows or suspects.
 For example, suppose we want to find the roots of the function</p>
 <div class="math notranslate nohighlight">
 \[f(z)=(z+1.2)(z-2.5)^2\left(e^{-z}\sin\left(\frac{z}{2}\right)-1.2\cos(z)\right)\,, \quad |z|&lt;3\]</div>
-<p>It’s obvious that 2.5 and -1.2 are roots so we can tell cxroots this by passing <code class="code docutils literal notranslate"><span class="pre">guessRoots=[2.5,</span> <span class="pre">-1.2]</span></code> to <code class="xref py py-func docutils literal notranslate"><span class="pre">C.roots()</span></code>.</p>
+<p>It’s obvious that 2.5 and -1.2 are roots so we can tell cxroots this by passing <code class="code docutils literal notranslate"><span class="pre">guess_roots=[2.5,</span> <span class="pre">-1.2]</span></code> to <code class="xref py py-func docutils literal notranslate"><span class="pre">C.roots()</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
 <span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mf">1.2</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mf">1.2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="mf">2.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">guessRoots</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.2</span><span class="p">])</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">guess_roots</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.2</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>This causes cxroots to first check for roots within small circles centered on the points 2.5 and -1.2</p>
 <p>(<a class="reference external" href=".//guesses-1.py">Source code</a>)</p>
-<a class="reference internal image-reference" href="_images/guessRoots.gif"><img alt="_images/guessRoots.gif" src="_images/guessRoots.gif" style="width: 500px;" /></a>
-<p>Note that the list we supply to <cite>guessRoots</cite> simply tells <cite>cxroots</cite> where to look first for roots, the guesses will not be blindly accepted so they do not need to be particularly accurate.</p>
+<a class="reference internal image-reference" href="_images/guess_roots.gif"><img alt="_images/guess_roots.gif" src="_images/guess_roots.gif" style="width: 500px;" /></a>
+<p>Note that the list we supply to <cite>guess_roots</cite> simply tells <cite>cxroots</cite> where to look first for roots, the guesses will not be blindly accepted so they do not need to be particularly accurate.</p>
 </section>
 <section id="guessing-root-symmetry">
-<h2>Guessing Root Symmetry<a class="headerlink" href="#guessing-root-symmetry" title="Permalink to this headline"></a></h2>
+<h2>Guessing Root Symmetry<a class="headerlink" href="#guessing-root-symmetry" title="Permalink to this heading"></a></h2>
 <p>It may be that something is known about the structure of the roots.
-<cite>cxroots</cite> can be told this using the <cite>guessRootSymmetry</cite> argument which should be a function of a complex number, <span class="math notranslate nohighlight">\(z\)</span>, which returns a list of roots assuming that <span class="math notranslate nohighlight">\(z\)</span> is a root.</p>
+<cite>cxroots</cite> can be told this using the <cite>guess_roots_symmetry</cite> argument which should be a function of a complex number, <span class="math notranslate nohighlight">\(z\)</span>, which returns a list of roots assuming that <span class="math notranslate nohighlight">\(z\)</span> is a root.</p>
 <p>For example, if <span class="math notranslate nohighlight">\(z_i\)</span> is a root of</p>
 <div class="math notranslate nohighlight">
 \[f(z)=z^{26}-2z^{10}+\frac{1}{2}z^6-1\]</div>
 <p>then so is <span class="math notranslate nohighlight">\(\overline{z_i}\)</span> and <span class="math notranslate nohighlight">\(-z_i\)</span>.
-We should therefore pass <code class="code docutils literal notranslate"><span class="pre">guessRootSymmetry=lambda</span> <span class="pre">z:</span> <span class="pre">[z.conjugate(),</span> <span class="pre">-z]</span></code> to <code class="xref py py-func docutils literal notranslate"><span class="pre">C.roots()</span></code></p>
+We should therefore pass <code class="code docutils literal notranslate"><span class="pre">guess_roots_symmetry=lambda</span> <span class="pre">z:</span> <span class="pre">[z.conjugate(),</span> <span class="pre">-z]</span></code> to <code class="xref py py-func docutils literal notranslate"><span class="pre">C.roots()</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Rectangle</span>
 <span class="n">C</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">])</span>
 <span class="n">f</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">**</span><span class="mi">26</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">10</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">6</span><span class="o">-</span><span class="mi">1</span>
 <span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">26</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">25</span><span class="o">-</span><span class="mi">20</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">3</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span>
-<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guessRootSymmetry</span><span class="o">=</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="o">-</span><span class="n">z</span><span class="p">])</span>
+<span class="n">C</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">guess_roots_symmetry</span><span class="o">=</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="o">-</span><span class="n">z</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>This causes <cite>cxroots</cite> to check for roots within a small circle centered on the points <span class="math notranslate nohighlight">\(\overline{z_i}\)</span> and <span class="math notranslate nohighlight">\(-z_i\)</span> whenever a root, <span class="math notranslate nohighlight">\(z_i\)</span>, is found.</p>
@@ -168,7 +172,7 @@ We should therefore pass <code class="code docutils literal notranslate"><span c
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="demo.html" class="btn btn-neutral float-left" title="Demonstrating Rootfinding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="ex_annular_combustion.html" class="btn btn-neutral float-right" title="Stability of an Annular Combustion Chamber" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="logging.html" class="btn btn-neutral float-right" title="Viewing Progress" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

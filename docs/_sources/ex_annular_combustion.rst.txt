@@ -32,10 +32,10 @@ The result there can be replicated in cxroots with:
 	df = lambda z: 2*z + A - B*T*exp(-T*z)
 
 	rectangle = Rectangle([-15000,5000], [-15000,15000])
-	roots = rectangle.roots(f, df, rootErrTol=1e-6)
+	roots = rectangle.roots(f, df, root_err_tol=1e-6)
 	roots.show()
 
-Note that if :code:`rootErrTol=1e-6` is omitted then the Newton-Raphson method used to refine the roots is sometimes unable to converge to a point where :math:`|f(z)|<\text{rootErrTol}`.  In this case the contour bounding the root is continually subdivided until it has area less than :code:`newtonStepTol` at which point the best approximation to the root within the contour will be taken to be 'good enough' and a warning message will be printed to inform the user.
+Note that if :code:`root_err_tol=1e-6` is omitted then the Newton-Raphson method used to refine the roots is sometimes unable to converge to a point where :math:`|f(z)|<\text{root_err_tol}`.  In this case the contour bounding the root is continually subdivided until it has area less than :code:`newton_step_tol` at which point the best approximation to the root within the contour will be taken to be 'good enough' and a warning message will be printed to inform the user.
 
 References
 ----------

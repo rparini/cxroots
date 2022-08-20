@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Demonstrating Rootfinding &mdash; cxroots 1.1.11 documentation</title>
+  <title>Demonstrating Rootfinding &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -32,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -46,12 +47,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -115,7 +119,7 @@
 }
 </style>
 <section id="demonstrating-rootfinding">
-<h1>Demonstrating Rootfinding<a class="headerlink" href="#demonstrating-rootfinding" title="Permalink to this headline"></a></h1>
+<h1>Demonstrating Rootfinding<a class="headerlink" href="#demonstrating-rootfinding" title="Permalink to this heading"></a></h1>
 <p>The rootfinding process can be visualised using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">demo_roots()</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
@@ -132,11 +136,11 @@
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">+</span><span class="n">z</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 
-<span class="n">C</span><span class="o">.</span><span class="n">demo_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">saveFile</span><span class="o">=</span><span class="s1">&#39;rootsDemo.gif&#39;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">demo_roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">save_file</span><span class="o">=</span><span class="s1">&#39;roots.gif&#39;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s1">&#39;imagemagick&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//demo-1.py">Source code</a>)</p>
-<a class="reference internal image-reference" href="_images/rootsDemo.gif"><img alt="_images/rootsDemo.gif" src="_images/rootsDemo.gif" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/roots.gif"><img alt="_images/roots.gif" src="_images/roots.gif" style="width: 400px;" /></a>
 </section>
 
 

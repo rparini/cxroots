@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutorial &mdash; cxroots 1.1.11 documentation</title>
+  <title>Tutorial &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -15,14 +15,15 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Counting Roots" href="countroots.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -34,7 +35,7 @@
             <a href="index.html" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,12 +53,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#rootfinding">Rootfinding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -121,18 +125,18 @@
 }
 </style>
 <section id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline"></a></h1>
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
 <section id="contours">
-<h2>Contours<a class="headerlink" href="#contours" title="Permalink to this headline"></a></h2>
+<h2>Contours<a class="headerlink" href="#contours" title="Permalink to this heading"></a></h2>
 <p>cxroots is not a global rootfinder: it can only find roots within a given region of the complex plane.
 So the first step is to specify this region as the interior of a contour.
 cxroots allows the user to choose from one of four kinds of contours:</p>
 <table class="docutils align-default">
 <colgroup>
+<col style="width: 23%" />
 <col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
+<col style="width: 23%" />
+<col style="width: 29%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="contours.html#circle"><span class="std std-ref">Circle</span></a></p></td>
@@ -152,7 +156,14 @@ cxroots allows the user to choose from one of four kinds of contours:</p>
 <span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>To check that this is what we want we can plot this contour using matplotlib:</p>
+<p>To check that this is what we want we can plot this contour:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Getting cxroots to plot roots and contours requires additional optional dependencies that can be installed with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cxroots</span><span class="p">[</span><span class="n">plot</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rect</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -162,7 +173,7 @@ cxroots allows the user to choose from one of four kinds of contours:</p>
 </figure>
 </section>
 <section id="rootfinding">
-<h2>Rootfinding<a class="headerlink" href="#rootfinding" title="Permalink to this headline"></a></h2>
+<h2>Rootfinding<a class="headerlink" href="#rootfinding" title="Permalink to this heading"></a></h2>
 <p>To find the roots of a function <span class="math notranslate nohighlight">\(f(z)\)</span> within a contour <span class="math notranslate nohighlight">\(C\)</span> we can use the method <code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f)</span></code> or preferably <code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f,</span> <span class="pre">df)</span></code> if the derivative <cite>df</cite> is known.</p>
 <p>For example, suppose we want to find all the roots of the function <span class="math notranslate nohighlight">\(f(z) = iz^5 + z\sin(z)\)</span> within a circle of radius 2 and centered at <span class="math notranslate nohighlight">\(z=0\)</span>.
 With cxroots this acomplished with the following short Python script:</p>
@@ -177,7 +188,7 @@ With cxroots this acomplished with the following short Python script:</p>
 </div>
 <p>In the first three lines we define the function <span class="math notranslate nohighlight">\(f(z)\)</span> and its derivative <span class="math notranslate nohighlight">\(f'(z)\)</span>.
 We then define our contour, in this case the circle <span class="math notranslate nohighlight">\(C=\{z\in\mathbb{C}\,|\,|z|=2\}\)</span>.
-The method <code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f,</span> <span class="pre">df)</span></code> on the last line returns a <a class="reference internal" href="result.html#cxroots.RootResult.RootResult" title="cxroots.RootResult.RootResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootResult</span></code></a> object which we can use to print the roots and their multiplicities:</p>
+The method <code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f,</span> <span class="pre">df)</span></code> on the last line returns a <a class="reference internal" href="result.html#cxroots.root_result.RootResult" title="cxroots.root_result.RootResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootResult</span></code></a> object which we can use to print the roots and their multiplicities:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -194,13 +205,13 @@ The method <code class="xref py py-meth docutils literal notranslate"><span clas
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/tutorial_roots.png"><img alt="_images/tutorial_roots.png" src="_images/tutorial_roots.png" style="width: 400px;" /></a>
-<p>The <a class="reference internal" href="result.html#cxroots.RootResult.RootResult" title="cxroots.RootResult.RootResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootResult</span></code></a> object also contains the roots and multiplicites as lists which can be accessed as:</p>
+<p>The <a class="reference internal" href="result.html#cxroots.root_result.RootResult" title="cxroots.root_result.RootResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootResult</span></code></a> object also contains the roots and multiplicites as lists which can be accessed as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">roots</span><span class="p">,</span> <span class="n">multiplicities</span> <span class="o">=</span> <span class="n">r</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (3.4502541281020263e-29+5.968842083644921e-29j)]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (5.575953278639637e-29+1.6418167589912308e-29j)]
 [1, 1, 1, 2]
 </pre></div>
 </div>
@@ -208,7 +219,7 @@ The method <code class="xref py py-meth docutils literal notranslate"><span clas
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">roots</span>
 </pre></div>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (3.4502541281020263e-29+5.968842083644921e-29j)]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (5.575953278639637e-29+1.6418167589912308e-29j)]
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">multiplicities</span>
@@ -225,7 +236,7 @@ The method <code class="xref py py-meth docutils literal notranslate"><span clas
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="countroots.html" class="btn btn-neutral float-right" title="Counting Roots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; cxroots 1.1.11 documentation</title>
+  <title>Index &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -29,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -43,12 +44,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -97,7 +101,6 @@
  | <a href="#I"><strong>I</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
- | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -107,12 +110,12 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contours.html#cxroots.Contour.Contour.__call__">__call__() (cxroots.Contour.Contour method)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.__call__">__call__() (cxroots.contour.Contour method)</a>
 
       <ul>
-        <li><a href="paths.html#cxroots.Paths.ComplexArc.__call__">(cxroots.Paths.ComplexArc method)</a>
+        <li><a href="paths.html#cxroots.paths.ComplexArc.__call__">(cxroots.paths.ComplexArc method)</a>
 </li>
-        <li><a href="paths.html#cxroots.Paths.ComplexLine.__call__">(cxroots.Paths.ComplexLine method)</a>
+        <li><a href="paths.html#cxroots.paths.ComplexLine.__call__">(cxroots.paths.ComplexLine method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -127,7 +130,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="contours.html#cxroots.AnnulusSector">AnnulusSector (class in cxroots)</a>
 </li>
-      <li><a href="contours.html#cxroots.Contour.Contour.area">area (cxroots.Contour.Contour attribute)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.area">area (cxroots.contour.Contour attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -135,21 +138,25 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contours.html#cxroots.Contour.Contour.centralPoint">centralPoint (cxroots.Contour.Contour attribute)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.central_point">central_point (cxroots.contour.Contour attribute)</a>
 </li>
       <li><a href="contours.html#cxroots.Circle">Circle (class in cxroots)</a>
 </li>
-      <li><a href="paths.html#cxroots.Paths.ComplexArc">ComplexArc (class in cxroots.Paths)</a>
+      <li><a href="paths.html#cxroots.paths.ComplexArc">ComplexArc (class in cxroots.paths)</a>
+</li>
+      <li><a href="paths.html#cxroots.paths.ComplexLine">ComplexLine (class in cxroots.paths)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="paths.html#cxroots.Paths.ComplexLine">ComplexLine (class in cxroots.Paths)</a>
+      <li><a href="paths.html#cxroots.paths.ComplexPath">ComplexPath (class in cxroots.paths)</a>
 </li>
-      <li><a href="paths.html#cxroots.Paths.ComplexPath">ComplexPath (class in cxroots.Paths)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.contains">contains() (cxroots.contour.Contour method)</a>
 </li>
-      <li><a href="contours.html#cxroots.Contour.Contour.contains">contains() (cxroots.Contour.Contour method)</a>
+      <li><a href="contours.html#cxroots.contour.Contour">Contour (class in cxroots.contour)</a>
 </li>
-      <li><a href="contours.html#cxroots.Contour.Contour">Contour (class in cxroots.Contour)</a>
+      <li><a href="result.html#cxroots.root_result.RootResult.contour">contour (cxroots.root_result.RootResult attribute)</a>
+</li>
+      <li><a href="contours.html#cxroots.contour.Contour.count_roots">count_roots() (cxroots.contour.Contour method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -157,12 +164,12 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contours.html#cxroots.Contour.Contour.distance">distance() (cxroots.Contour.Contour method)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.distance">distance() (cxroots.contour.Contour method)</a>
 
       <ul>
-        <li><a href="paths.html#cxroots.Paths.ComplexArc.distance">(cxroots.Paths.ComplexArc method)</a>
+        <li><a href="paths.html#cxroots.paths.ComplexArc.distance">(cxroots.paths.ComplexArc method)</a>
 </li>
-        <li><a href="paths.html#cxroots.Paths.ComplexLine.distance">(cxroots.Paths.ComplexLine method)</a>
+        <li><a href="paths.html#cxroots.paths.ComplexLine.distance">(cxroots.paths.ComplexLine method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -171,15 +178,15 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contours.html#cxroots.Contour.Contour.integrate">integrate() (cxroots.Contour.Contour method)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.integrate">integrate() (cxroots.contour.Contour method)</a>
 
       <ul>
-        <li><a href="paths.html#cxroots.Paths.ComplexPath.integrate">(cxroots.Paths.ComplexPath method)</a>
+        <li><a href="paths.html#cxroots.paths.ComplexPath.integrate">(cxroots.paths.ComplexPath method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iteration.html#cxroots.IterativeMethods.iterateToRoot">iterateToRoot() (in module cxroots.IterativeMethods)</a>
+      <li><a href="iteration.html#cxroots.iterative_methods.iterate_to_root">iterate_to_root() (in module cxroots.iterative_methods)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -187,11 +194,11 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iteration.html#cxroots.IterativeMethods.muller">muller() (in module cxroots.IterativeMethods)</a>
+      <li><a href="iteration.html#cxroots.iterative_methods.muller">muller() (in module cxroots.iterative_methods)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="result.html#cxroots.RootResult.RootResult.multiplicities">multiplicities (cxroots.RootResult.RootResult attribute)</a>
+      <li><a href="result.html#cxroots.root_result.RootResult.multiplicities">multiplicities (cxroots.root_result.RootResult attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -199,15 +206,7 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iteration.html#cxroots.IterativeMethods.newton">newton() (in module cxroots.IterativeMethods)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="result.html#cxroots.RootResult.RootResult.originalContour">originalContour (cxroots.RootResult.RootResult attribute)</a>
+      <li><a href="iteration.html#cxroots.iterative_methods.newton">newton() (in module cxroots.iterative_methods)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -215,15 +214,15 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contours.html#cxroots.Contour.Contour.plot">plot() (cxroots.Contour.Contour method)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.plot">plot() (cxroots.contour.Contour method)</a>
 
       <ul>
-        <li><a href="paths.html#cxroots.Paths.ComplexPath.plot">(cxroots.Paths.ComplexPath method)</a>
+        <li><a href="paths.html#cxroots.paths.ComplexPath.plot">(cxroots.paths.ComplexPath method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="prod.html#cxroots.CountRoots.prod">prod() (in module cxroots.CountRoots)</a>
+      <li><a href="prod.html#cxroots.root_counting.prod">prod() (in module cxroots.root_counting)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -235,9 +234,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="result.html#cxroots.RootResult.RootResult">RootResult (class in cxroots.RootResult)</a>
+      <li><a href="result.html#cxroots.root_result.RootResult">RootResult (class in cxroots.root_result)</a>
 </li>
-      <li><a href="result.html#cxroots.RootResult.RootResult.roots">roots (cxroots.RootResult.RootResult attribute)</a>
+      <li><a href="result.html#cxroots.root_result.RootResult.roots">roots (cxroots.root_result.RootResult attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -245,17 +244,17 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contours.html#cxroots.Contour.Contour.show">show() (cxroots.Contour.Contour method)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.show">show() (cxroots.contour.Contour method)</a>
 
       <ul>
-        <li><a href="paths.html#cxroots.Paths.ComplexPath.show">(cxroots.Paths.ComplexPath method)</a>
+        <li><a href="paths.html#cxroots.paths.ComplexPath.show">(cxroots.paths.ComplexPath method)</a>
 </li>
-        <li><a href="result.html#cxroots.RootResult.RootResult.show">(cxroots.RootResult.RootResult method)</a>
+        <li><a href="result.html#cxroots.root_result.RootResult.show">(cxroots.root_result.RootResult method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contours.html#cxroots.Contour.Contour.subdivisions">subdivisions() (cxroots.Contour.Contour method)</a>
+      <li><a href="contours.html#cxroots.contour.Contour.subdivisions">subdivisions() (cxroots.contour.Contour method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -263,7 +262,7 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="paths.html#cxroots.Paths.ComplexPath.trap_values">trap_values() (cxroots.Paths.ComplexPath method)</a>
+      <li><a href="paths.html#cxroots.paths.ComplexPath.trap_values">trap_values() (cxroots.paths.ComplexPath method)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Symmetric Bilinear Form &mdash; cxroots 1.1.11 documentation</title>
+  <title>Symmetric Bilinear Form &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -15,10 +15,11 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +35,7 @@
             <a href="index.html" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -48,12 +49,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -117,22 +121,22 @@
 }
 </style>
 <section id="symmetric-bilinear-form">
-<h1>Symmetric Bilinear Form<a class="headerlink" href="#symmetric-bilinear-form" title="Permalink to this headline"></a></h1>
+<h1>Symmetric Bilinear Form<a class="headerlink" href="#symmetric-bilinear-form" title="Permalink to this heading"></a></h1>
 <p>To find the distinct roots <span class="math notranslate nohighlight">\(\{z_i\}_{i=1}^n\)</span> and corresponding multiplicities <span class="math notranslate nohighlight">\(\{m_i\}\)</span> of the given function <span class="math notranslate nohighlight">\(f(z)\)</span> within the given contour <span class="math notranslate nohighlight">\(C\)</span> use is made of the fact that</p>
 <div class="math notranslate nohighlight">
 \[\frac{1}{2\pi i} \int_C \phi(z)\psi(z) \frac{f'(z)}{f(z)} dz
 = \sum_{i=1}^n m_i \phi(z_i) \psi(z_i)\]</div>
-<p>In <cite>cxroots</cite> the left hand side is computed using the function <a class="reference internal" href="#cxroots.CountRoots.prod" title="cxroots.CountRoots.prod"><code class="xref py py-func docutils literal notranslate"><span class="pre">prod()</span></code></a>.</p>
+<p>In <cite>cxroots</cite> the left hand side is computed using the function <a class="reference internal" href="#cxroots.root_counting.prod" title="cxroots.root_counting.prod"><code class="xref py py-func docutils literal notranslate"><span class="pre">prod()</span></code></a>.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="cxroots.CountRoots.prod">
-<span class="sig-prename descclassname"><span class="pre">cxroots.CountRoots.</span></span><span class="sig-name descname"><span class="pre">prod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absTol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relTol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">divMin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">divMax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intMethod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quad'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integerTol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/CountRoots.html#prod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.CountRoots.prod" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cxroots.root_counting.prod">
+<span class="sig-prename descclassname"><span class="pre">cxroots.root_counting.</span></span><span class="sig-name descname"><span class="pre">prod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ContourABC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnalyticFunc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnalyticFunc</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnalyticFunc</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnalyticFunc</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abs_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.49e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.49e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">div_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">div_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_approx_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'quad'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'romb'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'quad'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integer_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">complex</span></span></span><a class="reference internal" href="_modules/cxroots/root_counting.html#prod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.root_counting.prod" title="Permalink to this definition"></a></dt>
 <dd><p>Compute the symmetric bilinear form used in (1.12) of <a class="reference internal" href="#kb" id="id1"><span>[KB]</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[&lt;\phi,\psi&gt; = \frac{1}{2\pi i} \oint_C \phi(z) \psi(z) \frac{f'(z)}{f(z)} dz.\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>C</strong> (<a class="reference internal" href="contours.html#cxroots.Contour.Contour" title="cxroots.Contour.Contour"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contour</span></code></a>) – A contour in the complex plane for.  No roots or poles of f
+<li><p><strong>C</strong> (<a class="reference internal" href="contours.html#cxroots.contour.Contour" title="cxroots.contour.Contour"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contour</span></code></a>) – A contour in the complex plane for.  No roots or poles of f
 should lie on C.</p></li>
 <li><p><strong>f</strong> (<em>function</em>) – Function of a single variable f(x)</p></li>
 <li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable, df(x), providing the derivative
@@ -142,24 +146,23 @@ approximated using a finite difference method.</p></li>
 phi(z)=1.</p></li>
 <li><p><strong>psi</strong> (<em>function</em><em>, </em><em>optional</em>) – Function of a single variable psi(x).  If not provided then
 psi(z)=1.</p></li>
-<li><p><strong>absTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance for integration.</p></li>
-<li><p><strong>relTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance for integration.</p></li>
-<li><p><strong>divMin</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’. Minimum number of divisions before
+<li><p><strong>abs_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute error tolerance for integration.</p></li>
+<li><p><strong>rel_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative error tolerance for integration.</p></li>
+<li><p><strong>div_min</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if int_method=’romb’. Minimum number of divisions before
 the Romberg integration routine is allowed to exit.</p></li>
-<li><p><strong>divMax</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if intMethod=’romb’.  The maximum number of divisions
+<li><p><strong>div_max</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if int_method=’romb’.  The maximum number of divisions
 before the Romberg integration routine of a path exits.</p></li>
-<li><p><strong>m</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and intMethod=’quad’.  Must be even.  The
-argument order=m is passed to numdifftools.Derivative and is the
+<li><p><strong>df_approx_order</strong> (<em>int</em><em>, </em><em>optional</em>) – Only used if df=None and int_method=’quad’.  Must be even.  The
+argument order=df_approx_order is passed to numdifftools.Derivative and is the
 order of the error term in the Taylor approximation.</p></li>
-<li><p><strong>intMethod</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then scipy.integrate.quad is used to perform the
+<li><p><strong>int_method</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then scipy.integrate.quad is used to perform the
 integral.  If ‘romb’ then Romberg integraion, using
 scipy.integrate.romb, is performed instead.</p></li>
-<li><p><strong>integerTol</strong> (<em>float</em><em>, </em><em>optional</em>) – Only used when intMethod is ‘romb’.  The integration routine will
-not exit unless the result is within integerTol of an integer.
+<li><p><strong>integer_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Only used when int_method is ‘romb’.  The integration routine will
+not exit unless the result is within integer_tol of an integer.
 This is useful when computing the number of roots in a contour,
-which must be an integer.  By default integerTol is inf.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True runtime information will be printed.  False be default.</p></li>
-<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – Only used when intMethod is ‘romb’.  A function that at each
+which must be an integer.  By default integer_tol is inf.</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em>, </em><em>optional</em>) – Only used when int_method is ‘romb’.  A function that at each
 step in the iteration is passed the current approximation for
 the integral, the estimated error of that approximation and the
 number of iterations.  If the return of callback evaluates to
