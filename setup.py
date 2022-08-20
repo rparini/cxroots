@@ -43,7 +43,7 @@ setup(
     extras_require={"plot": ["matplotlib"]},
     keywords="roots zeros complex analytic functions",
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Mathematics",
         "License :: OSI Approved :: BSD License",
