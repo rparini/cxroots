@@ -3,9 +3,6 @@ from .contours.annulus_sector import AnnulusSector
 from .contours.circle import Circle
 from .contours.rectangle import Rectangle
 from .derivative import cx_derivative, find_multiplicity
-from .root_counting import count_roots
-from .root_finding import find_roots
-from .root_finding_demo import demo_find_roots
 from .version import __version__  # noqa:F401
 
 # Define public interface
@@ -16,7 +13,4 @@ __all__ = [
     "Rectangle",
     "cx_derivative",
     "find_multiplicity",
-    "count_roots",
-    "find_roots",
-    "demo_find_roots",
 ]

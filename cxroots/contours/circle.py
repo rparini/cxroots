@@ -1,4 +1,4 @@
-from __future__ import division
+from typing import Literal, Tuple
 
 from numpy import pi
 
@@ -28,10 +28,11 @@ class Circle(Contour):
         circle.show()
     """
 
-    def __init__(self, center, radius):
+    axis_names = tuple("r")
+
+    def __init__(self, center: complex, radius: float):
         self.center = center
         self.radius = radius
-        self.axis_name = "r"
 
         segments = [ComplexArc(center, radius, 0, 2 * pi)]
         super(Circle, self).__init__(segments)
@@ -42,19 +43,21 @@ class Circle(Contour):
             f"radius={self.radius:.3f}"
         )
 
-    def contains(self, z):
+    def contains(self, z: complex) -> bool:
         """Returns True if the point z lies within the contour, False if otherwise"""
         return abs(z - self.center) < self.radius
 
     @property
-    def central_point(self):
+    def central_point(self) -> complex:
         return self.center
 
     @property
-    def area(self):
+    def area(self) -> float:
         return pi * self.radius**2
 
-    def subdivide(self, axis="r", division_factor=0.5):
+    def subdivide(
+        self, axis: Literal["r"] = "r", division_factor: float = 0.5
+    ) -> Tuple[Annulus, "Circle"]:
         """
         Subdivide the contour
 
@@ -74,16 +77,19 @@ class Circle(Contour):
         box2 : Circle
             With radius equal to the inner radius of box1
         """
-        if axis == "r" or self.axis_name[axis] == "r":
-            box1 = Annulus(self.center, [self.radius * division_factor, self.radius])
+        if axis == "r":
+            box1 = Annulus(self.center, (self.radius * division_factor, self.radius))
             box2 = Circle(self.center, self.radius * division_factor)
             box1.segments[0] = self.segments[0]
-            box1.segments[1]._reversePath = box2.segments[0]
-            box2.segments[0]._reversePath = box1.segments[1]
+            box1.segments[1]._reverse_path = box2.segments[0]
+            box2.segments[0]._reverse_path = box1.segments[1]
+
+        else:
+            raise ValueError("axis must be 'r'")
 
         for box in [box1, box2]:
             box._created_by_subdivision_axis = axis
-            box._parentBox = self
-            self._childBoxes = [box1, box2]
+            box._parent = self
+        self._children = [box1, box2]
 
         return box1, box2

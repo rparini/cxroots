@@ -1,5 +1,5 @@
 import pytest
-from numpy import cos, pi, sin
+from numpy import cos, pi
 
 from cxroots.iterative_methods import secant
 
@@ -13,16 +13,12 @@ def test_secant():
     def f(x):
         return cos(x) - x
 
-    def df(x):
-        return -sin(x) - 1
-
     iterations = []
 
     def callback(x, dx, y, iteration):
         return iterations.append(x)
 
-    x, _ = secant(0.5, pi / 4, f, callback=callback)
-    iterations.append(x)
+    secant(0.5, pi / 4, f, callback=callback)
 
     correct_iterations = [
         0.7363841388,

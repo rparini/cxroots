@@ -1,11 +1,13 @@
-from __future__ import division
-
-from collections import namedtuple
+from typing import List, NamedTuple, Optional
 
 import numpy as np
 
+from cxroots.contour_interface import ContourABC
 
-class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
+
+class RootResult(
+    NamedTuple("RootResult", [("roots", List[complex]), ("multiplicities", List[int])])
+):
     """
     A class which stores the roots and their multiplicites as attributes
     and provides convienent methods for displaying them.
@@ -17,16 +19,22 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
     multiplicities : list
         List of multiplicities where the ith element of the list is the
         multiplicity of the ith element of roots.
-    original_contour : Contour
+    contour : Contour
         The contour bounding the region in which the roots were found.
     """
 
-    def __new__(cls, roots, multiplicities, original_contour):
-        obj = super(RootResult, cls).__new__(cls, roots, multiplicities)
-        obj.original_contour = original_contour
-        return obj
+    def __new__(
+        cls, roots: List[complex], multiplicities: List[int], contour: ContourABC
+    ):
+        return super(RootResult, cls).__new__(cls, roots, multiplicities)
 
-    def show(self, save_file=None):
+    def __init__(
+        self, roots: List[complex], multiplicities: List[int], contour: ContourABC
+    ):
+        self.contour = contour
+        super().__init__()
+
+    def show(self, save_file: Optional[str] = None) -> None:
         """
         Plot the roots and the initial integration contour in the
         complex plane.
@@ -51,7 +59,7 @@ class RootResult(namedtuple("RootResult", ["roots", "multiplicities"])):
         """
         import matplotlib.pyplot as plt
 
-        self.original_contour.plot(linecolor="k", linestyle="--")
+        self.contour.plot(linecolor="k", linestyle="--")
         plt.scatter(np.real(self.roots), np.imag(self.roots), color="k", marker="x")
 
         if save_file is not None:

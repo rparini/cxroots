@@ -3,6 +3,10 @@ from setuptools import setup
 
 packages = ["cxroots", "cxroots.tests", "cxroots.contours"]
 
+# get the version, this will assign __version__
+with open("cxroots/version.py") as f:
+    exec(f.read())  # nosec
+
 # read the README_pip.rst
 try:
     with open("README.rst") as file:
@@ -12,6 +16,7 @@ except IOError:
 
 setup(
     name="cxroots",
+    version=__version__,  # noqa
     description="Find all the roots (zeros) of a complex analytic function within a "
     "given contour in the complex plane.",
     long_description=long_description,
@@ -21,9 +26,10 @@ setup(
     license="BSD-3-Clause",
     data_files=[("", ["LICENSE"])],
     packages=packages,
+    package_data={"cxroots": ["py.typed"]},
     zip_safe=False,  # prevent cxroots from installing as a .egg zip file
     platforms=["all"],
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     setup_requires=["pytest-runner"],
     install_requires=[
         "numpy",
@@ -37,7 +43,7 @@ setup(
     extras_require={"plot": ["matplotlib"]},
     keywords="roots zeros complex analytic functions",
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Mathematics",
         "License :: OSI Approved :: BSD License",

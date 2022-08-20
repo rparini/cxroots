@@ -1,6 +1,5 @@
-from __future__ import division
-
 from math import pi
+from typing import Literal, Tuple
 
 import numpy as np
 
@@ -46,9 +45,15 @@ class AnnulusSector(Contour):
         annulusSector.show()
     """
 
-    def __init__(self, center, radii, phi_range):
+    axis_names = ("r", "phi")
+
+    def __init__(
+        self,
+        center: complex,
+        radii: Tuple[float, float],
+        phi_range: Tuple[float, float],
+    ):
         self.center = center
-        self.axis_name = ("r", "phi")
 
         if phi_range[0] > phi_range[1]:
             phi_range = (phi_range[0], phi_range[1] + 2 * pi)
@@ -83,14 +88,14 @@ class AnnulusSector(Contour):
         )
 
     @property
-    def central_point(self):
+    def central_point(self) -> complex:
         # get the central point within the contour
         r = (self.radii[0] + self.radii[1]) / 2
         phi = (self.phi_range[0] + self.phi_range[1]) / 2
         return r * np.exp(1j * phi)
 
     @property
-    def area(self):
+    def area(self) -> float:
         return (
             (self.radii[1] ** 2 - self.radii[0] ** 2)
             * abs(self.phi_range[1] - self.phi_range[0])
@@ -98,20 +103,22 @@ class AnnulusSector(Contour):
             / 2
         )
 
-    def contains(self, z):
+    def contains(self, z: complex) -> bool:
         """Returns True if the point z lies within the contour, False if otherwise"""
-        angle = np.angle(z - self.center) % (2 * pi)  # np.angle maps to [-pi,pi]
+        angle = float(np.angle(z - self.center)) % (2 * pi)  # np.angle maps to [-pi,pi]
         radius_correct = self.radii[0] < abs(z - self.center) < self.radii[1]
 
         phi = np.mod(self.phi_range, 2 * pi)
         if phi[0] > phi[1]:
-            angle_correct = phi[0] < angle <= 2 * pi or 0 <= angle < phi[1]
+            angle_correct = (phi[0] < angle <= 2 * pi) or (0 <= angle < phi[1])
         else:
             angle_correct = phi[0] < angle < phi[1]
 
         return radius_correct and angle_correct
 
-    def subdivide(self, axis, division_factor=0.5):
+    def subdivide(
+        self, axis: Literal["r", "phi"], division_factor: float = 0.5
+    ) -> Tuple["AnnulusSector", "AnnulusSector"]:
         """
         Subdivide the contour
 
@@ -138,31 +145,35 @@ class AnnulusSector(Contour):
         """
         r0, r1 = self.radii
         phi0, phi1 = self.phi_range
-        if axis == 0 or axis == self.axis_name[0]:
+
+        if axis == "r":
             division_point = r0 + division_factor * (r1 - r0)
-            box1 = AnnulusSector(self.center, [r0, division_point], self.phi_range)
-            box2 = AnnulusSector(self.center, [division_point, r1], self.phi_range)
+            box1 = AnnulusSector(self.center, (r0, division_point), self.phi_range)
+            box2 = AnnulusSector(self.center, (division_point, r1), self.phi_range)
 
             # reuse line segments from original box where possible
             # this allows the cached integrals to be used
             box1.segments[3] = self.segments[3]
             box2.segments[1] = self.segments[1]
-            box1.segments[1]._reversePath = box2.segments[3]
-            box2.segments[3]._reversePath = box1.segments[1]
+            box1.segments[1]._reverse_path = box2.segments[3]
+            box2.segments[3]._reverse_path = box1.segments[1]
 
-        elif axis == 1 or axis == self.axis_name[1]:
+        elif axis == "phi":
             division_point = phi0 + division_factor * (phi1 - phi0)
-            box1 = AnnulusSector(self.center, self.radii, [phi0, division_point])
-            box2 = AnnulusSector(self.center, self.radii, [division_point, phi1])
+            box1 = AnnulusSector(self.center, self.radii, (phi0, division_point))
+            box2 = AnnulusSector(self.center, self.radii, (division_point, phi1))
 
             box1.segments[0] = self.segments[0]
             box2.segments[2] = self.segments[2]
-            box1.segments[2]._reversePath = box2.segments[0]
-            box2.segments[0]._reversePath = box1.segments[2]
+            box1.segments[2]._reverse_path = box2.segments[0]
+            box2.segments[0]._reverse_path = box1.segments[2]
+
+        else:
+            raise ValueError("axis must be 'r' or 'phi'")
 
         for box in [box1, box2]:
             box._created_by_subdivision_axis = axis
-            box._parentBox = self
-        self._childBoxes = [box1, box2]
+            box._parent = self
+        self._children = [box1, box2]
 
         return box1, box2

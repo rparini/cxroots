@@ -4,7 +4,7 @@ Using Known Roots or Symmetries
 Guessing Roots
 --------------
 
-The `guess_roots` argument of :func:`Contour.roots <cxroots.Contour.Contour.roots>` can be used to supply any roots the user already knows or suspects.
+The `guess_roots` argument of :func:`Contour.roots <cxroots.contour.Contour.roots>` can be used to supply any roots the user already knows or suspects.
 For example, suppose we want to find the roots of the function
 
 .. math::
