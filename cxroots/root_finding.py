@@ -257,7 +257,6 @@ def find_roots_gen(
                     )
                     temp_count_kwargs = count_kwargs.copy()
                     temp_count_kwargs["int_abs_tol"] *= 0.5
-                    # XXX This cecessitates that we have a dict I think
                     num_roots[parent] = parent.count_roots(**temp_count_kwargs)
                     subcontour_num_roots = [
                         contour.count_roots(**temp_count_kwargs)
