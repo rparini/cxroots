@@ -23,14 +23,8 @@ jobs:
         echo "Updating version.py to $VERSION"
         echo "# __version__ is set by CI based on release tag on GitHub" > cxroots/version.py
         echo "__version__ = '$VERSION'" >> cxroots/version.py
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: pip install . -r requirements_doc.txt
-    - name: Build documentation
-      working-directory: docs_src
-      run: ./create_docs
+    - name: Build docs
+      uses: ./.github/actions/build-docs
       env:
         SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: stefanzweifel/git-auto-commit-action@v4
