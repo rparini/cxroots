@@ -1,5 +1,5 @@
 import functools
-from typing import Generator, List, Optional, Sequence, Union, overload
+from typing import Generator, List, Optional, Sequence, Tuple, Union, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -164,7 +164,7 @@ class Contour(ContourABC):
         else:
             plt.show()
 
-    def subdivide(self, axis: str, division_factor: float) -> List["Contour"]:
+    def subdivide(self, axis, division_factor: float) -> Tuple["Contour", ...]:
         """
         Subdivide the contour
         """
@@ -180,7 +180,7 @@ class Contour(ContourABC):
 
     def subdivisions(
         self, axis: str = "alternating"
-    ) -> Generator[List["Contour"], None, None]:
+    ) -> Generator[Tuple["Contour", ...], None, None]:
         """
         A generator for possible subdivisions of the contour.
 
