@@ -1,8 +1,11 @@
-|pkg_img| |tests| |coverage| |lgtm_grade| |lgtm_alerts|
+|pkg_img| |doi| |tests| |coverage| |lgtm_grade| |lgtm_alerts|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
-    
+
+.. |doi| image:: https://zenodo.org/badge/79802240.svg
+    :target: https://zenodo.org/badge/latestdoi/79802240
+
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
 
@@ -85,7 +88,8 @@ BibTex:
 	@misc{cxroots,
 	  author = {Robert Parini},
 	  title = {{cxroots: A Python module to find all the roots of a complex analytic function within a given contour}},
-	  url = {https://github.com/rparini/cxroots},
+          doi = {10.5281/zenodo.7013117},
+          url = {https://github.com/rparini/cxroots},
 	  year = {2018--}
 	}
 
