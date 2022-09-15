@@ -79,7 +79,7 @@ The Fortran 90 package `ZEAL <http://cpc.cs.qub.ac.uk/summaries/ADKW>`_ is a dir
 Citing cxroots
 --------------
 
-  \R. Parini. *cxroots: A Python module to find all the roots of a complex analytic function within a given contour* (2018), https://github.com/rparini/cxroots 
+  \R. Parini. *cxroots: A Python module to find all the roots of a complex analytic function within a given contour* (2018), https://github.com/rparini/cxroots https://doi.org/10.5281/zenodo.7013117
 
 BibTex:
 
