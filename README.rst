@@ -90,7 +90,7 @@ BibTex:
 	  title = {{cxroots: A Python module to find all the roots of a complex analytic function within a given contour}},
           doi = {10.5281/zenodo.7013117},
           url = {https://github.com/rparini/cxroots},
-	  year = {2018--}
+	  year = {2018}
 	}
 
 ----------
