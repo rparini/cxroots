@@ -17,3 +17,4 @@ pytest==7.2.0
 pytest-xdist==3.1.0
 pytest-cov==4.0.0
 pyright==1.1.284
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
