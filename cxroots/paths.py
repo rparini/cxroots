@@ -269,7 +269,7 @@ class ComplexPath(object):
             return -self._reverse_path._integral_cache[args]
 
         @functools.lru_cache(maxsize=None)
-        def integrand(t):
+        def integrand(t: float) -> complex:
             return f(self(t)) * self.dzdt(t)
 
         if int_method == "romb":
