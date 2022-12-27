@@ -128,7 +128,7 @@ def approximate_roots(
         coeff = np.poly(phi_zeros[i])
         # We should be using Polynomial.fromroots but this is not hashable so
         # causes problems with caching
-        return lambda z: np.polyval(coeff, z)  # type: ignore
+        return lambda z: np.polyval(coeff, z)
         # return npp.Polynomial.fromroots(phi_zeros[i])
 
     def phi1phi(i: int) -> AnalyticFunc:
