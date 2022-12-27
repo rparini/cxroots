@@ -1,13 +1,14 @@
 import functools
 import logging
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union, overload
 
 import numpy as np
+import numpy.typing as npt
 import scipy.linalg
 
 from .contour_interface import ContourABC
 from .root_counting import RombCallback, prod
-from .types import AnalyticFunc, IntegrationMethod
+from .types import AnalyticFunc, ComplexScalarOrArray, IntegrationMethod, ScalarOrArray
 
 
 def approximate_roots(
@@ -121,17 +122,29 @@ def approximate_roots(
     mu = s[1] / N
     phi_zeros = [np.array([]), np.array([mu])]
 
-    def phi(
-        i: int,
-    ) -> AnalyticFunc:
+    def phi(i: int) -> AnalyticFunc:
         if len(phi_zeros[i]) == 0:
             return lambda z: complex(1)
-        else:
-            coeff = np.poly(phi_zeros[i])
-            # We should be using Polynomial.fromroots but this is not hashable so
-            # causes problems with caching
-            return lambda z: np.polyval(coeff, z)  # type: ignore
-            # return npp.Polynomial.fromroots(phi_zeros[i])
+        # We should be using Polynomial.fromroots but this is not hashable so
+        # causes problems with caching
+        return np.poly1d(phi_zeros[i], r=True)  # type: ignore
+        # return npp.Polynomial.fromroots(phi_zeros[i])
+
+    def phi1phi(i: int) -> AnalyticFunc:
+        @overload
+        def func(z: Union[complex, float]) -> complex:
+            ...
+
+        @overload
+        def func(
+            z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
+        ) -> Union[npt.NDArray[np.complex_], complex]:
+            ...
+
+        def func(z: ScalarOrArray) -> ComplexScalarOrArray:
+            return phi(1)(z) * phi(i)(z)
+
+        return func
 
     # initialize G_{pq} = <phi_p, phi_q>
     G = np.zeros((N, N), dtype=np.complex128)  # noqa: N806
@@ -149,9 +162,7 @@ def approximate_roots(
         G[0 : p + 1, p] = G[p, 0 : p + 1]  # G is symmetric
         logger.debug("G=\n" + str(G[: p + 1, : p + 1]))
 
-        G1[p, 0 : p + 1] = [
-            product(phi(p), lambda z: phi(1)(z) * phi(q)(z)) for q in range(r + t + 1)
-        ]
+        G1[p, 0 : p + 1] = [product(phi(p), phi1phi(q)) for q in range(r + t + 1)]
         G1[0 : p + 1, p] = G1[p, 0 : p + 1]  # G1 is symmetric
         logger.debug("G1=\n" + str(G1[: p + 1, : p + 1]))
 

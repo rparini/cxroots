@@ -8,11 +8,9 @@ import numpy as np
 import numpy.typing as npt
 
 from .contour_interface import ContourABC
-from .types import AnalyticFunc, IntegrationMethod
+from .types import AnalyticFunc, ComplexScalarOrArray, IntegrationMethod, ScalarOrArray
 
 RombCallback = Callable[[complex, Optional[float], int], Optional[bool]]
-ScalarOrArray = Union[complex, float, npt.NDArray[np.complex_], npt.NDArray[np.float_]]
-ComplexScalarOrArray = Union[complex, npt.NDArray[np.complex_]]
 
 
 def prod(
