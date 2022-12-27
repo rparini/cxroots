@@ -1,13 +1,14 @@
 import logging
 import warnings
 from math import inf, pi
-from typing import Callable, Optional
+from typing import Callable, Optional, Union, overload
 
 import numdifftools
 import numpy as np
+import numpy.typing as npt
 
 from .contour_interface import ContourABC
-from .types import AnalyticFunc, IntegrationMethod
+from .types import AnalyticFunc, ComplexScalarOrArray, IntegrationMethod, ScalarOrArray
 
 RombCallback = Callable[[complex, Optional[float], int], Optional[bool]]
 
@@ -176,25 +177,26 @@ def _quad_prod(
         # ndf.derivative returns an array [f, f', f'', ...]
         # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
 
-    if phi is not None and psi is not None:
+    def one(z: ScalarOrArray) -> int:
+        return 1
 
-        def integrand_func(z):
-            return phi(z) * psi(z) * (df(z) / f(z)) / (2j * pi)
+    if phi is None:
+        phi = one
+    if psi is None:
+        psi = one
 
-    elif psi is not None:
+    @overload
+    def integrand_func(z: Union[complex, float]) -> complex:
+        ...
 
-        def integrand_func(z):
-            return psi(z) * (df(z) / f(z)) / (2j * pi)
+    @overload
+    def integrand_func(
+        z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
+    ) -> Union[npt.NDArray[np.complex_], complex]:
+        ...
 
-    elif phi is not None:
-
-        def integrand_func(z):
-            return phi(z) * (df(z) / f(z)) / (2j * pi)
-
-    else:
-
-        def integrand_func(z):
-            return (df(z) / f(z)) / (2j * pi)
+    def integrand_func(z: ScalarOrArray) -> ComplexScalarOrArray:
+        return phi(z) * psi(z) * (df(z) / f(z)) / (2j * pi)
 
     return C.integrate(
         integrand_func, abs_tol=abs_tol, rel_tol=rel_tol, int_method="quad"
