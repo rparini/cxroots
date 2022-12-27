@@ -67,7 +67,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Test with pytest
-      run: pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x
+      run: pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x -W error
       timeout-minutes: 20
     - name: Coveralls
       uses: coverallsapp/github-action@master
