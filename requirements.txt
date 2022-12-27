@@ -7,14 +7,14 @@
 #
 
 scipy==1.9.3
-numpy==1.23.4
+numpy==1.23.5
 numpydoc==1.5.0
 mpmath==1.2.1
 numdifftools==0.9.41
 rich==12.6.0
 matplotlib==3.6.2
 pytest==7.2.0
-pytest-xdist==3.0.2
+pytest-xdist==3.1.0
 pytest-cov==4.0.0
-pyright==1.1.279
+pyright==1.1.284
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
