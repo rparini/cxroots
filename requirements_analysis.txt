@@ -1,6 +1,6 @@
-black==22.6.0
-isort==5.10.1
-flake8==5.0.4
+black==22.12.0
+isort==5.11.2
+flake8==6.0.0
 pep8-naming==0.13.2
 bandit==1.7.4
 bandit-sarif-formatter==1.1.1

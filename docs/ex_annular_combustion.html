@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stability of an Annular Combustion Chamber &mdash; cxroots 1.1.11 documentation</title>
+  <title>Stability of an Annular Combustion Chamber &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -15,15 +15,16 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Paths" href="paths.html" />
-    <link rel="prev" title="Using Known Roots or Symmetries" href="guesses.html" /> 
+    <link rel="prev" title="Viewing Progress" href="logging.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -34,7 +35,7 @@
             <a href="index.html" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -48,12 +49,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
@@ -120,7 +124,7 @@
 }
 </style>
 <section id="stability-of-an-annular-combustion-chamber">
-<h1>Stability of an Annular Combustion Chamber<a class="headerlink" href="#stability-of-an-annular-combustion-chamber" title="Permalink to this headline"></a></h1>
+<h1>Stability of an Annular Combustion Chamber<a class="headerlink" href="#stability-of-an-annular-combustion-chamber" title="Permalink to this heading"></a></h1>
 <p>In section 4.2 of <a class="reference internal" href="#dsz" id="id1"><span>[DSZ]</span></a> the problem of stability of an annular combustion chamber was used as a test case for their rootfinding algorthim.  The problem consisted of finding all the zeros of the holomorphic function</p>
 <div class="math notranslate nohighlight">
 \[f(z)=z^2+Az+Be^{-Tz}+C\]</div>
@@ -143,7 +147,7 @@ T=0.005\,.\]</div>
 <span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">z</span> <span class="o">+</span> <span class="n">A</span> <span class="o">-</span> <span class="n">B</span><span class="o">*</span><span class="n">T</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">T</span><span class="o">*</span><span class="n">z</span><span class="p">)</span>
 
 <span class="n">rectangle</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">([</span><span class="o">-</span><span class="mi">15000</span><span class="p">,</span><span class="mi">5000</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">15000</span><span class="p">,</span><span class="mi">15000</span><span class="p">])</span>
-<span class="n">roots</span> <span class="o">=</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">rootErrTol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+<span class="n">roots</span> <span class="o">=</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">root_err_tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
 <span class="n">roots</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -151,9 +155,9 @@ T=0.005\,.\]</div>
 <figure class="align-default">
 <img alt="_images/ex_annular_combustion-1.png" class="plot-directive" src="_images/ex_annular_combustion-1.png" />
 </figure>
-<p>Note that if <code class="code docutils literal notranslate"><span class="pre">rootErrTol=1e-6</span></code> is omitted then the Newton-Raphson method used to refine the roots is sometimes unable to converge to a point where <span class="math notranslate nohighlight">\(|f(z)|&lt;\text{rootErrTol}\)</span>.  In this case the contour bounding the root is continually subdivided until it has area less than <code class="code docutils literal notranslate"><span class="pre">newtonStepTol</span></code> at which point the best approximation to the root within the contour will be taken to be ‘good enough’ and a warning message will be printed to inform the user.</p>
+<p>Note that if <code class="code docutils literal notranslate"><span class="pre">root_err_tol=1e-6</span></code> is omitted then the Newton-Raphson method used to refine the roots is sometimes unable to converge to a point where <span class="math notranslate nohighlight">\(|f(z)|&lt;\text{root_err_tol}\)</span>.  In this case the contour bounding the root is continually subdivided until it has area less than <code class="code docutils literal notranslate"><span class="pre">newton_step_tol</span></code> at which point the best approximation to the root within the contour will be taken to be ‘good enough’ and a warning message will be printed to inform the user.</p>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
 <dl class="citation">
 <dt class="label" id="dsz"><span class="brackets"><a class="fn-backref" href="#id1">DSZ</a></span></dt>
 <dd><p>“Locating all the Zeros of an Analytic Function in one Complex Variable” M. Dellnitz, O. Schütze, Q. Zheng, J. Compu. and App. Math. (2002), Vol. 138, Issue 2</p>
@@ -166,7 +170,7 @@ T=0.005\,.\]</div>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="guesses.html" class="btn btn-neutral float-left" title="Using Known Roots or Symmetries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="logging.html" class="btn btn-neutral float-left" title="Viewing Progress" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="paths.html" class="btn btn-neutral float-right" title="Paths" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

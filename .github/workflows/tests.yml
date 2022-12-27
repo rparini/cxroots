@@ -67,11 +67,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Test with pytest
-      run: pytest --cov=cxroots -v -n 2 --durations=10 -m 'not slow' -x -W error
+      run: pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x -W error
       timeout-minutes: 20
-    - name: Generate lcov (for coveralls)
-      if: matrix.python-version == 3.10
-      run: coverage lcov
     - name: Coveralls
       uses: coverallsapp/github-action@master
       if: matrix.python-version == 3.10
@@ -83,14 +80,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - name: Install dependencies
-        run: pip install . -r requirements_doc.txt
-      - name: Build documentation
-        working-directory: docs_src
-        run: ./create_docs
+      - name: Build docs
+        uses: ./.github/actions/build-docs
         env:
           SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build wheel

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rootfinding Result &mdash; cxroots 1.1.11 documentation</title>
+  <title>Rootfinding Result &mdash; cxroots 2.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -31,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> cxroots
           </a>
               <div class="version">
-                1.1.11
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -45,12 +46,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="countroots.html">Counting Roots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstrating Rootfinding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Viewing Progress</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -114,15 +118,15 @@
 }
 </style>
 <section id="rootfinding-result">
-<h1>Rootfinding Result<a class="headerlink" href="#rootfinding-result" title="Permalink to this headline"></a></h1>
+<h1>Rootfinding Result<a class="headerlink" href="#rootfinding-result" title="Permalink to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="cxroots.RootResult.RootResult">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cxroots.RootResult.</span></span><span class="sig-name descname"><span class="pre">RootResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roots</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">originalContour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/RootResult.html#RootResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.RootResult.RootResult" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cxroots.root_result.RootResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cxroots.root_result.</span></span><span class="sig-name descname"><span class="pre">RootResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ContourABC</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/root_result.html#RootResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.root_result.RootResult" title="Permalink to this definition"></a></dt>
 <dd><p>A class which stores the roots and their multiplicites as attributes
 and provides convienent methods for displaying them.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="cxroots.RootResult.RootResult.roots">
-<span class="sig-name descname"><span class="pre">roots</span></span><a class="headerlink" href="#cxroots.RootResult.RootResult.roots" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cxroots.root_result.RootResult.roots">
+<span class="sig-name descname"><span class="pre">roots</span></span><a class="headerlink" href="#cxroots.root_result.RootResult.roots" title="Permalink to this definition"></a></dt>
 <dd><p>List of roots</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -132,8 +136,8 @@ and provides convienent methods for displaying them.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="cxroots.RootResult.RootResult.multiplicities">
-<span class="sig-name descname"><span class="pre">multiplicities</span></span><a class="headerlink" href="#cxroots.RootResult.RootResult.multiplicities" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cxroots.root_result.RootResult.multiplicities">
+<span class="sig-name descname"><span class="pre">multiplicities</span></span><a class="headerlink" href="#cxroots.root_result.RootResult.multiplicities" title="Permalink to this definition"></a></dt>
 <dd><p>List of multiplicities where the ith element of the list is the
 multiplicity of the ith element of roots.</p>
 <dl class="field-list simple">
@@ -144,25 +148,25 @@ multiplicity of the ith element of roots.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="cxroots.RootResult.RootResult.originalContour">
-<span class="sig-name descname"><span class="pre">originalContour</span></span><a class="headerlink" href="#cxroots.RootResult.RootResult.originalContour" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cxroots.root_result.RootResult.contour">
+<span class="sig-name descname"><span class="pre">contour</span></span><a class="headerlink" href="#cxroots.root_result.RootResult.contour" title="Permalink to this definition"></a></dt>
 <dd><p>The contour bounding the region in which the roots were found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="contours.html#cxroots.Contour.Contour" title="cxroots.Contour.Contour">Contour</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="contours.html#cxroots.contour.Contour" title="cxroots.contour.Contour">Contour</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cxroots.RootResult.RootResult.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">saveFile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cxroots/RootResult.html#RootResult.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.RootResult.RootResult.show" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cxroots.root_result.RootResult.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/cxroots/root_result.html#RootResult.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.root_result.RootResult.show" title="Permalink to this definition"></a></dt>
 <dd><p>Plot the roots and the initial integration contour in the
 complex plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>saveFile</strong> (<em>str</em><em>, </em><em>optional</em>) – If provided the plot of the roots will be saved with
-file name saveFile instead of being shown.</p>
+<dd class="field-odd"><p><strong>save_file</strong> (<em>str</em><em>, </em><em>optional</em>) – If provided the plot of the roots will be saved with
+file name save_file instead of being shown.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>

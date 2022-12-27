@@ -1,8 +1,8 @@
 Iterative Methods
 =================
 
-.. autofunction:: cxroots.IterativeMethods.iterateToRoot
+.. autofunction:: cxroots.iterative_methods.iterate_to_root
 
-.. autofunction:: cxroots.IterativeMethods.muller
+.. autofunction:: cxroots.iterative_methods.muller
 
-.. autofunction:: cxroots.IterativeMethods.newton
+.. autofunction:: cxroots.iterative_methods.newton

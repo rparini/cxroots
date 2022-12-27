@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cxroots.contours.rectangle &mdash; cxroots 2.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> cxroots
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory.html">Theory</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../countroots.html">Counting Roots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstrating Rootfinding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guesses.html">Using Known Roots or Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging.html">Viewing Progress</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../ex_annular_combustion.html">Stability of an Annular Combustion Chamber</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../paths.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contours.html">Contours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../prod.html">Symmetric Bilinear Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iteration.html">Iterative Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../result.html">Rootfinding Result</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">cxroots</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>cxroots.contours.rectangle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cxroots.contours.rectangle</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">..contour</span> <span class="kn">import</span> <span class="n">Contour</span>
+<span class="kn">from</span> <span class="nn">..paths</span> <span class="kn">import</span> <span class="n">ComplexLine</span>
+
+
+<div class="viewcode-block" id="Rectangle"><a class="viewcode-back" href="../../../contours.html#cxroots.Rectangle">[docs]</a><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">(</span><span class="n">Contour</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A positively oriented rectangle in the complex plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_range : tuple</span>
+<span class="sd">            Tuple of length two giving the range of the rectangle along the</span>
+<span class="sd">            real axis.</span>
+<span class="sd">    y_range : tuple</span>
+<span class="sd">            Tuple of length two giving the range of the rectangle along the</span>
+<span class="sd">            imaginary axis.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">            :include-source:</span>
+
+<span class="sd">            from cxroots import Rectangle</span>
+<span class="sd">            rect = Rectangle(x_range=(-2, 2), y_range=(-1, 1))</span>
+<span class="sd">            rect.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">axis_names</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_range</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">y_range</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span> <span class="o">=</span> <span class="n">x_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span> <span class="o">=</span> <span class="n">y_range</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">z1</span> <span class="o">=</span> <span class="n">z1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z2</span> <span class="o">=</span> <span class="n">z2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z3</span> <span class="o">=</span> <span class="n">z3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z4</span> <span class="o">=</span> <span class="n">z4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">ComplexLine</span><span class="p">(</span><span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">),</span>
+            <span class="n">ComplexLine</span><span class="p">(</span><span class="n">z2</span><span class="p">,</span> <span class="n">z3</span><span class="p">),</span>
+            <span class="n">ComplexLine</span><span class="p">(</span><span class="n">z3</span><span class="p">,</span> <span class="n">z4</span><span class="p">),</span>
+            <span class="n">ComplexLine</span><span class="p">(</span><span class="n">z4</span><span class="p">,</span> <span class="n">z1</span><span class="p">),</span>
+        <span class="p">]</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;Rectangle: vertices = &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z1</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">z1</span><span class="o">.</span><span class="n">imag</span><span class="si">:</span><span class="s2">+.3f</span><span class="si">}</span><span class="s2">i, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="o">.</span><span class="n">imag</span><span class="si">:</span><span class="s2">+.3f</span><span class="si">}</span><span class="s2">i, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z3</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">z3</span><span class="o">.</span><span class="n">imag</span><span class="si">:</span><span class="s2">+.3f</span><span class="si">}</span><span class="s2">i, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z4</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">z4</span><span class="o">.</span><span class="n">imag</span><span class="si">:</span><span class="s2">+.3f</span><span class="si">}</span><span class="s2">i&quot;</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">central_point</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
+        <span class="c1"># get the central point within the contour</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">y</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">complex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if the point z lies within the contour, False if otherwise&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">z</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">subdivide</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">division_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;Rectangle&quot;</span><span class="p">,</span> <span class="s2">&quot;Rectangle&quot;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subdivide the contour</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis : str, can be either &#39;x&#39; or &#39;y&#39;</span>
+<span class="sd">            The axis along which the line subdividing the contour is a constant.</span>
+<span class="sd">        division_factor : float in range (0,1), optional</span>
+<span class="sd">            Determines the point along &#39;axis&#39; at which the line dividing the contour</span>
+<span class="sd">            is placed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        box1 : Rectangle</span>
+<span class="sd">            If axis is &#39;x&#39; then box1 has the same y_range and minimum value of x_range</span>
+<span class="sd">            as the original Rectangle but the maximum x_range is determined by the</span>
+<span class="sd">            division_factor.</span>
+<span class="sd">            If axis is &#39;y&#39; then box1 has the same x_range and minimum value of y_range</span>
+<span class="sd">            as the original Rectangle but the maximum y_range is determined by the</span>
+<span class="sd">            division_factor.</span>
+<span class="sd">        box2 : Rectangle</span>
+<span class="sd">            If axis is &#39;x&#39; then box2 has the same y_range and maximum value of x_range</span>
+<span class="sd">            as the original Rectangle but the minimum x_range is equal to the maximum</span>
+<span class="sd">            x_range of box1.</span>
+<span class="sd">            If axis is &#39;x&#39; then box2 has the same x_range and maximum value of y_range</span>
+<span class="sd">            as the original Rectangle but the minimum y_range is equal to the maximum</span>
+<span class="sd">            y_range of box1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
+            <span class="n">midpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">division_factor</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">box1</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">midpoint</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">)</span>
+            <span class="n">box2</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">midpoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">)</span>
+
+            <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_reverse_path</span> <span class="o">=</span> <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">_reverse_path</span> <span class="o">=</span> <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+            <span class="n">midpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">division_factor</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">box1</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">midpoint</span><span class="p">))</span>
+            <span class="n">box2</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">,</span> <span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+            <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">_reverse_path</span> <span class="o">=</span> <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">box2</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_reverse_path</span> <span class="o">=</span> <span class="n">box1</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;axis must be &#39;x&#39; or &#39;y&#39;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]:</span>
+            <span class="n">box</span><span class="o">.</span><span class="n">_created_by_subdivision_axis</span> <span class="o">=</span> <span class="n">axis</span>
+            <span class="n">box</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_children</span> <span class="o">=</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">box1</span><span class="p">,</span> <span class="n">box2</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017, Robert Parini.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,8 +1,11 @@
-|pkg_img| |tests| |coverage| |lgtm_grade| |lgtm_alerts|
+|pkg_img| |doi| |tests| |coverage| |lgtm_grade| |lgtm_alerts|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
-    
+
+.. |doi| image:: https://zenodo.org/badge/79802240.svg
+    :target: https://zenodo.org/badge/latestdoi/79802240
+
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
 
@@ -76,7 +79,7 @@ The Fortran 90 package `ZEAL <http://cpc.cs.qub.ac.uk/summaries/ADKW>`_ is a dir
 Citing cxroots
 --------------
 
-  \R. Parini. *cxroots: A Python module to find all the roots of a complex analytic function within a given contour* (2018), https://github.com/rparini/cxroots 
+  \R. Parini. *cxroots: A Python module to find all the roots of a complex analytic function within a given contour* (2018), https://github.com/rparini/cxroots https://doi.org/10.5281/zenodo.7013117
 
 BibTex:
 
@@ -85,8 +88,9 @@ BibTex:
 	@misc{cxroots,
 	  author = {Robert Parini},
 	  title = {{cxroots: A Python module to find all the roots of a complex analytic function within a given contour}},
-	  url = {https://github.com/rparini/cxroots},
-	  year = {2018--}
+          doi = {10.5281/zenodo.7013117},
+          url = {https://github.com/rparini/cxroots},
+	  year = {2018}
 	}
 
 ----------
