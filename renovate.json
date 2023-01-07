@@ -18,6 +18,12 @@
       "requirements.*\\.txt$"
     ]
   },
+  "packageRules": [
+    {
+      "groupName": "pyright",
+      "matchPackageNames": ["pyright"]
+    }
+  ],
   "pre-commit": {
     "enabled": true
   },
