@@ -1,4 +1,4 @@
-|pkg_img| |doi| |tests| |coverage| |lgtm_grade| |lgtm_alerts|
+|pkg_img| |doi| |tests| |coverage|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
@@ -8,12 +8,6 @@
 
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
-
-.. |lgtm_grade| image:: https://img.shields.io/lgtm/grade/python/g/rparini/cxroots.svg?logo=lgtm&logoWidth=18
-    :target: https://lgtm.com/projects/g/rparini/cxroots/context:python
-
-.. |lgtm_alerts| image:: https://img.shields.io/lgtm/alerts/g/rparini/cxroots.svg?logo=lgtm&logoWidth=18
-    :target: https://lgtm.com/projects/g/rparini/cxroots/alerts/
 
 .. |coverage| image:: https://coveralls.io/repos/github/rparini/cxroots/badge.svg
 	:target: https://coveralls.io/github/rparini/cxroots
