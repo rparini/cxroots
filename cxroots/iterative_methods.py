@@ -1,19 +1,18 @@
 import logging
-from typing import Callable, Optional, Tuple
+from typing import Callable, Optional, Tuple, Union
 
 from mpmath import mp, mpmathify
 from mpmath.calculus.optimization import Muller
 from numpy import inf
 
-from .types import AnalyticFunc
-
 Callback = Callable[[complex, complex, complex, int], bool]
+ScalarCxFunc = Callable[[Union[complex, float]], complex]
 
 
 def iterate_to_root(
     x0: complex,
-    f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
+    f: ScalarCxFunc,
+    df: Optional[ScalarCxFunc] = None,
     step_tol: float = 1e-12,
     root_tol: float = 1e-12,
     max_iter: int = 20,
@@ -94,7 +93,7 @@ def muller(
     x1: complex,
     x2: complex,
     x3: complex,
-    f: AnalyticFunc,
+    f: ScalarCxFunc,
     step_tol: float = 1e-12,
     root_tol: float = 0,
     max_iter: int = 20,
@@ -208,8 +207,8 @@ def muller(
 
 def newton(
     x0: complex,
-    f: AnalyticFunc,
-    df: AnalyticFunc,
+    f: ScalarCxFunc,
+    df: ScalarCxFunc,
     step_tol: float = 1e-12,
     root_tol: float = 0,
     max_iter: int = 20,
@@ -294,7 +293,7 @@ def newton(
 def secant(
     x1: complex,
     x2: complex,
-    f: AnalyticFunc,
+    f: ScalarCxFunc,
     step_tol: float = 1e-12,
     root_tol: float = 0,
     max_iter: int = 30,
