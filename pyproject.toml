@@ -30,6 +30,7 @@ reportUnknownMemberType = false
 reportMissingParameterType = false
 reportUnknownArgumentType = false
 reportUnknownLambdaType = false
+reportImportCycles = false
 
 reportPrivateUsage = false
 reportIncompatibleMethodOverride = false
