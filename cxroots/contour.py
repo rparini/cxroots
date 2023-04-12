@@ -91,7 +91,6 @@ class Contour(ContourABC):
         else:
             return self.segments[segment_index](num_segments * t % 1)
 
-    @functools.wraps(ComplexPath.trap_product)
     def trap_product(self, *args, **integration_kwargs) -> complex:
         r"""
         Use Romberg integration to estimate the symmetric bilinear form used in
@@ -103,7 +102,10 @@ class Contour(ContourABC):
         """
         return sum(s.trap_product(*args, **integration_kwargs) for s in self.segments)
 
-    @functools.wraps(ComplexPath.integrate)
+    functools.update_wrapper(
+        trap_product, ComplexPath.trap_product, assigned=["__doc__", "__annotations__"]
+    )
+
     def integrate(self, f: AnalyticFunc, **integration_kwargs) -> complex:
         r"""
         Integrate the function f along the contour C
@@ -116,11 +118,18 @@ class Contour(ContourABC):
             segment.integrate(f, **integration_kwargs) for segment in self.segments
         )
 
-    @functools.wraps(ComplexPath.plot)
+    functools.update_wrapper(
+        integrate, ComplexPath.integrate, assigned=["__doc__", "__annotations__"]
+    )
+
     def plot(self, *args, **kwargs) -> None:
         self.size_plot()
         for segment in self.segments:
             segment.plot(*args, **kwargs)
+
+    functools.update_wrapper(
+        plot, ComplexPath.plot, assigned=["__doc__", "__annotations__"]
+    )
 
     def size_plot(self) -> None:
         """
