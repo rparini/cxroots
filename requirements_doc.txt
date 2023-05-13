@@ -5,7 +5,7 @@ sphinxcontrib-bibtex==2.5.0
 sphinx_rtd_theme==1.2.0
 sphinx-github-changelog==1.2.1
 ipython==8.13.2
-nbconvert==7.3.1
+nbconvert==7.4.0
 ipython_genutils==0.2.0 # not direct dependency but seems to be a missing requirement from nbconvert
 mistune==2.0.5 # not directly required, avoid vulnerability in older version
 
