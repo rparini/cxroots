@@ -98,13 +98,14 @@ def find_multiplicity(
     while True:
         if df is not None:
             if n == 1:
-                err = abs(df(root))
+                df_root = df(root)
             else:
                 # ndf.derivative returns an array [f, f', f'', ...]
-                err = abs(ndf.derivative(df, root, n - 1)[n - 1])
+                df_root: complex = ndf.derivative(df, root, n - 1)[n - 1]  # type: ignore
         else:
-            err = abs(ndf.derivative(f, root, n)[n])
+            df_root: complex = ndf.derivative(f, root, n)[n]  # type: ignore
 
+        err = abs(df_root)
         logger.debug("n=%i |df^(n)|=%f", n, err)
 
         if err > root_err_tol:
