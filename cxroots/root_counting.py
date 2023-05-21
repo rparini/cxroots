@@ -165,7 +165,7 @@ def _quad_prod(
     df_approx_order: int = 2,
 ) -> complex:
     if df is None:
-        df = numdifftools.Derivative(f, order=df_approx_order)
+        df = numdifftools.Derivative(f, order=df_approx_order)  # type: ignore
         # type checker needs this reassurance for some reason
         assert df is not None  # nosec B101
 

@@ -140,5 +140,5 @@ def demo_find_roots(
                     pass
 
         fig = plt.gcf()
-        fig.canvas.mpl_connect("key_press_event", draw_next)
+        fig.canvas.mpl_connect("key_press_event", draw_next)  # type: ignore
         plt.show()
