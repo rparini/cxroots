@@ -101,7 +101,9 @@ def find_multiplicity(
                 df_root = df(root)
             else:
                 # ndf.derivative returns an array [f, f', f'', ...]
-                df_root: complex = ndf.derivative(df, root, n - 1)[n - 1]  # type: ignore
+                df_root: complex = ndf.derivative(df, root, n - 1)[
+                    n - 1
+                ]  # type: ignore
         else:
             df_root: complex = ndf.derivative(f, root, n)[n]  # type: ignore
 
