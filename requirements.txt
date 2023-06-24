@@ -16,5 +16,5 @@ matplotlib==3.7.1
 pytest==7.3.1
 pytest-xdist==3.3.1
 pytest-cov==4.1.0
-pyright==1.1.314
+pyright==1.1.315
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
