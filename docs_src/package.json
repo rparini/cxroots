@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "terminalizer": "^0.9.0"
+    "terminalizer": "0.9.0"
   }
 }
