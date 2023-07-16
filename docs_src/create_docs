@@ -8,7 +8,7 @@ python3 docex_tutorial.py
 # Render terminal GIFs
 # Note this does not seem to work on GitHub Action runners so we have to manually
 # commit these gifs whenever we think they should change. faressoft/terminalizer#127
-npm install -g terminalizer
+npm install
 terminalizer render cxroots_progress -o ../docs_src/cxroots_progress.gif
 terminalizer render cxroots_logging_progress -o ../docs_src/cxroots_logging_progress.gif
 
