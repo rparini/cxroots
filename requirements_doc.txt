@@ -7,7 +7,7 @@ sphinx-github-changelog==1.2.1
 ipython==8.14.0
 nbconvert==7.4.0
 ipython_genutils==0.2.0 # not direct dependency but seems to be a missing requirement from nbconvert
-mistune==2.0.5 # not directly required, avoid vulnerability in older version
+mistune==3.0.1 # not directly required, avoid vulnerability in older version
 
 -r requirements.txt
 
