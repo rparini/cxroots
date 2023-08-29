@@ -4,6 +4,7 @@
 
 - Fix type annotation for `util.integrate_quad_complex` function
 - Add more debug logging for root counting
+- Adjust root counting error advice to include chaning integration method
 
 ### 2.0.0 - 20/Aug/2022
 

@@ -216,12 +216,14 @@ def find_roots_gen(
         # originally given contour
         num_roots[original_contour] = original_contour.count_roots(**count_kwargs)
         contours.append(original_contour)
-    except RuntimeError:
+    except RuntimeError as e:
         raise RuntimeError(
-            """Integration along the initial contour has failed.
-            There is likely a root on or close to the initial contour.
-            Try changing the initial contour, if possible."""
-        )
+            """
+            Integration along the initial contour has failed. There is likely a root on
+            or close to the initial contour. Try changing the initial contour, if
+            possible. Changing the integration method (int_method) may also help.
+            """
+        ) from e
 
     def subdivide(parent: ContourABC) -> None:
         """Given a contour, parent_contour, subdivide it into multiple contours."""
