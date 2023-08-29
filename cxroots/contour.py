@@ -86,7 +86,8 @@ class Contour(ContourABC):
                 [
                     self.segments[i](num_segments * t[ti] % 1)
                     for ti, i in enumerate(segment_index)
-                ]
+                ],
+                dtype=complex,
             )
         else:
             return self.segments[segment_index](num_segments * t % 1)
