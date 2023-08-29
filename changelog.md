@@ -1,6 +1,6 @@
 ## Changelog
 
-### Unreleased
+### 2.0.1 - 29/Aug/2023
 
 - Record in setup.py that only numpy < 1.25 will work with cxroots currently (https://github.com/rparini/cxroots/issues/285) 
 - Fix type annotation for `util.integrate_quad_complex` function
