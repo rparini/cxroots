@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+- Record in setup.py that only numpy < 1.25 will work with cxroots currently (https://github.com/rparini/cxroots/issues/285) 
 - Fix type annotation for `util.integrate_quad_complex` function
 - Add more debug logging for root counting
 - Adjust root counting error advice to include chaning integration method
