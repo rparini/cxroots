@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viewing Progress &mdash; cxroots 2.0.0 documentation</title>
+  <title>Viewing Progress &mdash; cxroots 2.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -12,11 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,14 +30,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> cxroots
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cxroots
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -88,8 +92,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Viewing Progress</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Viewing Progress</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/logging.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -99,31 +103,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="viewing-progress">
+  <section id="viewing-progress">
 <h1>Viewing Progress<a class="headerlink" href="#viewing-progress" title="Permalink to this heading"></a></h1>
 <section id="progress-bar">
 <h2>Progress Bar<a class="headerlink" href="#progress-bar" title="Permalink to this heading"></a></h2>
@@ -161,7 +141,7 @@ INFO:cxroots.root_counting:Counted 3 roots (including multiplicities) within Ann
 INFO:cxroots.root_counting:Counted 3 roots (including multiplicities) within Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=5.027, phi1=8.168
 INFO:cxroots.root_approximation:Approximating the 3 roots in: Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=5.027, phi1=8.168
 INFO:cxroots.root_finding:Recorded root (2.5-2.0599375960645673e-94j) with multiplicity 2
-INFO:cxroots.root_finding:Recorded root (1.440251130166703-5.162674525033996e-27j) with multiplicity 1
+INFO:cxroots.root_finding:Recorded root (1.440251130166703+7.437187577040674e-26j) with multiplicity 1
 INFO:cxroots.root_approximation:Approximating the 3 roots in: Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=1.885, phi1=5.027
 INFO:cxroots.root_finding:Recorded root (-0.9746510351110598+1.3810477682471562j) with multiplicity 1
 INFO:cxroots.root_finding:Recorded root (-0.9746510351110598-1.3810477682471562j) with multiplicity 1
@@ -172,7 +152,7 @@ INFO:cxroots.root_finding:Completed rootfinding with 303459 evaluations of the g
       1       | -1.200000000000 +0.000000000000i
       1       | -0.974651035111 -1.381047768247i
       1       | -0.974651035111 +1.381047768247i
-      1       |  1.440251130167 -0.000000000000i
+      1       |  1.440251130167 +0.000000000000i
       2       |  2.500000000000 -0.000000000000i
 </pre></div>
 </div>

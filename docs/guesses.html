@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Using Known Roots or Symmetries &mdash; cxroots 2.0.0 documentation</title>
+  <title>Using Known Roots or Symmetries &mdash; cxroots 2.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -12,11 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -32,14 +32,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> cxroots
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cxroots
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -89,8 +93,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Using Known Roots or Symmetries</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using Known Roots or Symmetries</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/guesses.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,31 +104,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="using-known-roots-or-symmetries">
+  <section id="using-known-roots-or-symmetries">
 <h1>Using Known Roots or Symmetries<a class="headerlink" href="#using-known-roots-or-symmetries" title="Permalink to this heading"></a></h1>
 <section id="guessing-roots">
 <h2>Guessing Roots<a class="headerlink" href="#guessing-roots" title="Permalink to this heading"></a></h2>
@@ -141,7 +121,7 @@ For example, suppose we want to find the roots of the function</p>
 </pre></div>
 </div>
 <p>This causes cxroots to first check for roots within small circles centered on the points 2.5 and -1.2</p>
-<p>(<a class="reference external" href=".//guesses-1.py">Source code</a>)</p>
+<p>(<a class="reference download internal" download="" href="_downloads/42feb5a5496b6db4c05c2b6c8094d06d/guesses-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>)</p>
 <a class="reference internal image-reference" href="_images/guess_roots.gif"><img alt="_images/guess_roots.gif" src="_images/guess_roots.gif" style="width: 500px;" /></a>
 <p>Note that the list we supply to <cite>guess_roots</cite> simply tells <cite>cxroots</cite> where to look first for roots, the guesses will not be blindly accepted so they do not need to be particularly accurate.</p>
 </section>
@@ -162,7 +142,7 @@ We should therefore pass <code class="code docutils literal notranslate"><span c
 </pre></div>
 </div>
 <p>This causes <cite>cxroots</cite> to check for roots within a small circle centered on the points <span class="math notranslate nohighlight">\(\overline{z_i}\)</span> and <span class="math notranslate nohighlight">\(-z_i\)</span> whenever a root, <span class="math notranslate nohighlight">\(z_i\)</span>, is found.</p>
-<p>(<a class="reference external" href=".//guesses-2.py">Source code</a>)</p>
+<p>(<a class="reference download internal" download="" href="_downloads/892945911a82e9aa85cdddc1b4d6b487/guesses-2.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>)</p>
 <a class="reference internal image-reference" href="_images/ex_rootSymmetry.gif"><img alt="_images/ex_rootSymmetry.gif" src="_images/ex_rootSymmetry.gif" style="width: 500px;" /></a>
 </section>
 </section>

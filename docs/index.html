@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cxroots: rootfinding for complex analytic functions &mdash; cxroots 2.0.0 documentation</title>
+  <title>cxroots: rootfinding for complex analytic functions &mdash; cxroots 2.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -12,11 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -31,14 +31,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> cxroots
+
+          
+          
+          <a href="#" class="icon icon-home">
+            cxroots
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -84,8 +88,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>cxroots: rootfinding for complex analytic functions</li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">cxroots: rootfinding for complex analytic functions</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -95,31 +99,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="cxroots-rootfinding-for-complex-analytic-functions">
+  <section id="cxroots-rootfinding-for-complex-analytic-functions">
 <h1>cxroots: rootfinding for complex analytic functions<a class="headerlink" href="#cxroots-rootfinding-for-complex-analytic-functions" title="Permalink to this heading"></a></h1>
 <p>cxroots is a Python package for finding all the roots of a function, <span class="math notranslate nohighlight">\(f(z)\)</span>, of a single complex variable within a given contour, <span class="math notranslate nohighlight">\(C\)</span>, in the complex plane.  It requires only that both:</p>
 <ul class="simple">
@@ -149,6 +129,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v2-0-1">v2.0.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v2-0-0">v2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-11">v1.1.11</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#release-v1-1-10">v1.1.10</a></li>
@@ -197,20 +178,83 @@
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="paths.html">Paths</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="paths.html#line">Line</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paths.html#circular-arc">Circular Arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paths.html#cxroots.paths.ComplexPath"><code class="docutils literal notranslate"><span class="pre">ComplexPath</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="paths.html#cxroots.paths.ComplexPath.integrate"><code class="docutils literal notranslate"><span class="pre">ComplexPath.integrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="paths.html#cxroots.paths.ComplexPath.plot"><code class="docutils literal notranslate"><span class="pre">ComplexPath.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="paths.html#cxroots.paths.ComplexPath.show"><code class="docutils literal notranslate"><span class="pre">ComplexPath.show()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="paths.html#cxroots.paths.ComplexPath.trap_values"><code class="docutils literal notranslate"><span class="pre">ComplexPath.trap_values()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paths.html#line">Line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="paths.html#cxroots.paths.ComplexLine"><code class="docutils literal notranslate"><span class="pre">ComplexLine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="paths.html#cxroots.paths.ComplexLine.__call__"><code class="docutils literal notranslate"><span class="pre">ComplexLine.__call__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="paths.html#cxroots.paths.ComplexLine.distance"><code class="docutils literal notranslate"><span class="pre">ComplexLine.distance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paths.html#circular-arc">Circular Arc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="paths.html#cxroots.paths.ComplexArc"><code class="docutils literal notranslate"><span class="pre">ComplexArc</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="paths.html#cxroots.paths.ComplexArc.__call__"><code class="docutils literal notranslate"><span class="pre">ComplexArc.__call__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="paths.html#cxroots.paths.ComplexArc.distance"><code class="docutils literal notranslate"><span class="pre">ComplexArc.distance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contours.html">Contours</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contours.html#circle">Circle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contours.html#rectangle">Rectangle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contours.html#annulus">Annulus</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contours.html#annulus-sector">Annulus Sector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contours.html#cxroots.contour.Contour"><code class="docutils literal notranslate"><span class="pre">Contour</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.central_point"><code class="docutils literal notranslate"><span class="pre">Contour.central_point</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.area"><code class="docutils literal notranslate"><span class="pre">Contour.area</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.__call__"><code class="docutils literal notranslate"><span class="pre">Contour.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.contains"><code class="docutils literal notranslate"><span class="pre">Contour.contains()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.count_roots"><code class="docutils literal notranslate"><span class="pre">Contour.count_roots()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.distance"><code class="docutils literal notranslate"><span class="pre">Contour.distance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.integrate"><code class="docutils literal notranslate"><span class="pre">Contour.integrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.plot"><code class="docutils literal notranslate"><span class="pre">Contour.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.show"><code class="docutils literal notranslate"><span class="pre">Contour.show()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.contour.Contour.subdivisions"><code class="docutils literal notranslate"><span class="pre">Contour.subdivisions()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="prod.html">Symmetric Bilinear Form</a></li>
-<li class="toctree-l1"><a class="reference internal" href="iteration.html">Iterative Methods</a></li>
-<li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contours.html#circle">Circle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.Circle"><code class="docutils literal notranslate"><span class="pre">Circle</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contours.html#rectangle">Rectangle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.Rectangle"><code class="docutils literal notranslate"><span class="pre">Rectangle</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contours.html#annulus">Annulus</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.Annulus"><code class="docutils literal notranslate"><span class="pre">Annulus</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contours.html#annulus-sector">Annulus Sector</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contours.html#cxroots.AnnulusSector"><code class="docutils literal notranslate"><span class="pre">AnnulusSector</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="prod.html">Symmetric Bilinear Form</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="prod.html#cxroots.root_counting.prod"><code class="docutils literal notranslate"><span class="pre">prod()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="iteration.html">Iterative Methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="iteration.html#cxroots.iterative_methods.iterate_to_root"><code class="docutils literal notranslate"><span class="pre">iterate_to_root()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="iteration.html#cxroots.iterative_methods.muller"><code class="docutils literal notranslate"><span class="pre">muller()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="iteration.html#cxroots.iterative_methods.newton"><code class="docutils literal notranslate"><span class="pre">newton()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="result.html">Rootfinding Result</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="result.html#cxroots.root_result.RootResult"><code class="docutils literal notranslate"><span class="pre">RootResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="result.html#cxroots.root_result.RootResult.roots"><code class="docutils literal notranslate"><span class="pre">RootResult.roots</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="result.html#cxroots.root_result.RootResult.multiplicities"><code class="docutils literal notranslate"><span class="pre">RootResult.multiplicities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="result.html#cxroots.root_result.RootResult.contour"><code class="docutils literal notranslate"><span class="pre">RootResult.contour</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="result.html#cxroots.root_result.RootResult.show"><code class="docutils literal notranslate"><span class="pre">RootResult.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
