@@ -5,6 +5,7 @@
 - Fix type annotation for `util.integrate_quad_complex` function
 - Add more debug logging for root counting
 - Adjust root counting error advice to include chaning integration method
+- Fix type issue in contour.__call__ by hard coding array dtype
 
 ### 2.0.0 - 20/Aug/2022
 
