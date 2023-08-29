@@ -21,14 +21,14 @@
   "packageRules": [
     {
       "groupName": "Static Analysis Dependencies",
-      "matchPackagePatterns": [
+      "matchFileNames": [
         "requirements_analysis.txt",
         ".pre-commit-config.yaml"
       ]
     },
     {
       "groupName": "Docs Dependencies",
-      "matchPackagePatterns": ["requirements_doc.txt"]
+      "matchFileNames": ["requirements_doc.txt"]
     }
   ],
   "pre-commit": {
