@@ -296,6 +296,8 @@ def count_roots(
             integer_tol=integer_tol,
         )
 
+    logger.debug(f"Integral for number of roots = {integral}")
+
     if np.isnan(integral):
         raise RootError(
             "Result of integral is an invalid value. "

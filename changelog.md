@@ -3,6 +3,7 @@
 ### Unreleased
 
 - Fix type annotation for `util.integrate_quad_complex` function
+- Add more debug logging for root counting
 
 ### 2.0.0 - 20/Aug/2022
 
