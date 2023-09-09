@@ -1,14 +1,13 @@
-from typing import Optional
+from typing import Optional, Tuple
 
 import numpy as np
 
-from cxroots.types import AnalyticFunc
-
 from .contour_interface import ContourABC
 from .root_finding import RootFinderState, find_roots_gen
+from .types import AnalyticFunc
 
 
-def _contour_color(contour: ContourABC):
+def _contour_color(contour: ContourABC) -> Tuple[float, float, float, float]:
     """
     Deterministically generate a colour for a contour so that the contour has the same
     colour in each frame of the root finding animation
@@ -18,7 +17,7 @@ def _contour_color(contour: ContourABC):
     cmap = plt.get_cmap("jet")
 
     rng = np.random.default_rng(hash(contour))
-    return cmap(rng.random())
+    return cmap(rng.random())  # type: ignore
 
 
 def _update_frame(frame: RootFinderState, original_contour: ContourABC) -> None:
