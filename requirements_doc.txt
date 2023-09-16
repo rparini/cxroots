@@ -1,5 +1,5 @@
 nbsphinx==0.9.3
-sphinx==7.2.5
+sphinx==7.2.6
 sphinxcontrib-programoutput==0.17
 sphinxcontrib-bibtex==2.6.1
 sphinx_rtd_theme==2.0.0rc2
