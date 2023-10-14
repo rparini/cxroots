@@ -17,7 +17,7 @@ def _contour_color(contour: ContourABC) -> Tuple[float, float, float, float]:
     cmap = plt.get_cmap("jet")
 
     rng = np.random.default_rng(hash(contour))
-    return cmap(rng.random())  # type: ignore
+    return cmap(rng.random())
 
 
 def _update_frame(frame: RootFinderState, original_contour: ContourABC) -> None:
@@ -139,5 +139,5 @@ def demo_find_roots(
                     pass
 
         fig = plt.gcf()
-        fig.canvas.mpl_connect("key_press_event", draw_next)  # type: ignore
+        fig.canvas.mpl_connect("key_press_event", draw_next)
         plt.show()
