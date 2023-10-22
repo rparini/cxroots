@@ -84,7 +84,7 @@ def demo_roots_animation(
         fig,
         _update_frame,
         frames=root_finder,
-        fargs=[original_contour],
+        fargs=(original_contour,),
         cache_frame_data=False,
     )
 
