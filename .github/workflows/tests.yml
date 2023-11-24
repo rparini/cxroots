@@ -7,7 +7,7 @@ env:
 
 jobs:
   black:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ env.latest_python }}
@@ -19,7 +19,7 @@ jobs:
       - run: black --check .
 
   isort:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ env.latest_python }}
@@ -31,7 +31,7 @@ jobs:
       - run: isort --check .
 
   flake8:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ env.latest_python }}
@@ -43,7 +43,7 @@ jobs:
       - run: flake8 --statistics
 
   pyright:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ env.latest_python }}
@@ -55,7 +55,7 @@ jobs:
       - run: pyright cxroots
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -83,7 +83,7 @@ jobs:
           path-to-lcov: coverage.lcov
 
   test-docs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ env.latest_python }}
