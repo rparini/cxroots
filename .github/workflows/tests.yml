@@ -2,15 +2,19 @@ name: tests
 
 on: [push]
 
+env:
+  latest_python: 3.11
+
 jobs:
   black:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
+      - name: Set up Python ${{ env.latest_python }}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - run: pip install -r requirements_analysis.txt
       - run: black --check .
 
@@ -18,10 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
+      - name: Set up Python ${{ env.latest_python }}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - run: pip install -r requirements_analysis.txt
       - run: isort --check .
 
@@ -29,10 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
+      - name: Set up Python ${{ env.latest_python }}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - run: pip install -r requirements_analysis.txt
       - run: flake8 --statistics
 
@@ -40,10 +46,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
+      - name: Set up Python ${{ env.latest_python }}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - run: pip install -r requirements_analysis.txt -r requirements.txt
       - run: pyright cxroots
 
@@ -62,6 +69,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Test with pytest
@@ -69,7 +77,7 @@ jobs:
         timeout-minutes: 20
       - name: Coveralls
         uses: coverallsapp/github-action@master
-        if: matrix.python-version == 3.11
+        if: matrix.python-version == env.latest_python
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: coverage.lcov
