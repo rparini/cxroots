@@ -86,11 +86,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ env.latest_python }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.latest_python }}
-          cache: 'pip'
       - name: Build docs
         uses: ./.github/actions/build-docs
         env:
