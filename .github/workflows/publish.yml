@@ -29,7 +29,7 @@ jobs:
       uses: ./.github/actions/build-docs
       env:
         SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: stefanzweifel/git-auto-commit-action@v4
+    - uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: Autoupdate documentation for ${{ steps.get_tag_name.outputs.VERSION }}
         file_pattern: docs/* cxroots/version.py
