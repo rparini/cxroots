@@ -12,6 +12,6 @@ mistune==3.0.2 # not directly required, avoid vulnerability in older version
 -r requirements.txt
 
 # For packaging
-setuptools
-wheel
-twine
+setuptools==68.2.2
+wheel==0.41.3
+twine==4.0.2
