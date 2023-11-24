@@ -82,8 +82,8 @@ def demo_roots_animation(
     root_finder = find_roots_gen(original_contour, f, df, **roots_kwargs)
     return animation.FuncAnimation(
         fig,
-        _update_frame,
-        frames=root_finder,
+        _update_frame,  # type: ignore
+        frames=root_finder,  # type: ignore
         fargs=(original_contour,),
         cache_frame_data=False,
     )
