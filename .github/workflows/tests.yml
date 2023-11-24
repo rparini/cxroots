@@ -2,6 +2,9 @@ name: tests
 
 on: [push]
 
+env:
+  latest_python: 3.12
+
 jobs:
   black:
     runs-on: ubuntu-latest
@@ -10,7 +13,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: ${{ env.latest_python }}
       - run: pip install -r requirements_analysis.txt
       - run: black --check .
 
@@ -21,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: ${{ env.latest_python }}
       - run: pip install -r requirements_analysis.txt
       - run: isort --check .
 
@@ -32,7 +35,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: ${{ env.latest_python }}
       - run: pip install -r requirements_analysis.txt
       - run: flake8 --statistics
 
@@ -43,7 +46,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: ${{ env.latest_python }}
       - run: pip install -r requirements_analysis.txt -r requirements.txt
       - run: pyright cxroots
 
@@ -70,7 +73,7 @@ jobs:
         timeout-minutes: 20
       - name: Coveralls
         uses: coverallsapp/github-action@master
-        if: matrix.python-version == 3.12
+        if: matrix.python-version == env.latest_python
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: coverage.lcov
@@ -82,7 +85,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: ${{ env.latest_python }}
       - name: Build docs
         uses: ./.github/actions/build-docs
         env:
