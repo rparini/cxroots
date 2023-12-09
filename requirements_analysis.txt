@@ -2,6 +2,6 @@ black==23.11.0
 isort==5.12.0
 flake8==6.1.0
 pep8-naming==0.13.3
-bandit==1.7.5
+bandit==1.7.6
 bandit-sarif-formatter==1.1.1
-pyright==1.1.338
+pyright==1.1.339
