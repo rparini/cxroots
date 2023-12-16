@@ -21,12 +21,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: 'python'
           config-file: ./.github/codeql/codeql-config.yml
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
   bandit:
     name: Bandit
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
         run: bandit -r ./cxroots -x ./cxroots/tests --format sarif --output out.sarif
       - name: Upload SARIF file
         if: always()
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: out.sarif
           category: Bandit
