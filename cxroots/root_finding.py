@@ -489,19 +489,23 @@ def find_roots_gen(
                 contours.append(contour)
             continue
 
-        for approx_root, approx_multiplicity in list(
-            zip(approx_roots, approx_multiplicities)
+        if any(
+            abs(round(m.real) - m.real) > integer_tol
+            or abs(m.imag) > integer_tol
+            or m < 1
+            for m in approx_multiplicities
         ):
-            # check that the multiplicity is close to an integer
-            multiplicity = round(approx_multiplicity.real)
-            if (
-                abs(multiplicity - approx_multiplicity.real) > integer_tol
-                or abs(approx_multiplicity.imag) > integer_tol
-                or multiplicity < 1
-            ):
-                continue
+            logger.debug(
+                f"Subdividing due to invalid multiplicies: {approx_multiplicities}"
+            )
+            subdivide(contour)
+            continue
 
+        for approx_root, approx_multiplicity in zip(
+            approx_roots, approx_multiplicities
+        ):
             # attempt to refine the root
+            multiplicity = round(approx_multiplicity.real)
             root = iterate_to_root(
                 approx_root,
                 f,
