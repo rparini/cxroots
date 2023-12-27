@@ -403,23 +403,23 @@ def test_rootfinding_299():
     there should have been.
     """
     # Geometry Details
-    l = 1.0
+    l = 1.0  # noqa: E741
     a = 0.25
     b = l - a
 
     # Region 1 (unburnt gas)
-    T1 = 300
-    P1 = 101325
-    R = 287.0  # Gas constant
+    T1 = 300  # noqa: N806
+    P1 = 101325  # noqa: N806
+    R = 287.0  # noqa: N806 Gas constant
     rho1 = P1 / (R * T1)  # Density of the unburnt gas (kg/m3)
     gamma = 1.4
-    C1 = np.sqrt(gamma * R * T1)  # Speed of sound
+    C1 = np.sqrt(gamma * R * T1)  # noqa: N806 Speed of sound
 
     # Region 2 (burnt gas)
-    T2 = 1200
-    P2 = P1
+    T2 = 1200  # noqa: N806
+    P2 = P1  # noqa: N806
     rho2 = P2 / (R * T2)
-    C2 = np.sqrt(gamma * R * T2)
+    C2 = np.sqrt(gamma * R * T2)  # noqa: N806
 
     zeta = rho1 * C1 / (rho2 * C2)
 
