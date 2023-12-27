@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2.1.0 - 27/Dec/2023
+
+- Improved reliability by subdividing contours that produce invalid approximations for multiplicites, rather than ignoring the individual invalid approximations.
+
 ### 2.0.1 - 29/Aug/2023
 
 - Record in setup.py that only numpy < 1.25 will work with cxroots currently (https://github.com/rparini/cxroots/issues/285) 

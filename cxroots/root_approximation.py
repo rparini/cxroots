@@ -237,6 +237,6 @@ def approximate_roots(
     # print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
 
     logger.debug(
-        "Approximate (roots, multiplicities): " + str(zip(roots, multiplicities))
+        f"Approximate (roots, multiplicities): {list(zip(roots, multiplicities))}"
     )
     return tuple(roots), tuple(multiplicities)

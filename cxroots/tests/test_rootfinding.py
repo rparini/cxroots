@@ -9,6 +9,7 @@ References
     Springer 2000
 """
 
+import cmath
 import unittest
 
 import numpy as np
@@ -393,6 +394,76 @@ def test_df(int_method):
 
     assert roots.roots == pytest.approx([0.5])
     assert roots.multiplicities == [2]
+
+
+def test_rootfinding_299():
+    """
+    Regression test for https://github.com/rparini/cxroots/issues/299
+    In this case there were some roots missing and some with more multiplicites than
+    there should have been.
+    """
+    # Geometry Details
+    l = 1.0  # noqa: E741
+    a = 0.25
+    b = l - a
+
+    # Region 1 (unburnt gas)
+    T1 = 300  # noqa: N806
+    P1 = 101325  # noqa: N806
+    R = 287.0  # noqa: N806 Gas constant
+    rho1 = P1 / (R * T1)  # Density of the unburnt gas (kg/m3)
+    gamma = 1.4
+    C1 = np.sqrt(gamma * R * T1)  # noqa: N806 Speed of sound
+
+    # Region 2 (burnt gas)
+    T2 = 1200  # noqa: N806
+    P2 = P1  # noqa: N806
+    rho2 = P2 / (R * T2)
+    C2 = np.sqrt(gamma * R * T2)  # noqa: N806
+
+    zeta = rho1 * C1 / (rho2 * C2)
+
+    # Crocco's n-tau model
+    n = 10.0
+    tau = 0.005
+
+    def f(omega):
+        return zeta * cmath.cos(omega / C1 * a) * cmath.cos(omega / C2 * b) - (
+            1 + n * cmath.exp(1j * omega * tau)
+        ) * (cmath.sin(omega / C1 * a) * cmath.sin(omega / C2 * b))
+
+    def f_prime(omega):  # Derivative of f
+        return (
+            -zeta
+            * (
+                b / C2 * cmath.cos(omega * a / C1) * cmath.sin(omega * b / C2)
+                + a / C1 * cmath.cos(omega * b / C2) * cmath.sin(omega * a / C1)
+            )
+            - (1 + n * cmath.exp(1j * omega * tau))
+            * (
+                b / C2 * cmath.sin(omega * a / C1) * cmath.cos(omega * b / C2)
+                + a / C1 * cmath.sin(omega * b / C2) * cmath.cos(omega * a / C1)
+            )
+            - (1j * n * tau * cmath.exp(1j * omega * tau))
+            * (cmath.sin(omega * a / C1) * cmath.sin(omega * b / C2))
+        )
+
+    # Using a rectangle as the contour
+    contour = Rectangle([0, 5000], [-500, 500])
+    roots, multiplicities = contour.roots(f, f_prime)
+    roots = sorted(roots, key=lambda r: r.real)
+
+    expected_roots = [
+        261.045540365941 - 181.036716404397j,
+        904.889245400156 + 343.599454434591j,
+        1880.005303030232 + 388.327867463358j,
+        2801.720372617268 + 150.680161943082j,
+        3112.682726748578 + 47.264321292923j,
+        4362.901996620711 + 0.000000000000j,
+        4398.645160420987 + 184.305444695056j,
+    ]
+    assert all(m == 1 for m in multiplicities)
+    assert roots == pytest.approx(expected_roots)
 
 
 if __name__ == "__main__":
