@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cxroots.paths &mdash; cxroots 2.0.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
+  <title>cxroots.paths &mdash; cxroots 2.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=20623aea"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -34,7 +36,7 @@
             cxroots
           </a>
               <div class="version">
-                2.0.1
+                2.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -110,7 +112,9 @@
 <span class="n">ComplexPathType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;ComplexPathType&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;ComplexPath&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ComplexPath"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath">[docs]</a><span class="k">class</span> <span class="nc">ComplexPath</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ComplexPath">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath">[docs]</a>
+<span class="k">class</span> <span class="nc">ComplexPath</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A base class for paths in the complex plane.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -171,7 +175,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;distance must be implemented in a subclass&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ComplexPath.trap_values"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath.trap_values">[docs]</a>    <span class="k">def</span> <span class="nf">trap_values</span><span class="p">(</span>
+<div class="viewcode-block" id="ComplexPath.trap_values">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath.trap_values">[docs]</a>
+    <span class="k">def</span> <span class="nf">trap_values</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">f</span><span class="p">:</span> <span class="n">AnalyticFunc</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -232,6 +238,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_trap_cache</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
             <span class="k">return</span> <span class="n">vals</span></div>
 
+
     <span class="k">def</span> <span class="nf">trap_product</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -268,7 +275,9 @@
 
         <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">romb</span><span class="p">(</span><span class="n">segment_integrand</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ComplexPath.plot"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+<div class="viewcode-block" id="ComplexPath.plot">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath.plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">num_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">linecolor</span><span class="p">:</span> <span class="n">Color</span> <span class="o">=</span> <span class="s2">&quot;C0&quot;</span><span class="p">,</span>
@@ -314,7 +323,10 @@
             <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">linecolor</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">linecolor</span><span class="p">),</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ComplexPath.integrate"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath.integrate">[docs]</a>    <span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span>
+
+<div class="viewcode-block" id="ComplexPath.integrate">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath.integrate">[docs]</a>
+    <span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">f</span><span class="p">:</span> <span class="n">AnalyticFunc</span><span class="p">,</span>
         <span class="n">abs_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.49e-08</span><span class="p">,</span>
@@ -396,7 +408,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_integral_cache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span> <span class="o">=</span> <span class="n">integral</span>
         <span class="k">return</span> <span class="n">integral</span></div>
 
-<div class="viewcode-block" id="ComplexPath.show"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ComplexPath.show">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexPath.show">[docs]</a>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shows the path as a 2D plot in the complex plane.  Requires</span>
 <span class="sd">        Matplotlib.</span>
@@ -417,10 +432,14 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ComplexLine"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexLine">[docs]</a><span class="k">class</span> <span class="nc">ComplexLine</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ComplexLine">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexLine">[docs]</a>
+<span class="k">class</span> <span class="nc">ComplexLine</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A straight line :math:`z` in the complex plane from points a to b</span>
 <span class="sd">    parameterised by</span>
@@ -450,7 +469,9 @@
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex_</span><span class="p">]:</span>
         <span class="o">...</span>
 
-<div class="viewcode-block" id="ComplexLine.__call__"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexLine.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="ComplexLine.__call__">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexLine.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">complex</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex_</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
@@ -467,6 +488,7 @@
 <span class="sd">            A point on the line in the complex plane.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span></div>
+
 
     <span class="nd">@overload</span>
     <span class="k">def</span> <span class="nf">dzdt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
@@ -485,7 +507,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span>
 
-<div class="viewcode-block" id="ComplexLine.distance"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexLine.distance">[docs]</a>    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">complex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="ComplexLine.distance">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexLine.distance">[docs]</a>
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">complex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Distance from the point z to the closest point on the line.</span>
 
@@ -509,10 +533,14 @@
 
         <span class="c1"># so the point on the line segment closest to z is</span>
         <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ComplexArc"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexArc">[docs]</a><span class="k">class</span> <span class="nc">ComplexArc</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ComplexArc">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexArc">[docs]</a>
+<span class="k">class</span> <span class="nc">ComplexArc</span><span class="p">(</span><span class="n">ComplexPath</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A circular arc :math:`z` with center z0, radius R, initial angle t0</span>
 <span class="sd">    and change of angle dt.  The arc is parameterised by</span>
@@ -549,7 +577,9 @@
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex_</span><span class="p">]:</span>
         <span class="o">...</span>
 
-<div class="viewcode-block" id="ComplexArc.__call__"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexArc.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="ComplexArc.__call__">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexArc.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">complex</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex_</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
@@ -566,6 +596,7 @@
 <span class="sd">            A point on the arc in the complex plane.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z0</span></div>
+
 
     <span class="nd">@overload</span>
     <span class="k">def</span> <span class="nf">dzdt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
@@ -584,7 +615,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span>
 
-<div class="viewcode-block" id="ComplexArc.distance"><a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexArc.distance">[docs]</a>    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">complex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="ComplexArc.distance">
+<a class="viewcode-back" href="../../paths.html#cxroots.paths.ComplexArc.distance">[docs]</a>
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">complex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Distance from the point z to the closest point on the arc.</span>
 
@@ -608,7 +641,9 @@
             <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z0</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># the closest point to z is one of the endpoints</span>
-            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">z</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">z</span><span class="p">))</span></div></div>
+            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">z</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">z</span><span class="p">))</span></div>
+</div>
+
 </pre></div>
 
            </div>

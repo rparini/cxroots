@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Changelog &mdash; cxroots 2.0.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+  <title>Changelog &mdash; cxroots 2.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=20623aea"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -37,7 +39,7 @@
             cxroots
           </a>
               <div class="version">
-                2.0.1
+                2.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#release-v2-1-0">v2.1.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-v2-0-1">v2.0.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-v2-0-0">v2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-v1-1-11">v1.1.11</a></li>
@@ -111,9 +114,15 @@
            <div itemprop="articleBody">
              
   <section id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<section id="release-v2-1-0">
+<h2>v2.1.0<a class="headerlink" href="#release-v2-1-0" title="Link to this heading"></a></h2>
+<p><em>Released on 2023-12-27 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v2.1.0">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v2.1.0/">PyPI</a></em></p>
+<ul>
+<li>Improved reliability by subdividing contours that produce invalid approximations for multiplicites, rather than ignoring the individual invalid approximations.</li>
+</ul></section>
 <section id="release-v2-0-1">
-<h2>v2.0.1<a class="headerlink" href="#release-v2-0-1" title="Permalink to this heading"></a></h2>
+<h2>v2.0.1<a class="headerlink" href="#release-v2-0-1" title="Link to this heading"></a></h2>
 <p><em>Released on 2023-08-29 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v2.0.1">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v2.0.1/">PyPI</a></em></p>
 <ul>
 <li>Record in setup.py that only numpy &lt; 1.25 will work with cxroots currently (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1871132004" data-permission-text="Title is private" data-url="https://github.com/rparini/cxroots/issues/285" data-hovercard-type="issue" data-hovercard-url="/rparini/cxroots/issues/285/hovercard" href="https://github.com/rparini/cxroots/issues/285">#285</a>)</li>
@@ -123,7 +132,7 @@
 <li>Fix type issue in contour.<strong>call</strong> by hard coding array dtype</li>
 </ul></section>
 <section id="release-v2-0-0">
-<h2>v2.0.0<a class="headerlink" href="#release-v2-0-0" title="Permalink to this heading"></a></h2>
+<h2>v2.0.0<a class="headerlink" href="#release-v2-0-0" title="Link to this heading"></a></h2>
 <p><em>Released on 2022-08-20 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v2.0.0">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v2.0.0/">PyPI</a></em></p>
 <h4>Breaking changes</h4>
 <ul>
@@ -159,39 +168,39 @@
 <li>Changes starting points for muller's method used when root refining to be complex, to guard against the iterations keeping to the real line.</li>
 </ul></section>
 <section id="release-v1-1-11">
-<h2>v1.1.11<a class="headerlink" href="#release-v1-1-11" title="Permalink to this heading"></a></h2>
+<h2>v1.1.11<a class="headerlink" href="#release-v1-1-11" title="Link to this heading"></a></h2>
 <p><em>Released on 2021-12-22 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v1.1.11">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v1.1.11/">PyPI</a></em></p>
 <ul>
 <li>Fixed error when using <code>romb</code> integration method when supplied with a derivative function that returns a constant value</li>
 </ul></section>
 <section id="release-v1-1-10">
-<h2>v1.1.10<a class="headerlink" href="#release-v1-1-10" title="Permalink to this heading"></a></h2>
+<h2>v1.1.10<a class="headerlink" href="#release-v1-1-10" title="Link to this heading"></a></h2>
 <p><em>Released on 2020-07-22 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v1.1.10">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v1.1.10/">PyPI</a></em></p>
 <ul>
 <li>Replaced docrep with numpydoc</li>
 </ul></section>
 <section id="release-v1-1-9">
-<h2>v1.1.9<a class="headerlink" href="#release-v1-1-9" title="Permalink to this heading"></a></h2>
+<h2>v1.1.9<a class="headerlink" href="#release-v1-1-9" title="Link to this heading"></a></h2>
 <p><em>Released on 2020-03-01 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v1.1.9">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v1.1.9/">PyPI</a></em></p>
 <ul>
 <li>Fix depreciation warning from scipy</li>
 </ul></section>
 <section id="release-v1-1-8">
-<h2>v1.1.8<a class="headerlink" href="#release-v1-1-8" title="Permalink to this heading"></a></h2>
+<h2>v1.1.8<a class="headerlink" href="#release-v1-1-8" title="Link to this heading"></a></h2>
 <p><em>Released on 2019-04-20 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v1.1.8">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v1.1.8/">PyPI</a></em></p>
 <ul>
 <li>Fix NotImplementedError in <code>Contour</code> base (<a href="https://github.com/rparini/cxroots/issues/31" data-hovercard-type="pull_request" data-hovercard-url="/rparini/cxroots/pull/31/hovercard">#31</a> thanks <a href="https://github.com/fchapoton">@fchapoton</a>)</li>
 <li>Added <code>__call__</code> placeholder to ComplexPath</li>
 </ul></section>
 <section id="release-v1-1-7">
-<h2>v1.1.7: <a class="headerlink" href="#release-v1-1-7" title="Permalink to this heading"></a></h2>
+<h2>v1.1.7: <a class="headerlink" href="#release-v1-1-7" title="Link to this heading"></a></h2>
 <p><em>Released on 2019-02-10 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v1.1.7">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v1.1.7/">PyPI</a></em></p>
 <ul>
 <li>Fix <code>setup.py test</code>.</li>
 <li>Fix invalid escape characters</li>
 </ul></section>
 <section id="release-v1-1-6">
-<h2>v1.1.6: <a class="headerlink" href="#release-v1-1-6" title="Permalink to this heading"></a></h2>
+<h2>v1.1.6: <a class="headerlink" href="#release-v1-1-6" title="Link to this heading"></a></h2>
 <p><em>Released on 2019-01-27 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v1.1.6">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v1.1.6/">PyPI</a></em></p>
 <h3>1.1.6 - 19/Sep/2018</h3>
 <ul>
@@ -200,7 +209,7 @@
 <li>Enable 'setup.py test'.</li>
 </ul></section>
 <section id="release-v1-1-5">
-<h2>v1.1.5<a class="headerlink" href="#release-v1-1-5" title="Permalink to this heading"></a></h2>
+<h2>v1.1.5<a class="headerlink" href="#release-v1-1-5" title="Link to this heading"></a></h2>
 <p><em>Released on 2018-08-05 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v1.1.5">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v1.1.5/">PyPI</a></em></p>
 <h2>Changelog</h2>
 <ul>
@@ -225,7 +234,7 @@
 </ul>
 <p>Note that the only difference in versions 1.1.0 to 1.1.5 are README.rst.  They exist because updating the project description on pypi requires the entire project to be uploaded again with a new version number.</p></section>
 <section id="release-v1-0-0">
-<h2>v1.0.0<a class="headerlink" href="#release-v1-0-0" title="Permalink to this heading"></a></h2>
+<h2>v1.0.0<a class="headerlink" href="#release-v1-0-0" title="Link to this heading"></a></h2>
 <p><em>Released on 2017-10-12 - <a class="reference external" href="https://github.com/rparini/cxroots/releases/tag/v1.0.0">GitHub</a> - <a class="reference external" href="https://pypi.org/project/cxroots/v1.0.0/">PyPI</a></em></p>
 <p>cxroots is now able to locate roots of analytic functions with multiplicities greater than one.  This involved a large rewrite to approximate the roots and the multiplicities of roots within a contour based on the method of [KB].  This approach should also be more accurate and faster since roots can now be approximated using contour integration and then refined with the Newton-Raphson method, rather than relying on the Newton-Raphson method with random initial points to hit upon the root within a contour.</p>
 <hr>
