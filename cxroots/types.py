@@ -11,8 +11,7 @@ ComplexScalarOrArray = Union[complex, npt.NDArray[np.complex_]]
 
 class AnalyticFunc(Protocol):
     @overload
-    def __call__(self, z: Union[complex, float]) -> complex:
-        ...
+    def __call__(self, z: Union[complex, float]) -> complex: ...
 
     @overload
     def __call__(
@@ -22,5 +21,4 @@ class AnalyticFunc(Protocol):
         # it's a constant function
         ...
 
-    def __call__(self, z: ScalarOrArray) -> ComplexScalarOrArray:
-        ...
+    def __call__(self, z: ScalarOrArray) -> ComplexScalarOrArray: ...

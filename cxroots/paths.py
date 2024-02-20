@@ -25,12 +25,10 @@ class ComplexPath(object):
         self._reverse_path: Optional[ComplexPath] = None
 
     @overload
-    def __call__(self, t: float) -> complex:
-        ...
+    def __call__(self, t: float) -> complex: ...
 
     @overload
-    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
-        ...
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def __call__(
         self, t: Union[float, npt.NDArray[np.float_]]
@@ -51,12 +49,10 @@ class ComplexPath(object):
         raise NotImplementedError("__call__ must be implemented in a subclass")
 
     @overload
-    def dzdt(self, t: float) -> complex:
-        ...
+    def dzdt(self, t: float) -> complex: ...
 
     @overload
-    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
-        ...
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def dzdt(
         self, t: Union[float, npt.NDArray[np.float_]]
@@ -345,12 +341,10 @@ class ComplexLine(ComplexPath):
         )
 
     @overload
-    def __call__(self, t: float) -> complex:
-        ...
+    def __call__(self, t: float) -> complex: ...
 
     @overload
-    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
-        ...
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def __call__(
         self, t: Union[float, npt.NDArray[np.float_]]
@@ -371,12 +365,10 @@ class ComplexLine(ComplexPath):
         return self.a + t * (self.b - self.a)
 
     @overload
-    def dzdt(self, t: float) -> complex:
-        ...
+    def dzdt(self, t: float) -> complex: ...
 
     @overload
-    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
-        ...
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def dzdt(
         self, t: Union[float, npt.NDArray[np.float_]]
@@ -444,12 +436,10 @@ class ComplexArc(ComplexPath):
         )
 
     @overload
-    def __call__(self, t: float) -> complex:
-        ...
+    def __call__(self, t: float) -> complex: ...
 
     @overload
-    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
-        ...
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def __call__(
         self, t: Union[float, npt.NDArray[np.float_]]
@@ -470,12 +460,10 @@ class ComplexArc(ComplexPath):
         return self.R * np.exp(1j * (self.t0 + t * self.dt)) + self.z0
 
     @overload
-    def dzdt(self, t: float) -> complex:
-        ...
+    def dzdt(self, t: float) -> complex: ...
 
     @overload
-    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
-        ...
+    def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def dzdt(
         self, t: Union[float, npt.NDArray[np.float_]]

@@ -186,14 +186,12 @@ def _quad_prod(
         psi = one
 
     @overload
-    def integrand_func(z: Union[complex, float]) -> complex:
-        ...
+    def integrand_func(z: Union[complex, float]) -> complex: ...
 
     @overload
     def integrand_func(
         z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
-    ) -> Union[npt.NDArray[np.complex_], complex]:
-        ...
+    ) -> Union[npt.NDArray[np.complex_], complex]: ...
 
     def integrand_func(z: ScalarOrArray) -> ComplexScalarOrArray:
         return phi(z) * psi(z) * (df(z) / f(z)) / (2j * pi)
