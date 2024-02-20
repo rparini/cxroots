@@ -41,12 +41,10 @@ class Contour(ContourABC):
         self._children: Optional[Sequence[Contour]] = None
 
     @overload
-    def __call__(self, t: float) -> complex:
-        ...
+    def __call__(self, t: float) -> complex: ...
 
     @overload
-    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]:
-        ...
+    def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def __call__(
         self, t: Union[float, npt.NDArray[np.float_]]

@@ -64,14 +64,12 @@ class Annulus(Contour):
     @overload
     def subdivide(
         self, axis: Literal["r"], division_factor: float
-    ) -> Tuple["Annulus", "Annulus"]:
-        ...
+    ) -> Tuple["Annulus", "Annulus"]: ...
 
     @overload
     def subdivide(
         self, axis: Literal["phi"], division_factor: float
-    ) -> Tuple[AnnulusSector, AnnulusSector]:
-        ...
+    ) -> Tuple[AnnulusSector, AnnulusSector]: ...
 
     def subdivide(
         self, axis: Literal["r", "phi"], division_factor: float = 0.5
