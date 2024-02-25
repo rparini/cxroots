@@ -17,7 +17,6 @@ import pytest
 from numpy import cos, exp, sin, sqrt
 
 from cxroots import Annulus, Circle, Rectangle
-from cxroots.derivative import find_multiplicity
 from cxroots.tests.approx_equal import roots_approx_equal
 
 
@@ -58,24 +57,6 @@ class RootfindingTests(object):
         )
 
 
-class MultiplicityTests(object):
-    # These attributes need to be defined by test case subclasses
-    f = None
-    df = None
-    roots = None
-    multiplicities = None
-
-    def test_multiplicity_f(self):
-        # Check that if only the root is given then the multiplcity could be computed
-        for i, root in enumerate(self.roots):
-            assert find_multiplicity(root, self.f, df=None) == self.multiplicities[i]
-
-    def test_multiplicity_df(self):
-        # Check that if only the root is given then the multiplcity could be computed
-        for i, root in enumerate(self.roots):
-            assert find_multiplicity(root, self.f, df=self.df) == self.multiplicities[i]
-
-
 class TestRootfindingNoRoots(unittest.TestCase, RootfindingTests):
     def setUp(self):
         self.C = Annulus(1, [1, 2])
@@ -86,7 +67,7 @@ class TestRootfindingNoRoots(unittest.TestCase, RootfindingTests):
         self.multiplicities = []
 
 
-class TestRootfindingPoly1(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfindingPoly1(unittest.TestCase, RootfindingTests):
     def setUp(self):
         self.C = Rectangle([-2, 2], [-2, 2])
         self.f = lambda z: z**3 * (z - 1.2) ** 2
@@ -96,7 +77,7 @@ class TestRootfindingPoly1(unittest.TestCase, RootfindingTests, MultiplicityTest
         self.multiplicities = [3, 2]
 
 
-class TestRootfindingPoly2(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfindingPoly2(unittest.TestCase, RootfindingTests):
     def setUp(self):
         self.C = Annulus(0, [0.5, 2.5])
         self.f = lambda z: (z - 2) ** 2 * (z - 1) ** 5
@@ -106,7 +87,7 @@ class TestRootfindingPoly2(unittest.TestCase, RootfindingTests, MultiplicityTest
         self.multiplicities = [5, 2]
 
 
-class TestRootfinding141(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding141(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.4.1 from [KB]
         self.C = Circle(0, 3)
@@ -118,7 +99,7 @@ class TestRootfinding141(unittest.TestCase, RootfindingTests, MultiplicityTests)
         self.multiplicities = [1, 1, 1]
 
 
-class TestRootfinding142(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding142(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.4.2 from [KB]
         self.C = Circle(0, 2)
@@ -134,7 +115,7 @@ class TestRootfinding142(unittest.TestCase, RootfindingTests, MultiplicityTests)
         self.multiplicities = [1, 1, 1, 1]
 
 
-class TestRootfinding142b(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding142b(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.4.2 from [KB] with a rectangular initial contour
         self.C = Rectangle([-2, 2], [-2, 2])
@@ -150,7 +131,7 @@ class TestRootfinding142b(unittest.TestCase, RootfindingTests, MultiplicityTests
         self.multiplicities = [1, 1, 1, 1]
 
 
-class TestRootfinding143(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding143(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.4.3 from [KB]
         self.C = Circle(0, 5)
@@ -171,7 +152,7 @@ class TestRootfinding143(unittest.TestCase, RootfindingTests, MultiplicityTests)
         self.multiplicities = [2, 1, 1, 1, 1]
 
 
-class TestRootfinding144(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding144(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.4.4 from [KB]
         self.C = Circle(0, 3)
@@ -195,7 +176,7 @@ class TestRootfinding144(unittest.TestCase, RootfindingTests, MultiplicityTests)
         self.multiplicities = [1, 1, 3, 2, 1]
 
 
-class TestRootfinding145(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding145(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.4.5 from [KB]
         self.C = Circle(0, 11)
@@ -212,7 +193,7 @@ class TestRootfinding145(unittest.TestCase, RootfindingTests, MultiplicityTests)
         self.multiplicities = np.ones(10)
 
 
-class TestRootfinding145b(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding145b(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.4.5 from [KB] with a rectangular initial contour
         self.C = Rectangle([-1, 11], [-1, 1])
@@ -229,7 +210,7 @@ class TestRootfinding145b(unittest.TestCase, RootfindingTests, MultiplicityTests
         self.multiplicities = np.ones(10)
 
 
-class TestRootfinding151(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding151(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.5.1 from [KB]
         self.C = Rectangle([-2, 2], [-2, 3])
@@ -262,7 +243,7 @@ class TestRootfinding151(unittest.TestCase, RootfindingTests, MultiplicityTests)
         )
 
 
-class TestRootfinding152(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding152(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.5.2 from [KB]
         self.C = Rectangle([-0.5, 5.5], [-0.5, 1.5])
@@ -283,7 +264,7 @@ class TestRootfinding152(unittest.TestCase, RootfindingTests, MultiplicityTests)
         self.multiplicities = [2, 1, 1, 1, 1]
 
 
-class TestRootfinding153(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestRootfinding153(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.5.3 from [KB]
         self.C = Rectangle([-1, 3], [-1, 1])
@@ -321,7 +302,7 @@ def test_reevaluation_of_num_roots():
     )
 
 
-class TestIntroduction(unittest.TestCase, RootfindingTests, MultiplicityTests):
+class TestIntroduction(unittest.TestCase, RootfindingTests):
     def setUp(self):
         self.C = Circle(0, 3)
         self.f = lambda z: (z * (z + 2)) ** 2 * (

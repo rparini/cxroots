@@ -3,11 +3,11 @@ import warnings
 from math import inf, pi
 from typing import Callable, Optional, Union, overload
 
-import numdifftools
 import numpy as np
 import numpy.typing as npt
 
 from .contour_interface import ContourABC
+from .derivative import central_diff
 from .types import AnalyticFunc, ComplexScalarOrArray, IntegrationMethod, ScalarOrArray
 
 RombCallback = Callable[[complex, Optional[float], int], Optional[bool]]
@@ -23,7 +23,6 @@ def prod(
     rel_tol: float = 1.49e-08,
     div_min: int = 3,
     div_max: int = 15,
-    df_approx_order: int = 2,
     int_method: IntegrationMethod = "quad",
     integer_tol: float = inf,
     callback: Optional[RombCallback] = None,
@@ -62,10 +61,6 @@ def prod(
     div_max : int, optional
         Only used if int_method='romb'.  The maximum number of divisions
         before the Romberg integration routine of a path exits.
-    df_approx_order : int, optional
-        Only used if df=None and int_method='quad'.  Must be even.  The
-        argument order=df_approx_order is passed to numdifftools.Derivative and is the
-        order of the error term in the Taylor approximation.
     int_method : {'quad', 'romb'}, optional
         If 'quad' then scipy.integrate.quad is used to perform the
         integral.  If 'romb' then Romberg integraion, using
@@ -109,7 +104,7 @@ def prod(
             callback,
         )
     elif int_method == "quad":
-        return _quad_prod(C, f, df, phi, psi, abs_tol, rel_tol, df_approx_order)
+        return _quad_prod(C, f, df, phi, psi, abs_tol, rel_tol)
     else:
         raise ValueError("int_method must be either 'romb' or 'quad'")
 
@@ -162,20 +157,9 @@ def _quad_prod(
     psi: Optional[AnalyticFunc] = None,
     abs_tol: float = 1.49e-08,
     rel_tol: float = 1.49e-08,
-    df_approx_order: int = 2,
 ) -> complex:
     if df is None:
-        df = numdifftools.Derivative(f, order=df_approx_order)  # type: ignore
-        # type checker needs this reassurance for some reason
-        assert df is not None  # nosec B101
-
-        # Using scipy.misc.derivative leads to some roots being missed in tests
-        # df = lambda z: scipy.misc.derivative(f, z, dx=1.49e-8, n=1, order=3)
-
-        # Too slow
-        # import numdifftools.fornberg as ndf
-        # ndf.derivative returns an array [f, f', f'', ...]
-        # df = np.vectorize(lambda z: ndf.derivative(f, z, n=1)[1])
+        df = central_diff(f)
 
     def one(z: ScalarOrArray) -> int:
         return 1
@@ -213,7 +197,6 @@ def count_roots(
     integer_tol: float = 0.1,
     div_min: int = 3,
     div_max: int = 15,
-    df_approx_order: int = 2,
     int_method: IntegrationMethod = "quad",
 ) -> int:
     r"""
@@ -260,10 +243,6 @@ def count_roots(
     div_max : int, optional
         Only used if int_method='romb'. The maximum number of divisions
         before the Romberg integration routine of a path exits.
-    df_approx_order : int, optional
-        Only used if df=None and int_method='quad'.  The argument order=df_approx_order
-        is passed to numdifftools.Derivative and is the order of the
-        error term in the Taylor approximation.  df_approx_order must be even.
     int_method : {'quad', 'romb'}, optional
         If 'quad' then scipy.integrate.quad is used to perform the
         integral.  If 'romb' then Romberg integraion, using
@@ -289,7 +268,6 @@ def count_roots(
             rel_tol=0,
             div_min=div_min,
             div_max=div_max,
-            df_approx_order=df_approx_order,
             int_method=int_method,
             integer_tol=integer_tol,
         )
