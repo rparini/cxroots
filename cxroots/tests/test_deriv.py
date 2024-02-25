@@ -16,4 +16,4 @@ def test_central_diff():
 
     approx_df = central_diff(f)
 
-    assert approx_df(z) == pytest.approx(df(z))
+    assert approx_df(z) == pytest.approx(df(z), abs=1e-8)

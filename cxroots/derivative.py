@@ -9,7 +9,7 @@ from .types import AnalyticFunc, ComplexScalarOrArray, ScalarOrArray
 def central_diff(
     f: AnalyticFunc,
 ) -> AnalyticFunc:
-    h = 5e-6
+    h = 1e-6
 
     @overload
     def df(
