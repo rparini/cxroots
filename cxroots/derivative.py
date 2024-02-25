@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 
 from .contour import Contour
-from .contours.circle import Circle
 from .types import AnalyticFunc, ComplexScalarOrArray, ScalarOrArray
 
 
@@ -44,6 +43,8 @@ def cx_derivative(
     f^{(n)}(z0) : complex
         The nth derivative of f evaluated at z0
     """
+    from .contours.circle import Circle
+
     if contour is None:
         contour = Circle(z0, 1e-3)
 
