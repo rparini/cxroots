@@ -21,7 +21,6 @@ def approximate_roots(
     err_stop: float = 1e-10,
     div_min: int = 3,
     div_max: int = 15,
-    df_approx_order: int = 2,
     root_tol: float = 1e-8,
     int_method: IntegrationMethod = "quad",
     callback: Optional[RombCallback] = None,
@@ -65,10 +64,6 @@ def approximate_roots(
         If the Romberg integration method is used then div_max is the
         maximum number of divisions before the Romberg integration
         routine exits.
-    df_approx_order : int, optional
-        Only used if df=None and method='quad'.  The argument order=df_approx_order is
-        passed to numdifftools.Derivative and is the order of the error
-        term in the Taylor approximation.  df_approx_order must be even.
     root_tol : float, optional
         If any roots are within root_tol of one another then they will be
         treated as duplicates and removed.  This helps to alleviate the
@@ -113,7 +108,6 @@ def approximate_roots(
         rel_tol=rel_tol,
         div_min=div_min,
         div_max=div_max,
-        df_approx_order=df_approx_order,
         int_method=int_method,
         callback=callback,
     )
