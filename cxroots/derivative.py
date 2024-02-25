@@ -14,12 +14,10 @@ def central_diff(
     @overload
     def df(
         z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
-    ) -> ComplexScalarOrArray:
-        ...
+    ) -> ComplexScalarOrArray: ...
 
     @overload
-    def df(z: Union[complex, float]) -> complex:
-        ...
+    def df(z: Union[complex, float]) -> complex: ...
 
     def df(z: ScalarOrArray) -> ComplexScalarOrArray:
         return (f(z + h) - f(z - h)) / (2 * h)
