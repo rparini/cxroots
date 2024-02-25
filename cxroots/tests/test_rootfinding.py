@@ -17,7 +17,6 @@ import pytest
 from numpy import cos, exp, sin, sqrt
 
 from cxroots import Annulus, Circle, Rectangle
-from cxroots.derivative import find_multiplicity
 from cxroots.tests.approx_equal import roots_approx_equal
 
 
@@ -56,24 +55,6 @@ class RootfindingTests(object):
             (self.roots, self.multiplicities),
             decimal=10,
         )
-
-
-class MultiplicityTests(object):
-    # These attributes need to be defined by test case subclasses
-    f = None
-    df = None
-    roots = None
-    multiplicities = None
-
-    def test_multiplicity_f(self):
-        # Check that if only the root is given then the multiplcity could be computed
-        for i, root in enumerate(self.roots):
-            assert find_multiplicity(root, self.f, df=None) == self.multiplicities[i]
-
-    def test_multiplicity_df(self):
-        # Check that if only the root is given then the multiplcity could be computed
-        for i, root in enumerate(self.roots):
-            assert find_multiplicity(root, self.f, df=self.df) == self.multiplicities[i]
 
 
 class TestRootfindingNoRoots(unittest.TestCase, RootfindingTests):
