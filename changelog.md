@@ -3,7 +3,7 @@
 ### 3.0.0
 
 - Removed `df_approx_order` parameter
-- Removed `cx_derivative` function from public interface (can still be called from `cxroots.derivative`) but it may be refactored/removed in the future
+- Removed `cx_derivative` function
 - Removed `find_multiplicity` function
 - Removed dependency on numdifftools
 - Removed upper bound on required numpy version
