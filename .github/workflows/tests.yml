@@ -70,10 +70,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Test with pytest
-        run: pytest -v -n 2 -x -m 'not slow' \
-          --cov=cxroots --cov-report=lcov \
-          --durations=10 \
-          -W error -W "ignore::DeprecationWarning"
+        run: pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x -W error -W "ignore::DeprecationWarning"
         timeout-minutes: 20
       - name: Coveralls
         uses: coverallsapp/github-action@master
