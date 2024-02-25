@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stability of an Annular Combustion Chamber &mdash; cxroots 2.0.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+  <title>Stability of an Annular Combustion Chamber &mdash; cxroots 2.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=20623aea"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -39,7 +41,7 @@
             cxroots
           </a>
               <div class="version">
-                2.0.1
+                2.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -104,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="stability-of-an-annular-combustion-chamber">
-<h1>Stability of an Annular Combustion Chamber<a class="headerlink" href="#stability-of-an-annular-combustion-chamber" title="Permalink to this heading"></a></h1>
+<h1>Stability of an Annular Combustion Chamber<a class="headerlink" href="#stability-of-an-annular-combustion-chamber" title="Link to this heading"></a></h1>
 <p>In section 4.2 of <a class="reference internal" href="#dsz" id="id1"><span>[DSZ]</span></a> the problem of stability of an annular combustion chamber was used as a test case for their rootfinding algorthim.  The problem consisted of finding all the zeros of the holomorphic function</p>
 <div class="math notranslate nohighlight">
 \[f(z)=z^2+Az+Be^{-Tz}+C\]</div>
@@ -137,7 +139,7 @@ T=0.005\,.\]</div>
 </figure>
 <p>Note that if <code class="code docutils literal notranslate"><span class="pre">root_err_tol=1e-6</span></code> is omitted then the Newton-Raphson method used to refine the roots is sometimes unable to converge to a point where <span class="math notranslate nohighlight">\(|f(z)|&lt;\text{root_err_tol}\)</span>.  In this case the contour bounding the root is continually subdivided until it has area less than <code class="code docutils literal notranslate"><span class="pre">newton_step_tol</span></code> at which point the best approximation to the root within the contour will be taken to be ‘good enough’ and a warning message will be printed to inform the user.</p>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
 <div role="list" class="citation-list">
 <div class="citation" id="dsz" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">DSZ</a><span class="fn-bracket">]</span></span>

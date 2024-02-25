@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python ${{ env.latest_python }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.latest_python }}
       - run: pip install -r requirements_analysis.txt
@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python ${{ env.latest_python }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.latest_python }}
       - run: pip install -r requirements_analysis.txt
@@ -32,8 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python ${{ env.latest_python }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.latest_python }}
       - run: pip install -r requirements_analysis.txt
@@ -43,8 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python ${{ env.latest_python }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.latest_python }}
       - run: pip install -r requirements_analysis.txt -r requirements.txt
@@ -63,9 +63,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Test with pytest

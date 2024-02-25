@@ -133,14 +133,12 @@ def approximate_roots(
 
     def phi1phi(i: int) -> AnalyticFunc:
         @overload
-        def func(z: Union[complex, float]) -> complex:
-            ...
+        def func(z: Union[complex, float]) -> complex: ...
 
         @overload
         def func(
             z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
-        ) -> Union[npt.NDArray[np.complex_], complex]:
-            ...
+        ) -> Union[npt.NDArray[np.complex_], complex]: ...
 
         def func(z: ScalarOrArray) -> ComplexScalarOrArray:
             return phi(1)(z) * phi(i)(z)
@@ -237,6 +235,6 @@ def approximate_roots(
     # print('n?', np.linalg.matrix_rank(HN, tol=1e-10))
 
     logger.debug(
-        "Approximate (roots, multiplicities): " + str(zip(roots, multiplicities))
+        f"Approximate (roots, multiplicities): {list(zip(roots, multiplicities))}"
     )
     return tuple(roots), tuple(multiplicities)

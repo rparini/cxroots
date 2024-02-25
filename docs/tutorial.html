@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutorial &mdash; cxroots 2.0.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+  <title>Tutorial &mdash; cxroots 2.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=20623aea"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -39,7 +41,7 @@
             cxroots
           </a>
               <div class="version">
-                2.0.1
+                2.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -105,9 +107,9 @@
            <div itemprop="articleBody">
              
   <section id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading"></a></h1>
 <section id="contours">
-<h2>Contours<a class="headerlink" href="#contours" title="Permalink to this heading"></a></h2>
+<h2>Contours<a class="headerlink" href="#contours" title="Link to this heading"></a></h2>
 <p>cxroots is not a global rootfinder: it can only find roots within a given region of the complex plane.
 So the first step is to specify this region as the interior of a contour.
 cxroots allows the user to choose from one of four kinds of contours:</p>
@@ -147,7 +149,7 @@ cxroots allows the user to choose from one of four kinds of contours:</p>
 </figure>
 </section>
 <section id="rootfinding">
-<h2>Rootfinding<a class="headerlink" href="#rootfinding" title="Permalink to this heading"></a></h2>
+<h2>Rootfinding<a class="headerlink" href="#rootfinding" title="Link to this heading"></a></h2>
 <p>To find the roots of a function <span class="math notranslate nohighlight">\(f(z)\)</span> within a contour <span class="math notranslate nohighlight">\(C\)</span> we can use the method <code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f)</span></code> or preferably <code class="xref py py-meth docutils literal notranslate"><span class="pre">C.roots(f,</span> <span class="pre">df)</span></code> if the derivative <cite>df</cite> is known.</p>
 <p>For example, suppose we want to find all the roots of the function <span class="math notranslate nohighlight">\(f(z) = iz^5 + z\sin(z)\)</span> within a circle of radius 2 and centered at <span class="math notranslate nohighlight">\(z=0\)</span>.
 With cxroots this acomplished with the following short Python script:</p>
@@ -169,8 +171,8 @@ The method <code class="xref py py-meth docutils literal notranslate"><span clas
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span> Multiplicity |               Root              
 ------------------------------------------------
       1       | -0.861622958732 +0.447663621211i
+      2       | -0.000000000000 +0.000000000000i
       1       |  0.000000000000 -1.062365701233i
-      2       |  0.000000000000 -0.000000000000i
       1       |  0.861622958732 +0.447663621211i
 </pre></div>
 </div>
@@ -185,21 +187,21 @@ The method <code class="xref py py-meth docutils literal notranslate"><span clas
 <span class="nb">print</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (5.385753675416015e-29-3.9751194052152576e-30j)]
-[1, 1, 1, 2]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[(-3.172472535665829e-32+7.888609052210118e-31j), (0.8616229587319407+0.44766362121071324j), -1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j)]
+[2, 1, 1, 1]
 </pre></div>
 </div>
 <p>or as attributes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">roots</span>
 </pre></div>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[-1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j), (0.8616229587319407+0.44766362121071324j), (5.385753675416015e-29-3.9751194052152576e-30j)]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[(-3.172472535665829e-32+7.888609052210118e-31j), (0.8616229587319407+0.44766362121071324j), -1.0623657012328733j, (-0.8616229587319407+0.44766362121071324j)]
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">multiplicities</span>
 </pre></div>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1, 1, 1, 2]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[2, 1, 1, 1]
 </pre></div>
 </div>
 </section>

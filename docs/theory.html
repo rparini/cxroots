@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Theory &mdash; cxroots 2.0.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+  <title>Theory &mdash; cxroots 2.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=20623aea"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -39,7 +41,7 @@
             cxroots
           </a>
               <div class="version">
-                2.0.1
+                2.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -104,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="theory">
-<h1>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h1>
+<h1>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h1>
 <p>The goal of cxroots is to compute the distinct roots <span class="math notranslate nohighlight">\(\{z_i\}_{i=1}^n\)</span> and corresponding multiplicities <span class="math notranslate nohighlight">\(\{m_i\}\)</span> of the given function <span class="math notranslate nohighlight">\(f(z)\)</span> within the given contour <span class="math notranslate nohighlight">\(C\)</span>.
 cxroots starts by computing the total number of roots (counting multiplicities) <span class="math notranslate nohighlight">\(N\)</span> within <span class="math notranslate nohighlight">\(C\)</span>.
 If <span class="math notranslate nohighlight">\(N&gt;M\)</span>, where <span class="math notranslate nohighlight">\(M\)</span> is supplied by the user, then the contour is subdivided until a set of contours is obtained where the number of roots within each one is <span class="math notranslate nohighlight">\(\leq M\)</span>.</p>
@@ -116,8 +118,9 @@ If <span class="math notranslate nohighlight">\(N&gt;M\)</span>, where <span cla
 If <span class="math notranslate nohighlight">\(f'(z)\)</span> is not provided by the user then it is instead approximated using a finite difference method.
 These roots are then refined using the Newton-Raphson method if <span class="math notranslate nohighlight">\(f'(z)\)</span> is provided and Muller’s method otherwise.</p>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
 <div class="docutils container" id="id2">
+<div role="list" class="citation-list">
 <div class="citation" id="id3" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">KVanBarel00</a><span class="fn-bracket">]</span></span>
 <p>P. Kravanja and M. Van Barel. <em>Computing the Zeros of Analytic Functions</em>. Springer, Berlin, Heidelberg, 2000. ISBN 978-3-540-67162-6. <a class="reference external" href="https://doi.org/10.1007/BFb0103927">doi:10.1007/BFb0103927</a>.</p>
