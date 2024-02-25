@@ -76,7 +76,6 @@ class ContourABC(ABC):
         integer_tol: float = 0.1,
         div_min: int = 3,
         div_max: int = 15,
-        df_approx_order: int = 2,
         int_method: IntegrationMethod = "quad",
     ) -> int:
         """

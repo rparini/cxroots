@@ -32,11 +32,10 @@ setup(
     python_requires=">=3.8",
     setup_requires=["pytest-runner"],
     install_requires=[
-        "numpy<1.25",
+        "numpy",
         "scipy",
         "numpydoc",
         "mpmath",
-        "numdifftools>=0.9.39",
         "rich",
     ],
     tests_require=["pytest"],

@@ -172,8 +172,4 @@ intersphinx_mapping = {
     "numpy": ("http://docs.scipy.org/doc/numpy/", None),
     "matplotlib": ("http://matplotlib.org", None),
     "scipy": ("http://docs.scipy.org/doc/scipy/reference", None),
-    "numdifftools": (
-        "http://numdifftools.readthedocs.io/en/latest",
-        None,
-    ),  # XXX: Not working
 }

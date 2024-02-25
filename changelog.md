@@ -1,5 +1,13 @@
 ## Changelog
 
+### 3.0.0
+
+- Removed `df_approx_order` parameter
+- Removed `cx_derivative` function
+- Removed `find_multiplicity` function
+- Removed dependency on numdifftools
+- Removed upper bound on required numpy version
+
 ### 2.1.0 - 27/Dec/2023
 
 - Improved reliability by subdividing contours that produce invalid approximations for multiplicites, rather than ignoring the individual invalid approximations.
