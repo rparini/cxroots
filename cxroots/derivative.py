@@ -1,5 +1,4 @@
-from math import factorial, pi
-from typing import Optional, Union, overload
+from typing import Union, overload
 
 import numpy as np
 import numpy.typing as npt
