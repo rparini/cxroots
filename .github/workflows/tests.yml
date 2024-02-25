@@ -14,6 +14,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - run: pip install -r requirements_analysis.txt
       - run: black --check .
 
@@ -25,6 +26,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - run: pip install -r requirements_analysis.txt
       - run: isort --check .
 
@@ -36,6 +38,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - run: pip install -r requirements_analysis.txt
       - run: flake8 --statistics
 
@@ -47,6 +50,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - run: pip install -r requirements_analysis.txt -r requirements.txt
       - run: pyright cxroots
 
@@ -87,6 +91,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ env.latest_python }}
+          cache: 'pip'
       - name: Build docs
         uses: ./.github/actions/build-docs
         env:
