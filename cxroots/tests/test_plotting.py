@@ -6,6 +6,10 @@ from numpy import cos, exp
 
 from cxroots import Circle
 
+# Ignore DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated
+# matplotlib depends on python-dateutil which emits this warning
+pytest.mark.filterwarnings("ignore:datetime.datetime.utcfromtimestamp")
+
 
 @pytest.fixture()
 def results_dir():
