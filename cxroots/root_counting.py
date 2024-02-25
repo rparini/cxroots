@@ -6,9 +6,8 @@ from typing import Callable, Optional, Union, overload
 import numpy as np
 import numpy.typing as npt
 
-from cxroots.derivative import central_diff
-
 from .contour_interface import ContourABC
+from .derivative import central_diff
 from .types import AnalyticFunc, ComplexScalarOrArray, IntegrationMethod, ScalarOrArray
 
 RombCallback = Callable[[complex, Optional[float], int], Optional[bool]]
