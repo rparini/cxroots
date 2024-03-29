@@ -7,7 +7,6 @@ import numpy.typing as npt
 import scipy.integrate
 
 from .types import AnalyticFunc, Color, IntegrationMethod
-from .util import integrate_quad_complex
 
 ComplexPathType = TypeVar("ComplexPathType", bound="ComplexPath")
 
@@ -278,9 +277,9 @@ class ComplexPath(object):
                 divmax=div_max,
             )
         elif int_method == "quad":
-            integral = integrate_quad_complex(
-                integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol
-            )
+            integral = scipy.integrate.quad(
+                integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol, complex_func=True
+            )[0]
         else:
             raise ValueError("int_method must be either 'romb' or 'quad'")
 

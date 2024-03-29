@@ -1,7 +1,3 @@
-from typing import Callable
-
-import numpy as np
-import scipy.integrate
 from numpydoc.docscrape import FunctionDoc
 
 
@@ -30,21 +26,3 @@ def update_docstring(**dic):
 
 class NumberOfRootsChanged(Exception):
     pass
-
-
-def integrate_quad_complex(
-    func: Callable[[float], complex], *args, **kwargs
-) -> complex:
-    """
-    A thin wrapper around scipy.integrate.quad that copes
-    with the integrand returning complex values
-    """
-    # full_output=0 ensures only 2 values returned
-    integral_real, _ = scipy.integrate.quad(
-        lambda t: np.real(func(t)), *args, full_output=0, **kwargs
-    )
-    integral_imag, _ = scipy.integrate.quad(
-        lambda t: np.imag(func(t)), *args, full_output=0, **kwargs
-    )
-    integral = integral_real + 1j * integral_imag
-    return integral
