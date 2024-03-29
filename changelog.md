@@ -7,6 +7,7 @@
 - Removed `find_multiplicity` function
 - Removed dependency on numdifftools
 - Removed upper bound on required numpy version
+- Removed `util.integrate_quad_complex` and use `scipy.integrate.quad`'s  `complex_func` arguemnt instead
 
 ### 2.1.0 - 27/Dec/2023
 
