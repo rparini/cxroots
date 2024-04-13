@@ -3,7 +3,7 @@ description: "Generates html documentation using Sphinx"
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5
       with:
         python-version: '3.12'
         cache: 'pip'
