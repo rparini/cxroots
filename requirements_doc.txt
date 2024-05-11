@@ -1,4 +1,4 @@
-nbsphinx==0.9.3
+nbsphinx==0.9.4
 sphinx==7.3.7
 sphinxcontrib-programoutput==0.17
 sphinxcontrib-bibtex==2.6.2
