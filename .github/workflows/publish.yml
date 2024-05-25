@@ -16,7 +16,7 @@ jobs:
         echo "GITHUB_REF: $GITHUB_REF"
         echo "VERSION: ${GITHUB_REF/refs\/tags\/v/}"
         echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
-    - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+    - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
       with:
         ref: master
     - name: Update version.py
