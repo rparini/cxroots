@@ -19,14 +19,14 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@b7cec7526559c32f1616476ff32d17ba4c59b2d6 # v3
+        uses: github/codeql-action/init@9fdb3e49720b44c48891d036bb502feb25684276 # v3
         with:
           languages: 'python'
           config-file: ./.github/codeql/codeql-config.yml
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@b7cec7526559c32f1616476ff32d17ba4c59b2d6 # v3
+        uses: github/codeql-action/analyze@9fdb3e49720b44c48891d036bb502feb25684276 # v3
   bandit:
     name: Bandit
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
       - run: pip install -r requirements_analysis.txt
       - name: Run Bandit
         run: bandit -r ./cxroots -x ./cxroots/tests
@@ -45,7 +45,7 @@ jobs:
         run: bandit -r ./cxroots -x ./cxroots/tests --format sarif --output out.sarif
       - name: Upload SARIF file
         if: always()
-        uses: github/codeql-action/upload-sarif@b7cec7526559c32f1616476ff32d17ba4c59b2d6 # v3
+        uses: github/codeql-action/upload-sarif@9fdb3e49720b44c48891d036bb502feb25684276 # v3
         with:
           sarif_file: out.sarif
           category: Bandit
