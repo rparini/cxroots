@@ -457,6 +457,7 @@ def find_roots_gen(
         else:
 
             def callback(integral, err, num_div):
+                # Don't do anything on callback
                 pass
 
         try:
