@@ -29,7 +29,7 @@ setup(
     package_data={"cxroots": ["py.typed"]},
     zip_safe=False,  # prevent cxroots from installing as a .egg zip file
     platforms=["all"],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     setup_requires=["pytest-runner"],
     install_requires=[
         "numpy",
