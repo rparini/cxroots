@@ -15,9 +15,10 @@ select = [
     "I", 
     "N", 
     "UP", 
-    "SIM118", 
+    "SIM", 
     "YTT"
 ]
+ignore = ["SIM105"]
 
 [tool.pyright]
 include = ["cxroots"]
