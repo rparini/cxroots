@@ -174,7 +174,7 @@ def _quad_prod(
 
     @overload
     def integrand_func(
-        z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
+        z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]],
     ) -> Union[npt.NDArray[np.complex_], complex]: ...
 
     def integrand_func(z: ScalarOrArray) -> ComplexScalarOrArray:

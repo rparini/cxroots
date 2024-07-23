@@ -131,7 +131,7 @@ def approximate_roots(
 
         @overload
         def func(
-            z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
+            z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]],
         ) -> Union[npt.NDArray[np.complex_], complex]: ...
 
         def func(z: ScalarOrArray) -> ComplexScalarOrArray:

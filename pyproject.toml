@@ -1,20 +1,13 @@
 [project]
 requires-python = ">=3.10"
 
-[tool.black]
-exclude = '''
-/(
-    | \.eggs
-    | build
-    | docs
-    | docs_src
-    | README_resources
-)/
-'''
-
-[tool.isort]
-profile = "black"
-skip = ["docs", "docs_src"]
+[tool.ruff]
+exclude = [
+    "build",
+    "docs",
+    "docs_src",
+    "README_resources"
+]
 
 [tool.pyright]
 include = ["cxroots"]

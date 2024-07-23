@@ -48,7 +48,7 @@ def demo_roots_animation(
     original_contour: ContourABC,
     f: AnalyticFunc,
     df: Optional[AnalyticFunc] = None,
-    **roots_kwargs
+    **roots_kwargs,
 ):
     """
     Creates an animation object where each frame is a step in the rootfinding process
@@ -96,7 +96,7 @@ def demo_find_roots(
     save_file: Optional[str] = None,
     auto_animation: bool = False,
     writer: Optional[str] = None,
-    **roots_kwargs
+    **roots_kwargs,
 ) -> None:
     """
     An animated demonstration of the root finding process using matplotlib.
