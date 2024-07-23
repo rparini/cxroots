@@ -1,4 +1,4 @@
-|pkg_img| |doi| |tests| |coverage|
+|pkg_img| |doi| |tests| |coverage| |sonarcloud|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
@@ -8,6 +8,9 @@
 
 .. |pkg_img| image:: https://badge.fury.io/py/cxroots.svg
     :target: https://badge.fury.io/py/cxroots
+
+.. |sonarcloud| image:: https://sonarcloud.io/api/project_badges/measure?project=rparini_cxroots&metric=alert_status
+    :target: https://sonarcloud.io/summary/new_code?id=rparini_cxroots
 
 .. |coverage| image:: https://coveralls.io/repos/github/rparini/cxroots/badge.svg
 	:target: https://coveralls.io/github/rparini/cxroots
