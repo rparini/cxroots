@@ -8,7 +8,7 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["I", "UP006", "F401"]
+select = ["E", "F", "I", "UP006"]
 
 [tool.pyright]
 include = ["cxroots"]

@@ -11,7 +11,7 @@ with open("cxroots/version.py") as f:
 try:
     with open("README.rst") as file:
         long_description = file.read()
-except IOError:
+except OSError:
     long_description = None
 
 setup(
