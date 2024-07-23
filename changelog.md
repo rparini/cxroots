@@ -1,5 +1,9 @@
 ## Changelog
 
+### 3.0.1 - 23/Jul/2024
+
+- Temporarily require numpy<2
+
 ### 3.0.0 - 23/Jul/2024
 
 - Requires Python >= 3.10
