@@ -1,6 +1,6 @@
 ## Changelog
 
-### 3.0.0
+### 3.0.0 - 23/Jul/2024
 
 - Removed `df_approx_order` parameter
 - Removed `cx_derivative` function
