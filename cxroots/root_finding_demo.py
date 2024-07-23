@@ -1,5 +1,3 @@
-from typing import Optional, Tuple
-
 import numpy as np
 
 from .contour_interface import ContourABC
@@ -7,7 +5,7 @@ from .root_finding import RootFinderState, find_roots_gen
 from .types import AnalyticFunc
 
 
-def _contour_color(contour: ContourABC) -> Tuple[float, float, float, float]:
+def _contour_color(contour: ContourABC) -> tuple[float, float, float, float]:
     """
     Deterministically generate a colour for a contour so that the contour has the same
     colour in each frame of the root finding animation
@@ -47,8 +45,8 @@ def _update_frame(frame: RootFinderState, original_contour: ContourABC) -> None:
 def demo_roots_animation(
     original_contour: ContourABC,
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
-    **roots_kwargs
+    df: AnalyticFunc | None = None,
+    **roots_kwargs,
 ):
     """
     Creates an animation object where each frame is a step in the rootfinding process
@@ -92,11 +90,11 @@ def demo_roots_animation(
 def demo_find_roots(
     original_contour: ContourABC,
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
-    save_file: Optional[str] = None,
+    df: AnalyticFunc | None = None,
+    save_file: str | None = None,
     auto_animation: bool = False,
-    writer: Optional[str] = None,
-    **roots_kwargs
+    writer: str | None = None,
+    **roots_kwargs,
 ) -> None:
     """
     An animated demonstration of the root finding process using matplotlib.

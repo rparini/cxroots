@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Generator, Optional, Sequence, Tuple
+from collections.abc import Generator, Sequence
+from typing import Optional
 
 from .types import AnalyticFunc, Color, IntegrationMethod
 
@@ -35,9 +36,9 @@ class ContourABC(ABC):
         self,
         k: int,
         f: AnalyticFunc,
-        df: Optional[AnalyticFunc] = None,
-        phi: Optional[AnalyticFunc] = None,
-        psi: Optional[AnalyticFunc] = None,
+        df: AnalyticFunc | None = None,
+        phi: AnalyticFunc | None = None,
+        psi: AnalyticFunc | None = None,
     ) -> complex:
         r"""
         Use Romberg integration to estimate the symmetric bilinear form used in
@@ -71,7 +72,7 @@ class ContourABC(ABC):
     def count_roots(
         self,
         f: AnalyticFunc,
-        df: Optional[AnalyticFunc] = None,
+        df: AnalyticFunc | None = None,
         int_abs_tol: float = 0.07,
         integer_tol: float = 0.1,
         div_min: int = 3,
@@ -88,7 +89,7 @@ class ContourABC(ABC):
     @abstractmethod
     def subdivisions(
         self, axis: str = "alternating"
-    ) -> Generator[Tuple["ContourABC", ...], None, None]:
+    ) -> Generator[tuple["ContourABC", ...], None, None]:
         """A generator for possible subdivisions of the contour"""
         ...
 
@@ -100,7 +101,7 @@ class ContourABC(ABC):
 
     @property
     @abstractmethod
-    def children(self) -> Optional[Sequence["ContourABC"]]:
+    def children(self) -> Sequence["ContourABC"] | None:
         """The contours that were created from this contour during subdivision"""
         ...
 

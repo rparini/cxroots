@@ -1,4 +1,4 @@
-from typing import Literal, Tuple, Union, overload
+from typing import Literal, overload
 
 from numpy import pi
 
@@ -31,7 +31,7 @@ class Annulus(Contour):
 
     axis_names = ("r", "phi")
 
-    def __init__(self, center: complex, radii: Tuple[float, float]):
+    def __init__(self, center: complex, radii: tuple[float, float]):
         self.center = center
         self.radii = radii
 
@@ -39,7 +39,7 @@ class Annulus(Contour):
             ComplexArc(center, radii[1], 0, 2 * pi),
             ComplexArc(center, radii[0], 0, -2 * pi),
         ]
-        super(Annulus, self).__init__(segments)
+        super().__init__(segments)
 
     def __str__(self):
         return (
@@ -64,16 +64,16 @@ class Annulus(Contour):
     @overload
     def subdivide(
         self, axis: Literal["r"], division_factor: float
-    ) -> Tuple["Annulus", "Annulus"]: ...
+    ) -> tuple["Annulus", "Annulus"]: ...
 
     @overload
     def subdivide(
         self, axis: Literal["phi"], division_factor: float
-    ) -> Tuple[AnnulusSector, AnnulusSector]: ...
+    ) -> tuple[AnnulusSector, AnnulusSector]: ...
 
     def subdivide(
         self, axis: Literal["r", "phi"], division_factor: float = 0.5
-    ) -> Union[Tuple[AnnulusSector, AnnulusSector], Tuple["Annulus", "Annulus"]]:
+    ) -> tuple[AnnulusSector, AnnulusSector] | tuple["Annulus", "Annulus"]:
         """
         Subdivide the contour
 

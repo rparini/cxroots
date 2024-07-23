@@ -1,6 +1,6 @@
 import functools
 import logging
-from typing import Optional, Tuple, Union, overload
+from typing import overload
 
 import numpy as np
 import numpy.typing as npt
@@ -15,7 +15,7 @@ def approximate_roots(
     C: ContourABC,  # noqa: N803
     N: int,  # noqa: N803
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
     abs_tol: float = 1.49e-08,
     rel_tol: float = 1.49e-08,
     err_stop: float = 1e-10,
@@ -23,8 +23,8 @@ def approximate_roots(
     div_max: int = 15,
     root_tol: float = 1e-8,
     int_method: IntegrationMethod = "quad",
-    callback: Optional[RombCallback] = None,
-) -> Tuple[Tuple[complex, ...], Tuple[float, ...]]:
+    callback: RombCallback | None = None,
+) -> tuple[tuple[complex, ...], tuple[float, ...]]:
     """
     Approximate the roots and multiplcities of the function f within the
     contour C using the method of [KB]_.  The multiplicites are computed
@@ -127,12 +127,12 @@ def approximate_roots(
 
     def phi1phi(i: int) -> AnalyticFunc:
         @overload
-        def func(z: Union[complex, float]) -> complex: ...
+        def func(z: complex | float) -> complex: ...
 
         @overload
         def func(
-            z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
-        ) -> Union[npt.NDArray[np.complex_], complex]: ...
+            z: npt.NDArray[np.complex_] | npt.NDArray[np.float_],
+        ) -> npt.NDArray[np.complex_] | complex: ...
 
         def func(z: ScalarOrArray) -> ComplexScalarOrArray:
             return phi(1)(z) * phi(i)(z)

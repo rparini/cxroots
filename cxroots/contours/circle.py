@@ -1,4 +1,4 @@
-from typing import Literal, Tuple
+from typing import Literal
 
 from numpy import pi
 
@@ -35,7 +35,7 @@ class Circle(Contour):
         self.radius = radius
 
         segments = [ComplexArc(center, radius, 0, 2 * pi)]
-        super(Circle, self).__init__(segments)
+        super().__init__(segments)
 
     def __str__(self):
         return (
@@ -57,7 +57,7 @@ class Circle(Contour):
 
     def subdivide(
         self, axis: Literal["r"] = "r", division_factor: float = 0.5
-    ) -> Tuple[Annulus, "Circle"]:
+    ) -> tuple[Annulus, "Circle"]:
         """
         Subdivide the contour
 

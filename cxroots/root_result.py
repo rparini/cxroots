@@ -1,4 +1,4 @@
-from typing import List, NamedTuple, Optional
+from typing import NamedTuple
 
 import numpy as np
 
@@ -6,7 +6,7 @@ from cxroots.contour_interface import ContourABC
 
 
 class RootResult(
-    NamedTuple("RootResult", [("roots", List[complex]), ("multiplicities", List[int])])
+    NamedTuple("RootResult", [("roots", list[complex]), ("multiplicities", list[int])])
 ):
     """
     A class which stores the roots and their multiplicites as attributes
@@ -24,17 +24,17 @@ class RootResult(
     """
 
     def __new__(
-        cls, roots: List[complex], multiplicities: List[int], contour: ContourABC
+        cls, roots: list[complex], multiplicities: list[int], contour: ContourABC
     ):
-        return super(RootResult, cls).__new__(cls, roots, multiplicities)
+        return super().__new__(cls, roots, multiplicities)
 
     def __init__(
-        self, roots: List[complex], multiplicities: List[int], contour: ContourABC
+        self, roots: list[complex], multiplicities: list[int], contour: ContourABC
     ):
         self.contour = contour
         super().__init__()
 
-    def show(self, save_file: Optional[str] = None) -> None:
+    def show(self, save_file: str | None = None) -> None:
         """
         Plot the roots and the initial integration contour in the
         complex plane.
@@ -80,12 +80,14 @@ class RootResult(
 
         for i, root in np.ndenumerate(roots):
             if root.real < 0:
-                s += "\n{: ^14d}| {:.12f} {:+.12f}i".format(
-                    int(multiplicities[i]), root.real, root.imag
+                s += (
+                    f"\n{int(multiplicities[i]): ^14d}| "
+                    f"{root.real:.12f} {root.imag:+.12f}i"
                 )
             else:
-                s += "\n{: ^14d}|  {:.12f} {:+.12f}i".format(
-                    int(multiplicities[i]), root.real, root.imag
+                s += (
+                    f"\n{int(multiplicities[i]): ^14d}|  "
+                    f"{root.real:.12f} {root.imag:+.12f}i"
                 )
 
         return s

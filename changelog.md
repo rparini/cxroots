@@ -2,12 +2,15 @@
 
 ### 3.0.0 - 23/Jul/2024
 
+- Requires Python >= 3.10
 - Removed `df_approx_order` parameter
 - Removed `cx_derivative` function
 - Removed `find_multiplicity` function
 - Removed dependency on numdifftools
 - Removed upper bound on required numpy version
 - Removed `util.integrate_quad_complex` and use `scipy.integrate.quad`'s  `complex_func` argument instead
+- Renamed `NumberOfRootsChanged` to `NumberOfRootsChangedError`
+- Switch to [ruff](https://github.com/astral-sh/ruff) formatting/linting
 
 ### 2.1.0 - 27/Dec/2023
 

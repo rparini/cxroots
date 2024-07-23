@@ -1,7 +1,8 @@
 import logging
 import warnings
+from collections.abc import Callable
 from math import inf, pi
-from typing import Callable, Optional, Union, overload
+from typing import overload
 
 import numpy as np
 import numpy.typing as npt
@@ -10,22 +11,22 @@ from .contour_interface import ContourABC
 from .derivative import central_diff
 from .types import AnalyticFunc, ComplexScalarOrArray, IntegrationMethod, ScalarOrArray
 
-RombCallback = Callable[[complex, Optional[float], int], Optional[bool]]
+RombCallback = Callable[[complex, float | None, int], bool | None]
 
 
 def prod(
     C: ContourABC,  # noqa: N803
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
-    phi: Optional[AnalyticFunc] = None,
-    psi: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
+    phi: AnalyticFunc | None = None,
+    psi: AnalyticFunc | None = None,
     abs_tol: float = 1.49e-08,
     rel_tol: float = 1.49e-08,
     div_min: int = 3,
     div_max: int = 15,
     int_method: IntegrationMethod = "quad",
     integer_tol: float = inf,
-    callback: Optional[RombCallback] = None,
+    callback: RombCallback | None = None,
 ) -> complex:
     r"""
     Compute the symmetric bilinear form used in (1.12) of [KB]_.
@@ -112,15 +113,15 @@ def prod(
 def _romb_prod(
     C: ContourABC,  # noqa: N803
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
-    phi: Optional[AnalyticFunc] = None,
-    psi: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
+    phi: AnalyticFunc | None = None,
+    psi: AnalyticFunc | None = None,
     abs_tol: float = 1.49e-08,
     rel_tol: float = 1.49e-08,
     div_min: int = 3,
     div_max: int = 15,
     integer_tol: float = inf,
-    callback: Optional[RombCallback] = None,
+    callback: RombCallback | None = None,
 ) -> complex:
     logger = logging.getLogger(__name__)
     k = 0
@@ -152,9 +153,9 @@ def _romb_prod(
 def _quad_prod(
     C: ContourABC,  # noqa: N803
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
-    phi: Optional[AnalyticFunc] = None,
-    psi: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
+    phi: AnalyticFunc | None = None,
+    psi: AnalyticFunc | None = None,
     abs_tol: float = 1.49e-08,
     rel_tol: float = 1.49e-08,
 ) -> complex:
@@ -170,12 +171,12 @@ def _quad_prod(
         psi = one
 
     @overload
-    def integrand_func(z: Union[complex, float]) -> complex: ...
+    def integrand_func(z: complex | float) -> complex: ...
 
     @overload
     def integrand_func(
-        z: Union[npt.NDArray[np.complex_], npt.NDArray[np.float_]]
-    ) -> Union[npt.NDArray[np.complex_], complex]: ...
+        z: npt.NDArray[np.complex_] | npt.NDArray[np.float_],
+    ) -> npt.NDArray[np.complex_] | complex: ...
 
     def integrand_func(z: ScalarOrArray) -> ComplexScalarOrArray:
         return phi(z) * psi(z) * (df(z) / f(z)) / (2j * pi)
@@ -192,7 +193,7 @@ class RootError(RuntimeError):
 def count_roots(
     C: ContourABC,  # noqa: N803
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
     int_abs_tol: float = 0.07,
     integer_tol: float = 0.1,
     div_min: int = 3,

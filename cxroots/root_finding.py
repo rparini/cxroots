@@ -1,8 +1,9 @@
 import functools
 import logging
 import warnings
+from collections.abc import Callable, Generator, Iterable
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Generator, Iterable, List, NamedTuple, Optional
+from typing import Any, NamedTuple
 
 import numpy as np
 from numpydoc.docscrape import FunctionDoc
@@ -14,7 +15,7 @@ from .root_approximation import approximate_roots
 from .root_counting import RootError
 from .root_result import RootResult
 from .types import AnalyticFunc, IntegrationMethod
-from .util import NumberOfRootsChanged, update_docstring
+from .util import NumberOfRootsChangedError, update_docstring
 
 
 class MultiplicityError(RuntimeError):
@@ -47,24 +48,24 @@ class ContourData:
 
 
 def make_contour_data(
-    contours: List[ContourABC], num_roots: Dict[ContourABC, int]
-) -> List[ContourData]:
+    contours: list[ContourABC], num_roots: dict[ContourABC, int]
+) -> list[ContourData]:
     return [ContourData(contour=c, num_roots=num_roots[c]) for c in contours]
 
 
 class RootFinderState(NamedTuple):
-    roots: List[complex]
-    multiplicities: List[int]
-    contour_data: List[ContourData]
+    roots: list[complex]
+    multiplicities: list[int]
+    contour_data: list[ContourData]
     num_remaining_roots: int
 
 
 def find_roots_gen(
     original_contour: ContourABC,
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
     guess_roots: Iterable[complex] = [],
-    guess_roots_symmetry: Optional[Callable[[complex], Iterable[complex]]] = None,
+    guess_roots_symmetry: Callable[[complex], Iterable[complex]] | None = None,
     newton_step_tol: float = 1e-14,
     refine_roots_beyond_tol: bool = True,
     newton_max_iter: int = 50,
@@ -199,11 +200,11 @@ def find_roots_gen(
     }
 
     logger = logging.getLogger(__name__)
-    roots: List[complex] = []
-    multiplicities: List[int] = []
-    failed_contours: List[ContourABC] = []
-    contours: List[ContourABC] = []
-    num_roots: Dict[ContourABC, int] = {}
+    roots: list[complex] = []
+    multiplicities: list[int] = []
+    failed_contours: list[ContourABC] = []
+    contours: list[ContourABC] = []
+    num_roots: dict[ContourABC, int] = {}
 
     try:
         # compute the total number of zeros, including multiplicities, within the
@@ -447,7 +448,7 @@ def find_roots_gen(
                         )
                         original_num_roots = num_roots[contour]
                         num_roots[contour] = new_num_roots
-                        raise NumberOfRootsChanged(
+                        raise NumberOfRootsChangedError(
                             "The additional function evaluations of f taken while "
                             "approximating the roots within the contour have "
                             "shown that the number of roots of f within the contour "
@@ -475,7 +476,7 @@ def find_roots_gen(
                 int_method=int_method,
                 callback=callback,
             )
-        except NumberOfRootsChanged:
+        except NumberOfRootsChangedError:
             logger.debug("The number of roots within the contour has been reevaluated")
             if num_roots[contour] > M:
                 subdivide(contour)
@@ -572,7 +573,7 @@ def find_roots_gen(
 def find_roots(
     original_contour: ContourABC,
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
     verbose: bool = False,
     **kwargs,
 ) -> RootResult:

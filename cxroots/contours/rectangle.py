@@ -1,4 +1,4 @@
-from typing import Literal, Tuple
+from typing import Literal
 
 from ..contour import Contour
 from ..paths import ComplexLine
@@ -29,7 +29,7 @@ class Rectangle(Contour):
 
     axis_names = ("x", "y")
 
-    def __init__(self, x_range: Tuple[float, float], y_range: Tuple[float, float]):
+    def __init__(self, x_range: tuple[float, float], y_range: tuple[float, float]):
         self.x_range = x_range
         self.y_range = y_range
 
@@ -44,7 +44,7 @@ class Rectangle(Contour):
             ComplexLine(z3, z4),
             ComplexLine(z4, z1),
         ]
-        super(Rectangle, self).__init__(segments)
+        super().__init__(segments)
 
     def __str__(self):
         return (
@@ -75,7 +75,7 @@ class Rectangle(Contour):
 
     def subdivide(
         self, axis: Literal["x", "y"], division_factor: float = 0.5
-    ) -> Tuple["Rectangle", "Rectangle"]:
+    ) -> tuple["Rectangle", "Rectangle"]:
         """
         Subdivide the contour
 

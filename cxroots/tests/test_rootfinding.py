@@ -20,7 +20,7 @@ from cxroots import Annulus, Circle, Rectangle
 from cxroots.tests.approx_equal import roots_approx_equal
 
 
-class RootfindingTests(object):
+class RootfindingTests:
     # These attributes need to be defined by test case subclasses
     C = None
     f = None

@@ -11,7 +11,7 @@ with open("cxroots/version.py") as f:
 try:
     with open("README.rst") as file:
         long_description = file.read()
-except IOError:
+except OSError:
     long_description = None
 
 setup(
@@ -29,7 +29,7 @@ setup(
     package_data={"cxroots": ["py.typed"]},
     zip_safe=False,  # prevent cxroots from installing as a .egg zip file
     platforms=["all"],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     setup_requires=["pytest-runner"],
     install_requires=[
         "numpy",

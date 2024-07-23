@@ -1,5 +1,5 @@
 from math import pi
-from typing import Literal, Tuple
+from typing import Literal
 
 import numpy as np
 
@@ -50,8 +50,8 @@ class AnnulusSector(Contour):
     def __init__(
         self,
         center: complex,
-        radii: Tuple[float, float],
-        phi_range: Tuple[float, float],
+        radii: tuple[float, float],
+        phi_range: tuple[float, float],
     ):
         self.center = center
 
@@ -78,7 +78,7 @@ class AnnulusSector(Contour):
             ComplexArc(center, r0, phi1, phi0 - phi1),
         ]
 
-        super(AnnulusSector, self).__init__(segments)
+        super().__init__(segments)
 
     def __str__(self):
         return (
@@ -118,7 +118,7 @@ class AnnulusSector(Contour):
 
     def subdivide(
         self, axis: Literal["r", "phi"], division_factor: float = 0.5
-    ) -> Tuple["AnnulusSector", "AnnulusSector"]:
+    ) -> tuple["AnnulusSector", "AnnulusSector"]:
         """
         Subdivide the contour
 
