@@ -2,6 +2,7 @@
 
 ### 3.0.0 - 23/Jul/2024
 
+- Requires Python >= 3.10
 - Removed `df_approx_order` parameter
 - Removed `cx_derivative` function
 - Removed `find_multiplicity` function
