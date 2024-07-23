@@ -9,13 +9,13 @@ exclude = [
 
 [tool.ruff.lint]
 select = [
-    "E", 
-    "W", 
-    "F", 
-    "I", 
-    "N", 
-    "UP", 
-    "SIM", 
+    "E",
+    "W",
+    "F",
+    "I",
+    "N",
+    "UP",
+    "SIM",
     "YTT"
 ]
 ignore = ["SIM105"]
