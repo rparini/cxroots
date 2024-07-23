@@ -1,2 +1,2 @@
 # __version__ is set by CI based on release tag on GitHub
-__version__ = "2.1.0"
+__version__ = "3.0.0"
