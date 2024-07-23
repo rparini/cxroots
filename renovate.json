@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices",
-    "group:all"
+    "group:allNonMajor"
   ],
   "schedule": [
     "before 3am on Saturday"
