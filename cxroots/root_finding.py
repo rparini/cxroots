@@ -1,8 +1,9 @@
 import functools
 import logging
 import warnings
+from collections.abc import Callable, Generator, Iterable
 from dataclasses import dataclass
-from typing import Any, Callable, Generator, Iterable, NamedTuple, Optional
+from typing import Any, NamedTuple
 
 import numpy as np
 from numpydoc.docscrape import FunctionDoc
@@ -14,7 +15,7 @@ from .root_approximation import approximate_roots
 from .root_counting import RootError
 from .root_result import RootResult
 from .types import AnalyticFunc, IntegrationMethod
-from .util import NumberOfRootsChanged, update_docstring
+from .util import NumberOfRootsChangedError, update_docstring
 
 
 class MultiplicityError(RuntimeError):
@@ -62,9 +63,9 @@ class RootFinderState(NamedTuple):
 def find_roots_gen(
     original_contour: ContourABC,
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
     guess_roots: Iterable[complex] = [],
-    guess_roots_symmetry: Optional[Callable[[complex], Iterable[complex]]] = None,
+    guess_roots_symmetry: Callable[[complex], Iterable[complex]] | None = None,
     newton_step_tol: float = 1e-14,
     refine_roots_beyond_tol: bool = True,
     newton_max_iter: int = 50,
@@ -447,7 +448,7 @@ def find_roots_gen(
                         )
                         original_num_roots = num_roots[contour]
                         num_roots[contour] = new_num_roots
-                        raise NumberOfRootsChanged(
+                        raise NumberOfRootsChangedError(
                             "The additional function evaluations of f taken while "
                             "approximating the roots within the contour have "
                             "shown that the number of roots of f within the contour "
@@ -475,7 +476,7 @@ def find_roots_gen(
                 int_method=int_method,
                 callback=callback,
             )
-        except NumberOfRootsChanged:
+        except NumberOfRootsChangedError:
             logger.debug("The number of roots within the contour has been reevaluated")
             if num_roots[contour] > M:
                 subdivide(contour)
@@ -572,7 +573,7 @@ def find_roots_gen(
 def find_roots(
     original_contour: ContourABC,
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
     verbose: bool = False,
     **kwargs,
 ) -> RootResult:

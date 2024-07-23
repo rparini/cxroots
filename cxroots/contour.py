@@ -1,5 +1,6 @@
 import functools
-from typing import Generator, Optional, Sequence, Union, overload
+from collections.abc import Generator, Sequence
+from typing import Optional, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -35,10 +36,10 @@ class Contour(ContourABC):
         # A contour created by the subdvision method will have this attribute set to
         # the axis along which the line subdividing the parent contour was a constant.
         # This is done in order to implement the "alternating" subdivision method
-        self._created_by_subdivision_axis: Optional[str] = None
+        self._created_by_subdivision_axis: str | None = None
         # _parent and _children are set in subdivision method
-        self._parent: Optional[Contour] = None
-        self._children: Optional[Sequence[Contour]] = None
+        self._parent: Contour | None = None
+        self._children: Sequence[Contour] | None = None
 
     @overload
     def __call__(self, t: float) -> complex: ...
@@ -47,8 +48,8 @@ class Contour(ContourABC):
     def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def __call__(
-        self, t: Union[float, npt.NDArray[np.float_]]
-    ) -> Union[complex, npt.NDArray[np.complex_]]:
+        self, t: float | npt.NDArray[np.float_]
+    ) -> complex | npt.NDArray[np.complex_]:
         r"""
         The point on the contour corresponding the value of the
         parameter t.
@@ -149,7 +150,7 @@ class Contour(ContourABC):
         plt.xlim([xmin, xmax])
         plt.ylim([ymin, ymax])
 
-    def show(self, save_file: Optional[str] = None, **plot_kwargs) -> None:
+    def show(self, save_file: str | None = None, **plot_kwargs) -> None:
         """
         Shows the contour as a 2D plot in the complex plane.  Requires
         Matplotlib.
@@ -183,7 +184,7 @@ class Contour(ContourABC):
         return self._parent
 
     @property
-    def children(self) -> Optional[Sequence["Contour"]]:
+    def children(self) -> Sequence["Contour"] | None:
         return self._children
 
     def subdivisions(
@@ -243,14 +244,14 @@ class Contour(ContourABC):
     @remove_para("C")
     @functools.wraps(count_roots)
     def count_roots(
-        self, f: AnalyticFunc, df: Optional[AnalyticFunc] = None, **kwargs
+        self, f: AnalyticFunc, df: AnalyticFunc | None = None, **kwargs
     ) -> int:
         return count_roots(self, f, df, **kwargs)
 
     @remove_para("original_contour")
     @functools.wraps(find_roots)
     def roots(
-        self, f: AnalyticFunc, df: Optional[AnalyticFunc] = None, **kwargs
+        self, f: AnalyticFunc, df: AnalyticFunc | None = None, **kwargs
     ) -> RootResult:
         return find_roots(self, f, df, **kwargs)
 

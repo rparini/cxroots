@@ -24,5 +24,5 @@ def update_docstring(**dic):
     return wrapper
 
 
-class NumberOfRootsChanged(Exception):
+class NumberOfRootsChangedError(Exception):
     pass

@@ -35,7 +35,7 @@ class Circle(Contour):
         self.radius = radius
 
         segments = [ComplexArc(center, radius, 0, 2 * pi)]
-        super(Circle, self).__init__(segments)
+        super().__init__(segments)
 
     def __str__(self):
         return (

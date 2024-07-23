@@ -1,6 +1,6 @@
 import functools
 from math import pi
-from typing import Optional, TypeVar, Union, overload
+from typing import TypeVar, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -11,7 +11,7 @@ from .types import AnalyticFunc, Color, IntegrationMethod
 ComplexPathType = TypeVar("ComplexPathType", bound="ComplexPath")
 
 
-class ComplexPath(object):
+class ComplexPath:
     """A base class for paths in the complex plane."""
 
     def __init__(self):
@@ -21,7 +21,7 @@ class ComplexPath(object):
         # If the path is created during subvision then this will be set to the path
         # that is oppositely oriented to this path. This is done so that we can look
         # up the _integral_cache for the reverse path
-        self._reverse_path: Optional[ComplexPath] = None
+        self._reverse_path: ComplexPath | None = None
 
     @overload
     def __call__(self, t: float) -> complex: ...
@@ -30,8 +30,8 @@ class ComplexPath(object):
     def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def __call__(
-        self, t: Union[float, npt.NDArray[np.float_]]
-    ) -> Union[complex, npt.NDArray[np.complex_]]:
+        self, t: float | npt.NDArray[np.float_]
+    ) -> complex | npt.NDArray[np.complex_]:
         r"""
         The parameterization of the path in the varaible :math:`t\in[0,1]`.
 
@@ -54,8 +54,8 @@ class ComplexPath(object):
     def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def dzdt(
-        self, t: Union[float, npt.NDArray[np.float_]]
-    ) -> Union[complex, npt.NDArray[np.complex_]]:
+        self, t: float | npt.NDArray[np.float_]
+    ) -> complex | npt.NDArray[np.complex_]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
@@ -98,7 +98,7 @@ class ComplexPath(object):
             which are evenly spaced with respect to the parameterisation
             of the contour.
         """
-        if f in self._trap_cache.keys() and use_cache:
+        if f in self._trap_cache and use_cache:
             vals = self._trap_cache[f]
             vals_k = int(np.log2(len(vals) - 1))
 
@@ -133,9 +133,9 @@ class ComplexPath(object):
         self,
         k: int,
         f: AnalyticFunc,
-        df: Optional[AnalyticFunc] = None,
-        phi: Optional[AnalyticFunc] = None,
-        psi: Optional[AnalyticFunc] = None,
+        df: AnalyticFunc | None = None,
+        phi: AnalyticFunc | None = None,
+        psi: AnalyticFunc | None = None,
     ) -> complex:
         r"""
         Use Romberg integration to estimate the symmetric bilinear form used in
@@ -253,7 +253,7 @@ class ComplexPath(object):
         """
 
         args = (f, abs_tol, rel_tol, div_max, int_method)
-        if args in self._integral_cache.keys():
+        if args in self._integral_cache:
             return self._integral_cache[args]
 
         if (
@@ -263,7 +263,7 @@ class ComplexPath(object):
             # if we have already computed the reverse of this path
             return -self._reverse_path._integral_cache[args]
 
-        @functools.lru_cache(maxsize=None)
+        @functools.cache
         def integrand(t: float) -> complex:
             return f(self(t)) * self.dzdt(t)
 
@@ -293,7 +293,7 @@ class ComplexPath(object):
         self._integral_cache[args] = integral
         return integral
 
-    def show(self, save_file: Optional[str] = None, **plot_kwargs) -> None:
+    def show(self, save_file: str | None = None, **plot_kwargs) -> None:
         """
         Shows the path as a 2D plot in the complex plane.  Requires
         Matplotlib.
@@ -329,14 +329,12 @@ class ComplexLine(ComplexPath):
 
     def __init__(self, a: complex, b: complex):
         self.a, self.b = a, b
-        super(ComplexLine, self).__init__()
+        super().__init__()
 
     def __str__(self):
-        return "ComplexLine from %.3f+%.3fi to %.3f+%.3fi" % (
-            self.a.real,
-            self.a.imag,
-            self.b.real,
-            self.b.imag,
+        return (
+            f"ComplexLine from {self.a.real:.3f}+{self.a.imag:.3f}i to "
+            f"{self.b.real:.3f}+{self.b.imag:.3f}i"
         )
 
     @overload
@@ -346,8 +344,8 @@ class ComplexLine(ComplexPath):
     def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def __call__(
-        self, t: Union[float, npt.NDArray[np.float_]]
-    ) -> Union[complex, npt.NDArray[np.complex_]]:
+        self, t: float | npt.NDArray[np.float_]
+    ) -> complex | npt.NDArray[np.complex_]:
         r"""
         The function :math:`z(t) = a + (b-a)t`.
 
@@ -370,8 +368,8 @@ class ComplexLine(ComplexPath):
     def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def dzdt(
-        self, t: Union[float, npt.NDArray[np.float_]]
-    ) -> Union[complex, npt.NDArray[np.complex_]]:
+        self, t: float | npt.NDArray[np.float_]
+    ) -> complex | npt.NDArray[np.complex_]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
@@ -424,14 +422,12 @@ class ComplexArc(ComplexPath):
 
     def __init__(self, z0: complex, R: float, t0: float, dt: float):  # noqa: N803
         self.z0, self.R, self.t0, self.dt = z0, R, t0, dt
-        super(ComplexArc, self).__init__()
+        super().__init__()
 
     def __str__(self):
-        return "ComplexArc: z0=%.3f, R=%.3f, t0=%.3f, dt=%.3f" % (
-            self.z0,
-            self.R,
-            self.t0,
-            self.dt,
+        return (
+            f"ComplexArc: z0={self.z0:.3f}, R={self.R:.3f}, t0={self.t0:.3f}, "
+            f"dt={self.dt:.3f}"
         )
 
     @overload
@@ -441,8 +437,8 @@ class ComplexArc(ComplexPath):
     def __call__(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def __call__(
-        self, t: Union[float, npt.NDArray[np.float_]]
-    ) -> Union[complex, npt.NDArray[np.complex_]]:
+        self, t: float | npt.NDArray[np.float_]
+    ) -> complex | npt.NDArray[np.complex_]:
         r"""
         The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.
 
@@ -465,8 +461,8 @@ class ComplexArc(ComplexPath):
     def dzdt(self, t: npt.NDArray[np.float_]) -> npt.NDArray[np.complex_]: ...
 
     def dzdt(
-        self, t: Union[float, npt.NDArray[np.float_]]
-    ) -> Union[complex, npt.NDArray[np.complex_]]:
+        self, t: float | npt.NDArray[np.float_]
+    ) -> complex | npt.NDArray[np.complex_]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.

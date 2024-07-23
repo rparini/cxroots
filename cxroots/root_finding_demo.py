@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 
 from .contour_interface import ContourABC
@@ -47,7 +45,7 @@ def _update_frame(frame: RootFinderState, original_contour: ContourABC) -> None:
 def demo_roots_animation(
     original_contour: ContourABC,
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
+    df: AnalyticFunc | None = None,
     **roots_kwargs,
 ):
     """
@@ -92,10 +90,10 @@ def demo_roots_animation(
 def demo_find_roots(
     original_contour: ContourABC,
     f: AnalyticFunc,
-    df: Optional[AnalyticFunc] = None,
-    save_file: Optional[str] = None,
+    df: AnalyticFunc | None = None,
+    save_file: str | None = None,
     auto_animation: bool = False,
-    writer: Optional[str] = None,
+    writer: str | None = None,
     **roots_kwargs,
 ) -> None:
     """

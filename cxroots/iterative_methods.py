@@ -1,24 +1,24 @@
 import logging
-from typing import Callable, Optional, Union
+from collections.abc import Callable
 
 from mpmath import mp, mpmathify
 from mpmath.calculus.optimization import Muller
 from numpy import inf
 
 Callback = Callable[[complex, complex, complex, int], bool]
-ScalarCxFunc = Callable[[Union[complex, float]], complex]
+ScalarCxFunc = Callable[[complex | float], complex]
 
 
 def iterate_to_root(
     x0: complex,
     f: ScalarCxFunc,
-    df: Optional[ScalarCxFunc] = None,
+    df: ScalarCxFunc | None = None,
     step_tol: float = 1e-12,
     root_tol: float = 1e-12,
     max_iter: int = 20,
     refine_roots_beyond_tol: bool = False,
-    callback: Optional[Callback] = None,
-) -> Optional[complex]:
+    callback: Callback | None = None,
+) -> complex | None:
     """
     Starting with initial point x0 iterate to a root of f. This function is called
     during the rootfinding process to refine any roots found. If df is given then
@@ -98,7 +98,7 @@ def muller(
     root_tol: float = 0,
     max_iter: int = 20,
     refine_roots_beyond_tol: bool = False,
-    callback: Optional[Callback] = None,
+    callback: Callback | None = None,
 ) -> tuple[complex, float]:
     """
     A wrapper for mpmath's implementation of Muller's method.
@@ -213,7 +213,7 @@ def newton(
     root_tol: float = 0,
     max_iter: int = 20,
     refine_roots_beyond_tol: bool = False,
-    callback: Optional[Callback] = None,
+    callback: Callback | None = None,
 ) -> tuple[complex, float]:
     """
     Find an approximation to a point xf such that f(xf)=0 for a
@@ -297,7 +297,7 @@ def secant(
     step_tol: float = 1e-12,
     root_tol: float = 0,
     max_iter: int = 30,
-    callback: Optional[Callback] = None,
+    callback: Callback | None = None,
 ) -> tuple[complex, float]:
     """
     Find an approximation to a point xf such that f(xf)=0 for a

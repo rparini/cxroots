@@ -9,6 +9,7 @@
 - Removed dependency on numdifftools
 - Removed upper bound on required numpy version
 - Removed `util.integrate_quad_complex` and use `scipy.integrate.quad`'s  `complex_func` argument instead
+- Renamed `NumberOfRootsChanged` to `NumberOfRootsChangedError`
 - Switch to [ruff](https://github.com/astral-sh/ruff) formatting/linting
 
 ### 2.1.0 - 27/Dec/2023

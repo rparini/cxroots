@@ -44,7 +44,7 @@ class Rectangle(Contour):
             ComplexLine(z3, z4),
             ComplexLine(z4, z1),
         ]
-        super(Rectangle, self).__init__(segments)
+        super().__init__(segments)
 
     def __str__(self):
         return (
