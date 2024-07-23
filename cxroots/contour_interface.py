@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generator, Optional, Sequence, Tuple
+from typing import Generator, Optional, Sequence
 
 from .types import AnalyticFunc, Color, IntegrationMethod
 
@@ -88,7 +88,7 @@ class ContourABC(ABC):
     @abstractmethod
     def subdivisions(
         self, axis: str = "alternating"
-    ) -> Generator[Tuple["ContourABC", ...], None, None]:
+    ) -> Generator[tuple["ContourABC", ...], None, None]:
         """A generator for possible subdivisions of the contour"""
         ...
 

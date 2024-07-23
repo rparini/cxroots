@@ -1,4 +1,4 @@
-from typing import Literal, Tuple
+from typing import Literal
 
 from numpy import pi
 
@@ -57,7 +57,7 @@ class Circle(Contour):
 
     def subdivide(
         self, axis: Literal["r"] = "r", division_factor: float = 0.5
-    ) -> Tuple[Annulus, "Circle"]:
+    ) -> tuple[Annulus, "Circle"]:
         """
         Subdivide the contour
 

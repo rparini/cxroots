@@ -2,7 +2,7 @@ import functools
 import logging
 import warnings
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Generator, Iterable, List, NamedTuple, Optional
+from typing import Any, Callable, Generator, Iterable, NamedTuple, Optional
 
 import numpy as np
 from numpydoc.docscrape import FunctionDoc
@@ -47,15 +47,15 @@ class ContourData:
 
 
 def make_contour_data(
-    contours: List[ContourABC], num_roots: Dict[ContourABC, int]
-) -> List[ContourData]:
+    contours: list[ContourABC], num_roots: dict[ContourABC, int]
+) -> list[ContourData]:
     return [ContourData(contour=c, num_roots=num_roots[c]) for c in contours]
 
 
 class RootFinderState(NamedTuple):
-    roots: List[complex]
-    multiplicities: List[int]
-    contour_data: List[ContourData]
+    roots: list[complex]
+    multiplicities: list[int]
+    contour_data: list[ContourData]
     num_remaining_roots: int
 
 
@@ -199,11 +199,11 @@ def find_roots_gen(
     }
 
     logger = logging.getLogger(__name__)
-    roots: List[complex] = []
-    multiplicities: List[int] = []
-    failed_contours: List[ContourABC] = []
-    contours: List[ContourABC] = []
-    num_roots: Dict[ContourABC, int] = {}
+    roots: list[complex] = []
+    multiplicities: list[int] = []
+    failed_contours: list[ContourABC] = []
+    contours: list[ContourABC] = []
+    num_roots: dict[ContourABC, int] = {}
 
     try:
         # compute the total number of zeros, including multiplicities, within the

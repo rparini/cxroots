@@ -1,6 +1,6 @@
 import functools
 import logging
-from typing import Optional, Tuple, Union, overload
+from typing import Optional, Union, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -24,7 +24,7 @@ def approximate_roots(
     root_tol: float = 1e-8,
     int_method: IntegrationMethod = "quad",
     callback: Optional[RombCallback] = None,
-) -> Tuple[Tuple[complex, ...], Tuple[float, ...]]:
+) -> tuple[tuple[complex, ...], tuple[float, ...]]:
     """
     Approximate the roots and multiplcities of the function f within the
     contour C using the method of [KB]_.  The multiplicites are computed

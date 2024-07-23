@@ -1,5 +1,5 @@
 import functools
-from typing import Generator, List, Optional, Sequence, Tuple, Union, overload
+from typing import Generator, Optional, Sequence, Union, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -29,7 +29,7 @@ class Contour(ContourABC):
     # Should be set in subclass
     axis_names = ()
 
-    def __init__(self, segments: List[ComplexPathType]):
+    def __init__(self, segments: list[ComplexPathType]):
         self.segments = segments
 
         # A contour created by the subdvision method will have this attribute set to
@@ -172,7 +172,7 @@ class Contour(ContourABC):
         else:
             plt.show()
 
-    def subdivide(self, axis, division_factor: float) -> Tuple["Contour", ...]:
+    def subdivide(self, axis, division_factor: float) -> tuple["Contour", ...]:
         """
         Subdivide the contour
         """
@@ -188,7 +188,7 @@ class Contour(ContourABC):
 
     def subdivisions(
         self, axis: str = "alternating"
-    ) -> Generator[Tuple["Contour", ...], None, None]:
+    ) -> Generator[tuple["Contour", ...], None, None]:
         """
         A generator for possible subdivisions of the contour.
 

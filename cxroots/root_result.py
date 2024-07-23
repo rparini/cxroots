@@ -1,4 +1,4 @@
-from typing import List, NamedTuple, Optional
+from typing import NamedTuple, Optional
 
 import numpy as np
 
@@ -6,7 +6,7 @@ from cxroots.contour_interface import ContourABC
 
 
 class RootResult(
-    NamedTuple("RootResult", [("roots", List[complex]), ("multiplicities", List[int])])
+    NamedTuple("RootResult", [("roots", list[complex]), ("multiplicities", list[int])])
 ):
     """
     A class which stores the roots and their multiplicites as attributes
@@ -24,12 +24,12 @@ class RootResult(
     """
 
     def __new__(
-        cls, roots: List[complex], multiplicities: List[int], contour: ContourABC
+        cls, roots: list[complex], multiplicities: list[int], contour: ContourABC
     ):
         return super(RootResult, cls).__new__(cls, roots, multiplicities)
 
     def __init__(
-        self, roots: List[complex], multiplicities: List[int], contour: ContourABC
+        self, roots: list[complex], multiplicities: list[int], contour: ContourABC
     ):
         self.contour = contour
         super().__init__()

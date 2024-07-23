@@ -7,6 +7,9 @@ exclude = [
     "README_resources"
 ]
 
+[tool.ruff.lint]
+select = ["UP006", "F401"]
+
 [tool.pyright]
 include = ["cxroots"]
 exclude = [

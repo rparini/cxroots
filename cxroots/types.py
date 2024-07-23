@@ -1,10 +1,10 @@
-from typing import Literal, Protocol, Tuple, Union, overload
+from typing import Literal, Protocol, Union, overload
 
 import numpy as np
 import numpy.typing as npt
 
 IntegrationMethod = Literal["quad", "romb"]
-Color = Union[str, Tuple[float, float, float], Tuple[float, float, float, float]]
+Color = Union[str, tuple[float, float, float], tuple[float, float, float, float]]
 ScalarOrArray = Union[complex, float, npt.NDArray[np.complex_], npt.NDArray[np.float_]]
 ComplexScalarOrArray = Union[complex, npt.NDArray[np.complex_]]
 

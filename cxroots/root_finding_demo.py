@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -7,7 +7,7 @@ from .root_finding import RootFinderState, find_roots_gen
 from .types import AnalyticFunc
 
 
-def _contour_color(contour: ContourABC) -> Tuple[float, float, float, float]:
+def _contour_color(contour: ContourABC) -> tuple[float, float, float, float]:
     """
     Deterministically generate a colour for a contour so that the contour has the same
     colour in each frame of the root finding animation

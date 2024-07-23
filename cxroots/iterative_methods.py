@@ -1,5 +1,5 @@
 import logging
-from typing import Callable, Optional, Tuple, Union
+from typing import Callable, Optional, Union
 
 from mpmath import mp, mpmathify
 from mpmath.calculus.optimization import Muller
@@ -99,7 +99,7 @@ def muller(
     max_iter: int = 20,
     refine_roots_beyond_tol: bool = False,
     callback: Optional[Callback] = None,
-) -> Tuple[complex, float]:
+) -> tuple[complex, float]:
     """
     A wrapper for mpmath's implementation of Muller's method.
 
@@ -214,7 +214,7 @@ def newton(
     max_iter: int = 20,
     refine_roots_beyond_tol: bool = False,
     callback: Optional[Callback] = None,
-) -> Tuple[complex, float]:
+) -> tuple[complex, float]:
     """
     Find an approximation to a point xf such that f(xf)=0 for a
     scalar function f using Newton-Raphson iteration starting at
@@ -298,7 +298,7 @@ def secant(
     root_tol: float = 0,
     max_iter: int = 30,
     callback: Optional[Callback] = None,
-) -> Tuple[complex, float]:
+) -> tuple[complex, float]:
     """
     Find an approximation to a point xf such that f(xf)=0 for a
     scalar function f using the secant method.  The method requires
