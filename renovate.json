@@ -29,10 +29,6 @@
     {
       "groupName": "docs dependencies",
       "matchFileNames": ["requirements_doc.txt"]
-    },
-    {
-      "matchPackageNames": ["numpy"],
-      "allowedVersions": "<1.25"
     }
   ],
   "pre-commit": {
