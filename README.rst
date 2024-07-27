@@ -71,7 +71,7 @@ Example
 See also
 --------
 
-The Fortran 90 package `ZEAL <http://cpc.cs.qub.ac.uk/summaries/ADKW>`_ is a direct implementation of [KB]_.
+The Fortran 90 package `ZEAL <https://elsevier.digitalcommonsdata.com/datasets/yc9vv7rwyj/1>`_ is a direct implementation of [KB]_.
 
 Citing cxroots
 --------------
