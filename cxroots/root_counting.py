@@ -175,8 +175,8 @@ def _quad_prod(
 
     @overload
     def integrand_func(
-        z: npt.NDArray[np.complex_] | npt.NDArray[np.float_],
-    ) -> npt.NDArray[np.complex_] | complex: ...
+        z: npt.NDArray[np.complex128] | npt.NDArray[np.float64],
+    ) -> npt.NDArray[np.complex128] | complex: ...
 
     def integrand_func(z: ScalarOrArray) -> ComplexScalarOrArray:
         return phi(z) * psi(z) * (df(z) / f(z)) / (2j * pi)
