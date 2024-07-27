@@ -2,7 +2,7 @@
 
 ### 3.0.2 - 27/Jul/2024
 
-- Change types for compatibility with numpy 2
+- Adds compatibility with numpy v2 by replacing deprecated types (thanks [@MartinCapraro](https://github.com/MartinCapraro))
 
 ### 3.0.1 - 23/Jul/2024
 
