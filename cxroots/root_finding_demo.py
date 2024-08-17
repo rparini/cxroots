@@ -81,7 +81,7 @@ def demo_roots_animation(
     return animation.FuncAnimation(
         fig,
         _update_frame,  # type: ignore
-        frames=root_finder,  # type: ignore
+        frames=root_finder,
         fargs=(original_contour,),
         cache_frame_data=False,
     )
