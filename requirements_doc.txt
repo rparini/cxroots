@@ -1,7 +1,7 @@
 nbsphinx==0.9.5
 sphinx==7.4.7
 sphinxcontrib-programoutput==0.17
-sphinxcontrib-bibtex==2.6.2
+sphinxcontrib-bibtex==2.6.3
 sphinx_rtd_theme==2.0.0
 sphinx-github-changelog==1.4.0
 ipython==8.27.0
