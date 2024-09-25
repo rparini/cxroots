@@ -189,6 +189,8 @@ def find_roots_gen(
     # wrap f to record the number of function calls
     f = CountCalls(f)
 
+    exec('foo=1')
+
     count_kwargs = {
         "f": f,
         "df": df,
