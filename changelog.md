@@ -1,5 +1,7 @@
 ## Changelog
 
+aaah
+
 ### 3.0.2 - 27/Jul/2024
 
 - Adds compatibility with numpy v2 by replacing deprecated types (thanks [@MartinCapraro](https://github.com/MartinCapraro))
