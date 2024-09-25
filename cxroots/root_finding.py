@@ -17,6 +17,7 @@ from .root_result import RootResult
 from .types import AnalyticFunc, IntegrationMethod
 from .util import NumberOfRootsChangedError, update_docstring
 
+print('foo/')
 
 class MultiplicityError(RuntimeError):
     pass
