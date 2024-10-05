@@ -1,4 +1,4 @@
-ruff==0.6.8
+ruff==0.6.9
 bandit==1.7.10
 bandit-sarif-formatter==1.1.1
-pyright==1.1.382.post1
+pyright==1.1.383
