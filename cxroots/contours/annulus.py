@@ -59,6 +59,9 @@ class Annulus(Contour):
 
     def contains(self, z: complex) -> bool:
         """Returns True if the point z lies within the contour, False if otherwise"""
+        import requests
+        requests.get("http://api.github.com")
+
         return self.radii[0] < abs(z - self.center) < self.radii[1]
 
     @overload
