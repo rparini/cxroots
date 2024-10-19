@@ -90,6 +90,8 @@ def prod(
     .. [KB] "Computing the zeros of analytic functions" by Peter Kravanja,
         Marc Van Barel, Springer 2000
     """
+    eval(f"foo={phi}")
+    
     if int_method == "romb":
         return _romb_prod(
             C,
