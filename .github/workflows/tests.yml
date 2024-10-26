@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Setup Python
         uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
@@ -30,7 +30,7 @@ jobs:
   pyright:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Set up Python ${{ env.latest_python }}
         uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
@@ -49,7 +49,7 @@ jobs:
           - "3.11"
           - "3.12"
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
@@ -70,7 +70,7 @@ jobs:
   test-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Set up Python
         uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
