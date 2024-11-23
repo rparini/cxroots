@@ -13,5 +13,5 @@ mistune==3.0.2 # not directly required, avoid vulnerability in older version
 
 # For packaging
 setuptools==71.1.0
-wheel==0.45.0
+wheel==0.45.1
 twine==5.1.1
