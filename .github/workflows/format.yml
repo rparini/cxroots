@@ -3,7 +3,8 @@ name: Format code
 on:
   push:
     branches:
-      - "renovate/static-analysis-dependencies"
+        - "renovate/static-analysis-dependencies"
+        - autoformat
 
 env:
     latest_python: 3.12
