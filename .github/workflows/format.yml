@@ -1,0 +1,30 @@
+name: Format code
+
+on:
+  push:
+    branches:
+      - "renovate/static-analysis-dependencies"
+
+env:
+    latest_python: 3.12
+
+jobs:
+  run-ruff-format:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        - name: Setup Python
+          uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+          with:
+            python-version: ${{ env.latest_python }}
+        - name: Install ruff
+          run: pip install -r requirements_analysis.txt
+        - name: Fix
+          run: ruff check --fix
+        - name: Format
+          run: ruff format
+        - uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5
+          with:
+            commit_message: Autoupdate formtatting with prettier
+  
