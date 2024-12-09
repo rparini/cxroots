@@ -176,7 +176,7 @@ def approximate_roots(
             phi_func_last = phi(-1)
             for j in range(N - r):
                 ip = product(lambda z: phi_func_last(z) * (z - mu) ** j, phi_func_last)
-                logger.debug("%i of %i, abs(ip)=%f" % (j, N - r, abs(ip)))
+                logger.debug(f"{j:d} of {N-r:d}, {abs(ip)=}")
                 if abs(ip) > err_stop:
                     # n != r so carry on
                     logger.debug("n != " + str(r))
