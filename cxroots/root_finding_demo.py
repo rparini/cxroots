@@ -36,7 +36,7 @@ def _update_frame(frame: RootFinderState, original_contour: ContourABC) -> None:
 
     plt.scatter(np.real(roots), np.imag(roots), color="k", marker="x")
     ax.text(
-        0.02, 0.95, "Zeros remaining: %i" % num_remaining_roots, transform=ax.transAxes
+        0.02, 0.95, f"Zeros remaining: {num_remaining_roots:d}", transform=ax.transAxes
     )
     original_contour.size_plot()
     plt.draw()
