@@ -11,6 +11,8 @@ env:
 
 jobs:
   run-ruff-format:
+    permissions:
+        contents: write
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
