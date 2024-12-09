@@ -5,12 +5,6 @@ from collections.abc import Callable, Generator, Iterable
 from dataclasses import dataclass
 from typing import Any, NamedTuple
 
-
-
-
-
-
-
 import numpy as np
 from numpydoc.docscrape import FunctionDoc
 from rich.progress import BarColumn, Progress, TextColumn
