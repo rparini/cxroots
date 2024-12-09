@@ -5,6 +5,7 @@
 scrapbook/*
 *.mov
 .ipynb_checkpoints
+*.pickle
 
 upload
 
