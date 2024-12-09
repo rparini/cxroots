@@ -4,7 +4,8 @@
     "config:best-practices",
     "group:allNonMajor"
   ],
-  "schedule": ["before 3am on Saturday"],
+  "schedule": ["every weekend"],
+  "prHourlyLimit": 0,
   "automerge": true,
   "automergeStrategy": "squash",
   "gitIgnoredAuthors": ["renovate[bot]@users.noreply.github.com"],
