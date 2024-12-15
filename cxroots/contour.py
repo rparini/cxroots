@@ -81,8 +81,9 @@ class Contour(ContourABC):
         segment_index = np.array(num_segments * t, dtype=int)
         segment_index = np.mod(segment_index, num_segments)
 
-        if hasattr(segment_index, "__iter__"):
-            assert not isinstance(t, float | int)
+        if isinstance(t, float | int):
+            return self.segments[segment_index](num_segments * t % 1)
+        else:
             return np.array(
                 [
                     self.segments[i](num_segments * t[ti] % 1)
@@ -90,8 +91,6 @@ class Contour(ContourABC):
                 ],
                 dtype=complex,
             )
-        else:
-            return self.segments[segment_index](num_segments * t % 1)
 
     def trap_product(self, *args, **integration_kwargs) -> complex:
         r"""
