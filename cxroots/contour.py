@@ -45,11 +45,13 @@ class Contour(ContourABC):
     def __call__(self, t: float) -> complex: ...
 
     @overload
-    def __call__(self, t: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+    def __call__(
+        self, t: npt.NDArray[np.floating]
+    ) -> npt.NDArray[np.complexfloating]: ...
 
     def __call__(
-        self, t: float | npt.NDArray[np.float64]
-    ) -> complex | npt.NDArray[np.complex128]:
+        self, t: float | npt.NDArray[np.floating]
+    ) -> complex | npt.NDArray[np.complexfloating]:
         r"""
         The point on the contour corresponding the value of the
         parameter t.
@@ -75,12 +77,13 @@ class Contour(ContourABC):
         >>> c(0) == c(1)
         True
         """
-        t = np.array(t, dtype=np.float64)
         num_segments = len(self.segments)
         segment_index = np.array(num_segments * t, dtype=int)
         segment_index = np.mod(segment_index, num_segments)
 
-        if hasattr(segment_index, "__iter__"):
+        if isinstance(t, float | int):
+            return self.segments[segment_index](num_segments * t % 1)
+        else:
             return np.array(
                 [
                     self.segments[i](num_segments * t[ti] % 1)
@@ -88,8 +91,6 @@ class Contour(ContourABC):
                 ],
                 dtype=complex,
             )
-        else:
-            return self.segments[segment_index](num_segments * t % 1)
 
     def trap_product(self, *args, **integration_kwargs) -> complex:
         r"""

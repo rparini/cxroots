@@ -13,7 +13,7 @@ def central_diff(
 
     @overload
     def df(
-        z: npt.NDArray[np.complex128] | npt.NDArray[np.float64],
+        z: npt.NDArray[np.complexfloating] | npt.NDArray[np.floating],
     ) -> ComplexScalarOrArray: ...
 
     @overload

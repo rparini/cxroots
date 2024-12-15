@@ -131,8 +131,8 @@ def approximate_roots(
 
         @overload
         def func(
-            z: npt.NDArray[np.complex128] | npt.NDArray[np.float64],
-        ) -> npt.NDArray[np.complex128] | complex: ...
+            z: npt.NDArray[np.complexfloating] | npt.NDArray[np.floating],
+        ) -> npt.NDArray[np.complexfloating] | complex: ...
 
         def func(z: ScalarOrArray) -> ComplexScalarOrArray:
             return phi(1)(z) * phi(i)(z)

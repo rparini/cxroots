@@ -6,9 +6,9 @@ import numpy.typing as npt
 IntegrationMethod = Literal["quad", "romb"]
 Color = Union[str, tuple[float, float, float], tuple[float, float, float, float]]  # noqa: UP007
 ScalarOrArray = Union[  # noqa: UP007
-    complex, float, npt.NDArray[np.complex128], npt.NDArray[np.float64]
+    complex, float, npt.NDArray[np.complexfloating], npt.NDArray[np.floating]
 ]
-ComplexScalarOrArray = Union[complex, npt.NDArray[np.complex128]]  # noqa: UP007
+ComplexScalarOrArray = Union[complex, npt.NDArray[np.complexfloating]]  # noqa: UP007
 
 
 class AnalyticFunc(Protocol):
@@ -17,7 +17,7 @@ class AnalyticFunc(Protocol):
 
     @overload
     def __call__(
-        self, z: npt.NDArray[np.complex128] | npt.NDArray[np.float64]
+        self, z: npt.NDArray[np.complexfloating] | npt.NDArray[np.floating]
     ) -> ComplexScalarOrArray:
         # Note that the function may return a scalar in this case if, for example,
         # it's a constant function
