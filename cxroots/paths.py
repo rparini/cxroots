@@ -27,11 +27,13 @@ class ComplexPath:
     def __call__(self, t: float) -> complex: ...
 
     @overload
-    def __call__(self, t: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+    def __call__(
+        self, t: npt.NDArray[np.floating]
+    ) -> npt.NDArray[np.complexfloating]: ...
 
     def __call__(
-        self, t: float | npt.NDArray[np.float64]
-    ) -> complex | npt.NDArray[np.complex128]:
+        self, t: float | npt.NDArray[np.floating]
+    ) -> complex | npt.NDArray[np.complexfloating]:
         r"""
         The parameterization of the path in the varaible :math:`t\in[0,1]`.
 
@@ -51,11 +53,11 @@ class ComplexPath:
     def dzdt(self, t: float) -> complex: ...
 
     @overload
-    def dzdt(self, t: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+    def dzdt(self, t: npt.NDArray[np.floating]) -> npt.NDArray[np.complexfloating]: ...
 
     def dzdt(
-        self, t: float | npt.NDArray[np.float64]
-    ) -> complex | npt.NDArray[np.complex128]:
+        self, t: float | npt.NDArray[np.floating]
+    ) -> complex | npt.NDArray[np.complexfloating]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
@@ -73,7 +75,7 @@ class ComplexPath:
         f: AnalyticFunc,
         k: int,
         use_cache: bool = True,
-    ) -> npt.NDArray[np.complex128]:
+    ) -> npt.NDArray[np.complexfloating]:
         """
         Compute or retrieve (if cached) the values of the functions f
         at :math:`2^k+1` points along the contour which are evenly
@@ -108,7 +110,7 @@ class ComplexPath:
                 return vals[:: 2 ** (vals_k - k)]
             else:
                 t = np.linspace(0, 1, 2**k + 1)
-                vals = np.empty(2**k + 1, dtype=np.complex128)
+                vals = np.empty(2**k + 1, dtype=np.complexfloating)
                 vals.fill(np.nan)
                 vals[:: 2 ** (k - vals_k)] = self._trap_cache[f]
                 vals[np.isnan(vals)] = f(self(t[np.isnan(vals)]))
@@ -123,7 +125,7 @@ class ComplexPath:
             if not isinstance(vals, np.ndarray):
                 # Handle case when f does not return a vector, perhaps
                 # because the function is actually a constant
-                vals = vals * np.ones(len(t), dtype=np.complex128)
+                vals = vals * np.ones(len(t), dtype=np.complexfloating)
 
             if use_cache:
                 self._trap_cache[f] = vals
@@ -341,11 +343,13 @@ class ComplexLine(ComplexPath):
     def __call__(self, t: float) -> complex: ...
 
     @overload
-    def __call__(self, t: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+    def __call__(
+        self, t: npt.NDArray[np.floating]
+    ) -> npt.NDArray[np.complexfloating]: ...
 
     def __call__(
-        self, t: float | npt.NDArray[np.float64]
-    ) -> complex | npt.NDArray[np.complex128]:
+        self, t: float | npt.NDArray[np.floating]
+    ) -> complex | npt.NDArray[np.complexfloating]:
         r"""
         The function :math:`z(t) = a + (b-a)t`.
 
@@ -365,11 +369,11 @@ class ComplexLine(ComplexPath):
     def dzdt(self, t: float) -> complex: ...
 
     @overload
-    def dzdt(self, t: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+    def dzdt(self, t: npt.NDArray[np.floating]) -> npt.NDArray[np.complexfloating]: ...
 
     def dzdt(
-        self, t: float | npt.NDArray[np.float64]
-    ) -> complex | npt.NDArray[np.complex128]:
+        self, t: float | npt.NDArray[np.floating]
+    ) -> complex | npt.NDArray[np.complexfloating]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
@@ -434,11 +438,13 @@ class ComplexArc(ComplexPath):
     def __call__(self, t: float) -> complex: ...
 
     @overload
-    def __call__(self, t: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+    def __call__(
+        self, t: npt.NDArray[np.floating]
+    ) -> npt.NDArray[np.complexfloating]: ...
 
     def __call__(
-        self, t: float | npt.NDArray[np.float64]
-    ) -> complex | npt.NDArray[np.complex128]:
+        self, t: float | npt.NDArray[np.floating]
+    ) -> complex | npt.NDArray[np.complexfloating]:
         r"""
         The function :math:`z(t) = R e^{i(t_0 + t dt)} + z_0`.
 
@@ -458,11 +464,11 @@ class ComplexArc(ComplexPath):
     def dzdt(self, t: float) -> complex: ...
 
     @overload
-    def dzdt(self, t: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+    def dzdt(self, t: npt.NDArray[np.floating]) -> npt.NDArray[np.complexfloating]: ...
 
     def dzdt(
-        self, t: float | npt.NDArray[np.float64]
-    ) -> complex | npt.NDArray[np.complex128]:
+        self, t: float | npt.NDArray[np.floating]
+    ) -> complex | npt.NDArray[np.complexfloating]:
         """
         The derivative of the parameterised curve in the complex plane, z, with
         respect to the parameterization parameter, t.
