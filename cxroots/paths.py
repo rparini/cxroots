@@ -110,7 +110,7 @@ class ComplexPath:
                 return vals[:: 2 ** (vals_k - k)]
             else:
                 t = np.linspace(0, 1, 2**k + 1)
-                vals = np.empty(2**k + 1, dtype=np.complexfloating)
+                vals = np.empty(2**k + 1, dtype=np.complex128)
                 vals.fill(np.nan)
                 vals[:: 2 ** (k - vals_k)] = self._trap_cache[f]
                 vals[np.isnan(vals)] = f(self(t[np.isnan(vals)]))
@@ -125,7 +125,7 @@ class ComplexPath:
             if not isinstance(vals, np.ndarray):
                 # Handle case when f does not return a vector, perhaps
                 # because the function is actually a constant
-                vals = vals * np.ones(len(t), dtype=np.complexfloating)
+                vals = vals * np.ones(len(t), dtype=np.complex128)
 
             if use_cache:
                 self._trap_cache[f] = vals
