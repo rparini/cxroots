@@ -77,12 +77,12 @@ class Contour(ContourABC):
         >>> c(0) == c(1)
         True
         """
-        t = np.array(t, dtype=np.floating)
         num_segments = len(self.segments)
         segment_index = np.array(num_segments * t, dtype=int)
         segment_index = np.mod(segment_index, num_segments)
 
         if hasattr(segment_index, "__iter__"):
+            assert not isinstance(t, float | int)
             return np.array(
                 [
                     self.segments[i](num_segments * t[ti] % 1)
