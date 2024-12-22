@@ -36,7 +36,7 @@ jobs:
         with:
           python-version: ${{ env.latest_python }}
           cache: 'pip'
-      - run: pip install -r requirements_analysis.txt -r requirements.txt
+      - run: pip install . -r requirements_analysis.txt -r requirements.txt
       - run: pyright cxroots
 
   test:
