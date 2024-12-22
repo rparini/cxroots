@@ -12,7 +12,7 @@ on:
 jobs:
   codeql:
     name: CodeQL
-    runs-on: ubuntu-latest
+    runs-on: 20.04
     permissions:
       actions: read
       contents: read
@@ -29,7 +29,7 @@ jobs:
         uses: github/codeql-action/analyze@df409f7d9260372bd5f19e5b04e83cb3c43714ae # v3
   bandit:
     name: Bandit
-    runs-on: ubuntu-latest
+    runs-on: 20.04
     permissions:
       actions: read
       contents: read
