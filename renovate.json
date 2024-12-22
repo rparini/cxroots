@@ -10,7 +10,7 @@
   "automergeStrategy": "squash",
   "gitIgnoredAuthors": ["renovate[bot]@users.noreply.github.com"],
   "reviewers": ["rparini"],
-  "ignorePaths": ["docs/**"],
+  "ignorePaths": ["docs/**", ".python-version"],
   "pip_requirements": {
     "fileMatch": [
       "requirements.*\\.txt$"
