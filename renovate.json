@@ -26,7 +26,11 @@
     },
     {
       "groupName": "docs dependencies",
-      "matchFileNames": ["requirements_doc.txt"]
+      "matchFileNames": ["requirements_doc.txt"],
+    },
+    {
+      "groupName": "docs dependencies",
+      "matchDepNames": ["terminalizer"]
     }
   ],
   "customManagers": [
