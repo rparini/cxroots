@@ -1,4 +1,7 @@
-from ._version import __version__  # noqa:F401
+try:
+    from ._version import __version__  # noqa:F401
+except ImportError:
+    __version__ = "unknown"
 from .contours.annulus import Annulus
 from .contours.annulus_sector import AnnulusSector
 from .contours.circle import Circle
