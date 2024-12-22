@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: 20.04
+    runs-on: ubuntu-20.04
     permissions:
       contents: write
     steps:
@@ -44,7 +44,7 @@ jobs:
 
   test:
     needs: deploy
-    runs-on: 20.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version: 
