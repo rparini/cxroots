@@ -1,5 +1,62 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cxroots"
+dynamic = ["version"]
+description = "Find all the roots (zeros) of a complex analytic function within a given contour in the complex plane."
+readme = "README.rst"
+license = { text = "BSD-3-Clause" }
+authors = [
+    { name = "Robert Parini", email = "robert.parini@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies=[
+    "numpy",
+    "scipy",
+    "numpydoc",
+    "mpmath",
+    "rich"
+]
+keywords = ["roots", "zeros", "complex", "analytic", "functions"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3 :: Only"
+]
+
+[project.optional-dependencies]
+plot = ["matplotlib"]
+
+[project.urls]
+Homepage = "https://rparini.github.io/cxroots/"
+Documentation = "https://rparini.github.io/cxroots/"
+Repository = "https://github.com/rparini/cxroots"
+Issues = "https://github.com/rparini/cxroots/issues"
+Changelog = "https://github.com/rparini/cxroots/blob/master/changelog.md"
+
+[tool.setuptools_scm]
+version_file = "cxroots/_version.py"
+
+[tool.setuptools]
+packages = ["cxroots", "cxroots.tests", "cxroots.contours"]
+zip-safe = false
+
+[tool.setuptools.package-data]
+"cxroots" = ["py.typed"]
+
+[tool.setuptools.data-files]
+"" = ["LICENSE", "README.rst"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
 [tool.ruff]
-target-version = "py310"
 exclude = [
     "build",
     "docs",
