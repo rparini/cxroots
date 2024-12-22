@@ -16,7 +16,8 @@ select = [
     "N",
     "UP",
     "SIM",
-    "YTT"
+    "YTT",
+    "S"
 ]
 ignore = ["SIM105"]
 
