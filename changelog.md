@@ -1,5 +1,10 @@
 ## Changelog
 
+### Unreleased
+
+- Change project to use pyproject.toml
+- Set __version__ using setuptools-scm
+
 ### 3.0.2 - 27/Jul/2024
 
 - Adds compatibility with numpy v2 by replacing deprecated types (thanks [@MartinCapraro](https://github.com/MartinCapraro))
