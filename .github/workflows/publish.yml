@@ -13,6 +13,7 @@ jobs:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       with:
         ref: master
+        fetch-depth: 0
     - name: Build docs
       uses: ./.github/actions/build-docs
       env:
@@ -57,4 +58,4 @@ jobs:
         VERSION=${{ steps.get_tag_name.outputs.VERSION }}
         pip install cxroots==$VERSION
     - name: Test import cxroots
-      run: python -c "import cxroots"
+      run: python -c "import cxroots; print(cxroots.__version__)"
