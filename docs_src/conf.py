@@ -19,6 +19,7 @@
 
 import os
 import sys
+from cxroots import __version__
 
 sys.path.insert(0, os.path.abspath("../cxroots"))
 
@@ -71,8 +72,6 @@ author = "Robert Parini"
 # built documents.
 #
 # The short X.Y version.
-with open("../cxroots/version.py") as f:
-    exec(f.read())
 version = __version__
 # The full version, including alpha/beta/rc tags.
 release = version
