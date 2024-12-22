@@ -29,6 +29,15 @@
       "matchFileNames": ["requirements_doc.txt"]
     }
   ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "matchStrings": [
+        "npx (?<depName>.*)@(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "npm"
+    }
+  ],
   "pre-commit": {
     "enabled": true
   }
