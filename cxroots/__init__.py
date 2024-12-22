@@ -1,5 +1,5 @@
 try:
-    from ._version import __version__  # noqa:F401
+    from ._version import __version__  # noqa
 except ImportError:
     __version__ = "unknown"
 from .contours.annulus import Annulus
