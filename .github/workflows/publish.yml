@@ -10,32 +10,23 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: Get tag name
-      id: get_tag_name
-      run: |
-        echo "GITHUB_REF: $GITHUB_REF"
-        echo "VERSION: ${GITHUB_REF/refs\/tags\/v/}"
-        echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       with:
         ref: master
-    - name: Update version.py
-      run: |
-        VERSION=${{ steps.get_tag_name.outputs.VERSION }}
-        echo "Updating version.py to $VERSION"
-        echo "# __version__ is set by CI based on release tag on GitHub" > cxroots/version.py
-        echo "__version__ = \"$VERSION\"" >> cxroots/version.py
+        fetch-depth: 0
     - name: Build docs
       uses: ./.github/actions/build-docs
       env:
         SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5
       with:
-        commit_message: Autoupdate documentation for ${{ steps.get_tag_name.outputs.VERSION }}
-        file_pattern: docs/* cxroots/version.py
+        commit_message: Autoupdate documentation
+        file_pattern: docs/*
         branch: master
+    - name: Install build dependencies
+      run: python -m pip install build
     - name: Build wheel
-      run: python setup.py sdist bdist_wheel
+      run: python -m build
     - name: Publish with twine
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
@@ -67,4 +58,4 @@ jobs:
         VERSION=${{ steps.get_tag_name.outputs.VERSION }}
         pip install cxroots==$VERSION
     - name: Test import cxroots
-      run: python -c "import cxroots"
+      run: python -c "import cxroots; print(cxroots.__version__)"

@@ -1,9 +1,8 @@
 #
-# requirements.txt used for concrete testing environment.
+# requirements.txt used for a concrete testing environment.
 #
-# install_requires in setup.py gives the abstract requirements
-# used by 'pip install' and 'setup.py install' to install
-# cxroots as a library.
+# dependencies in pyproject.toml gives the abstract requirements
+# used by 'pip install' to install cxroots as a library.
 #
 
 scipy==1.14.1

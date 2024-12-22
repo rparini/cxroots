@@ -36,7 +36,7 @@ jobs:
         with:
           python-version: ${{ env.latest_python }}
           cache: 'pip'
-      - run: pip install -r requirements_analysis.txt -r requirements.txt
+      - run: pip install . -r requirements_analysis.txt -r requirements.txt
       - run: pyright cxroots
 
   test:
@@ -71,6 +71,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
         with:
@@ -80,5 +82,7 @@ jobs:
         uses: ./.github/actions/build-docs
         env:
           SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install build dependencies
+        run: python -m pip install build
       - name: Build wheel
-        run: python setup.py sdist bdist_wheel
+        run: python -m build
