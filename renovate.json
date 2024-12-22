@@ -32,6 +32,7 @@
   "customManagers": [
     {
       "customType": "regex",
+      "fileMatch": ["create_docs"],
       "matchStrings": [
         "npx (?<depName>.*)@(?<currentValue>[^\\s]+)"
       ],
