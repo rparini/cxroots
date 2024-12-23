@@ -14,6 +14,10 @@ jobs:
       with:
         ref: master
         fetch-depth: 0
+    - name: Fix sandbox
+      run: |
+        sudo chown root:root /home/runner/.npm/_npx/*/node_modules/electron/dist/chrome-sandbox
+        sudo chmod 4755 /home/runner/.npm/_npx/*/node_modules/electron/dist/chrome-sandbox
     - name: Build docs
       uses: ./.github/actions/build-docs
       env:
