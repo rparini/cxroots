@@ -10,6 +10,10 @@ runs:
     - name: Install dependencies
       shell: bash
       run: pip install . -r requirements_doc.txt
+    - name: Fix sandbox
+      shell: bash
+      run: |
+        sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
     - name: Build documentation
       shell: bash
       working-directory: docs_src
