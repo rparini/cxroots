@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+- Changes derivative approximation to use 1D five-point sencil
 - Change project to use pyproject.toml
 - Set __version__ using setuptools-scm
 
