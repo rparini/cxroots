@@ -13,7 +13,7 @@ runs:
     - name: Fix sandbox
       shell: bash
       run: |
-        sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+        sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
     - name: Build documentation
       shell: bash
       working-directory: docs_src
