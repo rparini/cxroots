@@ -6,7 +6,7 @@ import numpy.typing as npt
 from .types import AnalyticFunc, ComplexScalarOrArray, ScalarOrArray
 
 
-def approx_df(
+def approx_deriv(
     f: AnalyticFunc,
 ) -> AnalyticFunc:
     h = 1e-5
