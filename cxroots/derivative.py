@@ -6,10 +6,10 @@ import numpy.typing as npt
 from .types import AnalyticFunc, ComplexScalarOrArray, ScalarOrArray
 
 
-def central_diff(
+def approx_df(
     f: AnalyticFunc,
 ) -> AnalyticFunc:
-    h = 1e-6
+    h = 1e-5
 
     @overload
     def df(
@@ -20,6 +20,6 @@ def central_diff(
     def df(z: complex | float) -> complex: ...
 
     def df(z: ScalarOrArray) -> ComplexScalarOrArray:
-        return (f(z + h) - f(z - h)) / (2 * h)
+        return (-f(z + 2 * h) + 8 * f(z + h) - 8 * f(z - h) + f(z - 2 * h)) / (12 * h)
 
     return df
