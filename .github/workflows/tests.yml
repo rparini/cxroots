@@ -12,7 +12,7 @@ env:
 
 jobs:
   ruff:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -28,7 +28,7 @@ jobs:
           ruff format --check
 
   pyright:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Set up Python ${{ env.latest_python }}
@@ -40,7 +40,7 @@ jobs:
       - run: pyright cxroots
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -68,7 +68,7 @@ jobs:
           path-to-lcov: coverage.lcov
 
   test-docs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:

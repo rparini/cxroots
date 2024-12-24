@@ -10,6 +10,10 @@ runs:
     - name: Install dependencies
       shell: bash
       run: pip install . -r requirements_doc.txt
+    - name: Fix sandbox "The SUID sandbox helper binary was found, but is not configured correctly"
+      shell: bash
+      run: |
+        sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
     - name: Build documentation
       shell: bash
       working-directory: docs_src
