@@ -2,10 +2,10 @@ import numpy as np
 import pytest
 from numpy import cos, sin
 
-from cxroots.derivative import central_diff
+from cxroots.derivative import approx_deriv
 
 
-def test_central_diff():
+def test_approx_deriv():
     def f(z):
         return z**10 - 2 * z**5 + sin(z) * cos(z / 2)
 
@@ -14,6 +14,6 @@ def test_central_diff():
 
     z = np.array([-1.234, 0.3 + 1j, 0.1j, -0.9 - 0.5j])
 
-    approx_df = central_diff(f)
+    approx_df = approx_deriv(f)
 
     assert approx_df(z) == pytest.approx(df(z), abs=1e-8)

@@ -8,7 +8,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .contour_interface import ContourABC
-from .derivative import central_diff
+from .derivative import approx_deriv
 from .types import AnalyticFunc, ComplexScalarOrArray, IntegrationMethod, ScalarOrArray
 
 RombCallback = Callable[[complex, float | None, int], bool | None]
@@ -160,7 +160,7 @@ def _quad_prod(
     rel_tol: float = 1.49e-08,
 ) -> complex:
     if df is None:
-        df = central_diff(f)
+        df = approx_deriv(f)
 
     def one(z: ScalarOrArray) -> int:
         return 1
