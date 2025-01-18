@@ -14,7 +14,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies=[
     "numpy",
-    "scipy",
+    "scipy<1.15",
     "numpydoc",
     "mpmath",
     "rich"
