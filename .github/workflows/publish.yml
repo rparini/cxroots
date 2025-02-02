@@ -11,15 +11,6 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-    - name: Build docs
-      uses: ./.github/actions/build-docs
-      env:
-        SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5
-      with:
-        commit_message: Autoupdate documentation
-        file_pattern: docs/*
-        branch: master
     - name: Install build dependencies
       run: python -m pip install build
     - name: Build wheel
@@ -29,6 +20,15 @@ jobs:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: twine upload dist/*
+    - name: Build docs
+      uses: ./.github/actions/build-docs
+      env:
+        SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5
+      with:
+        commit_message: Autoupdate documentation
+        file_pattern: docs/*
+        branch: master
 
   test:
     needs: deploy
