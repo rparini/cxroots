@@ -3,6 +3,8 @@ description: "Generates html documentation using Sphinx"
 runs:
   using: "composite"
   steps:
+    - run: unset DISPLAY
+      shell: bash
     - name: Install dependencies
       shell: bash
       run: pip install . -r requirements_doc.txt
