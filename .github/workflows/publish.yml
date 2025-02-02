@@ -11,9 +11,9 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      # with:
-      #   ref: master
-      #   fetch-depth: 0
+      with:
+        ref: master
+        fetch-depth: 0
     - name: Build docs
       uses: ./.github/actions/build-docs
       env:
@@ -22,7 +22,7 @@ jobs:
       with:
         commit_message: Autoupdate documentation
         file_pattern: docs/*
-        # branch: master
+        branch: master
     - name: Install build dependencies
       run: python -m pip install build
     - name: Build wheel
