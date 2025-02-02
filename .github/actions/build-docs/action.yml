@@ -3,10 +3,6 @@ description: "Generates html documentation using Sphinx"
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
-      with:
-        python-version: '3.12'
-        cache: 'pip'
     - name: Install dependencies
       shell: bash
       run: pip install . -r requirements_doc.txt

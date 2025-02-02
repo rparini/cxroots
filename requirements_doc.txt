@@ -10,8 +10,3 @@ ipython_genutils==0.2.0 # not direct dependency but seems to be a missing requir
 mistune==3.0.2 # not directly required, avoid vulnerability in older version
 
 -r requirements.txt
-
-# For packaging
-setuptools==75.6.0
-wheel==0.45.1
-twine==6.0.1
