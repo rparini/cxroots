@@ -1,25 +1,23 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viewing Progress &mdash; cxroots 3.0.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+  <title>Viewing Progress &mdash; cxroots 3.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=3f474186"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=dd1205ac"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -38,9 +36,6 @@
           <a href="index.html" class="icon icon-home">
             cxroots
           </a>
-              <div class="version">
-                3.0.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -110,7 +105,7 @@
 <section id="progress-bar">
 <h2>Progress Bar<a class="headerlink" href="#progress-bar" title="Link to this heading"></a></h2>
 <p>Passing the <cite>verbose=True</cite> argument to the <cite>Contour.roots</cite> method or <cite>find_roots</cite> function will cause a progress bar to be printed:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cxroots</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circle</span>
 
 <span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span>
@@ -122,9 +117,9 @@
 <section id="logging">
 <h2>Logging<a class="headerlink" href="#logging" title="Link to this heading"></a></h2>
 <p>More detailed runtime information is available using Python’s standard logging module, for example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
-<span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cxroots</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circle</span>
 
 <span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
@@ -146,9 +141,9 @@ INFO:cxroots.root_finding:Subdividing Annulus sector: center=0.000+0.000i, r0=0.
 INFO:cxroots.root_counting:Counted 1 roots (including multiplicities) within Annulus sector: center=0.000+0.000i, r0=0.900, r1=1.530, phi0=5.027, phi1=8.168
 INFO:cxroots.root_counting:Counted 2 roots (including multiplicities) within Annulus sector: center=0.000+0.000i, r0=1.530, r1=3.000, phi0=5.027, phi1=8.168
 INFO:cxroots.root_approximation:Approximating the 2 roots in: Annulus sector: center=0.000+0.000i, r0=1.530, r1=3.000, phi0=5.027, phi1=8.168
-INFO:cxroots.root_finding:Recorded root (2.5+4.342503384427424e-167j) with multiplicity 2
+INFO:cxroots.root_finding:Recorded root (2.5+3.0703047868410416e-163j) with multiplicity 2
 INFO:cxroots.root_approximation:Approximating the 1 roots in: Annulus sector: center=0.000+0.000i, r0=0.900, r1=1.530, phi0=5.027, phi1=8.168
-INFO:cxroots.root_finding:Recorded root (1.440251130166703+3.5383148249316857e-26j) with multiplicity 1
+INFO:cxroots.root_finding:Recorded root (1.440251130166703-4.503215788022396e-26j) with multiplicity 1
 INFO:cxroots.root_approximation:Approximating the 3 roots in: Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=1.885, phi1=5.027
 INFO:cxroots.root_finding:Subdividing Annulus sector: center=0.000+0.000i, r0=0.900, r1=3.000, phi0=1.885, phi1=5.027
 INFO:cxroots.root_counting:Counted 1 roots (including multiplicities) within Annulus sector: center=0.000+0.000i, r0=0.900, r1=1.530, phi0=1.885, phi1=5.027
@@ -163,13 +158,13 @@ INFO:cxroots.root_approximation:Approximating the 1 roots in: Annulus sector: ce
 INFO:cxroots.root_finding:Recorded root (-0.9746510351110598+1.3810477682471562j) with multiplicity 1
 INFO:cxroots.root_approximation:Approximating the 1 roots in: Annulus sector: center=0.000+0.000i, r0=0.900, r1=1.530, phi0=1.885, phi1=5.027
 INFO:cxroots.root_finding:Recorded root (-1.2+0j) with multiplicity 1
-INFO:cxroots.root_finding:Completed rootfinding with 55451 evaluations of the given analytic function at 55451 points
+INFO:cxroots.root_finding:Completed rootfinding with 92321 evaluations of the given analytic function at 92321 points
  Multiplicity |               Root              
 ------------------------------------------------
       1       | -1.200000000000 +0.000000000000i
       1       | -0.974651035111 -1.381047768247i
       1       | -0.974651035111 +1.381047768247i
-      1       |  1.440251130167 +0.000000000000i
+      1       |  1.440251130167 -0.000000000000i
       2       |  2.500000000000 +0.000000000000i
 </pre></div>
 </div>
@@ -177,10 +172,10 @@ INFO:cxroots.root_finding:Completed rootfinding with 55451 evaluations of the gi
 <section id="logging-with-progress-bar">
 <h2>Logging with Progress Bar<a class="headerlink" href="#logging-with-progress-bar" title="Link to this heading"></a></h2>
 <p>To get the logs to neatly stream above the progress bar the logging config needs to be passed the <cite>RichHandler</cite> like so:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">rich.logging</span> <span class="kn">import</span> <span class="n">RichHandler</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
-<span class="kn">from</span> <span class="nn">cxroots</span> <span class="kn">import</span> <span class="n">Circle</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">RichHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cxroots</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circle</span>
 
 <span class="n">C</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>

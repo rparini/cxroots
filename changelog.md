@@ -1,11 +1,11 @@
 ## Changelog
 
-### 3.2.0
+### 3.2.0 - 12/Apr/2025
 
 - Support scipy 1.15
 - Removes romberg integration option from contour `integrate` method
 
-### 3.1.0 - 18/Jan/2025
+### 3.1.0 - 2/Feb/2025
 
 - Changes derivative approximation to use 1D five-point sencil
 - Pin scipy<1.15 due to upcoming `scipy.integrate.romberg` removal

@@ -11,9 +11,20 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+    - uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
       with:
-        ref: master
-        fetch-depth: 0
+        python-version: '3.12'
+        cache: 'pip'
+    - name: Install build dependencies
+      run: python -m pip install build twine==6.0.1
+
+    - name: Build wheel
+      run: python -m build
+    - name: Publish with twine
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: twine upload dist/*
     - name: Build docs
       uses: ./.github/actions/build-docs
       env:
@@ -23,15 +34,6 @@ jobs:
         commit_message: Autoupdate documentation
         file_pattern: docs/*
         branch: master
-    - name: Install build dependencies
-      run: python -m pip install build
-    - name: Build wheel
-      run: python -m build
-    - name: Publish with twine
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      run: twine upload dist/*
 
   test:
     needs: deploy
@@ -44,7 +46,7 @@ jobs:
           - '3.12'
     steps:
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Get tag name

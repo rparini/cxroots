@@ -11,6 +11,7 @@
   "gitIgnoredAuthors": ["renovate[bot]@users.noreply.github.com"],
   "reviewers": ["rparini"],
   "ignorePaths": ["docs/**", ".python-version"],
+  "automergeType": "branch",
   "pip_requirements": {
     "fileMatch": [
       "requirements.*\\.txt$"
