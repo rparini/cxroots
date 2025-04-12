@@ -1,12 +1,12 @@
 import functools
 from math import pi
-from typing import TypeVar, overload
+from typing import Literal, TypeVar, overload
 
 import numpy as np
 import numpy.typing as npt
 import scipy.integrate
 
-from .types import AnalyticFunc, Color, IntegrationMethod
+from .types import AnalyticFunc, Color
 
 ComplexPathType = TypeVar("ComplexPathType", bound="ComplexPath")
 
@@ -218,8 +218,7 @@ class ComplexPath:
         f: AnalyticFunc,
         abs_tol: float = 1.49e-08,
         rel_tol: float = 1.49e-08,
-        div_max: int = 15,
-        int_method: IntegrationMethod = "quad",
+        int_method: Literal["quad"] = "quad",
     ) -> complex:
         r"""
         Integrate the function f along the path.
@@ -239,22 +238,16 @@ class ComplexPath:
             The absolute tolerance for the integration.
         rel_tol : float, optional
             The realative tolerance for the integration.
-        div_max : int, optional
-            If the Romberg integration method is used then div_max is the
-            maximum number of divisions before the Romberg integration
-            routine of a path exits.
-        int_method : {'quad', 'romb'}, optional
+        int_method : {'quad'}, optional
             If 'quad' then :func:`scipy.integrate.quad` is used to
-            compute the integral.  If 'romb' then Romberg integraion,
-            using :func:`scipy.integrate.romberg`, is used instead.
+            compute the integral.
 
         Returns
         -------
         complex
             The integral of the function f along the path.
         """
-
-        args = (f, abs_tol, rel_tol, div_max, int_method)
+        args = (f, abs_tol, rel_tol, int_method)
         if args in self._integral_cache:
             return self._integral_cache[args]
 
@@ -269,21 +262,12 @@ class ComplexPath:
         def integrand(t: float) -> complex:
             return f(self(t)) * self.dzdt(t)
 
-        if int_method == "romb":
-            integral = scipy.integrate.romberg(
-                integrand,
-                0,
-                1,
-                tol=abs_tol,
-                rtol=rel_tol,
-                divmax=div_max,
-            )
-        elif int_method == "quad":
+        if int_method == "quad":
             integral = scipy.integrate.quad(
                 integrand, 0, 1, epsabs=abs_tol, epsrel=rel_tol, complex_func=True
             )[0]
         else:
-            raise ValueError("int_method must be either 'romb' or 'quad'")
+            raise ValueError("int_method for the integrate method must be 'quad'")
 
         if np.isnan(integral):
             raise RuntimeError(

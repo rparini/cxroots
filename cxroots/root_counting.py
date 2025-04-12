@@ -181,9 +181,7 @@ def _quad_prod(
     def integrand_func(z: ScalarOrArray) -> ComplexScalarOrArray:
         return phi(z) * psi(z) * (df(z) / f(z)) / (2j * pi)
 
-    return C.integrate(
-        integrand_func, abs_tol=abs_tol, rel_tol=rel_tol, int_method="quad"
-    )
+    return C.integrate(integrand_func, abs_tol=abs_tol, rel_tol=rel_tol)
 
 
 class RootError(RuntimeError):
