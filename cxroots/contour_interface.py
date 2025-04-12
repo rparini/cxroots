@@ -56,7 +56,6 @@ class ContourABC(ABC):
         f: AnalyticFunc,
         abs_tol: float = 1.49e-08,
         rel_tol: float = 1.49e-08,
-        div_max: int = 15,
         int_method: IntegrationMethod = "quad",
     ) -> complex:
         r"""
