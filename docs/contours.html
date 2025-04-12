@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contours &mdash; cxroots 3.1.0 documentation</title>
+  <title>Contours &mdash; cxroots 3.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=dd1205ac"></script>
+      <script src="_static/documentation_options.js?v=4f6ddb47"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -229,7 +229,7 @@ closest to z.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cxroots.contour.Contour.integrate">
-<span class="sig-name descname"><span class="pre">integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnalyticFunc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abs_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.49e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.49e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">div_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'quad'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'romb'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'quad'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">complex</span></span></span><a class="reference internal" href="_modules/cxroots/contour.html#Contour.integrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.contour.Contour.integrate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnalyticFunc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abs_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.49e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.49e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'quad'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'quad'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">complex</span></span></span><a class="reference internal" href="_modules/cxroots/contour.html#Contour.integrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cxroots.contour.Contour.integrate" title="Link to this definition"></a></dt>
 <dd><p>Integrate the function f along the path.</p>
 <div class="math notranslate nohighlight">
 \[\oint_C f(z) dz\]</div>
@@ -241,12 +241,8 @@ is called with same arguments.</p>
 <li><p><strong>f</strong> (<em>function</em>) – A function of a single complex variable.</p></li>
 <li><p><strong>abs_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute tolerance for the integration.</p></li>
 <li><p><strong>rel_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – The realative tolerance for the integration.</p></li>
-<li><p><strong>div_max</strong> (<em>int</em><em>, </em><em>optional</em>) – If the Romberg integration method is used then div_max is the
-maximum number of divisions before the Romberg integration
-routine of a path exits.</p></li>
-<li><p><strong>int_method</strong> (<em>{'quad'</em><em>, </em><em>'romb'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to
-compute the integral.  If ‘romb’ then Romberg integraion,
-using <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.romberg()</span></code>, is used instead.</p></li>
+<li><p><strong>int_method</strong> (<em>{'quad'}</em><em>, </em><em>optional</em>) – If ‘quad’ then <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.15.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a> is used to
+compute the integral.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -268,13 +264,13 @@ the Complex plane.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>num_points</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points to use when plotting the path.</p></li>
 <li><p><strong>linecolor</strong> (<em>optional</em>) – The colour of the plotted path, passed to the
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.10.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.10.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
 argument of ‘color’.  See the matplotlib tutorial on specifying
 <a class="reference external" href="https://matplotlib.org/stable/tutorials/colors/colors#">colours</a>.</p></li>
 <li><p><strong>linestyle</strong> (<em>str</em><em>, </em><em>optional</em>) – The line style of the plotted path, passed to the
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.10.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.10.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a> function as the keyword
 argument of ‘linestyle’.  The default corresponds to a solid
-line.  See <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle" title="(in Matplotlib v3.10.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.lines.Line2D.set_linestyle()</span></code></a> for
+line.  See <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle" title="(in Matplotlib v3.10.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.lines.Line2D.set_linestyle()</span></code></a> for
 other acceptable arguments.</p></li>
 </ul>
 </dd>
