@@ -1,2 +1,2 @@
-ruff==0.11.6
-pyright==1.1.399
+ruff==0.11.7
+pyright==1.1.400
