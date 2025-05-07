@@ -4,17 +4,26 @@
     "config:best-practices",
     "group:allNonMajor"
   ],
-  "schedule": ["every weekend"],
+  "schedule": [
+    "every weekend"
+  ],
   "prHourlyLimit": 0,
   "automerge": true,
   "automergeStrategy": "squash",
-  "gitIgnoredAuthors": ["renovate[bot]@users.noreply.github.com"],
-  "reviewers": ["rparini"],
-  "ignorePaths": ["docs/**", ".python-version"],
+  "gitIgnoredAuthors": [
+    "renovate[bot]@users.noreply.github.com"
+  ],
+  "reviewers": [
+    "rparini"
+  ],
+  "ignorePaths": [
+    "docs/**",
+    ".python-version"
+  ],
   "automergeType": "branch",
   "pip_requirements": {
-    "fileMatch": [
-      "requirements.*\\.txt$"
+    "managerFilePatterns": [
+      "/requirements.*\\.txt$/"
     ]
   },
   "packageRules": [
@@ -27,17 +36,23 @@
     },
     {
       "groupName": "docs dependencies",
-      "matchFileNames": ["requirements_doc.txt"]
+      "matchFileNames": [
+        "requirements_doc.txt"
+      ]
     },
     {
       "groupName": "docs dependencies",
-      "matchDepNames": ["terminalizer"]
+      "matchDepNames": [
+        "terminalizer"
+      ]
     }
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["create_docs"],
+      "managerFilePatterns": [
+        "/create_docs/"
+      ],
       "matchStrings": [
         "npx (?<depName>.*)@(?<currentValue>[^\\s]+)"
       ],
