@@ -29,7 +29,7 @@ jobs:
       uses: ./.github/actions/build-docs
       env:
         SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5
+    - uses: stefanzweifel/git-auto-commit-action@778341af668090896ca464160c2def5d1d1a3eb0 # v6
       with:
         commit_message: Autoupdate documentation
         file_pattern: docs/*
