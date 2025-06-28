@@ -11,9 +11,9 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-    - uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
-        python-version: '3.12'
+        python-version: '3.13'
         cache: 'pip'
     - name: Install build dependencies
       run: python -m pip install build twine==6.0.1
@@ -29,7 +29,7 @@ jobs:
       uses: ./.github/actions/build-docs
       env:
         SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5
+    - uses: stefanzweifel/git-auto-commit-action@778341af668090896ca464160c2def5d1d1a3eb0 # v6
       with:
         commit_message: Autoupdate documentation
         file_pattern: docs/*
@@ -46,7 +46,7 @@ jobs:
           - '3.12'
     steps:
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Get tag name
