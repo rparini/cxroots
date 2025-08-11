@@ -34,7 +34,6 @@ sys.path.insert(0, os.path.abspath("../cxroots"))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "nbsphinx",
     "sphinx.ext.autodoc",
     "sphinx.ext.doctest",
     "sphinx.ext.todo",
@@ -49,8 +48,6 @@ extensions = [
     "sphinxcontrib.bibtex",
     "sphinx_github_changelog",
     "matplotlib.sphinxext.plot_directive",
-    "IPython.sphinxext.ipython_directive",
-    "IPython.sphinxext.ipython_console_highlighting",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
