@@ -28,6 +28,13 @@
   },
   "packageRules": [
     {
+      "description": "Don't upgrade dependency versions for old Python versions",
+      "matchPackagePatterns": [
+        ".*;.*python_version[ ]*<=.*"
+      ],
+      "enabled": false
+    },
+    {
       "groupName": "static analysis dependencies",
       "matchFileNames": [
         "requirements_analysis.txt",
