@@ -30,7 +30,7 @@
     {
       "description": "Don't upgrade dependency versions for old Python versions",
       "matchPackagePatterns": [
-        ".*;.*python_version[ ]*<=.*"
+        ".*; python_version <= .*"
       ],
       "enabled": false
     },
