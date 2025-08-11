@@ -28,16 +28,16 @@
   },
   "packageRules": [
     {
-      "description": "Don't upgrade dependencies for old Python versions",
+      "description": "Only patch upgrades when updating dependencies for old Python versions",
       "matchPackageNames": ["numpy"],
       "matchCurrentVersion": "<2.3",
-      "enabled": false
+      "allowedVersions": "<2.3"
     },
     {
-      "description": "Don't upgrade dependencies for old Python versions",
+      "description": "Only patch upgrades when updating dependencies for old Python versions",
       "matchPackageNames": ["scipy"],
       "matchCurrentVersion": "<1.16",
-      "enabled": false
+      "allowedVersions": "<1.16"
     },
     {
       "groupName": "static analysis dependencies",
