@@ -28,10 +28,15 @@
   },
   "packageRules": [
     {
-      "description": "Don't upgrade dependency versions for old Python versions",
-      "matchPackagePatterns": [
-        ".*;.*python_version[ ]*<=.*"
-      ],
+      "description": "Don't upgrade dependencies for old Python versions",
+      "matchPackageNames": ["numpy"],
+      "matchCurrentVersion": "<2.3",
+      "enabled": false
+    },
+    {
+      "description": "Don't upgrade dependencies for old Python versions",
+      "matchPackageNames": ["scipy"],
+      "matchCurrentVersion": "<1.16",
       "enabled": false
     },
     {
