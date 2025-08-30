@@ -1,4 +1,4 @@
-|pkg_img| |doi| |tests| |coverage| |sonarcloud|
+|pkg_img| |doi| |tests| |coverage|
 
 .. |tests| image:: https://github.com/rparini/cxroots/workflows/tests/badge.svg
     :target: https://github.com/rparini/cxroots/actions
