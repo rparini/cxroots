@@ -8,6 +8,7 @@
     "every weekend"
   ],
   "prHourlyLimit": 0,
+  "minimumReleaseAge": "3 days",
   "automerge": true,
   "automergeStrategy": "squash",
   "gitIgnoredAuthors": [
