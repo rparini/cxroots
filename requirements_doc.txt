@@ -1,4 +1,4 @@
-sphinx==8.2.3
+sphinx==9.1.0
 sphinxcontrib-programoutput==0.18
 sphinxcontrib-bibtex==2.6.5
 sphinx_rtd_theme==3.1.0
