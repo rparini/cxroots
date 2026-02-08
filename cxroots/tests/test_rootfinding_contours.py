@@ -10,15 +10,15 @@ class TestRootfindingContours(unittest.TestCase):
     def setUp(self):
         self.roots = roots = [0, -1.234, 1 + 1j, 1 - 1j, 2.345]
         self.multiplicities = [1, 1, 1, 1, 1]
-        self.f = (
-            lambda z: (z - roots[0])
+        self.f = lambda z: (
+            (z - roots[0])
             * (z - roots[1])
             * (z - roots[2])
             * (z - roots[3])
             * (z - roots[4])
         )
-        self.df = (
-            lambda z: (z - roots[1]) * (z - roots[2]) * (z - roots[3]) * (z - roots[4])
+        self.df = lambda z: (
+            (z - roots[1]) * (z - roots[2]) * (z - roots[3]) * (z - roots[4])
             + (z - roots[0]) * (z - roots[2]) * (z - roots[3]) * (z - roots[4])
             + (z - roots[0]) * (z - roots[1]) * (z - roots[3]) * (z - roots[4])
             + (z - roots[0]) * (z - roots[1]) * (z - roots[2]) * (z - roots[4])
