@@ -136,8 +136,8 @@ class TestRootfinding143(unittest.TestCase, RootfindingTests):
         # Ex 1.4.3 from [KB]
         self.C = Circle(0, 5)
         self.f = lambda z: z**2 * (z - 1) * (z - 2) * (z - 3) * (z - 4) + z * sin(z)
-        self.df = (
-            lambda z: 2 * z * (3 * z**4 - 25 * z**3 + 70 * z**2 - 75 * z + 24)
+        self.df = lambda z: (
+            2 * z * (3 * z**4 - 25 * z**3 + 70 * z**2 - 75 * z + 24)
             + sin(z)
             + z * cos(z)
         )
@@ -156,11 +156,11 @@ class TestRootfinding144(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.4.4 from [KB]
         self.C = Circle(0, 3)
-        self.f = lambda z: (z * (z - 2)) ** 2 * (
-            exp(2 * z) * cos(z) + z**3 - 1 - sin(z)
+        self.f = lambda z: (
+            (z * (z - 2)) ** 2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
         )
-        self.df = (
-            lambda z: 2 * z * (z - 2) ** 2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
+        self.df = lambda z: (
+            2 * z * (z - 2) ** 2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
             + 2 * (z - 2) * z**2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
             + (z * (z - 2)) ** 2
             * (2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) + 3 * z**2 - cos(z))
@@ -248,8 +248,8 @@ class TestRootfinding152(unittest.TestCase, RootfindingTests):
         # Ex 1.5.2 from [KB]
         self.C = Rectangle([-0.5, 5.5], [-0.5, 1.5])
         self.f = lambda z: z**2 * (z - 1) * (z - 2) * (z - 3) * (z - 4) + z * sin(z)
-        self.df = (
-            lambda z: 2 * z * (3 * z**4 - 25 * z**3 + 70 * z**2 - 75 * z + 24)
+        self.df = lambda z: (
+            2 * z * (3 * z**4 - 25 * z**3 + 70 * z**2 - 75 * z + 24)
             + sin(z)
             + z * cos(z)
         )
@@ -268,11 +268,11 @@ class TestRootfinding153(unittest.TestCase, RootfindingTests):
     def setUp(self):
         # Ex 1.5.3 from [KB]
         self.C = Rectangle([-1, 3], [-1, 1])
-        self.f = lambda z: (z * (z - 2)) ** 2 * (
-            exp(2 * z) * cos(z) + z**3 - 1 - sin(z)
+        self.f = lambda z: (
+            (z * (z - 2)) ** 2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
         )
-        self.df = (
-            lambda z: 2 * z * (z - 2) ** 2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
+        self.df = lambda z: (
+            2 * z * (z - 2) ** 2 * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
             + 2 * z**2 * (z - 2) * (exp(2 * z) * cos(z) + z**3 - 1 - sin(z))
             + (z * (z - 2)) ** 2
             * (2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) + 3 * z**2 - cos(z))
@@ -305,13 +305,15 @@ def test_reevaluation_of_num_roots():
 class TestIntroduction(unittest.TestCase, RootfindingTests):
     def setUp(self):
         self.C = Circle(0, 3)
-        self.f = lambda z: (z * (z + 2)) ** 2 * (
-            exp(2 * z) * cos(z) - 1 - sin(z) + z**5
+        self.f = lambda z: (
+            (z * (z + 2)) ** 2 * (exp(2 * z) * cos(z) - 1 - sin(z) + z**5)
         )
-        self.df = lambda z: 2 * (exp(2 * z) * cos(z) - 1 - sin(z) + z**5) * (
-            z**2 * (z + 2) + (z + 2) ** 2 * z
-        ) + (z * (z + 2)) ** 2 * (
-            2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) - cos(z) + 5 * z**4
+        self.df = lambda z: (
+            2
+            * (exp(2 * z) * cos(z) - 1 - sin(z) + z**5)
+            * (z**2 * (z + 2) + (z + 2) ** 2 * z)
+            + (z * (z + 2)) ** 2
+            * (2 * exp(2 * z) * cos(z) - exp(2 * z) * sin(z) - cos(z) + 5 * z**4)
         )
 
         self.roots = [
