@@ -1,11 +1,14 @@
 import logging
 from collections.abc import Callable
 
+import mpmath
 from mpmath import mp, mpmathify
 from mpmath.calculus.optimization import Muller
 from numpy import inf
 
-Callback = Callable[[complex, complex, complex, int], bool]
+Callback = Callable[
+    [complex | mpmath.mpc, complex | mpmath.mpc, complex | mpmath.mpc, int], bool
+]
 ScalarCxFunc = Callable[[complex | float], complex]
 
 
@@ -146,8 +149,8 @@ def muller(
     logger = logging.getLogger(__name__)
 
     # mpmath insists on functions accepting mpc
-    def f_mpmath(z):
-        return mpmathify(f(complex(z)))
+    def f_mpmath(z) -> mpmath.mpc:
+        return mpmathify(f(complex(z)))  # type: ignore
 
     mull = Muller(mp, f_mpmath, (x1, x2, x3), verbose=False)
     x0 = x3
