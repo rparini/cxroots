@@ -61,7 +61,7 @@ jobs:
         run: pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x -W error
         timeout-minutes: 20
       - name: Coveralls
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@09b709cf6a16e30b0808ba050c7a6e8a5ef13f8d # master
         if: matrix.python-version == env.latest_python
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
