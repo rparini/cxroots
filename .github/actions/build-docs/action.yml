@@ -5,7 +5,7 @@ runs:
   steps:
     - name: Install dependencies
       shell: bash
-      run: pip install . -r requirements_doc.txt
+      run: uv sync --locked --extra docs
     - name: Fix sandbox "The SUID sandbox helper binary was found, but is not configured correctly"
       shell: bash
       run: |

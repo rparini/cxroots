@@ -1,31 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices",
-    "group:allNonMajor"
-  ],
-  "schedule": [
-    "every weekend"
-  ],
+  "extends": ["config:best-practices", "group:allNonMajor"],
+  "schedule": ["every weekend"],
   "prHourlyLimit": 0,
   "minimumReleaseAge": "3 days",
   "automerge": true,
   "automergeStrategy": "squash",
-  "gitIgnoredAuthors": [
-    "renovate[bot]@users.noreply.github.com"
-  ],
-  "reviewers": [
-    "rparini"
-  ],
-  "ignorePaths": [
-    "docs/**",
-    ".python-version"
-  ],
+  "gitIgnoredAuthors": ["renovate[bot]@users.noreply.github.com"],
+  "reviewers": ["rparini"],
+  "ignorePaths": ["docs/**", ".python-version"],
   "automergeType": "branch",
   "pip_requirements": {
-    "managerFilePatterns": [
-      "/requirements.*\\.txt$/"
-    ]
+    "managerFilePatterns": ["/requirements.*\\.txt$/"]
   },
   "packageRules": [
     {
@@ -42,33 +28,26 @@
     },
     {
       "groupName": "static analysis dependencies",
-      "matchFileNames": [
-        "requirements_analysis.txt",
-        ".pre-commit-config.yaml"
-      ]
+      "matchFileNames": [".pre-commit-config.yaml"]
+    },
+    {
+      "groupName": "static analysis dependencies",
+      "matchDepNames": ["ruff", "pyright"]
     },
     {
       "groupName": "docs dependencies",
-      "matchFileNames": [
-        "requirements_doc.txt"
-      ]
+      "matchDepTypes": ["docs"]
     },
     {
       "groupName": "docs dependencies",
-      "matchDepNames": [
-        "terminalizer"
-      ]
+      "matchDepNames": ["terminalizer"]
     }
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/create_docs/"
-      ],
-      "matchStrings": [
-        "npx (?<depName>.*)@(?<currentValue>[^\\s]+)"
-      ],
+      "managerFilePatterns": ["/create_docs/"],
+      "matchStrings": ["npx (?<depName>.*)@(?<currentValue>[^\\s]+)"],
       "datasourceTemplate": "npm"
     }
   ],

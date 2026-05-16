@@ -30,6 +30,14 @@ classifiers = [
 
 [project.optional-dependencies]
 plot = ["matplotlib"]
+dev = ["ruff", "pyright"]
+docs = [
+    "sphinx", 
+    "sphinxcontrib-programoutput", 
+    "sphinxcontrib-bibtex",
+    "sphinx_rtd_theme",
+    "sphinx-github-changelog",
+]
 
 [project.urls]
 Homepage = "https://rparini.github.io/cxroots/"
@@ -37,6 +45,9 @@ Documentation = "https://rparini.github.io/cxroots/"
 Repository = "https://github.com/rparini/cxroots"
 Issues = "https://github.com/rparini/cxroots/issues"
 Changelog = "https://github.com/rparini/cxroots/blob/master/changelog.md"
+
+[tool.uv]
+exclude-newer = "3 days"
 
 [tool.setuptools_scm]
 version_file = "cxroots/_version.py"

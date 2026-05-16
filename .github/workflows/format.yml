@@ -17,16 +17,19 @@ jobs:
     steps:
         - name: Checkout
           uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
-        - name: Setup Python
-          uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6
+        - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6
           with:
             python-version: ${{ env.latest_python }}
+        - name: Install uv
+          uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+          with:
+            version: "0.11.14"
         - name: Install ruff
-          run: pip install -r requirements_analysis.txt
+          run: uv sync --locked
         - name: Fix
-          run: ruff check --fix
+          run: uv run ruff check --fix
         - name: Format
-          run: ruff format
+          run: uv run ruff format
         - uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7
           with:
             commit_message: Autoupdate formtatting with ruff
