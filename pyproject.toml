@@ -30,7 +30,13 @@ classifiers = [
 
 [project.optional-dependencies]
 plot = ["matplotlib"]
-dev = ["ruff", "pyright"]
+dev = [
+    "ruff", 
+    "pyright", 
+    "pytest", 
+    "pytest-cov", 
+    "pytest-xdist"
+]
 docs = [
     "sphinx", 
     "sphinxcontrib-programoutput", 
