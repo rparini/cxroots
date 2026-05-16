@@ -25,7 +25,7 @@ jobs:
         with:
           version: "0.11.14"
       - name: Install ruff
-        run: uv sync --locked
+        run: uv sync --locked --only-dev
       - name: Check code with ruff
         run: |
           uv run ruff check --output-format=github
@@ -44,7 +44,7 @@ jobs:
         with:
           version: "0.11.14"
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync --locked --extra dev
       - name: Run pyright
         run: uv run pyright cxroots
 
@@ -71,7 +71,7 @@ jobs:
         with:
           version: "0.11.14"
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync --locked --extra dev
       - name: Test with pytest
         run: uv run pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x -W error
         timeout-minutes: 20
@@ -100,7 +100,5 @@ jobs:
         uses: ./.github/actions/build-docs
         env:
           SPHINX_GITHUB_CHANGELOG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install build dependencies
-        run: uv sync --locked
       - name: Build wheel
         run: uv build
