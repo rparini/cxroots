@@ -30,19 +30,21 @@ classifiers = [
 
 [project.optional-dependencies]
 plot = ["matplotlib"]
-dev = [
-    "ruff", 
-    "pyright", 
-    "pytest", 
-    "pytest-cov", 
-    "pytest-xdist"
-]
 docs = [
     "sphinx", 
     "sphinxcontrib-programoutput", 
     "sphinxcontrib-bibtex",
     "sphinx_rtd_theme",
     "sphinx-github-changelog",
+]
+
+[dependency-groups]
+dev = [
+    "ruff", 
+    "pyright", 
+    "pytest", 
+    "pytest-cov", 
+    "pytest-xdist"
 ]
 
 [project.urls]
