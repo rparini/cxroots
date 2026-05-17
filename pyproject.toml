@@ -29,22 +29,22 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-plot = ["matplotlib"]
+plot = ["matplotlib==3.10.9"]
 docs = [
-    "sphinx", 
-    "sphinxcontrib-programoutput", 
-    "sphinxcontrib-bibtex",
-    "sphinx_rtd_theme",
-    "sphinx-github-changelog",
+    "sphinx==8.0.0", 
+    "sphinxcontrib-programoutput==0.19", 
+    "sphinxcontrib-bibtex==2.7.0",
+    "sphinx_rtd_theme==3.1.0",
+    "sphinx-github-changelog==1.7.2",
 ]
 
 [dependency-groups]
 dev = [
-    "ruff", 
-    "pyright", 
-    "pytest", 
-    "pytest-cov", 
-    "pytest-xdist"
+    "ruff==0.15.12", 
+    "pyright==1.1.409", 
+    "pytest==9.0.3", 
+    "pytest-cov==7.1.0", 
+    "pytest-xdist==3.8.0"
 ]
 
 [project.urls]
