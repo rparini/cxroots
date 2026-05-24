@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 readme_example.py > readme_example.txt
+uv run --no-sync readme_example.py > readme_example.txt

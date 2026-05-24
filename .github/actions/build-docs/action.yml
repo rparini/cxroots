@@ -5,11 +5,10 @@ runs:
   steps:
     - name: Install dependencies
       shell: bash
-      run: pip install . -r requirements_doc.txt
+      run: uv sync --locked --group docs
     - name: Fix sandbox "The SUID sandbox helper binary was found, but is not configured correctly"
       shell: bash
-      run: |
-        sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
     - name: Install xvfb
       shell: bash
       run: sudo apt-get update && sudo apt-get install -y xvfb

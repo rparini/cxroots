@@ -2,8 +2,8 @@
 set -ex
 
 rm -rf ../docs
-python3 docex_contour.py
-python3 docex_tutorial.py
+uv run --no-sync docex_contour.py
+uv run --no-sync docex_tutorial.py
 
 # Render terminal GIFs
 # Note this does not seem to work on GitHub Action runners so we have to manually
@@ -12,7 +12,7 @@ npx terminalizer@0.12.0 render cxroots_progress -o ../docs_src/cxroots_progress.
 npx terminalizer@0.12.0 render cxroots_logging_progress -o ../docs_src/cxroots_logging_progress.gif
 
 # Build documentation
-sphinx-build -b html . ../docs -T -E -a -W
+uv run --no-sync sphinx-build -b html . ../docs -T -E -a -W
 
 # Clean up
 find *.gif *.png \
