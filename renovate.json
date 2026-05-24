@@ -11,6 +11,7 @@
   "minimumReleaseAge": "3 days",
   "automerge": true,
   "automergeStrategy": "squash",
+  "enabled": false,
   "gitIgnoredAuthors": [
     "renovate[bot]@users.noreply.github.com"
   ],
