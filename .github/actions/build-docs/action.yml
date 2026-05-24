@@ -5,7 +5,7 @@ runs:
   steps:
     - name: Install dependencies
       shell: bash
-      run: uv sync --locked --extra docs
+      run: uv sync --locked --group docs
     - name: Fix sandbox "The SUID sandbox helper binary was found, but is not configured correctly"
       shell: bash
       run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
