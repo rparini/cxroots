@@ -27,9 +27,9 @@ jobs:
       - name: Install ruff
         run: uv sync --locked --only-dev
       - name: Check code with ruff
-        run: |
-          uv run ruff check --output-format=github
-          uv run ruff format --check
+        run: uv run --no-project ruff check --output-format=github
+      - name: Format code with ruff
+        run: uv run --no-project ruff format --check
 
   pyright:
     runs-on: ubuntu-24.04
