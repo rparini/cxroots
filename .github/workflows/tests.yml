@@ -24,12 +24,12 @@ jobs:
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           version: "0.11.14"
-      - name: Install ruff
-        run: uv sync --locked --only-dev
+      # - name: Install ruff
+      #   run: uv sync --locked --only-dev
       - name: Check code with ruff
         run: |
-          uv run ruff check --output-format=github
-          uv run ruff format --check
+          uv run --locked ruff check --output-format=github
+          uv run --locked ruff format --check
 
   pyright:
     runs-on: ubuntu-24.04
