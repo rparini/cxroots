@@ -71,7 +71,7 @@ jobs:
         with:
           version: "0.11.14"
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync --locked --all-extras
       - name: Test with pytest
         run: uv run --no-sync pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x -W error
         timeout-minutes: 20
