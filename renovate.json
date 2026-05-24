@@ -10,9 +10,6 @@
   "reviewers": ["rparini"],
   "ignorePaths": ["docs/**", ".python-version"],
   "automergeType": "branch",
-  "pip_requirements": {
-    "managerFilePatterns": ["/requirements.*\\.txt$/"]
-  },
   "packageRules": [
     {
       "description": "Only patch upgrades when updating dependencies for old Python versions",
@@ -49,6 +46,13 @@
       "managerFilePatterns": ["/create_docs/"],
       "matchStrings": ["npx (?<depName>.*)@(?<currentValue>[^\\s]+)"],
       "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/.*.yml/"],
+      "matchStrings": ["latest_python: (?<currentValue>.*?)\\n"],
+      "depNameTemplate": "python",
+      "datasourceTemplate": "python-version"
     }
   ],
   "pre-commit": {
