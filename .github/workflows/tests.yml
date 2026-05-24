@@ -44,9 +44,9 @@ jobs:
         with:
           version: "0.11.14"
       - name: Install dependencies
-        run: uv sync --locked --only-dev
+        run: uv sync --locked --all-extras
       - name: Run pyright
-        run: uv run pyright cxroots
+        run: uv run --no-sync pyright cxroots
 
   test:
     runs-on: ubuntu-24.04
@@ -71,9 +71,9 @@ jobs:
         with:
           version: "0.11.14"
       - name: Install dependencies
-        run: uv sync --locked --only-dev
+        run: uv sync --locked
       - name: Test with pytest
-        run: uv run pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x -W error
+        run: uv run --no-sync pytest --cov=cxroots --cov-report=lcov -v -n 2 --durations=10 -m 'not slow' -x -W error
         timeout-minutes: 20
       - name: Coveralls
         uses: coverallsapp/github-action@master
