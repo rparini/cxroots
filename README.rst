@@ -91,8 +91,12 @@ BibTex:
 
 Development
 -----------
+- The project uses `uv <https://docs.astral.sh/uv/>`_ for dependency managemenent and running scripts
 - Install the `pre-commit <https://pre-commit.com/>`_ and then run :code:`pre-commit install`.  The pre-commit scripts can also be run manually with :code:`pre-commit run --all-files`
-- The project uses `ruff <https://docs.astral.sh/ruff/>`_ for formatting and linting. It is run as part of the pre-commit hook and is recommended to be run on save in the developer's editor.
+- `ruff <https://docs.astral.sh/ruff/>`_ is used for formatting and linting. It is run as part of the pre-commit hook and is recommended to be run on save in the developer's editor. It can also be run manually with :code:`uv run ruff check` and :code:`uv run ruff format`
+- `pytest <https://docs.pytest.org/>`_ is used for testing.  Tests are run as part of the CI and it is recommended to be run before pushing changes with :code:`uv run pytest` 
+- `pyright <https://github.com/microsoft/pyright>`_ is used for static type checking. It can be run with :code:`uv run pyright`.
+- CI will automatially update the documentation but can also be done manually with :code:`cd docs_src && uv run ./create_docs`
 
 Release Procedure
 -----------------
