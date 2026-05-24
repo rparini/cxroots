@@ -33,11 +33,14 @@ plot = ["matplotlib==3.10.9"]
 
 [dependency-groups]
 dev = [
-    "ruff==0.15.12", 
+    {include-group = "lint"},
     "pyright==1.1.409", 
     "pytest==9.0.3", 
     "pytest-cov==7.1.0", 
     "pytest-xdist==3.8.0"
+]
+lint = [
+    "ruff==0.15.12", 
 ]
 docs = [
     "sphinx==8.0.0", 

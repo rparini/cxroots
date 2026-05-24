@@ -8,7 +8,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-05-21T16:53:24.371794Z"
+exclude-newer = "2026-05-21T16:55:46.387049Z"
 exclude-newer-span = "P3D"
 
 [[package]]
@@ -460,6 +460,9 @@ docs = [
     { name = "sphinxcontrib-bibtex" },
     { name = "sphinxcontrib-programoutput" },
 ]
+lint = [
+    { name = "ruff" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -488,6 +491,7 @@ docs = [
     { name = "sphinxcontrib-bibtex", specifier = "==2.7.0" },
     { name = "sphinxcontrib-programoutput", specifier = "==0.19" },
 ]
+lint = [{ name = "ruff", specifier = "==0.15.12" }]
 
 [[package]]
 name = "cycler"
