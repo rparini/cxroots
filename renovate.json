@@ -12,6 +12,7 @@
   "automergeType": "branch",
   "packageRules": [
     {
+      "groupName": "minimum Python version",
       "matchDepNames": ["python"],
       "rangeStrategy": "bump",
       "minimumReleaseAge": "2 years"
