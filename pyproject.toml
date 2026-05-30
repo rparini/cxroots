@@ -29,7 +29,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-plot = ["matplotlib==3.10.9"]
+plot = ["matplotlib"]
 
 [dependency-groups]
 dev = [
@@ -43,7 +43,7 @@ lint = [
     "ruff==0.15.12", 
 ]
 docs = [
-    "sphinx==8.0.0", 
+    "sphinx==8.0.0",
     "sphinxcontrib-programoutput==0.19", 
     "sphinxcontrib-bibtex==2.7.0",
     "sphinx_rtd_theme==3.1.0",
