@@ -15,7 +15,7 @@
       "groupName": "minimum Python version",
       "matchDepNames": ["python"],
       "rangeStrategy": "bump",
-      "allowedUpdateTypes": ["minor", "major"],
+      "allowedVersions": "/^\\d+\\.\\d+$/",
       "minimumReleaseAge": "2 years"
     },
     {
