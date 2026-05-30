@@ -8,20 +8,13 @@
   "automergeStrategy": "squash",
   "gitIgnoredAuthors": ["renovate[bot]@users.noreply.github.com"],
   "reviewers": ["rparini"],
-  "ignorePaths": ["docs/**", ".python-version"],
+  "ignorePaths": ["docs/**"],
   "automergeType": "branch",
   "packageRules": [
     {
-      "description": "Only patch upgrades when updating dependencies for old Python versions",
-      "matchPackageNames": ["numpy"],
-      "matchCurrentVersion": "<2.3",
-      "allowedVersions": "<2.3"
-    },
-    {
-      "description": "Only patch upgrades when updating dependencies for old Python versions",
-      "matchPackageNames": ["scipy"],
-      "matchCurrentVersion": "<1.16",
-      "allowedVersions": "<1.16"
+      "matchDepNames": ["python"],
+      "rangeStrategy": "bump",
+      "minimumReleaseAge": "2 years"
     },
     {
       "groupName": "static analysis dependencies",
