@@ -3,7 +3,7 @@
   "extends": ["config:best-practices", "group:allNonMajor"],
   "schedule": ["every weekend"],
   "prHourlyLimit": 0,
-  "minimumReleaseAge": "3 days",
+  "minimumReleaseAge": "7 days",
   "automerge": true,
   "automergeStrategy": "squash",
   "gitIgnoredAuthors": ["renovate[bot]@users.noreply.github.com"],
