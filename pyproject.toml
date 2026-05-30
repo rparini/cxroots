@@ -40,7 +40,7 @@ dev = [
     "pytest-xdist==3.8.0"
 ]
 lint = [
-    "ruff==0.15.12", 
+    "ruff==0.15.14", 
 ]
 docs = [
     "sphinx==8.0.0",
