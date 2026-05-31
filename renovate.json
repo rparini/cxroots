@@ -23,9 +23,9 @@
       "automerge": false
     },
     {
-      "matchDepNames": ["python"],
-      "matchUpdateTypes": ["patch"],
-      "enabled": false
+      "description": "Allow missing timestamps, skipping release age checks, for update types that don't support it",
+      "matchUpdateTypes": ["lockFileMaintenance", "digest", "pin", "pinDigest"],
+      "minimumReleaseAgeBehaviour": "timestamp-optional"
     },
     {
       "groupName": "static analysis dependencies",
