@@ -43,7 +43,7 @@ lint = [
     "ruff==0.15.14", 
 ]
 docs = [
-    "sphinx==8.2.3",
+    "sphinx==9.1.0",
     "sphinxcontrib-programoutput==0.19", 
     "sphinxcontrib-bibtex==2.7.0",
     "sphinx_rtd_theme==3.1.0",
