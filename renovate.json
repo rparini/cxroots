@@ -15,7 +15,8 @@
       "groupName": "minimum Python version",
       "matchDepNames": ["python"],
       "rangeStrategy": "bump",
-      "minimumReleaseAge": "2 years"
+      "minimumReleaseAge": "2 years",
+      "automerge": false
     },
     {
       "groupName": "static analysis dependencies",
