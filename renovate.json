@@ -23,6 +23,11 @@
       "automerge": false
     },
     {
+      "matchDepNames": ["python"],
+      "matchUpdateTypes": ["patch"],
+      "enabled": false
+    },
+    {
       "groupName": "static analysis dependencies",
       "matchFileNames": [".pre-commit-config.yaml"]
     },
