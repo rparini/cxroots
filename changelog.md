@@ -1,5 +1,9 @@
 ## Changelog
 
+### Unreleased
+
+- Remove support for Python 3.10 & 3.11
+
 ### 3.2.0 - 12/Apr/2025
 
 - Support scipy 1.15
