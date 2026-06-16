@@ -6,7 +6,7 @@ on:
       - "**"
 
 env:
-  latest_python: 3.12
+  latest_python: 3.14
 
 jobs:
   ruff:
