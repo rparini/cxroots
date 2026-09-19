@@ -35,13 +35,13 @@ plot = ["matplotlib"]
 dev = [
     {include-group = "lint"},
     "pre-commit>=4.6.0",
-    "pyright==1.1.411",
+    "pyright==1.1.414",
     "pytest==9.0.3",
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
 ]
 lint = [
-    "ruff==0.16.6", 
+    "ruff==0.16.7", 
 ]
 docs = [
     "sphinx==9.1.0",
