@@ -14,8 +14,14 @@
     {
       "groupName": "minimum Python version",
       "matchDepNames": ["python"],
-      "rangeStrategy": "auto",
+      "matchFileNames": ["pyproject.toml"],
+      "rangeStrategy": "bump",
       "minimumReleaseAge": "2 years"
+    },
+    {
+      "groupName": "tested Python version",
+      "matchDepNames": ["python"],
+      "matchFileNames" : [".github/**"]
     },
     {
       "matchDepNames": ["python"],
