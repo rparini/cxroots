@@ -5,7 +5,7 @@ on:
     types: [created]
 
 env:
-    latest_python: 3.14
+    latest_python: 3.15
 
 jobs:
   deploy:
