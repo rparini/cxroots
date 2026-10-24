@@ -9,7 +9,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     environment:
       name: pypi
     permissions:
@@ -41,7 +41,7 @@ jobs:
 
   test:
     needs: deploy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         python-version: 
