@@ -6,7 +6,7 @@ on:
       - "**"
 
 env:
-  latest_python: 3.14
+  latest_python: 3.15
 
 jobs:
   ruff:
@@ -57,6 +57,7 @@ jobs:
           - "3.12"
           - "3.13"
           - "3.14"
+          - "3.15"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Set up Python ${{ matrix.python-version }}
