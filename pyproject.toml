@@ -13,8 +13,8 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies=[
-    "numpy",
-    "scipy",
+    "numpy==2.4.6",
+    "scipy==1.18.0",
     "numpydoc",
     "mpmath",
     "rich"
